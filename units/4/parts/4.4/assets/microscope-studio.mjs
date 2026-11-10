@@ -76,7 +76,6 @@ if(root){
   out+=`<path data-micro-a-leader d="M${from[0]} ${from[1]}L${image[0]-20} ${image[1]}" stroke="#e7cb77" stroke-width="1.5" fill="none"/>`;
   $('.micro-labels').innerHTML=labels;
   if(focused)$(`${focusWasLabel?'.micro-label':'.micro-pick'}[data-micro-lens="${focused}"]`)?.focus({preventScroll:true});
-  $('[data-micro-scope]').textContent=view==='whole'?'目前觀察：完整成像':view==='objective'?'目前近看：物鏡成像':'目前近看：目鏡觀察';
   $('[data-micro-process]').setAttribute('aria-label','完整成像關係，'+(view==='whole'?'目前觀察完整成像。':view==='objective'?'目前近看原物、物鏡與中間像。':'目前近看中間像、目鏡與眼睛。'));
   if(rays)for(const r of g.rays){
    const color=r.point==='top'?red:blue,marker=r.point==='top'?'red':'blue';
