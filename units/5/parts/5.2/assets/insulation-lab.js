@@ -110,7 +110,7 @@
     $('insulation-lining-photo').toggleAttribute('hidden',!cfg.b.lining);
     $('insulation-gas-motion').toggleAttribute('hidden',!cfg.a.gas);
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
-    mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;const svg=panel.querySelector('svg');if(selected&&playing&&!reduced.matches)svg.unpauseAnimations();else svg.pauseAnimations();});
+    mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;const svg=panel.querySelector('svg');if(selected&&!reduced.matches)svg.unpauseAnimations();else svg.pauseAnimations();});
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus);
     setText('insulation-lining-focus-title','反射層局部比較');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層局部放大':inspectedLayer==='b'?'B 真空夾層局部放大':'夾層局部比較');
     setText('insulation-micro-explanation',inspectedLayer==='a'?'空氣分子碰撞傳能；輻射也能穿過夾層。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');

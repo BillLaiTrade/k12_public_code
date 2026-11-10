@@ -635,3 +635,8 @@
  #insulation-lab[data-comparison=gap][data-focus=a] .insulation-micro-explanation,
  #insulation-lab[data-comparison=gap][data-focus=b] .insulation-micro-explanation{padding-left:6px;font-size:.7rem}
 }
+
+/* 局部圖保留在瓶名下方，選取後即可觀察微觀運動。 */
+#insulation-lab[data-comparison=gap] .insulation-mechanism-slot{min-height:250px}
+#insulation-lab[data-comparison=gap] .insulation-micro-panel:not([hidden]) .micro-lens-radiation{animation-play-state:running}
+@media(prefers-reduced-motion:reduce){#insulation-lab[data-comparison=gap] .insulation-micro-panel .micro-lens-radiation{animation:none}}
