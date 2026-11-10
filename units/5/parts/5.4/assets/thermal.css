@@ -573,3 +573,9 @@
 .chem-white{clip-path:ellipse(31% 7.3% at 50% 51%);mask-image:none}
 .chem-white-cap{position:absolute;inset:0;background:rgba(255,255,255,.85);mix-blend-mode:screen;opacity:var(--chem-white,0);mask-image:radial-gradient(ellipse 18% 3.2% at 50% 44%,#000 40%,transparent 100%);pointer-events:none}
 .chem-white-cap{background:#fff}
+.chem-live-scene{display:block;width:100%;height:auto;border:1px solid #b7c9ac;border-radius:12px;background:#f4e7dd}
+.chem-single-wrap{grid-template-columns:minmax(0,1.55fr) minmax(180px,.65fr)}
+@media(max-width:760px){.chem-single-wrap{grid-template-columns:1fr}}
+.chem-visual{position:relative;min-width:0}
+.chem-live-label{position:absolute;z-index:1;padding:4px 7px;border-radius:6px;background:#fff8eb;color:#9d4715;font-size:1rem;font-weight:700;line-height:1.25;box-shadow:0 1px 4px #66452b44;pointer-events:none}
+.chem-live-label-in{left:20%;top:57%;opacity:var(--chem-in,0)}.chem-live-label-out{right:13%;top:27%;opacity:var(--chem-out,0)}

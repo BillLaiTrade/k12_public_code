@@ -160,39 +160,43 @@ function setThermo(value){thermoTemp=Math.max(5,Math.min(80,Math.round(Number(va
 $('thermo-range').addEventListener('input',e=>setThermo(e.target.value));
 $('thermo-minus').onclick=()=>setThermo(thermoTemp-1);$('thermo-plus').onclick=()=>setThermo(thermoTemp+1);
 let chemProgress=0;
-const chemStages=[
- '加熱前：容器中是藍色含水硫酸銅。',
- '加熱脫水：熱傳入樣品；藍色固體逐漸變白，逸出的水蒸氣在較冷處凝結。',
- '停止加熱，待白色無水硫酸銅冷卻後加水。',
- '水合：白色固體變藍，形成含水硫酸銅，熱傳向周圍。'
-];
+const chemUnit=x=>Math.max(0,Math.min(1,x));
+const chemEase=x=>{const t=chemUnit(x);return t*t*(3-2*t);};
+const chemMix=(a,b,t)=>a+(b-a)*t;
 function renderChem(){
- const lab=$('chem-lab'),playing=animations.has('chem-lab');
- const stage=Math.min(3,Math.floor(chemProgress*4));
+ const lab=$('chem-lab'),playing=animations.has('chem-lab'),t=chemProgress*34;
+ const heating=chemEase((t-7)/8),hydration=chemEase((t-25)/6),white=heating*(1-hydration);
+ const entering=chemEase((t-2)/3),leaving=chemEase((t-16)/2);
+ const burnerX=chemMix(1450,500,entering)+950*leaving;
+ const pipetteIn=chemEase((t-19)/3),pipetteOut=chemEase((t-31)/2);
+ const pipeX=chemMix(1450,633,pipetteIn)+817*pipetteOut,pipeY=chemMix(-80,110,pipetteIn)-190*pipetteOut;
+ const flame=t>=5&&t<16?Math.min(1,(t-5)*2,(16-t)*2):0;
+ const flicker=Math.sin(t*13)*7+Math.sin(t*21)*4;
+ $('chem-burner').setAttribute('transform',`translate(${burnerX} 665)`);
+ const pipeTilt=2*chemEase((t-21.5)/1.5)-2*chemEase((t-24)/1.5);
+ $('chem-pipette-object').setAttribute('transform',`translate(${pipeX} ${pipeY}) translate(87 271) rotate(${pipeTilt}) translate(-87 -271)`);
+ $('chem-flame').setAttribute('opacity',String(flame));
+ $('chem-flame').setAttribute('d',`M205 18 Q${190-flicker} -10 220 ${-61-flicker} Q${248+flicker} -8 233 18 Z`);
+ const falling=t>=23&&t<24.4,fall=chemUnit((t-23)/1.4);
+ $('chem-droplet').setAttribute('opacity',falling?'1':'0');$('chem-droplet').setAttribute('cy',String(385+fall*125));
+ $('chem-condensation').setAttribute('opacity',String(chemEase((t-9)/5)*(1-chemEase((t-22)/3))));
+ const radius=white*145;document.querySelectorAll('#chem-mask-spots circle').forEach((c,i)=>c.setAttribute('r',String(radius*chemUnit((white*2.1-i*.10)))));
+ $('chem-mask-complete').setAttribute('opacity',String(chemEase((white-.86)/.14)));
+ const heatOut=chemEase((t-25)/1.5)*(1-chemEase((t-31)/2));
+ $('chem-arrow-in').setAttribute('opacity',String(flame));$('chem-arrow-out').setAttribute('opacity',String(heatOut));
+ lab.style.setProperty('--chem-in',flame);lab.style.setProperty('--chem-out',heatOut);
+ const stage=t<5?0:t<18?1:t<25?2:3;
+ const title=['加熱前','加熱脫水','冷卻後加水','水合反應'][stage];
+ const notes=['藍色含水硫酸銅放在容器中，酒精燈移向下方。','熱傳入樣品，藍色固體逐漸變白；水蒸氣在較冷處凝結，這個反應吸熱。','停止加熱，樣品冷卻後，滴管移到容器上方加入水。','白色無水硫酸銅與水反應，逐漸生成藍色含水硫酸銅，熱傳向周圍，這個反應放熱。'];
+ const materials=['藍色含水硫酸銅','藍色固體逐漸變白','白色無水硫酸銅＋水','白色固體逐漸變藍'];
  lab.dataset.stage=String(stage);lab.dataset.progress=String(chemProgress);lab.dataset.playing=String(playing);
- const local=Math.min(1,Math.max(0,chemProgress*4-stage));
- const clamp=x=>Math.max(0,Math.min(1,x));
- const white=stage===0?0:stage===1?clamp((local-.12)/.75):stage===2?1:1-clamp((local-.15)/.75);
- const lamp=stage===1?clamp(local*8):0;
- const pipette=stage===2?clamp((local-.35)*7):stage===3?1-clamp(local*5):0;
- const drop=stage===2&&local>.5&&local<.96?1:0;
- lab.style.setProperty('--chem-white',white);
- lab.style.setProperty('--chem-lamp',lamp);
- lab.style.setProperty('--chem-pipette',pipette);
- lab.style.setProperty('--chem-drop',drop);
- lab.style.setProperty('--chem-drop-y',`${stage===2?clamp((local-.5)/.46)*13:0}%`);
- lab.style.setProperty('--chem-in',stage===1?lamp:0);
- lab.style.setProperty('--chem-out',stage===3?clamp(local*6):0);
- write('chem-stage-title',['加熱前','加熱脫水','冷卻後加水','水合反應'][stage]);
- write('chem-material',stage===0?'藍色含水硫酸銅':stage===1?'藍色固體逐漸變白':stage===2?'白色無水硫酸銅＋水':'逐漸生成藍色含水硫酸銅');
- write('chem-equation',stage<2?'含水硫酸銅 → 無水硫酸銅＋水':'無水硫酸銅＋水 → 含水硫酸銅');
- $('chem-progress-fill').style.width=(chemProgress*100)+'%';
- $('chem-progress').setAttribute('aria-valuenow',String(Math.round(chemProgress*100)));
- write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${['加熱前','加熱脫水','冷卻後加水','水合後'][stage]}`);
- write('chem-note',chemStages[stage]);
+ lab.dataset.white=white.toFixed(3);lab.dataset.burnerX=burnerX.toFixed(1);lab.dataset.pipeX=pipeX.toFixed(1);
+ write('chem-stage-title',title);write('chem-material',materials[stage]);write('chem-equation',stage<2?'含水硫酸銅 → 無水硫酸銅＋水':'無水硫酸銅＋水 → 含水硫酸銅');
+ $('chem-progress-fill').style.width=(chemProgress*100)+'%';$('chem-progress').setAttribute('aria-valuenow',String(Math.round(chemProgress*100)));
+ write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${title}`);write('chem-note',notes[stage]);
  write('chem-play',playing?'暫停觀察':chemProgress>=1?'再次觀察':chemProgress>0?'繼續觀察':'開始觀察');
 }
-$('chem-play').onclick=()=>{if(animations.has('chem-lab')){stop('chem-lab');return;}if(chemProgress>=1)chemProgress=0;const initial=chemProgress;run('chem-lab',24000*(1-initial),p=>{chemProgress=initial+(1-initial)*p;renderChem();},renderChem);renderChem();};
+$('chem-play').onclick=()=>{if(animations.has('chem-lab')){stop('chem-lab');return;}if(chemProgress>=1)chemProgress=0;const initial=chemProgress;run('chem-lab',34000*(1-initial),p=>{chemProgress=initial+(1-initial)*p;renderChem();},renderChem);renderChem();};
 $('chem-reset').onclick=()=>{stop('chem-lab');chemProgress=0;renderChem();};
 // One end-of-lesson assessment; answers persist between observation points.
 let quizIndex=0,answers=Array(QUIZ.length).fill(null);
