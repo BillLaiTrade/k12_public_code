@@ -87,10 +87,8 @@
 /* Text lives outside the projected SVG, so its glyphs never scale with the scene. */
 .micro-labels { position:absolute; inset:0; z-index:2; pointer-events:none; }
 .micro-labels .micro-label { position:absolute; transform:translate(-100%,-50%); padding:3px 10px; border:1px solid #c1cbae; border-radius:5px; background:#fff9e6; color:#344b37; font-size:14px; font-weight:650; line-height:1.4; white-space:nowrap; }
-.micro-focus-label { position:absolute; transform:translateY(-50%); color:#f2d89e; font-size:13px; line-height:1.4; }
 @container (max-width:640px) {
  .micro-labels .micro-label { padding:2px 7px; font-size:12px; }
- .micro-focus-label { font-size:12px; }
 }
 
 .micro-labels button.micro-label { min-height:28px; pointer-events:auto; cursor:zoom-in; font-family:inherit; }
