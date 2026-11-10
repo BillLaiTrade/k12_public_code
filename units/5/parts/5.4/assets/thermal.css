@@ -516,3 +516,36 @@
 /* 薄壁只保留細緻的反光邊，避免視覺厚度蓋過實驗瓶比例。 */
 .thermo-wall-diagram .thermo-inner-current,.thermo-wall-diagram .thermo-outer-current{stroke-width:1.8}
 .thermo-wall-diagram .thermo-glass-band{opacity:.82}
+/* Four continuous stages of the same sample, based on the approved storyboard. */
+.chem-story{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:stretch}
+.chem-frame{min-width:0;overflow:hidden;border:1px solid #a9c8a5;border-radius:12px;background:#fffef6;box-shadow:0 2px 6px #243a2a0a}
+.chem-frame[data-active="true"]{border-color:#2f7650;box-shadow:0 0 0 2px #a8cba4,0 4px 12px #294d3220}
+.chem-frame h3{display:flex;align-items:center;gap:6px;margin:0;padding:9px 8px;background:#e6f1da;color:#255736;font-size:1rem;line-height:1.3}
+.chem-frame h3 span{display:inline-grid;place-items:center;flex:none;width:25px;height:25px;border-radius:50%;background:#2c7047;color:white;font-size:.85rem}
+.chem-picture{position:relative;overflow:hidden;aspect-ratio:365/470;background-image:url('chemistry-four-stages.png');background-repeat:no-repeat;background-size:458.08% auto}
+.chem-picture--one{background-position:1.4% 43.5%}.chem-picture--two{background-position:32.1% 43.5%}.chem-picture--three{background-position:63.8% 43.5%}.chem-picture--four{background-position:95.6% 43.5%}
+.chem-frame p{margin:8px;padding:7px;border:1px solid #a9c894;border-radius:7px;color:#31583a;font-weight:700;font-size:.9rem;line-height:1.45}
+.chem-heat{display:block;margin:0 8px 8px;color:#9f4e1c;font-size:.9rem}
+.chem-bleach,.chem-rehydrate{position:absolute;inset:0;background:inherit;filter:grayscale(1) brightness(1.6);clip-path:ellipse(37% 10% at 52% 54%);pointer-events:none}
+.chem-bleach{opacity:var(--chem-bleach,0)}.chem-rehydrate{opacity:var(--chem-rehydrate,1)}
+.chem-glow{position:absolute;left:32%;top:69%;width:35%;height:23%;border-radius:50%;background:radial-gradient(ellipse,#ffae185c,transparent 70%);opacity:0;pointer-events:none}
+.chem-lab[data-stage="1"][data-playing="true"] .chem-glow{opacity:1;animation:chem-glow 1s ease-in-out infinite alternate}
+.chem-drop{position:absolute;left:60%;top:44%;width:9px;height:13px;border-radius:60% 60% 65% 65%;background:#65c4e3;border:1px solid #fff;opacity:0;pointer-events:none}
+.chem-lab[data-stage="2"][data-playing="true"] .chem-drop{animation:chem-drop 1.4s ease-in infinite}
+@keyframes chem-glow{to{transform:scale(1.18);opacity:.45}}@keyframes chem-drop{0%{opacity:0;transform:translateY(0)}20%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translateY(70px)}}
+@media(max-width:760px){.chem-story{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.chem-frame h3{font-size:1rem}.chem-frame p{font-size:.95rem}}
+@media(max-width:380px){.chem-story{grid-template-columns:1fr}.chem-picture{max-height:380px;background-size:458.08% auto}}
+@media(prefers-reduced-motion:reduce){.chem-glow,.chem-drop{animation:none!important}}
+/* Separate the artwork from labels so the text remains readable at every size. */
+.chem-picture{aspect-ratio:3/4;background-size:400% auto}
+.chem-picture--one{background-position:0 0}.chem-picture--two{background-position:33.3333% 0}.chem-picture--three{background-position:66.6667% 0}.chem-picture--four{background-position:100% 0}
+.chem-bleach,.chem-rehydrate{background:#e5e5e5;filter:none;mix-blend-mode:color;clip-path:ellipse(34% 8% at 50% 47%)}
+.chem-picture--two::after,.chem-picture--four::after{position:absolute;padding:4px 6px;border-radius:6px;background:#fff8ed;color:#a7470c;font-size:.9rem;font-weight:800;box-shadow:0 1px 4px #63401f40}
+.chem-picture--two::after{content:'↑ 熱傳入';left:4%;bottom:18%}.chem-picture--four::after{content:'↗ 熱傳出';right:4%;top:14%}
+.chem-glow{left:30%;top:57%;width:40%;height:20%}.chem-drop{left:51%;top:34%}
+@keyframes chem-drop{0%{opacity:0;transform:translateY(0)}20%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translateY(28px)}}
+@media(max-width:380px){.chem-picture{max-height:none;background-size:400% auto}}
+.chem-bleach,.chem-rehydrate{background:rgba(255,255,255,.78);mix-blend-mode:screen;clip-path:ellipse(34% 9% at 50% 49%);opacity:0}
+.chem-lab[data-stage="1"] .chem-bleach{opacity:var(--chem-bleach,0)}
+.chem-lab[data-stage="3"] .chem-rehydrate{opacity:var(--chem-rehydrate,1)}
+.chem-bleach,.chem-rehydrate{clip-path:none;mask-image:radial-gradient(ellipse 37% 11% at 50% 49%,#000 40%,transparent 100%)}

@@ -159,27 +159,28 @@ function renderThermo(){
 function setThermo(value){thermoTemp=Math.max(5,Math.min(80,Math.round(Number(value)*10)/10));renderThermo();}
 $('thermo-range').addEventListener('input',e=>setThermo(e.target.value));
 $('thermo-minus').onclick=()=>setThermo(thermoTemp-1);$('thermo-plus').onclick=()=>setThermo(thermoTemp+1);
-let chemMode='dehydrate',chemProgress=0;
+let chemProgress=0;
+const chemStages=[
+ '加熱前：容器中是藍色含水硫酸銅。',
+ '加熱脫水：熱傳入樣品；藍色固體逐漸變白，逸出的水蒸氣在較冷處凝結。',
+ '停止加熱，待白色無水硫酸銅冷卻後加水。',
+ '水合：白色固體變藍，形成含水硫酸銅，熱傳向周圍。'
+];
 function renderChem(){
- const lab=$('chem-lab'),s=REACTIONS[chemMode],playing=animations.has('chem-lab');
- const stage=chemProgress===0&&!playing?-1:chemProgress>=.75?3:chemProgress>=.5?2:chemProgress>=.25?1:0;
- lab.dataset.mode=chemMode;lab.dataset.progress=String(chemProgress);lab.dataset.stage=String(stage);
- for(const card of document.querySelectorAll('.chem-reaction-card')){
-  card.dataset.active=String(card.dataset.reaction===chemMode);
-  card.querySelector('.chem-substance-flow>div:first-child').dataset.observationStep='0';
-  card.querySelector('.chem-substance-flow>div:last-child').dataset.observationStep='1';
-  card.querySelector('.chem-evidence').dataset.observationStep='2';
-  card.querySelector('.chem-energy-note').dataset.observationStep='3';
- }
- pressed('[data-chem]',chemMode,'chem');
- const bar=$('chem-progress-fill');bar.style.width=(chemProgress*100)+'%';
+ const lab=$('chem-lab'),playing=animations.has('chem-lab');
+ const stage=Math.min(3,Math.floor(chemProgress*4));
+ lab.dataset.stage=String(stage);lab.dataset.progress=String(chemProgress);lab.dataset.playing=String(playing);
+ const local=Math.min(1,Math.max(0,chemProgress*4-stage));
+ lab.style.setProperty('--chem-bleach',stage<1?0:stage>1?1:local);
+ lab.style.setProperty('--chem-rehydrate',stage<3?1:1-local);
+ for(const frame of document.querySelectorAll('.chem-frame'))frame.dataset.active=String(Number(frame.dataset.frame)===stage);
+ $('chem-progress-fill').style.width=(chemProgress*100)+'%';
  $('chem-progress').setAttribute('aria-valuenow',String(Math.round(chemProgress*100)));
- write('chem-progress-label',chemProgress>=1?'觀察完成・已比較物質身分與能量方向':`觀察步驟 ${stage+1}／4・依序比較反應物、產物、證據與能量`);
- write('chem-note',chemProgress>=1?s.result:playing?'正在依序比對這個反應的物質與能量變化。':chemProgress>0?'觀察已暫停；可繼續查看，或切換另一個反應。':'選取一例，再開始比對反應物、產物、身分證據與能量方向。');
+ write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${['加熱前','加熱脫水','冷卻後加水','水合後'][stage]}`);
+ write('chem-note',chemStages[stage]);
  write('chem-play',playing?'暫停觀察':chemProgress>=1?'再次觀察':chemProgress>0?'繼續觀察':'開始觀察');
 }
-for(const b of document.querySelectorAll('[data-chem]'))b.onclick=()=>{stop('chem-lab');chemMode=b.dataset.chem;chemProgress=0;renderChem();};
-$('chem-play').onclick=()=>{if(animations.has('chem-lab')){stop('chem-lab');return;}if(chemProgress>=1)chemProgress=0;const initial=chemProgress;run('chem-lab',5000*(1-initial),p=>{chemProgress=initial+(1-initial)*p;renderChem();},renderChem);renderChem();};
+$('chem-play').onclick=()=>{if(animations.has('chem-lab')){stop('chem-lab');return;}if(chemProgress>=1)chemProgress=0;const initial=chemProgress;run('chem-lab',24000*(1-initial),p=>{chemProgress=initial+(1-initial)*p;renderChem();},renderChem);renderChem();};
 $('chem-reset').onclick=()=>{stop('chem-lab');chemProgress=0;renderChem();};
 // One end-of-lesson assessment; answers persist between observation points.
 let quizIndex=0,answers=Array(QUIZ.length).fill(null);
