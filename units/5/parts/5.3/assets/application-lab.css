@@ -167,3 +167,24 @@
 
 #application-lab .coolant-mobile-flow{display:none}
 @media(max-width:600px){#application-lab .coolant-mobile-flow{display:block;margin:2px 0;text-align:center;color:#315b3b;font-size:1rem;font-weight:700}}
+
+/* 各情境只占用自己的高度，切換時不留下其他情境的空白。 */
+#application-content{display:block}
+#application-content>.life-view[hidden]{display:none!important}
+/* 依核可示意調整相片、循環圖與比熱比較的比例和材質。 */
+#application-lab .coolant-workbench .life-photo{aspect-ratio:540/610}
+#application-lab .coolant-workbench .life-photo>#coolant-photo{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:center}
+#application-lab .coolant-loop-card{padding:45px 14px 12px}
+#application-lab .coolant-labels span{padding:5px 9px;border:1px solid #ed901f;background:#fff9ec;color:#a14908;font-size:clamp(.85rem,1.3vw,1rem);font-weight:750}
+#application-lab .coolant-legend{margin-top:0}
+#application-lab .coolant-compare h3{background:#dcebcf;font-size:clamp(1rem,1.4vw,1.15rem)}
+.coolant-heat-input{display:flex;align-items:center;justify-content:center;flex:0 0 4.2em;min-height:55px;padding:4px 8px 4px 0;clip-path:polygon(0 12%,72% 12%,72% 0,100% 50%,72% 100%,72% 88%,0 88%);background:linear-gradient(90deg,#fff4e2,#f8c078);color:#a64e07;font-size:.85rem;line-height:1.25}
+.coolant-beaker{height:110px;border-color:#5c969c;background:linear-gradient(90deg,#f3ffffa8,#ffffff33 12%,#ffffff00 24%,#89d9e488 72%,#e8ffffaa),linear-gradient(to bottom,#f2ffff 23%,#bcecf0 24%,#8bd3dd 100%);box-shadow:inset 6px 0 6px #fff9,inset -5px 0 6px #5597a144,0 3px 4px #0002}
+.coolant-beaker-other{background:linear-gradient(90deg,#fffce8a8,#ffffff33 12%,#ffffff00 24%,#ffdb5688 72%,#fff8c5aa),linear-gradient(to bottom,#fffcf0 23%,#ffec97 24%,#f4d771 100%)}
+#application-lab .coolant-key{padding:14px 18px;border-left:6px solid #e78213;background:#fff5e7}
+#application-lab .coolant-key p{font-size:1.05rem;font-weight:700;line-height:1.55}
+@media(max-width:1100px){#application-lab .coolant-workbench .life-photo{aspect-ratio:4/3}}
+@media(max-width:600px){#application-lab .coolant-loop-card{padding:50px 8px 10px}.coolant-heat-input{font-size:.875rem}.coolant-beaker{height:90px}}
+.coolant-heat-input span{white-space:nowrap;font-size:.75rem}
+@media(max-width:600px){.coolant-heat-input span{font-size:.875rem}}
+@media(min-width:1101px){#application-lab .coolant-workbench>div:first-child{align-self:stretch}#application-lab .coolant-workbench .life-photo{height:90%;aspect-ratio:auto}}

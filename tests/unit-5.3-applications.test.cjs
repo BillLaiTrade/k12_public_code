@@ -89,15 +89,15 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.match(await page.locator('#coast-condition').textContent(),/吸收/);await page.close();
   });
 
-  await t.test('三種生活情境切換時版面高度與圖片框尺寸一致',async()=>{
+  await t.test('切換情境時高度跟隨目前內容，隱藏情境不保留空間',async()=>{
     for(const width of [1440,1366,1280,390,320]){
       await p.setViewportSize({width,height:900});
-      const boxes=[];
       for(const key of ['chestnut','coast','coolant']){
         await choose(key);
-        boxes.push(await p.locator('#application-'+key).evaluate(n=>{const box=n.querySelector('.life-photo:not([hidden])').getBoundingClientRect(), panel=document.querySelector('#application-lab').getBoundingClientRect();return {width:box.width,height:box.height,panelHeight:panel.height,cardHeight:document.querySelector("#card-05").getBoundingClientRect().height,photoTop:box.top-panel.top};}));
+        const sizes=await p.locator('#application-content').evaluate(n=>({container:n.getBoundingClientRect().height,active:n.querySelector('.life-view:not([hidden])').getBoundingClientRect().height,hidden:[...n.querySelectorAll('.life-view[hidden]')].map(e=>e.getBoundingClientRect().height)}));
+        assert.ok(Math.abs(sizes.container-sizes.active)<1,`${width} ${key}: ${JSON.stringify(sizes)}`);
+        assert.deepEqual(sizes.hidden,[0,0]);
       }
-      for(const box of boxes.slice(1)){for(const field of ['panelHeight','cardHeight','photoTop'])assert.ok(Math.abs(box[field]-boxes[0][field])<1,`${width}: ${field} ${JSON.stringify(boxes)}`);}
     }
   });
 
