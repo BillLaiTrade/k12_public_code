@@ -669,3 +669,6 @@
 #insulation-lab[data-comparison=gap] .micro-motion-arrow{fill:none;stroke:#176b97;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
 
 #insulation-lab[data-comparison=gap] .micro-radiation-arrow{fill:none;stroke:#df8624;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+
+/* 碰撞前後以速度箭頭輔助觀察，速度與時間為定性示意。 */
+#insulation-lab[data-comparison=gap] .micro-velocity{stroke:#176b97;stroke-width:2.5;stroke-linecap:round;marker-end:url(#micro-velocity-arrow)}

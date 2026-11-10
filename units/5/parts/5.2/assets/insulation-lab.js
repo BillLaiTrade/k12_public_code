@@ -32,8 +32,8 @@
   function animateCloseup(now){
     closeupFrame=0;
     if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
-    const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000);closeupPrevious=now;closeupTime+=dt*(reduced.matches?.45:1);
-    closeupParticles.forEach(({node,x,y,i})=>{const px=Math.max(68,Math.min(192,x+12*Math.sin(closeupTime*.9+i*1.7))),py=y+14*Math.sin(closeupTime*.7+i*2.1);node.setAttribute('cx',px.toFixed(2));node.setAttribute('cy',py.toFixed(2));if(node._motionArrow){const direction=Math.cos(closeupTime*.9+i*1.7)>=0?1:-1,start=px+direction*11,end=px+direction*22;node._motionArrow.setAttribute('d',`M${start.toFixed(1)} ${py.toFixed(1)}H${end.toFixed(1)}m${-direction*4} -4l${direction*4} 4l${-direction*4} 4`);}});
+    const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000);closeupPrevious=now;closeupTime+=dt*(reduced.matches?.65:1);
+    closeupParticles.forEach(({node,x,y,i})=>{const px=Math.max(68,Math.min(192,x+12*Math.sin(closeupTime*2.1+i*1.7))),py=y+14*Math.sin(closeupTime*1.6+i*2.1);node.setAttribute('cx',px.toFixed(2));node.setAttribute('cy',py.toFixed(2));if(node._motionArrow){const direction=Math.cos(closeupTime*2.1+i*1.7)>=0?1:-1,start=px+direction*11,end=px+direction*22;node._motionArrow.setAttribute('d',`M${start.toFixed(1)} ${py.toFixed(1)}H${end.toFixed(1)}m${-direction*4} -4l${direction*4} 4l${-direction*4} 4`);}});
     mechanism.querySelectorAll('.micro-lens-radiation').forEach(wave=>wave.style.strokeDashoffset=String(-closeupTime*20));
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
