@@ -92,32 +92,43 @@ function selectCoast(next){
 
 const coolantCircuit=get('coolant-circuit-path');
 const coolantPackets=get('coolant-flow-packets');
+const coolantFluidDefs=get('coolant-fluid-defs');
 const coolantMotionPreference=matchMedia('(prefers-reduced-motion: reduce)');
 let coolantInView=!('IntersectionObserver' in window),coolantFrame=0,coolantLastTime=null,coolantDistance=0;
 const coolantLength=coolantCircuit.getTotalLength();
-const coolantPacketElements=Array.from({length:12},()=>{
+const coolantPacketElements=Array.from({length:12},(_,index)=>{
   const group=document.createElementNS('http://www.w3.org/2000/svg','g');
   const body=document.createElementNS('http://www.w3.org/2000/svg','rect');
   const shine=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  const gradient=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+  const start=document.createElementNS('http://www.w3.org/2000/svg','stop'),end=document.createElementNS('http://www.w3.org/2000/svg','stop');
+  gradient.id=`coolant-packet-gradient-${index}`;gradient.setAttribute('gradientUnits','userSpaceOnUse');gradient.setAttribute('x1','-14');gradient.setAttribute('y1','0');gradient.setAttribute('x2','14');gradient.setAttribute('y2','0');
+  start.setAttribute('offset','0');end.setAttribute('offset','1');gradient.append(start,end);coolantFluidDefs.append(gradient);
+  body.setAttribute('fill',`url(#${gradient.id})`);
   body.setAttribute('x','-14');body.setAttribute('y','-9');body.setAttribute('width','28');body.setAttribute('height','18');body.setAttribute('rx','9');body.setAttribute('stroke','#fff');body.setAttribute('stroke-width','1.4');
   shine.setAttribute('x','-9');shine.setAttribute('y','-4');shine.setAttribute('width','16');shine.setAttribute('height','2');shine.setAttribute('rx','1');shine.setAttribute('fill','#ffffff');shine.setAttribute('opacity','.75');
-  group.append(body,shine);group.classList.add('coolant-packet');coolantPackets.append(group);return {group,body};
+  group.append(body,shine);group.classList.add('coolant-packet');coolantPackets.append(group);return {group,start,end};
 });
 const clamp01=n=>Math.max(0,Math.min(1,n));
 function coolantWarmth(point){
-  if(point.y<72)return clamp01((point.x-145)/95);
-  if(point.y>185)return clamp01((point.x-330)/95);
-  return clamp01((200-point.y)/125);
+  if(point.y<100)return clamp01((point.x-145)/95);
+  if(point.y>150)return clamp01((point.x-330)/95);
+  return point.x<300?0:1;
+}
+function coolantColor(warmth){
+  return `rgb(${[[18,255],[132,165],[192,20]].map(([cool,warm])=>Math.round(cool+(warm-cool)*warmth)).join(',')})`;
 }
 function renderCoolantFlow(){
-  coolantPacketElements.forEach(({group,body},index)=>{
+  coolantPacketElements.forEach(({group,start,end},index)=>{
     const distance=(coolantDistance+index*coolantLength/coolantPacketElements.length)%coolantLength;
     const point=coolantCircuit.getPointAtLength(distance),next=coolantCircuit.getPointAtLength((distance+1)%coolantLength);
+    const behind=coolantCircuit.getPointAtLength((distance-14+coolantLength)%coolantLength),ahead=coolantCircuit.getPointAtLength((distance+14)%coolantLength);
     const angle=Math.atan2(next.y-point.y,next.x-point.x)*180/Math.PI, warmth=coolantWarmth(point);
-    const rgb=[[18,255],[132,165],[192,20]].map(([cool,warm])=>Math.round(cool+(warm-cool)*warmth));
     group.setAttribute('transform',`translate(${point.x.toFixed(2)} ${point.y.toFixed(2)}) rotate(${angle.toFixed(1)})`);
     group.dataset.warmth=warmth.toFixed(3);group.dataset.x=point.x.toFixed(2);group.dataset.y=point.y.toFixed(2);
-    body.setAttribute('fill',`rgb(${rgb.join(',')})`);
+    group.dataset.color=coolantColor(warmth);group.dataset.distance=distance.toFixed(3);
+    start.setAttribute('stop-color',coolantColor(coolantWarmth(behind)));
+    end.setAttribute('stop-color',coolantColor(coolantWarmth(ahead)));
   });
 }
 function coolantTick(now){

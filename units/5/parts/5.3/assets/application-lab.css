@@ -263,3 +263,8 @@
 #application-lab .coolant-labels span{max-width:48%;line-height:1.35}
 #application-lab .coolant-loop-diagram{flex:none}
 #application-lab .coolant-flow-controls{margin:0}
+/* 標籤對準兩個設備，圖例以箭頭符號區分流動與傳熱。 */
+#application-lab .coolant-labels{justify-content:space-around}
+#application-lab .coolant-legend{gap:4px 18px}
+#application-lab .coolant-legend b{font-size:1.15em;line-height:1;color:#087e43}
+#application-lab .coolant-legend span:last-child b{color:#d97809}

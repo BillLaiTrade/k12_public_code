@@ -84,15 +84,49 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
       assert.equal(await page.locator('.coolant-packet').count(),12);assert.equal(await page.locator('#coolant-flow-toggle').count(),0);
       const selected=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y<70&&+e.dataset.x>155&&+e.dataset.x<185);return i<0?false:i+1},null,{timeout:7000});
       const packet=page.locator('.coolant-packet').nth((await selected.jsonValue())-1);
-      const before=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));await page.waitForTimeout(700);
-      const after=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
+      const before=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.dataset.color}));await page.waitForTimeout(700);
+      const after=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.dataset.color}));
       assert.ok(after.x>before.x+10&&after.x<before.x+70,'液流應自動緩慢流向散熱器');
       assert.ok(after.warmth>before.warmth,'同一段液流經引擎後應逐漸變暖');assert.notEqual(after.fill,before.fill);
+      const verifySameColor=async(locator,track)=>{
+        const values=await locator.evaluate((e,trackId)=>{
+          const svg=e.ownerSVGElement,path=svg.querySelector('#coolant-circuit-path'),length=path.getTotalLength(),distance=+e.dataset.distance;
+          const track=svg.querySelector(trackId),x1=+track.getAttribute('x1'),x2=+track.getAttribute('x2');
+          const stops=[...track.querySelectorAll('stop')].map(stop=>stop.getAttribute('stop-color'));
+          const packetGradient=svg.querySelector(e.firstElementChild.getAttribute('fill').slice(4,-1));
+          const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));const cool=rgb(stops[0]),warm=rgb(stops[1]);
+          const expected=[-14,14].map(offset=>{const x=path.getPointAtLength((distance+offset+length)%length).x,q=Math.max(0,Math.min(1,(x-x1)/(x2-x1)));return cool.map((c,i)=>Math.round(c+(warm[i]-c)*q))});
+          const actual=[...packetGradient.querySelectorAll('stop')].map(stop=>stop.getAttribute('stop-color').match(/\d+/g).map(Number));return {expected,actual};
+        },track);
+        assert.ok(values.expected.every((rgb,i)=>rgb.every((v,j)=>Math.abs(v-values.actual[i][j])<=2)),`液流與同位置管路溫色不一致：${JSON.stringify(values)}`);
+      };
+      await verifySameColor(packet,'#coolant-warming');
       const coolingHandle=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y>185&&+e.dataset.x>395&&+e.dataset.x<420);return i<0?false:i+1},null,{timeout:7000});
       const cooling=page.locator('.coolant-packet').nth((await coolingHandle.jsonValue())-1);
       const coolBefore=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth}));await page.waitForTimeout(700);
       const coolAfter=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth}));
       assert.ok(coolAfter.x<coolBefore.x-10);assert.ok(coolAfter.warmth<coolBefore.warmth,'同一段液流經散熱器後應逐漸變冷');
+      await verifySameColor(cooling,'#coolant-cooling');
+      for(let sample=0;sample<3;sample++){
+        const mismatches=await page.locator('#coolant-flow-packets').evaluate(group=>{
+          const svg=group.ownerSVGElement,path=svg.querySelector('#coolant-circuit-path'),length=path.getTotalLength(),upperLength=svg.querySelector('#coolant-liquid-warming').getTotalLength();
+          const clamp=n=>Math.max(0,Math.min(1,n));const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+          return [...group.children].flatMap((packet,index)=>{
+            const distance=+packet.dataset.distance,gradient=svg.querySelector(packet.firstElementChild.getAttribute('fill').slice(4,-1));
+            const actual=[...gradient.querySelectorAll('stop')].map(stop=>stop.getAttribute('stop-color').match(/\d+/g).map(Number));
+            return [-14,14].flatMap((offset,side)=>{
+              const d=(distance+offset+length)%length,point=path.getPointAtLength(d);
+              const background=svg.querySelector(d<=upperLength?'#coolant-warming':'#coolant-cooling');
+              const x1=+background.getAttribute('x1'),x2=+background.getAttribute('x2'),stops=[...background.querySelectorAll('stop')];
+              const cool=rgb(stops[0].getAttribute('stop-color')),warm=rgb(stops[1].getAttribute('stop-color')),q=clamp((point.x-x1)/(x2-x1));
+              const expected=cool.map((c,i)=>Math.round(c+(warm[i]-c)*q));
+              return expected.some((value,i)=>Math.abs(value-actual[side][i])>2)?[{index,side,expected,actual:actual[side]}]:[];
+            });
+          });
+        });
+        assert.deepEqual(mismatches,[],`液流與管路的冷暖顏色應在整條路徑一致：${JSON.stringify(mismatches)}`);
+        await page.waitForTimeout(250);
+      }
       assert.match(await page.locator('.coolant-temperature-key').innerText(),/藍色：較冷[\s\S]*黃色：較暖[\s\S]*示意/);
       for(const width of [1440,1366,1280,390,320]){
         await page.setViewportSize({width,height:900});
