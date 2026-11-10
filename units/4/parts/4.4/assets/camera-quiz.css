@@ -113,7 +113,7 @@
 /* One shared optical rail, matching the projector task above. */
 .camera-dock { display:block; }
 .camera-rail-control { width:100%; }
-.camera-rail-control legend { float:left; width:100%; margin:0 0 8px; color:#31543d; font-size:.87rem; font-weight:750; }
+.camera-rail-control legend:not(.sr-only) { float:left; width:100%; margin:0 0 8px; color:#31543d; font-size:.87rem; font-weight:750; }
 .camera-rail-control .projector-rail-toolbar { clear:both; }
 .camera-rail-control .projector-rail-steps button { min-height:32px; width:34px; padding:3px; border:1px solid #b6c6a7; border-radius:7px; background:#fffdf0; color:#31543e; font-size:1rem; }
 .camera-rail-control .projector-rail-steps button:disabled { opacity:.4; }

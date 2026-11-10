@@ -2,20 +2,12 @@ const root=document.getElementById('application-lab');
 const get=id=>document.getElementById(id);
 const views={chestnut:get('application-chestnut'),coast:get('application-coast'),coolant:get('application-coolant')};
 const images={chestnut:get('chestnut-photo'),coolant:get('coolant-photo')};
-const coastVideo=get('coast-video');
-const sources={chestnut:'application-chestnut.webp',coast:'application-coast-real-waves.mp4',coolant:'application-coolant.webp'};
+const coastPhoto=get('coast-photo');
+const coastSources={day:'application-coast-shore-day.webp',night:'application-coast-shore-night.webp'};
+const sources={chestnut:'application-chestnut.webp',coolant:'application-coolant.webp'};
 const questions={chestnut:'沙子如何幫助糖炒栗子加熱？',coast:'為什麼白天沙灘可能很燙，海水卻沒有那麼容易變熱？',coolant:'為什麼汽車冷卻液裡常含有水？'};
 const assets={chestnut:{phase:'loading',attempt:0},coast:{phase:'loading',attempt:0},coolant:{phase:'loading',attempt:0}};
 let current='chestnut',mode='day';
-let coastVisible=!('IntersectionObserver' in window);
-const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
-function syncCoastPlayback(){
-  const shouldPlay=current==='coast'&&assets.coast.phase==='ready'&&coastVisible&&!document.hidden&&!reduceMotion.matches;
-  if(shouldPlay)coastVideo.play().catch(()=>{});else coastVideo.pause();
-}
-if('IntersectionObserver' in window)new IntersectionObserver(entries=>{coastVisible=entries[0].isIntersecting;syncCoastPlayback();},{threshold:0.01}).observe(coastVideo);
-document.addEventListener('visibilitychange',syncCoastPlayback);
-reduceMotion.addEventListener('change',syncCoastPlayback);
 const coastQuestion=()=>mode==='day'?questions.coast:'為什麼夜晚沙灘可能明顯降溫，海水的溫度變化卻較小？';
 
 const contactImage=get('chestnut-contact-image'),contactLoading=get('chestnut-contact-loading'),contactRetry=get('chestnut-contact-retry');
@@ -48,15 +40,15 @@ function renderAsset(key){
 async function loadAsset(key,retry=false){
   const asset=assets[key],attempt=++asset.attempt;
   asset.phase='loading';renderAsset(key);
-  if(retry){if(key==='coast'){coastVideo.src=new URL(`${sources[key]}?retry=${attempt}`,import.meta.url).href;coastVideo.load();}else images[key].src=new URL(`${sources[key]}?retry=${attempt}`,import.meta.url).href;}
+  if(retry&&key!=='coast')images[key].src=new URL(`${sources[key]}?retry=${attempt}`,import.meta.url).href;
   try{
     if(key==='coast'){
-      if(!coastVideo.src)coastVideo.src=new URL(sources.coast,import.meta.url).href;
-      if(coastVideo.readyState<2)await new Promise((resolve,reject)=>{coastVideo.addEventListener('loadeddata',resolve,{once:true});coastVideo.addEventListener('error',reject,{once:true});coastVideo.load();});
+      await Promise.all(Object.values(coastSources).map(src=>{const image=new Image();image.src=new URL(`${src}${retry?`?retry=${attempt}`:''}`,import.meta.url).href;return image.decode();}));
+      if(attempt!==asset.attempt)return;
+      coastPhoto.src=new URL(coastSources[mode],import.meta.url).href;
     }else await images[key].decode();
     if(attempt!==asset.attempt)return;
-    asset.phase='ready';renderAsset(key);if(key==='coast')syncCoastPlayback();
-
+    asset.phase='ready';renderAsset(key);
   }catch{
     if(attempt!==asset.attempt)return;
     asset.phase='error';renderAsset(key);
@@ -68,7 +60,6 @@ function selectApplication(key){
   if(!(key in views))return;
   current=key;root.dataset.scene=key;get('application-question').textContent=key==='coast'?coastQuestion():questions[key];
   Object.entries(views).forEach(([name,view])=>view.hidden=name!==key);
-  syncCoastPlayback();
   root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.application===key)));
   if(assets[key].phase!=='ready')loadAsset(key);
 }
@@ -80,7 +71,7 @@ function selectCoast(next){
   if(current==='coast')get('application-question').textContent=coastQuestion();
   views.coast.dataset.mode=mode;
   root.querySelectorAll('[data-coast-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.coastMode===mode)));
-  coastVideo.style.filter=day?'':'brightness(.62) saturate(.82) hue-rotate(8deg)';
+  if(assets.coast.phase==='ready')coastPhoto.src=new URL(coastSources[mode],import.meta.url).href;
   get('coast-condition').textContent=`模型：相同質量、${day?'吸收':'放出'}相同熱量`;
   get('coast-model').setAttribute('viewBox',day?'0 0 300 115':'0 85 300 115');
   get('coast-observation').textContent=day?'白天，沙灘可能變得燙腳，海水的溫度變化通常較小。':'夜晚，沙灘可能明顯降溫，海水的溫度變化通常較小。';
@@ -92,7 +83,7 @@ function selectCoast(next){
     get('coast-'+name+'-level').setAttribute('y',day?100-height:100);
     get('coast-'+name+'-level').setAttribute('height',height);
   }
-  const paths=day?['M280 250V460','M860 250V460']:['M280 460V250','M860 460V250'];
+  const paths=day?['M270 175V430','M760 175V430']:['M270 430V175','M760 430V175'];
   root.querySelectorAll('[data-coast-arrow]').forEach((path,i)=>path.setAttribute('d',paths[i%2]));
   get('coast-conclusion').textContent=day?'在這個模型中，水的比熱較大，吸收相同熱量時，溫升較小。':'在這個模型中，水的比熱較大，放出相同熱量時，降溫較小。';
   get('coast-model').setAttribute('aria-label',`兩者初溫相同，${day?'吸收':'放出'}相同熱量後，水${day?'溫升':'降溫'}較小、砂土${day?'溫升':'降溫'}較大。`);

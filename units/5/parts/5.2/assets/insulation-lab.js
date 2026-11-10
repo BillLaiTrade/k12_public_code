@@ -25,6 +25,19 @@
     target.style.setProperty('--micro-particle-aspect',((contentRect.width/view.width)/(contentRect.height/view.height)).toFixed(3));
   }));
   root.querySelectorAll('.insulation-micro-panel svg').forEach(svg=>microAspectObserver.observe(svg));
+  // The close-up runs independently of the cooling graph while it is visible.
+  const closeupParticles=[...mechanism.querySelectorAll('.micro-lens-particle')].map((node,i)=>({node,x:Number(node.getAttribute('cx')),y:Number(node.getAttribute('cy')),i}));
+  closeupParticles.forEach(({node})=>node.querySelectorAll('animate').forEach(animation=>animation.remove()));
+  let closeupFrame=0,closeupTime=0,closeupPrevious=null;
+  function animateCloseup(now){
+    closeupFrame=0;
+    if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
+    const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000);closeupPrevious=now;closeupTime+=dt*(reduced.matches?.45:1);
+    closeupParticles.forEach(({node,x,y,i})=>{node.setAttribute('cx',(x+14*Math.sin(closeupTime*.9+i*1.7)).toFixed(2));node.setAttribute('cy',(y+16*Math.sin(closeupTime*.7+i*2.1)).toFixed(2));});
+    mechanism.querySelectorAll('.micro-lens-radiation').forEach(wave=>wave.style.strokeDashoffset=String(-closeupTime*20));
+    closeupFrame=requestAnimationFrame(animateCloseup);
+  }
+  function updateCloseup(){if(!mechanism.hidden&&!document.hidden&&!closeupFrame){closeupPrevious=null;closeupFrame=requestAnimationFrame(animateCloseup);}else if(mechanism.hidden&&closeupFrame){cancelAnimationFrame(closeupFrame);closeupFrame=0;closeupPrevious=null;}}
   const WINDOW=14,moleculeGroups=[...root.querySelectorAll('.micro-particles')].map((group,index)=>({group,index}));
   const energyPulses=['a','b'].flatMap(role=>{const motion=$(`insulation-motion-${role}`),solid=[...motion.querySelectorAll('.insulation-solid-motion .insulation-heat-line')],radiation=$(`insulation-radiation-${role}`).querySelector('.insulation-heat-line');return [...motion.querySelectorAll('.insulation-energy-pulses [data-route]')].map(group=>{const route=group.dataset.route==='radiation'?radiation:solid[group.dataset.route==='neck'?0:1];return{group,path:route,length:route.getTotalLength(),phase:Number(group.dataset.phase||0)};});});
   const reflectionPulses=['in','back'].map(name=>({name,path:$('insulation-reflection-demo').querySelector('.insulation-ray-'+name)}));
@@ -110,7 +123,7 @@
     $('insulation-lining-photo').toggleAttribute('hidden',!cfg.b.lining);
     $('insulation-gas-motion').toggleAttribute('hidden',!cfg.a.gas);
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
-    mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;const svg=panel.querySelector('svg');if(selected&&playing&&!reduced.matches)svg.unpauseAnimations();else svg.pauseAnimations();});
+    mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;const svg=panel.querySelector('svg');if(selected&&!reduced.matches)svg.unpauseAnimations();else svg.pauseAnimations();});updateCloseup();
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus);
     setText('insulation-lining-focus-title','反射層局部比較');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層局部放大':inspectedLayer==='b'?'B 真空夾層局部放大':'夾層局部比較');
     setText('insulation-micro-explanation',inspectedLayer==='a'?'空氣分子碰撞傳能；輻射也能穿過夾層。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
@@ -131,6 +144,6 @@
   play.addEventListener('click',()=>{if(playing)stop();else start();});sources.forEach((n,index)=>n.addEventListener('click',()=>{const selected=['a','b'][index];inspectedLayer=inspectedLayer===selected?null:selected;render();}));$('insulation-reset').addEventListener('click',reset);
   root.querySelectorAll('[data-insulation-comparison]').forEach(n=>n.addEventListener('click',()=>{if(n.dataset.insulationComparison===comparison)return;stop();comparison=n.dataset.insulationComparison;inspectedLayer=null;time=0;root.querySelector('details').open=false;render();loadAssets();}));
   document.addEventListener('pointerdown',event=>{if(inspectedLayer===null)return;const target=event.target;if(!(target instanceof Element)||target.closest('.insulation-bottle-hit, #insulation-mechanism, #insulation-lining-focus, .insulation-control-row, .insulation-tabs'))return;inspectedLayer=null;render();});
-  $('insulation-retry').addEventListener('click',()=>loadAssets(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});addEventListener('pagehide',stop);
+  $('insulation-retry').addEventListener('click',()=>loadAssets(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();updateCloseup();});addEventListener('pagehide',stop);
   render();loadAssets();
 })();

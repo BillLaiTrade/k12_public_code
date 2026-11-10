@@ -635,3 +635,17 @@
  #insulation-lab[data-comparison=gap][data-focus=a] .insulation-micro-explanation,
  #insulation-lab[data-comparison=gap][data-focus=b] .insulation-micro-explanation{padding-left:6px;font-size:.7rem}
 }
+
+/* 局部圖保留在瓶名下方，選取後即可觀察微觀運動。 */
+#insulation-lab[data-comparison=gap] .insulation-mechanism-slot{min-height:250px}
+#insulation-lab[data-comparison=gap] .insulation-micro-panel:not([hidden]) .micro-lens-radiation{animation-play-state:running}
+@media(prefers-reduced-motion:reduce){#insulation-lab[data-comparison=gap] .insulation-micro-panel .micro-lens-radiation{animation:none}}
+
+/* 靠近瓶身，讓圖與說明在窄欄各有完整寬度。 */
+#insulation-lab[data-comparison=gap] .insulation-mechanism-slot{min-height:205px}
+#insulation-lab[data-comparison=gap] .micro-lens-radiation{animation:none;stroke-dasharray:12 8}
+@container(max-width:500px){
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panels{grid-template-columns:1fr;gap:4px}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-explanation{grid-column:1;padding:4px 2px 0;border-left:0;border-top:1px solid #cbd4bf;font-size:.78rem}
+ #insulation-lab[data-comparison=gap] .insulation-mechanism-slot{min-height:235px}
+}

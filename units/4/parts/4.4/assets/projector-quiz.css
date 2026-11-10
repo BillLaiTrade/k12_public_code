@@ -29,7 +29,7 @@
 .projector-position-controls { grid-column:1 / -1; padding-top:10px; border-top:1px solid #c0ceb1; }
 .projector-position-controls[data-cue] { outline:3px solid #d29a26; outline-offset:2px; border-radius:9px; animation:projector-control-cue 1.25s ease-in-out 2; }
 @keyframes projector-control-cue { 50% { outline-color:#f0c95f; outline-offset:4px; } }
-.projector-control legend { float:left; width:100%; margin:0 0 8px; padding:0; color:#31543d; font-size:.87rem; line-height:1.4; font-weight:750; }
+.projector-control legend:not(.sr-only) { float:left; width:100%; margin:0 0 8px; padding:0; color:#31543d; font-size:.87rem; line-height:1.4; font-weight:750; }
 .projector-control>div,.projector-control>label { clear:both; }
 .projector-lenses { display:flex; gap:6px; }
 .projector-control button { min-height:40px; margin:0; padding:7px 10px; border-radius:9px; border:1px solid #b6c6a7; background:#fffdf0; color:var(--pj-ink); font-size:.8rem; white-space:nowrap; }
