@@ -16,6 +16,7 @@
 
 ## 檢查與交付
 
+- 新增或修改公開頁面的分享資訊時，`canonical`、`og:url`、`og:image`、`twitter:image` 等頁面及圖片網址必須指向 `https://billlaitrade.github.io/k12_public_code/` 下的正式網址；不得指向 Private 紀錄庫的舊網站。發布後檢查頁面與圖片均可公開取得，並核對分享欄位。
 - 功能修改需執行涵蓋該行為的現有測試；區分通過、失敗、略過和未執行的檢查。
 - 完成檢查後，提交並推送本庫 `main`，同步前先確認遠端狀態並保留他人提交，禁止 force push。
 - 推送後確認 GitHub Pages 建置成功，並以公開網址檢查首頁及受影響頁面。

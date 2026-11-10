@@ -301,7 +301,7 @@
 
 ## 第二小測：像素電視實作（2026-11-04）
 
-新增獨立[像素電視](https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.5/#pixel-tv-quiz)：調出指定色、補回4×4中的一格、由空白逐格重建8×8目標。RGB各0～4級按鈕，所有目標使用同套125種設定。任務2／3可回任務1試調並帶回，仍須手動填入；已填畫面及進度在本次瀏覽保留。列／格選單、方向鍵與Enter支援手機及鍵盤；黑色與未填格分開，檢查不自動補圖。
+新增獨立[像素電視](https://billlaitrade.github.io/k12_public_code/units/4/parts/4.5/#pixel-tv-quiz)：調出指定色、補回4×4中的一格、由空白逐格重建8×8目標。RGB各0～4級按鈕，所有目標使用同套125種設定。任務2／3可回任務1試調並帶回，仍須手動填入；已填畫面及進度在本次瀏覽保留。列／格選單、方向鍵與Enter支援手機及鍵盤；黑色與未填格分開，檢查不自動補圖。
 
 新模組pixel-tv-model／pixel-tv／pixel-tv.css以DOM格子及CSS電視框呈現，不需要WebGL或新依賴。理想RGB螢幕模型與原光譜／色片／紙張模型分開，五區與第一個六題小測保持。新版為五區加兩個小測；下方唯一小測描述保留歷史。[決策](../../../../docs/decisions/unit-4.5-pixel-tv.md)。
 
@@ -555,7 +555,7 @@ CHROMIUM_PATH=/usr/bin/chromium node --test tests/unit-4.5.test.cjs
 
 檢查：模型11項（新模型6＋既有5）、整頁27項（含外層）。除原回歸外，增加預覽／放大同一接收區、Escape焦點回復、手機原生開關、七寬度預覽不遮擋器材與無浮動標籤；正式程式無測試API。
 
-公開入口：https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.5/
+公開入口：https://billlaitrade.github.io/k12_public_code/units/4/parts/4.5/
 
 2026-11-02依使用者指示，參考已完成單元後直接製作完整初版，再逐區檢視；屬第四階段製作，未代表各區內容最終核可或外部驗收。
 

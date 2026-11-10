@@ -63,6 +63,8 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
 
   await t.test('冷卻液循環方向、熱傳與同條件比熱比較',async()=>{
     await choose('coolant');
+    assert.match(await p.locator('#coolant-photo').getAttribute('src'),/application-coolant-labeled\.webp/);
+    assert.match(await p.locator('#coolant-photo').getAttribute('alt'),/管路位置為示意/);
     assert.equal(await p.locator('[data-coolant-stage]').count(),0);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/由引擎流向散熱器，再流回引擎/);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/引擎的熱傳給冷卻液/);
@@ -74,11 +76,31 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await capture('coolant');
   });
 
+  await t.test('冷卻液流動可暫停與繼續，減少動態時停用動畫',async()=>{
+    const page=await browser.newPage({viewport:{width:1366,height:900},ignoreHTTPSErrors:Boolean(remote)});
+    try{
+      await page.goto(url,{waitUntil:'networkidle'});await page.locator('[data-application=coolant]').click();await ready(page,'coolant');
+      const flow=page.locator('.coolant-flow-streak-color');await flow.scrollIntoViewIfNeeded();
+      const before=await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset);
+      await page.waitForTimeout(350);
+      const after=await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset);
+      assert.notEqual(after,before,'流動紋理應隨時間移動');
+      await page.locator('#coolant-flow-toggle').click();assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'true');
+      assert.equal(await flow.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
+      await page.waitForTimeout(100);const stopped=await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset);await page.waitForTimeout(300);
+      assert.equal(await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset),stopped);
+      await page.locator('#coolant-flow-toggle').click();assert.equal(await flow.evaluate(e=>getComputedStyle(e).animationPlayState),'running');
+      assert.match(await page.locator('.coolant-temperature-key').innerText(),/黃色：較暖[\s\S]*藍色：較冷[\s\S]*顏色為示意/);
+    }finally{await page.close()}
+    const reduced=await browser.newPage({reducedMotion:'reduce',ignoreHTTPSErrors:Boolean(remote)});
+    try{await reduced.goto(url,{waitUntil:'networkidle'});await reduced.locator('[data-application=coolant]').click();await ready(reduced,'coolant');assert.equal(await reduced.locator('.coolant-flow-streak').first().evaluate(e=>getComputedStyle(e).animationName),'none');assert.equal(await reduced.locator('#coolant-flow-toggle').isVisible(),false);}finally{await reduced.close()}
+  });
+
   await t.test('圖片失敗隔離在當情境，重試恢復不自動開始；日夜晚到回應不覆蓋新模式',async()=>{
-    const page=await browser.newPage({ignoreHTTPSErrors:Boolean(remote)});await page.route('**/application-chestnut.webp*',r=>r.abort());await page.route('**/application-coolant.webp*',r=>r.abort());
+    const page=await browser.newPage({ignoreHTTPSErrors:Boolean(remote)});await page.route('**/application-chestnut.webp*',r=>r.abort());await page.route('**/application-coolant-labeled.webp*',r=>r.abort());
     await page.goto(url,{waitUntil:'networkidle'});
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
-    await page.locator('button[data-application="coolant"]').click();await page.waitForFunction(()=>document.getElementById('application-coolant').dataset.phase==='error');await page.unroute('**/application-coolant.webp*');await page.locator('#application-coolant [data-life-retry]').click();await ready(page,'coolant');assert.equal(await page.locator('#coolant-photo').evaluate(n=>n.naturalWidth>0),true);
+    await page.locator('button[data-application="coolant"]').click();await page.waitForFunction(()=>document.getElementById('application-coolant').dataset.phase==='error');await page.unroute('**/application-coolant-labeled.webp*');await page.locator('#application-coolant [data-life-retry]').click();await ready(page,'coolant');assert.equal(await page.locator('#coolant-photo').evaluate(n=>n.naturalWidth>0),true);
     await page.locator('button[data-application="chestnut"]').click();
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
     await page.unroute('**/application-chestnut.webp*');await page.locator('#application-chestnut [data-life-retry]').click();await ready(page,'chestnut');

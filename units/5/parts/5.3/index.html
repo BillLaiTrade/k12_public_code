@@ -6,13 +6,13 @@
   <meta name="description" content="從糖炒栗子攤上的砂子開始，跟著小葵和阿公觀察熱量、溫度變化與比熱。">
   <meta name="theme-color" content="#f4f7f1">
   <title>沙子如何幫助糖炒栗子加熱？｜5.3 熱量與比熱</title>
-  <link rel="canonical" href="https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.3/">
+  <link rel="canonical" href="https://billlaitrade.github.io/k12_public_code/units/5/parts/5.3/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_TW">
   <meta property="og:title" content="沙子如何幫助糖炒栗子加熱？｜5.3 熱量與比熱">
   <meta property="og:description" content="從糖炒栗子攤上的砂子開始，跟著小葵和阿公觀察熱量、溫度變化與比熱。">
-  <meta property="og:url" content="https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.3/">
-  <meta property="og:image" content="https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.3/assets/chestnut-roasting-story-character-ref.webp">
+  <meta property="og:url" content="https://billlaitrade.github.io/k12_public_code/units/5/parts/5.3/">
+  <meta property="og:image" content="https://billlaitrade.github.io/k12_public_code/units/5/parts/5.3/assets/chestnut-roasting-story-character-ref.webp">
   <meta property="og:image:type" content="image/webp">
   <meta property="og:image:width" content="1672">
   <meta property="og:image:height" content="941">
@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="沙子如何幫助糖炒栗子加熱？｜5.3 熱量與比熱">
   <meta name="twitter:description" content="從糖炒栗子攤上的砂子開始，跟著小葵和阿公觀察熱量、溫度變化與比熱。">
-  <meta name="twitter:image" content="https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.3/assets/chestnut-roasting-story-character-ref.webp">
+  <meta name="twitter:image" content="https://billlaitrade.github.io/k12_public_code/units/5/parts/5.3/assets/chestnut-roasting-story-character-ref.webp">
   <meta name="twitter:image:alt" content="小葵和戴圓眼鏡的阿公，在糖炒栗子攤前看著栗子與砂子在鍋中翻炒。">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="assets/lesson-base.css">
@@ -41,8 +41,8 @@
   <script type="module" src="assets/mass-curve-lab.js?v=cases-1"></script>
   <link rel="stylesheet" href="assets/material-dual-lab.css?v=dialogue-bridge-1">
   <script type="module" src="assets/material-dual-lab.js?v=select-row-1"></script>
-  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-alignment-3">
-  <script type="module" src="assets/application-lab.js?v=coolant-alignment-3"></script>
+  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-labeled-1">
+  <script type="module" src="assets/application-lab.js?v=coolant-labeled-1"></script>
   <link rel="stylesheet" href="assets/unknown-quiz.css?v=real-materials-visual-1">
   <script type="module" src="assets/unknown-quiz.js?v=real-materials-visual-1"></script>
 <link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
@@ -293,21 +293,29 @@
                 <section class="life-view" id="application-coolant" aria-labelledby="coolant-heading" data-phase="loading" hidden>
                   <h3 id="coolant-heading" class="life-condition">冷卻液如何帶走引擎的熱？</h3>
                   <div class="life-workbench coolant-workbench">
-                    <div><figure class="life-photo"><img id="coolant-photo" src="assets/application-coolant.webp" width="1672" height="941" alt="AI生成的汽車引擎室情境：前方是散熱器，後方是引擎。"><p class="life-loading" data-life-loading role="status">正在準備汽車冷卻場景…</p></figure></div>
+                    <div><figure class="life-photo"><img id="coolant-photo" src="assets/application-coolant-labeled.webp" width="1254" height="1254" alt="AI 生成的引擎室示意：標示後方引擎、前方散熱器和管路內的冷卻液，箭頭示意熱從散熱器傳給空氣。管路位置為示意。"><p class="life-loading" data-life-loading role="status">正在準備汽車冷卻場景…</p></figure><p class="coolant-photo-caption">引擎在後方、散熱器在前方；冷卻液位於管路內（管路位置為示意）。</p></div>
                     <div class="life-coolant-model">
                       <div class="coolant-loop-card">
                         <svg class="coolant-loop-diagram" viewBox="0 0 600 232" role="img" aria-labelledby="coolant-loop-title coolant-loop-desc">
                           <title id="coolant-loop-title">冷卻液循環與熱量傳遞</title>
-                          <desc id="coolant-loop-desc">冷卻液在封閉管路中由引擎流向散熱器，再流回引擎。引擎的熱傳給冷卻液，散熱器再將熱傳給空氣。綠色箭頭表示冷卻液流動，橘色箭頭表示熱量傳遞。</desc>
+                          <desc id="coolant-loop-desc">冷卻液在封閉管路中由引擎流向散熱器，再流回引擎。引擎的熱傳給冷卻液，散熱器再將熱傳給空氣。暖黃色表示吸熱後較暖，藍色表示散熱後較冷，顏色僅為相對溫度示意。綠色箭頭表示冷卻液流動，橘色箭頭表示熱量傳遞。</desc>
                           <defs>
                             <linearGradient id="coolant-tube" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#52b8be"/><stop offset=".25" stop-color="#d5ffff"/><stop offset=".55" stop-color="#68d3d4"/><stop offset="1" stop-color="#269ea9"/></linearGradient>
+                            <linearGradient id="coolant-temperature" gradientUnits="userSpaceOnUse" x1="0" y1="47" x2="0" y2="211"><stop offset="0" stop-color="#ffca61"/><stop offset=".20" stop-color="#f6c35c"/><stop offset=".42" stop-color="#d6cc83"/><stop offset=".65" stop-color="#82cad4"/><stop offset="1" stop-color="#4baacb"/></linearGradient>
+                            <linearGradient id="coolant-warming" gradientUnits="userSpaceOnUse" x1="153" y1="0" x2="300" y2="0"><stop stop-color="#8fcbd2"/><stop offset=".3" stop-color="#e0cf90"/><stop offset=".8" stop-color="#ffca61"/></linearGradient>
+                            <linearGradient id="coolant-cooling" gradientUnits="userSpaceOnUse" x1="427" y1="0" x2="280" y2="0"><stop stop-color="#efc573"/><stop offset=".3" stop-color="#9fced1"/><stop offset=".8" stop-color="#4baacb"/></linearGradient>
+                            <linearGradient id="coolant-temperature-streak" gradientUnits="userSpaceOnUse" x1="0" y1="47" x2="0" y2="211"><stop offset="0" stop-color="#ed922b"/><stop offset=".40" stop-color="#e1b85f"/><stop offset="1" stop-color="#157ea9"/></linearGradient>
                             <radialGradient id="engine-warmth"><stop stop-color="#ff8d20" stop-opacity=".85"/><stop offset="1" stop-color="#ffbe5a" stop-opacity="0"/></radialGradient>
                             <linearGradient id="coolant-hot" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd886"/><stop offset="1" stop-color="#f08b13"/></linearGradient>
                             <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#087e43" stroke="#fff" stroke-width=".7"/></marker>
                             <marker id="heat-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e48316"/></marker>
                           </defs>
                           <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="#276c6a" stroke-width="29" stroke-linejoin="round"/>
-                          <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="url(#coolant-tube)" stroke-width="23" stroke-linejoin="round"/>
+                          <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="url(#coolant-temperature)" stroke-width="23" stroke-linejoin="round"/>
+                          <path d="M153 47H320" fill="none" stroke="url(#coolant-warming)" stroke-width="23"/>
+                          <path d="M427 211H260" fill="none" stroke="url(#coolant-cooling)" stroke-width="23"/>
+                          <path class="coolant-flow-streak coolant-flow-streak-color" d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="url(#coolant-temperature-streak)" stroke-width="14" stroke-linecap="round" stroke-dasharray="13 23"/>
+                          <path class="coolant-flow-streak coolant-flow-streak-shine" d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="3" stroke-linecap="round" stroke-dasharray="9 27"/>
                           <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" transform="translate(0 -3)" fill="none" stroke="#eaffff" stroke-opacity=".65" stroke-width="4" stroke-linejoin="round"/>
                           <g fill="none" stroke="#087e43" stroke-width="6" marker-end="url(#flow-arrow)"><path d="M190 47H230"/><path d="M285 47H325"/><path d="M380 47H420"/><path d="M390 211H350"/><path d="M295 211H255"/><path d="M200 211H160"/></g>
                           <rect x="40" y="82" width="170" height="94" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
@@ -322,6 +330,7 @@
                         <div class="coolant-labels"><span>引擎的熱傳<br>給冷卻液</span><span>熱傳給空氣</span></div>
                         <p class="coolant-mobile-flow">冷卻液：引擎 → 散熱器 → 引擎</p>
                         <p class="coolant-legend"><span>綠色箭頭：冷卻液流動</span><span>橘色箭頭：熱量傳遞</span></p>
+                        <div class="coolant-flow-controls"><p class="coolant-temperature-key"><span class="coolant-swatch-warm">黃色：較暖</span><span class="coolant-swatch-cool">藍色：較冷</span><span>（顏色為示意）</span></p><button class="secondary coolant-flow-toggle" id="coolant-flow-toggle" type="button" aria-pressed="false">暫停動畫</button></div>
                       </div>
                       <section class="coolant-compare" aria-labelledby="coolant-compare-title">
                         <h3 id="coolant-compare-title">同質量、同初溫、吸收相同熱量</h3>

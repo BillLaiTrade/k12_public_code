@@ -222,3 +222,20 @@
 .coolant-beaker span{position:relative;z-index:1}
 @media(min-width:1101px){#application-lab .coolant-workbench .life-photo{height:90%;aspect-ratio:auto}}
 #application-lab .coolant-labels span{text-align:center}
+
+/* 管內的色帶表示相對冷暖，移動紋理沿封閉路徑循環。 */
+@keyframes coolant-circulation{to{stroke-dashoffset:-36}}
+#application-coolant .coolant-flow-streak{animation:coolant-circulation 1.25s linear infinite}
+#application-coolant[data-flow-paused=true] .coolant-flow-streak{animation-play-state:paused}
+#application-lab .coolant-flow-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 8px;margin:8px 0 0}
+#application-lab .coolant-temperature-key{display:flex;align-items:center;flex-wrap:wrap;gap:3px 9px;margin:0;color:#586a57;font-size:.875rem;line-height:1.5}
+.coolant-swatch-warm:before,.coolant-swatch-cool:before{content:"";display:inline-block;width:12px;height:12px;margin-right:4px;border-radius:50%;vertical-align:middle}
+.coolant-swatch-warm:before{background:#f5bd4d}.coolant-swatch-cool:before{background:#49a9ca}
+#application-lab .coolant-flow-toggle{min-height:36px;padding:5px 10px;font-size:.875rem}
+@media(prefers-reduced-motion:reduce){#application-coolant .coolant-flow-streak{animation:none}#application-lab .coolant-flow-toggle{display:none}}
+#application-lab .coolant-flow-toggle{min-height:44px}
+@media(min-width:1101px){#application-lab .coolant-loop-card{padding-bottom:10px}#application-lab .coolant-legend{position:static;transform:none;margin:0 auto}}
+/* 標示版為方形完整示意，保留所有標籤及引線，不裁切文字。 */
+#application-lab .coolant-workbench .life-photo{height:auto;aspect-ratio:1}
+#application-lab .coolant-workbench .life-photo>#coolant-photo{height:100%;width:100%;object-fit:contain;object-position:center}
+#application-lab .coolant-photo-caption{margin:8px 2px 0;color:#526c58;font-size:1rem;line-height:1.55}

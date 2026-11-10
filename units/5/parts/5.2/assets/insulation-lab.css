@@ -698,3 +698,84 @@
  #insulation-lab[data-comparison] .insulation-chart-block{align-self:start;grid-template-rows:auto 195px auto;margin-bottom:10px}
  #insulation-lab[data-comparison] .insulation-chart-block .insulation-plot{height:195px;min-height:195px}
 }
+
+/* 以待機場景為固定畫框，展開時將瓶身縮到上方。 */
+#insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+#insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.47)!important;transform-origin:top center}
+#insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption,
+#insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption{font-size:1.45rem;line-height:1.2}
+#insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption b,
+#insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption b{font-size:1.45rem}
+#insulation-lab[data-comparison][data-focus=a] .insulation-bottle-hit,
+#insulation-lab[data-comparison][data-focus=b] .insulation-bottle-hit{min-width:94px;min-height:94px}
+#insulation-lab[data-comparison] .insulation-scene>#insulation-mechanism:not([hidden]),
+#insulation-lab[data-comparison] .insulation-scene>#insulation-lining-focus:not([hidden]){position:absolute;left:12px;right:12px;bottom:4px;top:auto;margin:0;z-index:4}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:48px}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-explanation{font-size:.7rem;padding:1px 2px}
+#insulation-lab[data-comparison=gap] .insulation-micro-key{padding:2px 2px 0;font-size:.66rem}
+#insulation-lab[data-comparison=gap] .insulation-mechanism-heading{margin-bottom:2px}
+@media(max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.68)!important}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption{font-size:1.15rem}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption b,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption b{font-size:1.15rem}
+}
+@media(min-width:900px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-scene,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-scene{flex:1}
+ #insulation-lab[data-comparison=gap][data-focus=a] .insulation-route-key,
+ #insulation-lab[data-comparison=gap][data-focus=b] .insulation-route-key{display:none}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.66)!important}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption{font-size:1.05rem;white-space:nowrap}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption b,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption b{font-size:1.05rem}
+}
+@media(max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.78)!important}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:80px}
+}
+@media(max-width:370px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.72)!important}
+}
+@media(max-width:560px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption{min-height:38px;box-sizing:border-box}
+}
+#insulation-lab[data-comparison] .insulation-bottle-grid{transition:transform .35s ease}
+@media(prefers-reduced-motion:reduce){#insulation-lab[data-comparison] .insulation-bottle-grid{transition:none}}
+@media(min-width:900px){
+ #insulation-lab[data-comparison=lining][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=lining][data-focus=b] .insulation-bottle-grid{transform:scale(.60)!important}
+}
+@keyframes insulation-focus-reveal{0%,65%{opacity:0}100%{opacity:1}}
+#insulation-lab[data-comparison] .insulation-scene>#insulation-mechanism:not([hidden]),
+#insulation-lab[data-comparison] .insulation-scene>#insulation-lining-focus:not([hidden]){animation:insulation-focus-reveal .35s ease both}
+@media(prefers-reduced-motion:reduce){
+ #insulation-lab[data-comparison] .insulation-scene>#insulation-mechanism:not([hidden]),
+ #insulation-lab[data-comparison] .insulation-scene>#insulation-lining-focus:not([hidden]){animation:none}
+}
+@media(min-width:561px) and (max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.42)!important}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:48px}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption{font-size:1.4rem;line-height:1.15;white-space:nowrap}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption b,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption b{font-size:1.4rem}
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-hit,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-hit{min-width:106px;min-height:106px}
+}
+@media(min-width:561px) and (max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-view figcaption,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-view figcaption{height:34.8px;min-height:0;box-sizing:border-box;padding-block:3px}
+}
+@media(min-width:561px) and (max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.55)!important}
+}

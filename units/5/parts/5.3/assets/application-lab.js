@@ -4,7 +4,7 @@ const views={chestnut:get('application-chestnut'),coast:get('application-coast')
 const images={chestnut:get('chestnut-photo'),coolant:get('coolant-photo')};
 const coastPhoto=get('coast-photo');
 const coastSources={day:'application-coast-shore-day.webp',night:'application-coast-shore-night.webp'};
-const sources={chestnut:'application-chestnut.webp',coolant:'application-coolant.webp'};
+const sources={chestnut:'application-chestnut.webp',coolant:'application-coolant-labeled.webp'};
 const questions={chestnut:'沙子如何幫助糖炒栗子加熱？',coast:'為什麼白天沙灘可能很燙，海水卻沒有那麼容易變熱？',coolant:'為什麼汽車冷卻液裡常含有水？'};
 const assets={chestnut:{phase:'loading',attempt:0},coast:{phase:'loading',attempt:0},coolant:{phase:'loading',attempt:0}};
 let current='chestnut',mode='day';
@@ -88,6 +88,14 @@ function selectCoast(next){
   get('coast-model').setAttribute('aria-label',`兩者初溫相同，${day?'吸收':'放出'}相同熱量後，水${day?'溫升':'降溫'}較小、砂土${day?'溫升':'降溫'}較大。`);
   if(assets.coast.phase!=='ready')loadAsset('coast');
 }
+
+const coolantFlowToggle=get('coolant-flow-toggle');
+coolantFlowToggle.addEventListener('click',()=>{
+  const paused=coolantFlowToggle.getAttribute('aria-pressed')!=='true';
+  views.coolant.dataset.flowPaused=String(paused);
+  coolantFlowToggle.setAttribute('aria-pressed',String(paused));
+  coolantFlowToggle.textContent=paused?'播放動畫':'暫停動畫';
+});
 
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
 root.querySelectorAll('[data-coast-mode]').forEach(b=>b.addEventListener('click',()=>selectCoast(b.dataset.coastMode)));
