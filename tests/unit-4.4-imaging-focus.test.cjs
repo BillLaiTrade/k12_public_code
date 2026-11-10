@@ -2,6 +2,10 @@ const {test}=require('node:test'),assert=require('node:assert/strict'),{openBenc
 test('4.4 第三區：保留F光路選擇，放大F內且面板不遮擋',{timeout:240000},async t=>{
  const f=await openBench(t,{url:process.env.IMAGING_URL,out:process.env.IMAGING_FOCUS_CAPTURE_DIR||'/tmp/imaging-focus'}),{p,root,read,move,row,mark,frame,shot}=f;
  const screen=()=>root('screen');
+ await t.test('小測隱藏標題維持可供輔助科技讀取且不撐大頁面',async()=>{
+  const legends=await p.locator('.projector-position-controls legend.sr-only, .camera-rail-control legend.sr-only').evaluateAll(nodes=>nodes.map(e=>({text:e.textContent.trim(),width:e.getBoundingClientRect().width,display:getComputedStyle(e).display,hidden:e.getAttribute('aria-hidden')})));
+  assert.deepEqual(legends.map(e=>e.text),['光軌位置','調整器材']);for(const legend of legends){assert.equal(legend.width,1);assert.notEqual(legend.display,'none');assert.notEqual(legend.hidden,'true');}
+ });
  await t.test('圖卡與屏幕向右移時取景跟隨，保持縮放與器材距離',async()=>{
   await row('screen','double');await move('screen','object',300);await move('screen','screen',200);const a=await read('screen');
   await move('screen','object',128);await move('screen','screen',458.4);const b=await read('screen');
