@@ -90,12 +90,9 @@ function selectCoast(next){
   if(assets.coast.phase!=='ready')loadAsset('coast');
 }
 
-const coolantFlowToggle=get('coolant-flow-toggle');
-const coolantFlowStatus=get('coolant-flow-status');
 const coolantCircuit=get('coolant-circuit-path');
 const coolantPackets=get('coolant-flow-packets');
 const coolantMotionPreference=matchMedia('(prefers-reduced-motion: reduce)');
-let coolantPaused=coolantMotionPreference.matches, coolantUserSet=false;
 let coolantInView=!('IntersectionObserver' in window),coolantFrame=0,coolantLastTime=null,coolantDistance=0;
 const coolantLength=coolantCircuit.getTotalLength();
 const coolantPacketElements=Array.from({length:12},()=>{
@@ -125,25 +122,18 @@ function renderCoolantFlow(){
 }
 function coolantTick(now){
   coolantFrame=0;
-  if(coolantPaused||current!=='coolant'||!coolantInView||document.hidden){coolantLastTime=null;return;}
-  if(coolantLastTime!==null)coolantDistance=(coolantDistance+Math.min(now-coolantLastTime,100)*.16)%coolantLength;
+  if(current!=='coolant'||!coolantInView||document.hidden){coolantLastTime=null;return;}
+  if(coolantLastTime!==null)coolantDistance=(coolantDistance+Math.min(now-coolantLastTime,100)*(coolantMotionPreference.matches?.035:.06))%coolantLength;
   coolantLastTime=now;renderCoolantFlow();coolantFrame=requestAnimationFrame(coolantTick);
 }
 function syncCoolantFlow(){
-  const running=!coolantPaused&&current==='coolant'&&coolantInView&&!document.hidden;
+  const running=current==='coolant'&&coolantInView&&!document.hidden;
   if(running&&!coolantFrame)coolantFrame=requestAnimationFrame(coolantTick);
   if(!running){if(coolantFrame)cancelAnimationFrame(coolantFrame);coolantFrame=0;coolantLastTime=null;}
 }
-function updateCoolantControls(){
-  coolantFlowToggle.disabled=false;coolantFlowToggle.setAttribute('aria-pressed',String(coolantPaused));
-  coolantFlowToggle.textContent=coolantPaused?'播放動畫':'暫停動畫';
-  coolantFlowStatus.textContent=coolantPaused?(coolantMotionPreference.matches&&!coolantUserSet?'依裝置設定暫停，可按播放查看。':'動畫已暫停。'):'液流循環中';
-}
-coolantFlowToggle.addEventListener('click',()=>{coolantUserSet=true;coolantPaused=!coolantPaused;updateCoolantControls();syncCoolantFlow();});
-coolantMotionPreference.addEventListener('change',event=>{if(!coolantUserSet){coolantPaused=event.matches;updateCoolantControls();syncCoolantFlow();}});
 if('IntersectionObserver' in window)new IntersectionObserver(entries=>{coolantInView=entries[0].isIntersecting;syncCoolantFlow();},{threshold:.01}).observe(get('coolant-circuit-path'));
 document.addEventListener('visibilitychange',syncCoolantFlow);
-renderCoolantFlow();updateCoolantControls();
+renderCoolantFlow();
 
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
 root.querySelectorAll('[data-coast-mode]').forEach(b=>b.addEventListener('click',()=>selectCoast(b.dataset.coastMode)));

@@ -76,39 +76,42 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await capture('coolant');
   });
 
-  await t.test('液流位移與冷暖變化、暫停及減少動態時主動播放',async()=>{
+  await t.test('液流自動緩速循環、冷暖變化及減少動態時自動播放',async()=>{
     const page=await browser.newPage({viewport:{width:1366,height:900},ignoreHTTPSErrors:Boolean(remote)});
     try{
       await page.goto(url,{waitUntil:'networkidle'});await page.locator('[data-application=coolant]').click();await ready(page,'coolant');
       await page.locator('#coolant-circuit-path').scrollIntoViewIfNeeded();
-      assert.equal(await page.locator('.coolant-packet').count(),12);
-      assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'false');
-      const selected=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y<70&&+e.dataset.x>155&&+e.dataset.x<185);return i<0?false:i+1},null,{timeout:5000});
-      const index=(await selected.jsonValue())-1,packet=page.locator('.coolant-packet').nth(index);
-      const before=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
-      await page.waitForTimeout(400);
+      assert.equal(await page.locator('.coolant-packet').count(),12);assert.equal(await page.locator('#coolant-flow-toggle').count(),0);
+      const selected=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y<70&&+e.dataset.x>155&&+e.dataset.x<185);return i<0?false:i+1},null,{timeout:7000});
+      const packet=page.locator('.coolant-packet').nth((await selected.jsonValue())-1);
+      const before=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));await page.waitForTimeout(700);
       const after=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
-      assert.ok(after.x>before.x+10,'液流應向散熱器方向移動');
+      assert.ok(after.x>before.x+10&&after.x<before.x+70,'液流應自動緩慢流向散熱器');
       assert.ok(after.warmth>before.warmth,'同一段液流經引擎後應逐漸變暖');assert.notEqual(after.fill,before.fill);
-      const coolingHandle=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y>185&&+e.dataset.x>395&&+e.dataset.x<420);return i<0?false:i+1},null,{timeout:5000});
+      const coolingHandle=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y>185&&+e.dataset.x>395&&+e.dataset.x<420);return i<0?false:i+1},null,{timeout:7000});
       const cooling=page.locator('.coolant-packet').nth((await coolingHandle.jsonValue())-1);
-      const coolBefore=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));await page.waitForTimeout(400);
-      const coolAfter=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
-      assert.ok(coolAfter.x<coolBefore.x-10,'液流應從散熱器流回引擎');assert.ok(coolAfter.warmth<coolBefore.warmth,'同一段液流經散熱器後應逐漸變冷');assert.notEqual(coolAfter.fill,coolBefore.fill);
-      await page.locator('#coolant-flow-toggle').click();assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'true');
-      await page.waitForTimeout(100);const stopped=await packet.getAttribute('transform');await page.waitForTimeout(300);assert.equal(await packet.getAttribute('transform'),stopped);
-      await page.locator('#coolant-flow-toggle').click();assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'false');
-      await page.waitForTimeout(300);assert.notEqual(await packet.getAttribute('transform'),stopped);
+      const coolBefore=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth}));await page.waitForTimeout(700);
+      const coolAfter=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth}));
+      assert.ok(coolAfter.x<coolBefore.x-10);assert.ok(coolAfter.warmth<coolBefore.warmth,'同一段液流經散熱器後應逐漸變冷');
       assert.match(await page.locator('.coolant-temperature-key').innerText(),/藍色：較冷[\s\S]*黃色：較暖[\s\S]*示意/);
+      for(const width of [1440,1366,1280,390,320]){
+        await page.setViewportSize({width,height:900});
+        const geometry=await page.locator('#application-coolant').evaluate(n=>{
+          const box=selector=>n.querySelector(selector).getBoundingClientRect();
+          const labels=box('.coolant-labels'),svg=box('.coolant-loop-diagram'),engine=box('.coolant-engine-art'),engineName=box('.coolant-engine-name'),radiator=box('.coolant-radiator-art'),radiatorName=box('.coolant-radiator-name');
+          return {labelsBottom:labels.bottom,svgTop:svg.top,engineBottom:engine.bottom,engineNameTop:engineName.top,radiatorBottom:radiator.bottom,radiatorNameTop:radiatorName.top};
+        });
+        assert.ok(geometry.labelsBottom<=geometry.svgTop+1,`${width} 熱傳標籤遮住循環圖`);
+        assert.ok(geometry.engineBottom<=geometry.engineNameTop+1,`${width} 引擎圖示與名稱重疊`);
+        assert.ok(geometry.radiatorBottom<=geometry.radiatorNameTop+1,`${width} 散熱器圖示與名稱重疊`);
+      }
     }finally{await page.close()}
     const reduced=await browser.newPage({viewport:{width:1366,height:900},reducedMotion:'reduce',ignoreHTTPSErrors:Boolean(remote)});
     try{
       await reduced.goto(url,{waitUntil:'networkidle'});await reduced.locator('[data-application=coolant]').click();await ready(reduced,'coolant');
       const packet=reduced.locator('.coolant-packet').first();await packet.scrollIntoViewIfNeeded();
-      assert.equal(await reduced.locator('#coolant-flow-toggle').isVisible(),true);assert.equal(await reduced.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'true');
-      const stopped=await packet.getAttribute('transform');await reduced.waitForTimeout(250);assert.equal(await packet.getAttribute('transform'),stopped);
-      await reduced.locator('#coolant-flow-toggle').click();assert.equal(await reduced.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'false');
-      await reduced.waitForTimeout(350);assert.notEqual(await packet.getAttribute('transform'),stopped);
+      assert.equal(await reduced.locator('#coolant-flow-toggle').count(),0);
+      const before=await packet.getAttribute('transform');await reduced.waitForTimeout(650);assert.notEqual(await packet.getAttribute('transform'),before,'減少動態設定下仍應自動緩慢流動');
     }finally{await reduced.close()}
   });
 
