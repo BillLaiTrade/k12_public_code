@@ -672,3 +672,15 @@
 
 /* 碰撞前後以速度箭頭輔助觀察，速度與時間為定性示意。 */
 #insulation-lab[data-comparison=gap] .micro-velocity{stroke:#176b97;stroke-width:2.5;stroke-linecap:round;marker-end:url(#micro-velocity-arrow)}
+
+/* 共用操作提示與夾層選取：可點區域包含瓶身兩側。 */
+#insulation-lab .insulation-inspect-prompt{position:relative;z-index:7;align-self:center;margin:8px 8px 0;padding:4px 12px;border-radius:999px;background:#fff9e9d9;color:#31543b;font-size:.76rem;font-weight:700;line-height:1.4;text-align:center;pointer-events:none}
+#insulation-lab #insulation-source-a,#insulation-lab #insulation-source-b{left:23%;top:19%;width:54%;height:72%;min-width:44px;min-height:44px;border-radius:0}
+#insulation-lab[data-comparison] .insulation-bottle-hit::after{display:none}
+#insulation-lab[data-comparison] .insulation-bottle-hit::before{left:83.6%;top:38%;width:10px;height:10px;border:1.5px solid #fff7e0;background:#dc9a30;box-shadow:0 0 0 1px #b87420}
+#insulation-lab[data-comparison] .insulation-bottle-hit[aria-pressed=true]::before{background:#f4c15a;box-shadow:0 0 0 2px #bb791e,0 0 7px #ffdf8d}
+#insulation-lab .insulation-selected-layer{fill:none;stroke:#f5c26d;stroke-width:3;opacity:0;pointer-events:none;filter:drop-shadow(0 0 3px #ffd795)}
+#insulation-lab .insulation-bottle-canvas:has(.insulation-bottle-hit[aria-pressed=true]) .insulation-selected-layer{opacity:.8}
+@media(hover:hover){#insulation-lab .insulation-bottle-canvas:has(.insulation-bottle-hit:not(:disabled):hover) .insulation-selected-layer{opacity:.6}}
+#insulation-lab[data-comparison] .insulation-bottle-hit:focus-visible{outline:3px solid #315b40;outline-offset:2px}
+#insulation-lab[data-comparison] .insulation-bottle-view:has(.insulation-bottle-hit[aria-pressed=true]) .insulation-inspect-hint{display:inline;visibility:visible}
