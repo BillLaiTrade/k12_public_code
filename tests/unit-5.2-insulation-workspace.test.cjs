@@ -34,5 +34,11 @@ test('5.2 同頁比較：兩種局部圖、操作與版面', {timeout:120000},as
   const wave=page.locator('[data-lining-zoom=a] .lining-compare-wave');await page.locator('#insulation-play').click();await expect(lab).toHaveAttribute('data-playing','true');assert.equal(await wave.evaluate(n=>getComputedStyle(n).animationName),'lining-compare-flow');await page.waitForTimeout(400);assert.ok(Number(await lab.getAttribute('data-elapsed'))>0);
   assert.ok(Number(await page.locator('#insulation-point-b').getAttribute('cy'))<Number(await page.locator('#insulation-point-a').getAttribute('cy')));const elapsed=Number(await lab.getAttribute('data-elapsed'));await page.locator('.insulation-chart-heading').click();await expect(page.locator('#insulation-lining-focus')).toBeHidden();await page.waitForTimeout(150);assert.ok(Number(await lab.getAttribute('data-elapsed'))>elapsed);await page.locator('#insulation-source-a').click();await page.locator('#insulation-play').click();assert.equal(await wave.evaluate(n=>getComputedStyle(n).animationName),'none');await page.locator('#insulation-reset').click();await expect(lab).toHaveAttribute('data-elapsed','0.000');
  });
+ await t.test('局部粒子及輻射在選取後持續移動',async()=>{
+  await page.setViewportSize({width:900,height:900});
+  for(const motion of ['no-preference','reduce']){await page.emulateMedia({reducedMotion:motion});await page.locator('[data-insulation-comparison=gap]').click();
+   for(const role of ['a','b']){await page.locator(`#insulation-source-${role}`).click();const particle=page.locator(`[data-micro=${role}] .micro-lens-particle`).first(),wave=page.locator(`[data-micro=${role}] .micro-lens-radiation`);const x=await particle.getAttribute('cx'),offset=await wave.evaluate(n=>n.style.strokeDashoffset);await page.waitForTimeout(750);assert.notEqual(await particle.getAttribute('cx'),x);assert.notEqual(await wave.evaluate(n=>n.style.strokeDashoffset),offset);await page.locator(`#insulation-source-${role}`).click();}
+  }
+ });
  await t.test('沒有瀏覽器錯誤',()=>assert.deepEqual(errors,[]));
 });
