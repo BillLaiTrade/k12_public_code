@@ -102,8 +102,8 @@ const coolantPacketElements=Array.from({length:12},()=>{
   const group=document.createElementNS('http://www.w3.org/2000/svg','g');
   const body=document.createElementNS('http://www.w3.org/2000/svg','rect');
   const shine=document.createElementNS('http://www.w3.org/2000/svg','rect');
-  body.setAttribute('x','-12');body.setAttribute('y','-7');body.setAttribute('width','24');body.setAttribute('height','14');body.setAttribute('rx','7');body.setAttribute('stroke','#fff');body.setAttribute('stroke-width','1.4');
-  shine.setAttribute('x','-7');shine.setAttribute('y','-3');shine.setAttribute('width','13');shine.setAttribute('height','2');shine.setAttribute('rx','1');shine.setAttribute('fill','#ffffff');shine.setAttribute('opacity','.75');
+  body.setAttribute('x','-14');body.setAttribute('y','-9');body.setAttribute('width','28');body.setAttribute('height','18');body.setAttribute('rx','9');body.setAttribute('stroke','#fff');body.setAttribute('stroke-width','1.4');
+  shine.setAttribute('x','-9');shine.setAttribute('y','-4');shine.setAttribute('width','16');shine.setAttribute('height','2');shine.setAttribute('rx','1');shine.setAttribute('fill','#ffffff');shine.setAttribute('opacity','.75');
   group.append(body,shine);group.classList.add('coolant-packet');coolantPackets.append(group);return {group,body};
 });
 const clamp01=n=>Math.max(0,Math.min(1,n));

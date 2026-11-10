@@ -9,6 +9,6 @@ GitHub Pages 從 `main` 分支根目錄發布。公開網址為 <https://billlai
 ## 與其他儲存庫的分工
 
 - `BillLaiTrade/k12` 保存課程規劃、製作規格、進度、決策和檢查紀錄。
-- `BillLaiTrade/k12-learning-demos` 是 Private 內部紀錄庫；只在公開版檢查完成後同步相關修改，不從該庫發布網站。
+- `BillLaiTrade/k12-learning-demos` 是 Private 內部紀錄庫；只有使用者明確要求同步指定單元時，才在公開版確認後同步相關檔案，不從該庫發布網站。
 
 修改本庫時，先閱讀根目錄 `AGENTS.md` 與相關課程規格、決策及測試說明。網站功能和內容的正式修改都先在本庫進行並驗證。
