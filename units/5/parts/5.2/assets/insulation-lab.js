@@ -27,13 +27,13 @@
   root.querySelectorAll('.insulation-micro-panel svg').forEach(svg=>microAspectObserver.observe(svg));
   // The close-up runs independently of the cooling graph while it is visible.
   const closeupParticles=[...mechanism.querySelectorAll('.micro-lens-particle')].map((node,i)=>({node,x:Number(node.getAttribute('cx')),y:Number(node.getAttribute('cy')),i}));
-  closeupParticles.forEach(({node})=>node.querySelectorAll('animate').forEach(animation=>animation.remove()));
+  closeupParticles.forEach(({node,i})=>{node.querySelectorAll('animate').forEach(animation=>animation.remove());if(i%2===0){const arrow=document.createElementNS('http://www.w3.org/2000/svg','path');arrow.setAttribute('class','micro-motion-arrow');node.parentNode.appendChild(arrow);node._motionArrow=arrow;}});
   let closeupFrame=0,closeupTime=0,closeupPrevious=null;
   function animateCloseup(now){
     closeupFrame=0;
     if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
     const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000);closeupPrevious=now;closeupTime+=dt*(reduced.matches?.45:1);
-    closeupParticles.forEach(({node,x,y,i})=>{node.setAttribute('cx',(x+14*Math.sin(closeupTime*.9+i*1.7)).toFixed(2));node.setAttribute('cy',(y+16*Math.sin(closeupTime*.7+i*2.1)).toFixed(2));});
+    closeupParticles.forEach(({node,x,y,i})=>{const px=Math.max(68,Math.min(192,x+12*Math.sin(closeupTime*.9+i*1.7))),py=y+14*Math.sin(closeupTime*.7+i*2.1);node.setAttribute('cx',px.toFixed(2));node.setAttribute('cy',py.toFixed(2));if(node._motionArrow){const direction=Math.cos(closeupTime*.9+i*1.7)>=0?1:-1,start=px+direction*11,end=px+direction*22;node._motionArrow.setAttribute('d',`M${start.toFixed(1)} ${py.toFixed(1)}H${end.toFixed(1)}m${-direction*4} -4l${direction*4} 4l${-direction*4} 4`);}});
     mechanism.querySelectorAll('.micro-lens-radiation').forEach(wave=>wave.style.strokeDashoffset=String(-closeupTime*20));
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
@@ -68,8 +68,8 @@
       if(!active)continue;
       const bottle=$(`insulation-bottle-${role}`),point=bottle.createSVGPoint();point.x=139;point.y=440;
       const screen=point.matrixTransform(bottle.getScreenCTM()),x=screen.x-bounds.left,y=screen.y-bounds.top;
-      const panel=root.querySelector(comparison==='gap'?`.insulation-micro-panel[data-micro="${role}"]`:`.insulation-lining-zoom[data-lining-zoom="${role}"]`).getBoundingClientRect(),anchorX=panel.left+panel.width/2-bounds.left,anchorY=panel.top-bounds.top;
-      const d=`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+38).toFixed(1)} ${anchorX.toFixed(1)} ${(anchorY-38).toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`;
+      const panel=root.querySelector(comparison==='gap'?'#insulation-mechanism':`.insulation-lining-zoom[data-lining-zoom="${role}"]`).getBoundingClientRect(),anchorX=(comparison==='gap'?panel.left+12:panel.left+panel.width/2)-bounds.left,anchorY=(comparison==='gap'?panel.top+18:panel.top)-bounds.top;
+      const d=comparison==='gap'?`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+20).toFixed(1)} 4 ${(y+20).toFixed(1)} 4 ${(y+48).toFixed(1)} L4 ${(anchorY-12).toFixed(1)} Q4 ${anchorY.toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`:`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+38).toFixed(1)} ${anchorX.toFixed(1)} ${(anchorY-38).toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`;
       guides.querySelector(`[data-guide="${role}"]`).setAttribute('d',d);
       guides.querySelector(`[data-target="${role}"]`).setAttribute('cx',x.toFixed(1));guides.querySelector(`[data-target="${role}"]`).setAttribute('cy',y.toFixed(1));
       guides.querySelector(`[data-joint="${role}"]`).setAttribute('cx',anchorX.toFixed(1));guides.querySelector(`[data-joint="${role}"]`).setAttribute('cy',anchorY.toFixed(1));
@@ -125,7 +125,7 @@
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
     mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;const svg=panel.querySelector('svg');if(selected&&!reduced.matches)svg.unpauseAnimations();else svg.pauseAnimations();});updateCloseup();
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus);
-    setText('insulation-lining-focus-title','反射層局部比較');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層局部放大':inspectedLayer==='b'?'B 真空夾層局部放大':'夾層局部比較');
+    setText('insulation-lining-focus-title','反射層局部比較');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
     setText('insulation-micro-explanation',inspectedLayer==='a'?'空氣分子碰撞傳能；輻射也能穿過夾層。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();
