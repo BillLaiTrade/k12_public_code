@@ -805,3 +805,19 @@
  #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-33px) scale(.55)!important}
  #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:74px}
 }
+
+/* 粒子大小與碰撞均使用同一個可見模型；比例及時間為教學示意。 */
+#insulation-lab[data-comparison] .insulation-bottle-hit::before{display:none}
+#insulation-lab[data-comparison=gap] .micro-simulation{overflow:hidden;background:#e6f1f2}
+#insulation-lab[data-comparison=gap] .micro-simulation-bg{fill:#e6f1f2}
+#insulation-lab[data-comparison=gap] .micro-simulation-wall{fill:#a5b3ad;stroke:#6d7e79;stroke-width:.6}
+#insulation-lab[data-comparison=gap] .micro-side-warm,#insulation-lab[data-comparison=gap] .micro-side-cool{font-size:9px;font-weight:700}
+#insulation-lab[data-comparison=gap] .micro-side-warm{fill:#a65a20}#insulation-lab[data-comparison=gap] .micro-side-cool{fill:#356f87}
+#insulation-lab[data-comparison=gap] .micro-lens-particle{transform:none;fill:#2b87af;stroke:#f5ffff;stroke-width:.8;filter:none}
+#insulation-lab[data-comparison=gap] .micro-motion-arrow{stroke:#176b97;stroke-width:1.4;stroke-linecap:round;marker-end:none}
+#insulation-lab[data-comparison=gap] .micro-impact-flash{fill:#ffd359;stroke:#fff7d6;stroke-width:1;pointer-events:none}
+#insulation-lab[data-comparison=gap] .micro-radiation-base{stroke-width:2}
+#insulation-lab[data-comparison=gap] .micro-radiation-arrow{stroke-width:2}
+#insulation-lab[data-comparison=gap] .micro-lens-radiation{stroke-width:1.2}
+#insulation-lab[data-comparison=gap] .insulation-micro-panel .micro-lens-particle{fill:#2083ad;stroke:#f5ffff;stroke-width:.8;transform:none}
+#insulation-lab[data-comparison=gap] .micro-side-warm,#insulation-lab[data-comparison=gap] .micro-side-cool{font-size:10px}

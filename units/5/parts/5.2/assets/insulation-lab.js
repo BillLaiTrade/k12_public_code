@@ -19,22 +19,32 @@
   function updateMovingGuides(now){alignCalloutGuides();if(now<guideUntil)guideFrame=requestAnimationFrame(updateMovingGuides);else guideFrame=0;}
   bottleGrid.addEventListener('transitionrun',event=>{if(event.propertyName!=='transform')return;guideUntil=performance.now()+450;if(!guideFrame)guideFrame=requestAnimationFrame(updateMovingGuides);});
   bottleGrid.addEventListener('transitionend',event=>{if(event.propertyName==='transform')alignCalloutGuides();});
-  // Local diagrams stretch to stay low and wide; compensate their particle shapes.
-  const microAspectObserver=new ResizeObserver(entries=>entries.forEach(({target,contentRect})=>{
-    const view=target.viewBox.baseVal;if(!contentRect.width||!contentRect.height||!view.width||!view.height)return;
-    target.style.setProperty('--micro-particle-aspect',((contentRect.width/view.width)/(contentRect.height/view.height)).toFixed(3));
-  }));
-  root.querySelectorAll('.insulation-micro-panel svg').forEach(svg=>microAspectObserver.observe(svg));
-  // The close-up runs independently of the cooling graph while it is visible.
-  const closeupParticles=[...mechanism.querySelectorAll('.micro-lens-particle')].map((node,i)=>({node,x:Number(node.getAttribute('cx')),y:Number(node.getAttribute('cy')),i}));
-  closeupParticles.forEach(({node,i})=>{node.querySelectorAll('animate').forEach(animation=>animation.remove());if(i%2===0){const arrow=document.createElementNS('http://www.w3.org/2000/svg','path');arrow.setAttribute('class','micro-motion-arrow');node.parentNode.appendChild(arrow);node._motionArrow=arrow;}});
+  // A and B use the same equal-mass collision rules; fewer particles represent the evacuated gap.
+  const microNS='http://www.w3.org/2000/svg',microModels=new Map();
+  function svgNode(tag,attrs){const n=document.createElementNS(microNS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n;}
+  function prepareMicro(panel){
+    const svg=panel.querySelector('.micro-simulation'),w=svg.clientWidth,h=svg.clientHeight;if(w<60||h<35)return;
+    const innerW=w-20,innerH=h-29;let item=microModels.get(panel.dataset.micro);
+    if(!item){
+      const model=GasCollisionModel.create(innerW,innerH,panel.dataset.micro==='a'?18:2),group=svg.querySelector('.micro-simulation-particles');
+      const nodes=model.particles.map(()=>{const circle=svgNode('circle',{class:'micro-lens-particle',r:model.radius}),arrow=svgNode('path',{class:'micro-motion-arrow',opacity:'0'});group.append(circle,arrow);return {circle,arrow};});
+      item={svg,model,nodes};microModels.set(panel.dataset.micro,item);
+    }else if(Math.abs(item.model.width-innerW)>.5||Math.abs(item.model.height-innerH)>.5){GasCollisionModel.resize(item.model,innerW,innerH);}
+    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.querySelector('.micro-wall-cool').setAttribute('x',w-7);svg.querySelector('.micro-side-cool').setAttribute('x',w-10);
+    const y=18,start=10,end=w-11,span=end-start;let path=`M${start} ${y}`;for(let x=0;x<span;x+=16){const length=Math.min(16,span-x);path+=`q${length/4} -4 ${length/2} 0t${length/2} 0`;}
+    svg.querySelector('.micro-radiation-base').setAttribute('d',path);svg.querySelector('.micro-lens-radiation').setAttribute('d',path);svg.querySelector('.micro-radiation-arrow').setAttribute('d',`M${end-6} ${y-4}L${end} ${y} ${end-6} ${y+4}`);
+    return item;
+  }
+  const microResize=new ResizeObserver(entries=>entries.forEach(({target})=>{const panel=target.closest('.insulation-micro-panel');if(panel&&!panel.hidden)prepareMicro(panel);}));
+  root.querySelectorAll('.insulation-micro-panel svg').forEach(svg=>microResize.observe(svg));
   let closeupFrame=0,closeupTime=0,closeupPrevious=null;
   function animateCloseup(now){
-    closeupFrame=0;
-    if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
-    const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000);closeupPrevious=now;closeupTime+=dt*(reduced.matches?.65:1);
-    closeupParticles.forEach(({node,x,y,i})=>{const px=Math.max(68,Math.min(192,x+12*Math.sin(closeupTime*2.1+i*1.7))),py=y+14*Math.sin(closeupTime*1.6+i*2.1);node.setAttribute('cx',px.toFixed(2));node.setAttribute('cy',py.toFixed(2));if(node._motionArrow){const direction=Math.cos(closeupTime*2.1+i*1.7)>=0?1:-1,start=px+direction*11,end=px+direction*22;node._motionArrow.setAttribute('d',`M${start.toFixed(1)} ${py.toFixed(1)}H${end.toFixed(1)}m${-direction*4} -4l${direction*4} 4l${-direction*4} 4`);}});
-    mechanism.querySelectorAll('.micro-lens-radiation').forEach(wave=>wave.style.strokeDashoffset=String(-closeupTime*20));
+    closeupFrame=0;if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
+    const panel=mechanism.querySelector('.insulation-micro-panel:not([hidden])'),item=panel&&prepareMicro(panel);if(!item){closeupFrame=requestAnimationFrame(animateCloseup);return;}
+    const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000)*(reduced.matches?.65:1);closeupPrevious=now;closeupTime+=dt;GasCollisionModel.step(item.model,dt);
+    item.model.particles.forEach((p,i)=>{const {circle,arrow}=item.nodes[i],x=p.x+10,y=p.y+25,speed=Math.hypot(p.vx,p.vy)||1,length=Math.min(17,Math.max(6,speed*.14));circle.setAttribute('cx',x.toFixed(2));circle.setAttribute('cy',y.toFixed(2));circle.setAttribute('data-speed',speed.toFixed(2));const ex=x+p.vx/speed*length,ey=y+p.vy/speed*length;const ux=p.vx/speed,uy=p.vy/speed;arrow.setAttribute('d',`M${x.toFixed(1)} ${y.toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}M${(ex-ux*3-uy*2).toFixed(1)} ${(ey-uy*3+ux*2).toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}L${(ex-ux*3+uy*2).toFixed(1)} ${(ey-uy*3-ux*2).toFixed(1)}`);arrow.setAttribute('opacity',p.highlight>0?'1':'0');});
+    const flashes=item.svg.querySelector('.micro-simulation-flashes');flashes.replaceChildren(...item.model.flashes.map(f=>svgNode('circle',{class:'micro-impact-flash',cx:(f.x+10).toFixed(1),cy:(f.y+25).toFixed(1),r:6,opacity:(f.life/.28).toFixed(2)})));
+    item.svg.dataset.collisions=String(item.model.collisions);item.svg.dataset.energyExchanged=item.model.energyExchanged.toFixed(2);item.svg.querySelector('.micro-lens-radiation').style.strokeDashoffset=String(-closeupTime*20);
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
   function updateCloseup(){if(!mechanism.hidden&&!document.hidden&&!closeupFrame){closeupPrevious=null;closeupFrame=requestAnimationFrame(animateCloseup);}else if(mechanism.hidden&&closeupFrame){cancelAnimationFrame(closeupFrame);closeupFrame=0;closeupPrevious=null;}}
@@ -123,10 +133,10 @@
     $('insulation-lining-photo').toggleAttribute('hidden',!cfg.b.lining);
     $('insulation-gas-motion').toggleAttribute('hidden',!cfg.a.gas);
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
-    mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;const svg=panel.querySelector('svg');if(selected&&!reduced.matches)svg.unpauseAnimations();else svg.pauseAnimations();});updateCloseup();
+    mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;if(selected)prepareMicro(panel);});updateCloseup();
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus);
     setText('insulation-lining-focus-title','反射層局部比較');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
-    setText('insulation-micro-explanation',inspectedLayer==='a'?'空氣分子碰撞傳能；輻射也能穿過夾層。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
+    setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();
     plot();$('insulation-discovery').hidden=time<WINDOW;setText('insulation-discovery-text',cfg.discovery);
