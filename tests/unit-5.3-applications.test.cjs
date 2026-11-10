@@ -63,6 +63,8 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
 
   await t.test('冷卻液循環方向、熱傳與同條件比熱比較',async()=>{
     await choose('coolant');
+    assert.match(await p.locator('#coolant-photo').getAttribute('src'),/application-coolant-labeled\.webp/);
+    assert.match(await p.locator('#coolant-photo').getAttribute('alt'),/管路位置為示意/);
     assert.equal(await p.locator('[data-coolant-stage]').count(),0);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/由引擎流向散熱器，再流回引擎/);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/引擎的熱傳給冷卻液/);
@@ -95,10 +97,10 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
   });
 
   await t.test('圖片失敗隔離在當情境，重試恢復不自動開始；日夜晚到回應不覆蓋新模式',async()=>{
-    const page=await browser.newPage({ignoreHTTPSErrors:Boolean(remote)});await page.route('**/application-chestnut.webp*',r=>r.abort());await page.route('**/application-coolant.webp*',r=>r.abort());
+    const page=await browser.newPage({ignoreHTTPSErrors:Boolean(remote)});await page.route('**/application-chestnut.webp*',r=>r.abort());await page.route('**/application-coolant-labeled.webp*',r=>r.abort());
     await page.goto(url,{waitUntil:'networkidle'});
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
-    await page.locator('button[data-application="coolant"]').click();await page.waitForFunction(()=>document.getElementById('application-coolant').dataset.phase==='error');await page.unroute('**/application-coolant.webp*');await page.locator('#application-coolant [data-life-retry]').click();await ready(page,'coolant');assert.equal(await page.locator('#coolant-photo').evaluate(n=>n.naturalWidth>0),true);
+    await page.locator('button[data-application="coolant"]').click();await page.waitForFunction(()=>document.getElementById('application-coolant').dataset.phase==='error');await page.unroute('**/application-coolant-labeled.webp*');await page.locator('#application-coolant [data-life-retry]').click();await ready(page,'coolant');assert.equal(await page.locator('#coolant-photo').evaluate(n=>n.naturalWidth>0),true);
     await page.locator('button[data-application="chestnut"]').click();
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
     await page.unroute('**/application-chestnut.webp*');await page.locator('#application-chestnut [data-life-retry]').click();await ready(page,'chestnut');

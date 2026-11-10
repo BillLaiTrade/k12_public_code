@@ -4,7 +4,7 @@ const views={chestnut:get('application-chestnut'),coast:get('application-coast')
 const images={chestnut:get('chestnut-photo'),coolant:get('coolant-photo')};
 const coastPhoto=get('coast-photo');
 const coastSources={day:'application-coast-shore-day.webp',night:'application-coast-shore-night.webp'};
-const sources={chestnut:'application-chestnut.webp',coolant:'application-coolant.webp'};
+const sources={chestnut:'application-chestnut.webp',coolant:'application-coolant-labeled.webp'};
 const questions={chestnut:'沙子如何幫助糖炒栗子加熱？',coast:'為什麼白天沙灘可能很燙，海水卻沒有那麼容易變熱？',coolant:'為什麼汽車冷卻液裡常含有水？'};
 const assets={chestnut:{phase:'loading',attempt:0},coast:{phase:'loading',attempt:0},coolant:{phase:'loading',attempt:0}};
 let current='chestnut',mode='day';

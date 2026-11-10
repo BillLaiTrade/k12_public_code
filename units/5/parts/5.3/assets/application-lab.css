@@ -235,3 +235,7 @@
 @media(prefers-reduced-motion:reduce){#application-coolant .coolant-flow-streak{animation:none}#application-lab .coolant-flow-toggle{display:none}}
 #application-lab .coolant-flow-toggle{min-height:44px}
 @media(min-width:1101px){#application-lab .coolant-loop-card{padding-bottom:10px}#application-lab .coolant-legend{position:static;transform:none;margin:0 auto}}
+/* 標示版為方形完整示意，保留所有標籤及引線，不裁切文字。 */
+#application-lab .coolant-workbench .life-photo{height:auto;aspect-ratio:1}
+#application-lab .coolant-workbench .life-photo>#coolant-photo{height:100%;width:100%;object-fit:contain;object-position:center}
+#application-lab .coolant-photo-caption{margin:8px 2px 0;color:#526c58;font-size:1rem;line-height:1.55}
