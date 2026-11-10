@@ -30,7 +30,7 @@ test('5.2 insulation: controlled comparisons, remaining heat paths and manual ob
  });
  await t.test('pause freezes actual paths and graph pixels, resume does not restart, repeated bottle clicks are idempotent',async()=>{
   await play.click();await page.mouse.move(0,0);const held=await drawing(),elapsed=(await state()).elapsed;await page.clock.runFor(800);assert.deepEqual(await drawing(),held);assert.equal((await state()).elapsed,elapsed);
-  const image=await page.locator('#insulation-chart').screenshot();await page.clock.runFor(300);assert.equal(image.equals(await page.locator('#insulation-chart').screenshot()),true);
+  await page.locator('#insulation-chart').scrollIntoViewIfNeeded();await page.clock.runFor(300);const image=await page.locator('#insulation-chart').screenshot();await page.clock.runFor(300);assert.equal(image.equals(await page.locator('#insulation-chart').screenshot()),true);
   await page.locator('#insulation-source-b').click();assert.equal((await state()).elapsed,elapsed);assert.equal((await state()).playing,'false');await play.click();await page.clock.runFor(300);assert.ok(Number((await state()).elapsed)>Number(elapsed));const before=Number((await state()).elapsed);await source.click();await source.click();await page.clock.runFor(300);assert.ok(Number((await state()).elapsed)-before<.36);assert.equal((await state()).playing,'true');
   await page.clock.runFor(14500);assert.equal((await state()).stage,'observed');assert.equal(await page.locator('#insulation-discovery').isVisible(),true);const rays=await drawing();await page.clock.runFor(300);assert.notEqual((await drawing()).radiation,rays.radiation);assert.equal((await state()).playing,'true');
  });
