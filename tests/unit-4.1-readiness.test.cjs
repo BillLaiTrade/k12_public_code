@@ -15,7 +15,7 @@ test('4.1 靜態分享資料對應正式主標題、摘要與開場圖片',async
  assert.equal(title,'書頁不發光，我們為什麼看得見它？｜4.1 光與看見');
  for(const key of ['og:title','twitter:title'])assert.equal(meta(key),title);
  for(const key of ['og:description','twitter:description'])assert.equal(meta(key),meta('description'));
- const url='https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.1/';
+ const url='https://billlaitrade.github.io/k12_public_code/units/4/parts/4.1/';
  assert.equal(meta('og:url'),url);assert.ok(html.includes(`<link rel="canonical" href="${url}">`));
  const image=meta('og:image');assert.equal(meta('twitter:image'),image);assert.ok(image.endsWith('/assets/unit-1-light-title.png'));
  const png=await fs.readFile(path.join(root,'units/4/parts/4.1/assets/unit-1-light-title.png'));

@@ -33,7 +33,7 @@ test('5.3 共通格式、導覽連動與原有活動回歸', {timeout:180000}, a
     assert.equal(title,`${h1}｜5.3 熱量與比熱`);
     for(const name of ['og:title','twitter:title'])assert.equal(meta(name),title);
     for(const name of ['og:description','twitter:description'])assert.equal(meta(name),meta('description'));
-    const canonical='https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.3/';
+    const canonical='https://billlaitrade.github.io/k12_public_code/units/5/parts/5.3/';
     assert.ok(html.includes(`<link rel="canonical" href="${canonical}">`));
     assert.equal(meta('og:url'),canonical);
     assert.equal(meta('og:image'),meta('twitter:image'));

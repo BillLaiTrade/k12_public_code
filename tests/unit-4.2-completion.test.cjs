@@ -42,7 +42,7 @@ test('4.2 完整頁面、主要活動與資源失敗恢復',{timeout:300000},asy
       for(const selector of ['meta[property="og:title"]','meta[name="twitter:title"]'])await expect(p.locator(selector)).toHaveAttribute('content',title);
       const description=await p.locator('meta[name="description"]').getAttribute('content');
       for(const selector of ['meta[property="og:description"]','meta[name="twitter:description"]'])await expect(p.locator(selector)).toHaveAttribute('content',description);
-      const canonical='https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.2/';
+      const canonical='https://billlaitrade.github.io/k12_public_code/units/4/parts/4.2/';
       await expect(p.locator('link[rel="canonical"]')).toHaveAttribute('href',canonical);await expect(p.locator('meta[property="og:url"]')).toHaveAttribute('content',canonical);
       const image=p.locator('.hero img');await image.evaluate(e=>e.decode());
       assert.deepEqual(await image.evaluate(e=>[e.naturalWidth,e.naturalHeight]),[1671,941]);
