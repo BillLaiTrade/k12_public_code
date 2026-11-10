@@ -649,3 +649,26 @@
  #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-explanation{grid-column:1;padding:4px 2px 0;border-left:0;border-top:1px solid #cbd4bf;font-size:.78rem}
  #insulation-lab[data-comparison=gap] .insulation-mechanism-slot{min-height:235px}
 }
+
+/* 核可示意：單一全寬剖面、下方說明與圖例。 */
+#insulation-lab[data-comparison=gap] .insulation-callout-guides{display:block}
+#insulation-lab[data-comparison=gap] .insulation-mechanism-slot{min-height:252px}
+#insulation-lab[data-comparison=gap] .insulation-mechanism-heading{align-items:center;flex-wrap:wrap;gap:4px 8px}
+#insulation-lab[data-comparison=gap] .insulation-mechanism-heading b{padding:3px 10px;border-radius:999px;background:#315f40;color:#fffdf2;font-size:.8rem}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panels{display:grid;grid-template-columns:1fr;gap:4px}
+#insulation-lab[data-comparison=gap] .insulation-micro-panel:not([hidden]){grid-column:1;padding:0;border:0;background:none}
+#insulation-lab[data-comparison=gap] .insulation-micro-panel figcaption{display:none}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:112px;max-height:none}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-explanation{grid-column:1;padding:5px 2px 3px;border:0;text-align:left;font-size:.8rem;line-height:1.4;font-weight:700}
+#insulation-lab[data-comparison=gap] .insulation-micro-key{display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap;padding:6px 2px 0;border-top:1px solid #d3dac7;font-size:.72rem;color:#31543b}
+#insulation-lab[data-comparison=gap] .insulation-micro-key span{display:flex;align-items:center;gap:6px}
+.micro-key-dot{width:13px;height:13px;border-radius:50%;background:#69adc4}.micro-key-wave{color:#dd8a27;font-size:1.2rem;line-height:1}
+#insulation-lab[data-comparison=gap][data-focus=a] .insulation-route-key,#insulation-lab[data-comparison=gap][data-focus=b] .insulation-route-key{visibility:hidden}
+#insulation-lab[data-comparison=gap] .micro-radiation-base{fill:none;stroke:#df8624;stroke-width:3;stroke-linecap:round}
+#insulation-lab[data-comparison=gap] .micro-lens-radiation{stroke:#ffe4a0;stroke-width:1.8;stroke-dasharray:9 15;marker-end:none}
+#insulation-lab[data-comparison=gap] .micro-motion-arrow{fill:none;stroke:#176b97;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+
+#insulation-lab[data-comparison=gap] .micro-radiation-arrow{fill:none;stroke:#df8624;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+
+/* 碰撞前後以速度箭頭輔助觀察，速度與時間為定性示意。 */
+#insulation-lab[data-comparison=gap] .micro-velocity{stroke:#176b97;stroke-width:2.5;stroke-linecap:round;marker-end:url(#micro-velocity-arrow)}

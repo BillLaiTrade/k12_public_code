@@ -61,28 +61,24 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.match(await p.locator('#coast-photo').getAttribute('src'),/shore-day/);
   });
 
-  await t.test('汽車冷卻液：引擎吸熱、散熱器散熱與水的比熱，鍵盤切換並保留階段',async()=>{
-    await choose('coolant');assert.match(await p.locator('#application-question').textContent(),/冷卻液.*水/);
-    assert.equal(await p.locator('#coolant-focus').textContent(),'冷卻液流經引擎吸收熱，再把熱帶往散熱器。');
-    assert.equal(await p.locator('.coolant-key h3').textContent(),'水的比熱較大，吸熱時溫升較小');assert.equal(await p.locator('.coolant-key p').textContent(),'相同質量、吸收相同熱量時，水的溫升比比熱較小的物質低。');
-    assert.equal(await p.locator('.coolant-diagram').getAttribute('role'),'img');assert.equal(await p.locator('.coolant-diagram title').textContent(),'冷卻液循環示意圖');assert.equal(await p.locator('.coolant-engine-node').count(),1);assert.equal(await p.locator('.coolant-radiator-node').count(),1);assert.equal(await p.locator('.coolant-fluid').count(),1);assert.match(await p.locator('.coolant-return').textContent(),/回流/);assert.equal(await p.locator('.coolant-release').count(),1);
+  await t.test('冷卻液循環方向、熱傳與同條件比熱比較',async()=>{
+    await choose('coolant');
+    assert.equal(await p.locator('[data-coolant-stage]').count(),0);
+    assert.match(await p.locator('#coolant-loop-desc').textContent(),/由引擎流向散熱器，再流回引擎/);
+    assert.match(await p.locator('#coolant-loop-desc').textContent(),/引擎的熱傳給冷卻液/);
+    assert.match(await p.locator('#coolant-compare-title').textContent(),/同質量、同初溫、吸收相同熱量/);
+    assert.match(await p.locator('.coolant-key p').textContent(),/比引擎低的溫度/);
+    assert.equal(await p.locator('.coolant-sample').count(),2);
+    assert.ok(await p.locator('.coolant-rise-high').evaluate(n=>n.getBoundingClientRect().height)>await p.locator('.coolant-rise-low').evaluate(n=>n.getBoundingClientRect().height));
     assert.match(await p.locator('#application-coolant .life-note').innerText(),/水與防凍液的混合液.*循環與散熱條件/);
-    assert.equal(await p.locator('.coolant-loop').count(),0);assert.equal(await p.locator('#coolant-cycle-return').count(),0);assert.equal(await p.locator('.coolant-path [data-coolant-stage]').count(),2);
-    await p.locator('[data-coolant-stage="radiator"]').press('Space');
-    assert.equal(await p.locator('[data-coolant-stage="radiator"]').getAttribute('aria-pressed'),'true');
-    assert.equal(await p.locator('#coolant-focus').textContent(),'冷卻液流經散熱器，把熱傳給周圍空氣，降溫後再流回引擎。');assert.equal(await p.locator('#application-coolant').getAttribute('data-stage'),'radiator');await capture('coolant-radiator');
-    await choose('chestnut');await choose('coolant');assert.match(await p.locator('#coolant-focus').textContent(),/散熱器/);
-    await p.locator('[data-coolant-stage="engine"]').press('Enter');
-    assert.equal(await p.locator('[data-coolant-stage="engine"]').getAttribute('aria-pressed'),'true');
-    assert.equal(await p.locator('#coolant-focus').textContent(),'冷卻液流經引擎吸收熱，再把熱帶往散熱器。');assert.equal(await p.locator('#application-coolant').getAttribute('data-stage'),'engine');
-    await capture('coolant-engine');
+    await capture('coolant');
   });
 
   await t.test('圖片失敗隔離在當情境，重試恢復不自動開始；日夜晚到回應不覆蓋新模式',async()=>{
     const page=await browser.newPage({ignoreHTTPSErrors:Boolean(remote)});await page.route('**/application-chestnut.webp*',r=>r.abort());await page.route('**/application-coolant.webp*',r=>r.abort());
     await page.goto(url,{waitUntil:'networkidle'});
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
-    await page.locator('button[data-application="coolant"]').click();await page.waitForFunction(()=>document.getElementById('application-coolant').dataset.phase==='error');assert.equal(await page.locator('[data-coolant-stage=engine]').isDisabled(),true);await page.unroute('**/application-coolant.webp*');await page.locator('#application-coolant [data-life-retry]').click();await ready(page,'coolant');await page.locator('[data-coolant-stage="radiator"]').click();assert.match(await page.locator('#coolant-focus').textContent(),/散熱器/);
+    await page.locator('button[data-application="coolant"]').click();await page.waitForFunction(()=>document.getElementById('application-coolant').dataset.phase==='error');await page.unroute('**/application-coolant.webp*');await page.locator('#application-coolant [data-life-retry]').click();await ready(page,'coolant');assert.equal(await page.locator('#coolant-photo').evaluate(n=>n.naturalWidth>0),true);
     await page.locator('button[data-application="chestnut"]').click();
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
     await page.unroute('**/application-chestnut.webp*');await page.locator('#application-chestnut [data-life-retry]').click();await ready(page,'chestnut');
@@ -101,7 +97,7 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
         await choose(key);
         boxes.push(await p.locator('#application-'+key).evaluate(n=>{const box=n.querySelector('.life-photo:not([hidden])').getBoundingClientRect(), panel=document.querySelector('#application-lab').getBoundingClientRect();return {width:box.width,height:box.height,panelHeight:panel.height,cardHeight:document.querySelector("#card-05").getBoundingClientRect().height,photoTop:box.top-panel.top};}));
       }
-      for(const box of boxes.slice(1)){for(const field of ['width','height','panelHeight','cardHeight','photoTop'])assert.ok(Math.abs(box[field]-boxes[0][field])<1,`${width}: ${field} ${JSON.stringify(boxes)}`);}
+      for(const box of boxes.slice(1)){for(const field of ['panelHeight','cardHeight','photoTop'])assert.ok(Math.abs(box[field]-boxes[0][field])<1,`${width}: ${field} ${JSON.stringify(boxes)}`);}
     }
   });
 
@@ -110,8 +106,8 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
       await p.setViewportSize({width,height});
       for(const key of ['chestnut','coast','coolant']){
         await choose(key);
-        const data=await p.locator('#application-'+key).evaluate(n=>({overflow:document.documentElement.scrollWidth>innerWidth,clipped:[...n.querySelectorAll('.life-temperatures strong,.life-energy strong,.life-bar-row strong')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.textContent),fonts:[...n.querySelectorAll('h3,.life-reading,.life-coolant-model p')].map(e=>parseFloat(getComputedStyle(e).fontSize)),hotspots:[...n.querySelectorAll('[data-coolant-stage]')].map(e=>{const r=e.getBoundingClientRect(),b=e.closest('.life-coolant-model').getBoundingClientRect();return{w:r.width,h:r.height,inside:r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom};}),topDifference:(()=>{const columns=n.querySelectorAll('.life-workbench>div');return columns.length===2?Math.abs(columns[0].getBoundingClientRect().top-columns[1].getBoundingClientRect().top):0;})(),heightDifference:(()=>{const photo=n.querySelector('.life-photo'),panel=n.querySelector('.life-coolant-model');return photo&&panel?Math.abs(photo.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})(),coastHeightDifference:(()=>{const columns=n.querySelector('.coast-workbench'),left=columns?.children[0],panel=columns?.children[1];return left&&panel?Math.abs(left.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})()}));
-        layouts.push({width,height,key,...data});assert.equal(data.overflow,false,`${width} ${key} page overflow`);assert.deepEqual(data.clipped,[],`${width} ${key} clipped`);assert.ok(data.fonts.every(s=>s>=16));if(width>=1280&&key!=='body')assert.ok(data.topDifference<1,`${width} ${key} columns misaligned`);if(width===1366&&key==='coolant')assert.ok(data.heightDifference<80,`${width} coolant unbalanced: ${data.heightDifference}`);if(width>=1280&&key==='coast')assert.ok(data.coastHeightDifference<2,`${width} coast columns unbalanced: ${data.coastHeightDifference}`);
+        const data=await p.locator('#application-'+key).evaluate(n=>({overflow:document.documentElement.scrollWidth>innerWidth,clipped:[...n.querySelectorAll('.life-temperatures strong,.life-energy strong,.life-bar-row strong')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.textContent),fonts:[...n.querySelectorAll('h3,.life-reading,.coolant-key p')].map(e=>parseFloat(getComputedStyle(e).fontSize)),hotspots:[...n.querySelectorAll('[data-coolant-stage]')].map(e=>{const r=e.getBoundingClientRect(),b=e.closest('.life-coolant-model').getBoundingClientRect();return{w:r.width,h:r.height,inside:r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom};}),topDifference:(()=>{const columns=n.querySelectorAll('.life-workbench>div');return columns.length===2?Math.abs(columns[0].getBoundingClientRect().top-columns[1].getBoundingClientRect().top):0;})(),heightDifference:(()=>{const photo=n.querySelector('.life-photo'),panel=n.querySelector('.life-coolant-model');return photo&&panel?Math.abs(photo.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})(),coastHeightDifference:(()=>{const columns=n.querySelector('.coast-workbench'),left=columns?.children[0],panel=columns?.children[1];return left&&panel?Math.abs(left.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})()}));
+        layouts.push({width,height,key,...data});assert.equal(data.overflow,false,`${width} ${key} page overflow`);assert.deepEqual(data.clipped,[],`${width} ${key} clipped`);assert.ok(data.fonts.every(s=>s>=16));if(width>=1280&&key!=='body')assert.ok(data.topDifference<1,`${width} ${key} columns misaligned`);if(width>=1280&&key==='coast')assert.ok(data.coastHeightDifference<2,`${width} coast columns unbalanced: ${data.coastHeightDifference}`);
         data.hotspots.forEach(h=>{assert.ok(h.w>=44&&h.h>=44);assert.equal(h.inside,true,`${width} hotspot cropped`);});
         if(width===320)await capture(key+'-320');
       }

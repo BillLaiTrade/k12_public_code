@@ -34,7 +34,6 @@ function renderAsset(key){
   view.querySelector('[data-life-retry]').hidden=asset.phase!=='error';
   view.setAttribute('aria-busy',String(asset.phase==='loading'));
   view.dataset.phase=asset.phase;
-  if(key==='coolant')view.querySelectorAll('[data-coolant-stage]').forEach(b=>b.disabled=asset.phase!=='ready');
   if(key==='coast')view.querySelector('.coast-arrows').style.visibility=asset.phase==='ready'?'visible':'hidden';
 }
 async function loadAsset(key,retry=false){
@@ -90,16 +89,8 @@ function selectCoast(next){
   if(assets.coast.phase!=='ready')loadAsset('coast');
 }
 
-function selectCoolant(stage){
-  if(!['engine','radiator'].includes(stage)||assets.coolant.phase!=='ready')return;
-  views.coolant.dataset.stage=stage;
-  root.querySelectorAll('[data-coolant-stage]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.coolantStage===stage)));
-  get('coolant-focus').textContent=stage==='engine'?'冷卻液流經引擎吸收熱，再把熱帶往散熱器。':'冷卻液流經散熱器，把熱傳給周圍空氣，降溫後再流回引擎。';
-}
-
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
 root.querySelectorAll('[data-coast-mode]').forEach(b=>b.addEventListener('click',()=>selectCoast(b.dataset.coastMode)));
-root.querySelectorAll('[data-coolant-stage]').forEach(b=>b.addEventListener('click',()=>selectCoolant(b.dataset.coolantStage)));
 root.querySelectorAll('[data-chestnut-mode]').forEach(b=>b.addEventListener('click',()=>selectChestnutMode(b.dataset.chestnutMode)));
 contactRetry.addEventListener('click',()=>loadContact(true));
 Object.entries(views).forEach(([key,view])=>view.querySelector('[data-life-retry]').addEventListener('click',()=>loadAsset(key,true)));

@@ -41,8 +41,8 @@
   <script type="module" src="assets/mass-curve-lab.js?v=cases-1"></script>
   <link rel="stylesheet" href="assets/material-dual-lab.css?v=dialogue-bridge-1">
   <script type="module" src="assets/material-dual-lab.js?v=select-row-1"></script>
-  <link rel="stylesheet" href="assets/application-lab.css?v=shore-view-1">
-  <script type="module" src="assets/application-lab.js?v=shore-view-1"></script>
+  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-loop-1">
+  <script type="module" src="assets/application-lab.js?v=coolant-loop-1"></script>
   <link rel="stylesheet" href="assets/unknown-quiz.css?v=real-materials-visual-1">
   <script type="module" src="assets/unknown-quiz.js?v=real-materials-visual-1"></script>
 <link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
@@ -290,25 +290,46 @@
                   <p class="life-note">圖中長度僅示意變化大小，不代表實測溫度或固定倍數；白天與夜晚各從相同初溫比較。海岸畫面為示意，真實海陸溫差還受日照、混合、蒸發與風等因素影響。</p>
                 </section>
 
-                <section class="life-view" id="application-coolant" aria-labelledby="coolant-heading" data-phase="loading" data-stage="engine" hidden>
+                <section class="life-view" id="application-coolant" aria-labelledby="coolant-heading" data-phase="loading" hidden>
                   <h3 id="coolant-heading" class="life-condition">冷卻液如何帶走引擎的熱？</h3>
                   <div class="life-workbench coolant-workbench">
                     <div><figure class="life-photo"><img id="coolant-photo" src="assets/application-coolant.webp" width="1672" height="941" alt="AI生成的汽車引擎室情境：前方是散熱器，後方是引擎。"><p class="life-loading" data-life-loading role="status">正在準備汽車冷卻場景…</p></figure></div>
-                    <div class="life-coolant-model"><h3>冷卻液如何帶走熱？</h3>
-                      <svg class="coolant-diagram" viewBox="0 0 420 235" role="img" aria-labelledby="coolant-diagram-title coolant-diagram-desc">
-                        <title id="coolant-diagram-title">冷卻液循環示意圖</title><desc id="coolant-diagram-desc">冷卻液流經引擎吸收熱，前往散熱器將熱傳給空氣，降溫後再流回引擎。</desc>
-                        <defs><marker id="coolant-hot-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10" fill="#c77c37"/></marker><marker id="coolant-cool-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10" fill="#57998d"/></marker></defs>
-                        <g class="coolant-engine-node"><rect class="coolant-node-frame" x="5" y="55" width="110" height="94" rx="14" fill="#fff7eb" stroke="#c77c37" stroke-width="2"/><g class="coolant-engine-icon" fill="none" stroke="#a96737" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M29 86h8l7-9h30l8 8h8v24H33v-8h-6V89h2zM44 77v-8h10v8m8 0v-8h10v8M42 85v13m11-13v13m11-13v13m11-13v13"/><circle cx="42" cy="106" r="3"/><circle cx="78" cy="106" r="3"/></g><text x="60" y="137" text-anchor="middle" fill="#315b3b" font-size="21" font-weight="700">引擎</text></g>
-                        <g class="coolant-radiator-node"><rect class="coolant-node-frame" x="305" y="55" width="110" height="94" rx="14" fill="#edf7f3" stroke="#57998d" stroke-width="2"/><g class="coolant-radiator-icon" fill="none" stroke="#57998d" stroke-width="2.5"><path d="M327 76h65v8h-65zM327 110h65v8h-65zM331 84v26m9-26v26m9-26v26m9-26v26m9-26v26m9-26v26m9-26v26"/></g><text x="360" y="137" text-anchor="middle" fill="#315b3b" font-size="21" font-weight="700">散熱器</text></g>
-                        <g class="coolant-forward" fill="none" stroke="#c77c37" stroke-width="4" stroke-linecap="round"><path d="M119 102H151" marker-end="url(#coolant-hot-arrow)"/><path d="M269 102H298" marker-end="url(#coolant-hot-arrow)"/></g>
-                        <g class="coolant-fluid"><rect x="158" y="55" width="104" height="94" rx="14" fill="#eef6ef" stroke="#8ab7a2" stroke-width="2"/><path d="M210 70c-7 11-14 19-14 28a14 14 0 0 0 28 0c0-9-7-17-14-28z" fill="#8ab7a2"/><text x="210" y="137" text-anchor="middle" fill="#315b3b" font-size="21" font-weight="700">冷卻液</text></g>
-                        <g class="coolant-return" fill="none" stroke="#57998d" stroke-width="4" stroke-linecap="round"><path d="M360 155V176Q360 190 345 190H74Q60 190 60 176V157" marker-end="url(#coolant-cool-arrow)"/><text x="210" y="216" text-anchor="middle" fill="#315b3b" stroke="none" font-size="18" font-weight="700">降溫後回流</text></g>
-                        <g class="coolant-release" fill="none" stroke="#d79a47" stroke-width="2.5" stroke-linecap="round"><path d="M345 49V28m15 21V22m15 27V28" marker-end="url(#coolant-hot-arrow)"/><text x="360" y="15" text-anchor="middle" fill="#9f5c2b" stroke="none" font-size="18" font-weight="600">熱傳給空氣</text></g>
-                      </svg>
-                      <p class="coolant-mobile-caption" aria-hidden="true">引擎 → 冷卻液 → 散熱器<br>散熱後回到引擎</p>
-                      <div class="coolant-path" role="group" aria-label="查看冷卻液循環步驟"><button class="choice" type="button" data-coolant-stage="engine" aria-pressed="true" aria-controls="coolant-focus" disabled>① 引擎吸熱</button><button class="choice" type="button" data-coolant-stage="radiator" aria-pressed="false" aria-controls="coolant-focus" disabled>② 散熱器放熱</button></div><p class="coolant-focus" id="coolant-focus" role="status">冷卻液流經引擎吸收熱，再把熱帶往散熱器。</p><button class="secondary coolant-retry" type="button" data-life-retry hidden>重新載入場景</button></div>
+                    <div class="life-coolant-model">
+                      <div class="coolant-loop-card">
+                        <svg class="coolant-loop-diagram" viewBox="0 0 600 260" role="img" aria-labelledby="coolant-loop-title coolant-loop-desc">
+                          <title id="coolant-loop-title">冷卻液循環與熱量傳遞</title>
+                          <desc id="coolant-loop-desc">冷卻液在封閉管路中由引擎流向散熱器，再流回引擎。引擎的熱傳給冷卻液，散熱器再將熱傳給空氣。綠色箭頭表示冷卻液流動，橘色箭頭表示熱量傳遞。</desc>
+                          <defs>
+                            <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#168650"/></marker>
+                            <marker id="heat-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e48316"/></marker>
+                          </defs>
+                          <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="#276c6a" stroke-width="29" stroke-linejoin="round"/>
+                          <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="#9ddcda" stroke-width="23" stroke-linejoin="round"/>
+                          <g fill="none" stroke="#168650" stroke-width="5" marker-end="url(#flow-arrow)"><path d="M190 47H230"/><path d="M285 47H325"/><path d="M380 47H420"/><path d="M390 211H350"/><path d="M295 211H255"/><path d="M200 211H160"/></g>
+                          <rect x="40" y="82" width="170" height="94" rx="15" fill="#fff9ef" stroke="#38785c" stroke-width="2"/>
+                          <g fill="none" stroke="#a96737" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M80 113h12l7-10h39l8 9h10v25H84v-8h-7v-13zM101 103v-8h11v8m8 0v-8h11v8M99 112v13m12-13v13m12-13v13m12-13v13"/></g>
+                          <text x="125" y="162" text-anchor="middle" fill="#254e35" font-size="24" font-weight="700">引擎</text>
+                          <rect x="380" y="82" width="150" height="94" rx="15" fill="#f1f8ef" stroke="#38785c" stroke-width="2"/>
+                          <g fill="none" stroke="#38785c" stroke-width="4"><path d="M410 104h90v9h-90zM410 136h90v9h-90zM416 113v23m12-23v23m12-23v23m12-23v23m12-23v23m12-23v23m12-23v23"/></g>
+                          <text x="455" y="166" text-anchor="middle" fill="#254e35" font-size="23" font-weight="700">散熱器</text>
+                          <path d="M157 115 Q178 92 164 59" fill="none" stroke="#fff8e7" stroke-width="11"/><path d="M157 115 Q178 92 164 59" fill="none" stroke="#e48316" stroke-width="6" marker-end="url(#heat-arrow)"/>
+                          <g fill="none" stroke="#e48316" stroke-width="5" marker-end="url(#heat-arrow)"><path d="M534 103h48"/><path d="M534 127h48"/><path d="M534 151h48"/></g>
+                        </svg>
+                        <div class="coolant-labels"><span>引擎的熱傳給冷卻液</span><span>熱傳給空氣</span></div>
+                        <p class="coolant-mobile-flow">冷卻液：引擎 → 散熱器 → 引擎</p>
+                        <p class="coolant-legend"><span>綠色箭頭：冷卻液流動</span><span>橘色箭頭：熱量傳遞</span></p>
+                      </div>
+                      <section class="coolant-compare" aria-labelledby="coolant-compare-title">
+                        <h3 id="coolant-compare-title">同質量、同初溫、吸收相同熱量</h3>
+                        <div class="coolant-comparison" role="img" aria-label="同質量、同初溫，吸收相同熱量時，比熱較大的含水冷卻液升溫較少，比熱較小的液體升溫較多。">
+                          <div class="coolant-sample"><div class="coolant-sample-art"><span class="coolant-heat-input" aria-hidden="true">吸收<br>相同熱量 <b>➜</b></span><div class="coolant-beaker coolant-beaker-water"><span>含水<br>冷卻液</span></div><div class="coolant-rise"><span>升溫</span><div class="coolant-rise-track"><i class="coolant-rise-low"></i></div></div></div><strong>升溫較小</strong></div>
+                          <div class="coolant-sample"><div class="coolant-sample-art"><span class="coolant-heat-input" aria-hidden="true">吸收<br>相同熱量 <b>➜</b></span><div class="coolant-beaker coolant-beaker-other"><span>比熱較小<br>的液體</span></div><div class="coolant-rise"><span>升溫</span><div class="coolant-rise-track"><i class="coolant-rise-high"></i></div></div></div><strong>升溫較大</strong></div>
+                        </div>
+                      </section>
+                      <button class="secondary coolant-retry" type="button" data-life-retry hidden>重新載入場景</button>
+                    </div>
                   </div>
-                  <div class="coolant-key"><h3>水的比熱較大，吸熱時溫升較小</h3><p>相同質量、吸收相同熱量時，水的溫升比比熱較小的物質低。</p></div>
+                  <div class="coolant-key"><h3>為什麼比熱較大有幫助？</h3><p>比熱較大的冷卻液吸收相同熱量時，自身升溫較少，有助於保持比引擎低的溫度，持續吸收並帶走引擎的熱。</p></div>
                   <p class="life-note">場景為 AI 生成，循環為示意。冷卻液通常是水與防凍液的混合液，實際效果也受循環與散熱條件影響。</p>
                 </section>
               </div>

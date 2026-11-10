@@ -68,12 +68,6 @@ if(root){
   }
   const left=at(g.intermediate,-30),right=at(g.intermediate,30);
   out+=`<path data-micro-image-plane d="M${left[0]} ${left[1]}L${right[0]} ${right[1]}" stroke="#f1dba2" stroke-width="2.3" stroke-dasharray="4 5"/>`;
-  if(step!=='objective'&&view!=='objective'){
-   const focusOnLeft=view==='eyepiece'&&box.width>=300,f=at(g.ocularFocus),x=ocular[0]+(focusOnLeft?-82:box.width<420?240:72);
-   out+=`<path d="M${x} ${ocular[1]}V${f[1]}m-6 0h12M${x-6} ${ocular[1]}h12" stroke="#e3c888" fill="none" stroke-width="1.5"/>`;
-   const [fx,fy]=position([x+(focusOnLeft?-22:13),f[1]]);
-   labels+=`<span class="micro-focus-label" style="left:${fx}%;top:${fy}%">F</span>`;
-  }
   const focused=document.activeElement?.dataset.microLens,focusWasLabel=document.activeElement?.classList.contains('micro-label');
   const callout=$('[data-micro-a-callout]');
   const calloutBox=callout.getBoundingClientRect(),startX=calloutBox.right-box.left,startY=calloutBox.top+calloutBox.height/2-box.top;
