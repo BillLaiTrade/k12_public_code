@@ -89,6 +89,14 @@ function selectCoast(next){
   if(assets.coast.phase!=='ready')loadAsset('coast');
 }
 
+const coolantFlowToggle=get('coolant-flow-toggle');
+coolantFlowToggle.addEventListener('click',()=>{
+  const paused=coolantFlowToggle.getAttribute('aria-pressed')!=='true';
+  views.coolant.dataset.flowPaused=String(paused);
+  coolantFlowToggle.setAttribute('aria-pressed',String(paused));
+  coolantFlowToggle.textContent=paused?'播放動畫':'暫停動畫';
+});
+
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
 root.querySelectorAll('[data-coast-mode]').forEach(b=>b.addEventListener('click',()=>selectCoast(b.dataset.coastMode)));
 root.querySelectorAll('[data-chestnut-mode]').forEach(b=>b.addEventListener('click',()=>selectChestnutMode(b.dataset.chestnutMode)));
