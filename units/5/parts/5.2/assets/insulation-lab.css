@@ -779,3 +779,29 @@
  #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
  #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:scale(.55)!important}
 }
+
+/* 展開後收起提示，將瓶身上移，讓剖面動畫更大。 */
+#insulation-lab[data-comparison][data-focus=a] .insulation-inspect-prompt,
+#insulation-lab[data-comparison][data-focus=b] .insulation-inspect-prompt{visibility:hidden}
+#insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+#insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-33px) scale(.66)!important}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:74px}
+#insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:66px;max-height:none}
+@media(min-width:900px){
+ #insulation-lab[data-comparison=lining][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=lining][data-focus=b] .insulation-bottle-grid{transform:translateY(-33px) scale(.60)!important}
+}
+@media(max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-33px) scale(.78)!important}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:106px}
+}
+@media(max-width:370px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-33px) scale(.72)!important}
+}
+@media(min-width:561px) and (max-width:899px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-33px) scale(.55)!important}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:74px}
+}

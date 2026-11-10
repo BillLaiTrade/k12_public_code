@@ -11,3 +11,12 @@ test('所有單元頁面和程式不指向舊展示網站，分享網址與圖�
  }
  assert.ok(pages.length>=25);assert.ok(pagesWithMetadata>=16);assert.ok(images>=28);
 });
+test('2.1 的分享圖片與首頁封面、替代文字及尺寸一致',()=>{
+ const page=path.join(units,'2/parts/2.1/index.html'),html=fs.readFileSync(page,'utf8');
+ const tags=[...html.matchAll(/<(?:meta|img)\b[^>]*>/gi)].map(m=>attrs(m[0]));
+ const meta=key=>tags.find(a=>a.property===key||a.name===key)?.content;
+ const cover=tags.find(a=>a.src==='assets/unit-opening-cover.png');assert.ok(cover);
+ const image=base+'units/2/parts/2.1/'+cover.src;assert.equal(meta('og:image'),image);assert.equal(meta('twitter:image'),image);
+ assert.equal(meta('og:image:alt'),cover.alt);assert.equal(meta('twitter:image:alt'),cover.alt);assert.equal(meta('twitter:card'),'summary_large_image');
+ const png=fs.readFileSync(path.join(units,'2/parts/2.1',cover.src));assert.equal(Number(meta('og:image:width')),png.readUInt32BE(16));assert.equal(Number(meta('og:image:height')),png.readUInt32BE(20));
+});
