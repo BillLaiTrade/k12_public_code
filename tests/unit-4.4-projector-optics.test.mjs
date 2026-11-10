@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {PROJECTOR as G,initialProjector,moveProjector,projectorState,projectorRays,projectorHint,projectorFocusMarks} from '../units/4/parts/4.4/assets/projector-optics.mjs';
+import {PROJECTOR as G,initialProjector,moveProjector,projectorState,projectorRays,projectorHint,projectorFocusMarks,projectorDistanceMarks} from '../units/4/parts/4.4/assets/projector-optics.mjs';
 
 test('鏡片與焦點固定，圖卡和牆面沿光軌移動',()=>{
  const initial={...initialProjector(),kind:'convex'};assert.equal(initialProjector().kind,'concave');
@@ -14,6 +14,7 @@ test('鏡片與焦點固定，圖卡和牆面沿光軌移動',()=>{
  for(const [key,value] of Object.entries({'left-2':.7,'left-1':3.1,'right-1':7.9,'right-2':10.3}))assert.ok(Math.abs(marks[key]-value)<1e-9);
  for(const screen of [G.screenMin,10.3,G.screenMax])assert.deepEqual(projectorFocusMarks({...initial,screen}),marks,'fixed F and 2F marks do not move or disappear with the wall');
  assert.ok(Object.values(projectorFocusMarks({...initial,kind:'concave'})).every(value=>value===null));
+ assert.deepEqual(projectorDistanceMarks(),marks,'distance marks remain fixed for either lens');
 });
 test('固定鏡片下可在牆上形成放大、清楚且正立的實像',()=>{
  const card=G.lens-G.f*6.5/(6.5-G.f),state={...initialProjector(),kind:'convex',card,screen:G.lens+6.5,flipped:true};
