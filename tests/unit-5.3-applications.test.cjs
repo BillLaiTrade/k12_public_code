@@ -69,31 +69,47 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/由引擎流向散熱器，再流回引擎/);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/引擎的熱傳給冷卻液/);
     assert.match(await p.locator('#coolant-compare-title').textContent(),/同質量、同初溫、吸收相同熱量/);
-    assert.match(await p.locator('.coolant-key p').textContent(),/比引擎低的溫度/);
+    assert.match(await p.locator('.coolant-key').textContent(),/比引擎低溫/);
     assert.equal(await p.locator('.coolant-sample').count(),2);
     assert.ok(await p.locator('.coolant-rise-high').evaluate(n=>n.getBoundingClientRect().height)>await p.locator('.coolant-rise-low').evaluate(n=>n.getBoundingClientRect().height));
     assert.match(await p.locator('#application-coolant .life-note').innerText(),/水與防凍液的混合液.*循環與散熱條件/);
     await capture('coolant');
   });
 
-  await t.test('冷卻液流動可暫停與繼續，減少動態時停用動畫',async()=>{
+  await t.test('液流位移與冷暖變化、暫停及減少動態時主動播放',async()=>{
     const page=await browser.newPage({viewport:{width:1366,height:900},ignoreHTTPSErrors:Boolean(remote)});
     try{
       await page.goto(url,{waitUntil:'networkidle'});await page.locator('[data-application=coolant]').click();await ready(page,'coolant');
-      const flow=page.locator('.coolant-flow-streak-color');await flow.scrollIntoViewIfNeeded();
-      const before=await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset);
-      await page.waitForTimeout(350);
-      const after=await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset);
-      assert.notEqual(after,before,'流動紋理應隨時間移動');
+      await page.locator('#coolant-circuit-path').scrollIntoViewIfNeeded();
+      assert.equal(await page.locator('.coolant-packet').count(),12);
+      assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'false');
+      const selected=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y<70&&+e.dataset.x>155&&+e.dataset.x<185);return i<0?false:i+1},null,{timeout:5000});
+      const index=(await selected.jsonValue())-1,packet=page.locator('.coolant-packet').nth(index);
+      const before=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
+      await page.waitForTimeout(400);
+      const after=await packet.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
+      assert.ok(after.x>before.x+10,'液流應向散熱器方向移動');
+      assert.ok(after.warmth>before.warmth,'同一段液流經引擎後應逐漸變暖');assert.notEqual(after.fill,before.fill);
+      const coolingHandle=await page.waitForFunction(()=>{const items=[...document.querySelectorAll('.coolant-packet')];const i=items.findIndex(e=>+e.dataset.y>185&&+e.dataset.x>395&&+e.dataset.x<420);return i<0?false:i+1},null,{timeout:5000});
+      const cooling=page.locator('.coolant-packet').nth((await coolingHandle.jsonValue())-1);
+      const coolBefore=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));await page.waitForTimeout(400);
+      const coolAfter=await cooling.evaluate(e=>({x:+e.dataset.x,warmth:+e.dataset.warmth,fill:e.firstElementChild.getAttribute('fill')}));
+      assert.ok(coolAfter.x<coolBefore.x-10,'液流應從散熱器流回引擎');assert.ok(coolAfter.warmth<coolBefore.warmth,'同一段液流經散熱器後應逐漸變冷');assert.notEqual(coolAfter.fill,coolBefore.fill);
       await page.locator('#coolant-flow-toggle').click();assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'true');
-      assert.equal(await flow.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
-      await page.waitForTimeout(100);const stopped=await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset);await page.waitForTimeout(300);
-      assert.equal(await flow.evaluate(e=>getComputedStyle(e).strokeDashoffset),stopped);
-      await page.locator('#coolant-flow-toggle').click();assert.equal(await flow.evaluate(e=>getComputedStyle(e).animationPlayState),'running');
-      assert.match(await page.locator('.coolant-temperature-key').innerText(),/黃色：較暖[\s\S]*藍色：較冷[\s\S]*顏色為示意/);
+      await page.waitForTimeout(100);const stopped=await packet.getAttribute('transform');await page.waitForTimeout(300);assert.equal(await packet.getAttribute('transform'),stopped);
+      await page.locator('#coolant-flow-toggle').click();assert.equal(await page.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'false');
+      await page.waitForTimeout(300);assert.notEqual(await packet.getAttribute('transform'),stopped);
+      assert.match(await page.locator('.coolant-temperature-key').innerText(),/藍色：較冷[\s\S]*黃色：較暖[\s\S]*示意/);
     }finally{await page.close()}
-    const reduced=await browser.newPage({reducedMotion:'reduce',ignoreHTTPSErrors:Boolean(remote)});
-    try{await reduced.goto(url,{waitUntil:'networkidle'});await reduced.locator('[data-application=coolant]').click();await ready(reduced,'coolant');assert.equal(await reduced.locator('.coolant-flow-streak').first().evaluate(e=>getComputedStyle(e).animationName),'none');assert.equal(await reduced.locator('#coolant-flow-toggle').isVisible(),false);}finally{await reduced.close()}
+    const reduced=await browser.newPage({viewport:{width:1366,height:900},reducedMotion:'reduce',ignoreHTTPSErrors:Boolean(remote)});
+    try{
+      await reduced.goto(url,{waitUntil:'networkidle'});await reduced.locator('[data-application=coolant]').click();await ready(reduced,'coolant');
+      const packet=reduced.locator('.coolant-packet').first();await packet.scrollIntoViewIfNeeded();
+      assert.equal(await reduced.locator('#coolant-flow-toggle').isVisible(),true);assert.equal(await reduced.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'true');
+      const stopped=await packet.getAttribute('transform');await reduced.waitForTimeout(250);assert.equal(await packet.getAttribute('transform'),stopped);
+      await reduced.locator('#coolant-flow-toggle').click();assert.equal(await reduced.locator('#coolant-flow-toggle').getAttribute('aria-pressed'),'false');
+      await reduced.waitForTimeout(350);assert.notEqual(await packet.getAttribute('transform'),stopped);
+    }finally{await reduced.close()}
   });
 
   await t.test('圖片失敗隔離在當情境，重試恢復不自動開始；日夜晚到回應不覆蓋新模式',async()=>{

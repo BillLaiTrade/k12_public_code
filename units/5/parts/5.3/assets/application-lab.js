@@ -59,6 +59,7 @@ function selectApplication(key){
   if(!(key in views))return;
   current=key;root.dataset.scene=key;get('application-question').textContent=key==='coast'?coastQuestion():questions[key];
   Object.entries(views).forEach(([name,view])=>view.hidden=name!==key);
+  syncCoolantFlow();
   root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.application===key)));
   if(assets[key].phase!=='ready')loadAsset(key);
 }
@@ -90,12 +91,59 @@ function selectCoast(next){
 }
 
 const coolantFlowToggle=get('coolant-flow-toggle');
-coolantFlowToggle.addEventListener('click',()=>{
-  const paused=coolantFlowToggle.getAttribute('aria-pressed')!=='true';
-  views.coolant.dataset.flowPaused=String(paused);
-  coolantFlowToggle.setAttribute('aria-pressed',String(paused));
-  coolantFlowToggle.textContent=paused?'播放動畫':'暫停動畫';
+const coolantFlowStatus=get('coolant-flow-status');
+const coolantCircuit=get('coolant-circuit-path');
+const coolantPackets=get('coolant-flow-packets');
+const coolantMotionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+let coolantPaused=coolantMotionPreference.matches, coolantUserSet=false;
+let coolantInView=!('IntersectionObserver' in window),coolantFrame=0,coolantLastTime=null,coolantDistance=0;
+const coolantLength=coolantCircuit.getTotalLength();
+const coolantPacketElements=Array.from({length:12},()=>{
+  const group=document.createElementNS('http://www.w3.org/2000/svg','g');
+  const body=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  const shine=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  body.setAttribute('x','-12');body.setAttribute('y','-7');body.setAttribute('width','24');body.setAttribute('height','14');body.setAttribute('rx','7');body.setAttribute('stroke','#fff');body.setAttribute('stroke-width','1.4');
+  shine.setAttribute('x','-7');shine.setAttribute('y','-3');shine.setAttribute('width','13');shine.setAttribute('height','2');shine.setAttribute('rx','1');shine.setAttribute('fill','#ffffff');shine.setAttribute('opacity','.75');
+  group.append(body,shine);group.classList.add('coolant-packet');coolantPackets.append(group);return {group,body};
 });
+const clamp01=n=>Math.max(0,Math.min(1,n));
+function coolantWarmth(point){
+  if(point.y<72)return clamp01((point.x-145)/95);
+  if(point.y>185)return clamp01((point.x-330)/95);
+  return clamp01((200-point.y)/125);
+}
+function renderCoolantFlow(){
+  coolantPacketElements.forEach(({group,body},index)=>{
+    const distance=(coolantDistance+index*coolantLength/coolantPacketElements.length)%coolantLength;
+    const point=coolantCircuit.getPointAtLength(distance),next=coolantCircuit.getPointAtLength((distance+1)%coolantLength);
+    const angle=Math.atan2(next.y-point.y,next.x-point.x)*180/Math.PI, warmth=coolantWarmth(point);
+    const rgb=[[18,255],[132,165],[192,20]].map(([cool,warm])=>Math.round(cool+(warm-cool)*warmth));
+    group.setAttribute('transform',`translate(${point.x.toFixed(2)} ${point.y.toFixed(2)}) rotate(${angle.toFixed(1)})`);
+    group.dataset.warmth=warmth.toFixed(3);group.dataset.x=point.x.toFixed(2);group.dataset.y=point.y.toFixed(2);
+    body.setAttribute('fill',`rgb(${rgb.join(',')})`);
+  });
+}
+function coolantTick(now){
+  coolantFrame=0;
+  if(coolantPaused||current!=='coolant'||!coolantInView||document.hidden){coolantLastTime=null;return;}
+  if(coolantLastTime!==null)coolantDistance=(coolantDistance+Math.min(now-coolantLastTime,100)*.16)%coolantLength;
+  coolantLastTime=now;renderCoolantFlow();coolantFrame=requestAnimationFrame(coolantTick);
+}
+function syncCoolantFlow(){
+  const running=!coolantPaused&&current==='coolant'&&coolantInView&&!document.hidden;
+  if(running&&!coolantFrame)coolantFrame=requestAnimationFrame(coolantTick);
+  if(!running){if(coolantFrame)cancelAnimationFrame(coolantFrame);coolantFrame=0;coolantLastTime=null;}
+}
+function updateCoolantControls(){
+  coolantFlowToggle.disabled=false;coolantFlowToggle.setAttribute('aria-pressed',String(coolantPaused));
+  coolantFlowToggle.textContent=coolantPaused?'播放動畫':'暫停動畫';
+  coolantFlowStatus.textContent=coolantPaused?(coolantMotionPreference.matches&&!coolantUserSet?'依裝置設定暫停，可按播放查看。':'動畫已暫停。'):'液流循環中';
+}
+coolantFlowToggle.addEventListener('click',()=>{coolantUserSet=true;coolantPaused=!coolantPaused;updateCoolantControls();syncCoolantFlow();});
+coolantMotionPreference.addEventListener('change',event=>{if(!coolantUserSet){coolantPaused=event.matches;updateCoolantControls();syncCoolantFlow();}});
+if('IntersectionObserver' in window)new IntersectionObserver(entries=>{coolantInView=entries[0].isIntersecting;syncCoolantFlow();},{threshold:.01}).observe(get('coolant-circuit-path'));
+document.addEventListener('visibilitychange',syncCoolantFlow);
+renderCoolantFlow();updateCoolantControls();
 
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
 root.querySelectorAll('[data-coast-mode]').forEach(b=>b.addEventListener('click',()=>selectCoast(b.dataset.coastMode)));
