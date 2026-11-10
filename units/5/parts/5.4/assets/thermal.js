@@ -183,8 +183,8 @@ function renderChem(){
  const radius=white*145;document.querySelectorAll('#chem-mask-spots circle').forEach((c,i)=>c.setAttribute('r',String(radius*chemUnit((white*2.1-i*.10)))));
  $('chem-mask-complete').setAttribute('opacity',String(chemEase((white-.86)/.14)));
  const heatOut=chemEase((t-25)/1.5)*(1-chemEase((t-31)/2));
- $('chem-arrow-in').setAttribute('opacity',String(flame));$('chem-arrow-out').setAttribute('opacity',String(heatOut));
- lab.style.setProperty('--chem-in',flame);lab.style.setProperty('--chem-out',heatOut);
+ $('chem-arrow-out').setAttribute('opacity',String(heatOut));
+ lab.style.setProperty('--chem-out',heatOut);
  const stage=t<5?0:t<18?1:t<25?2:3;
  const title=['加熱前','加熱脫水','冷卻後加水','水合反應'][stage];
  const notes=['藍色含水硫酸銅放在容器中，酒精燈移向下方。','熱傳入樣品，藍色固體逐漸變白；水蒸氣在較冷處凝結，這個反應吸熱。','停止加熱，樣品冷卻後，滴管移到容器上方加入水。','白色無水硫酸銅與水反應，逐漸生成藍色含水硫酸銅，熱傳向周圍，這個反應放熱。'];
