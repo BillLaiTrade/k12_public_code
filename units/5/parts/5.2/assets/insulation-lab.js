@@ -141,7 +141,7 @@
       const image=new Image();image.onload=()=>{if(request!==a.request)return;a.status=image.naturalWidth?'ready':'error';if(a.status==='ready')a.url=url;render();};image.onerror=()=>{if(request!==a.request)return;a.status='error';render();};image.src=url;
     });render();
   }
-  play.addEventListener('click',()=>{if(playing)stop();else start();});sources.forEach((n,index)=>n.addEventListener('click',()=>{const selected=['a','b'][index];inspectedLayer=inspectedLayer===selected?null:selected;render();}));$('insulation-reset').addEventListener('click',reset);
+  play.addEventListener('click',()=>{if(playing)stop();else start();});sources.forEach((n,index)=>n.addEventListener('click',()=>{if(assetState()!=='ready')return;const selected=['a','b'][index];inspectedLayer=inspectedLayer===selected?null:selected;render();}));$('insulation-reset').addEventListener('click',reset);
   root.querySelectorAll('[data-insulation-comparison]').forEach(n=>n.addEventListener('click',()=>{if(n.dataset.insulationComparison===comparison)return;stop();comparison=n.dataset.insulationComparison;inspectedLayer=null;time=0;root.querySelector('details').open=false;render();loadAssets();}));
   document.addEventListener('pointerdown',event=>{if(inspectedLayer===null)return;const target=event.target;if(!(target instanceof Element)||target.closest('.insulation-bottle-hit, #insulation-mechanism, #insulation-lining-focus, .insulation-control-row, .insulation-tabs'))return;inspectedLayer=null;render();});
   $('insulation-retry').addEventListener('click',()=>loadAssets(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();updateCloseup();});addEventListener('pagehide',stop);
