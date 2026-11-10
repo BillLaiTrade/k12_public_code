@@ -7,6 +7,7 @@ export const accommodationFor=distance=>100*(requiredPower(EYE[distance])-minPow
 export const initialEye=()=>({distance:'far',accommodation:Math.round(accommodationFor('far')),rays:true,point:'both'});
 export function changeEye(state,key,value){
  if(key==='distance'&&!['far','near'].includes(value)||key==='point'&&!['both','top','bottom'].includes(value))return state;
+ if(key==='distance')return {...state,distance:value,accommodation:Math.round(accommodationFor(value))};
  if(key==='accommodation'){if(!Number.isFinite(value))return state;value=Math.max(0,Math.min(100,value));}
  return ['distance','accommodation','rays','point'].includes(key)?{...state,[key]:value}:state;
 }

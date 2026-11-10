@@ -1,0 +1,7 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),{openBench}=require('./helpers/convex-bench-fixture.cjs');
+test('正常眼睛切換遠近時自動對焦，仍可手動觀察',{timeout:120000},async t=>{
+ const {p,frame,errors}=await openBench(t),root=p.locator('#lab7'),slider=root.locator('[data-eye-accommodation]');
+ const read=()=>root.evaluate(r=>({distance:r.dataset.distance,value:Number(r.dataset.accommodation),clear:r.dataset.clear,retina:r.querySelector('[data-eye-retina]').getAttribute('d'),lens:r.querySelector('[data-eye-lens]').getAttribute('d'),target:Number(r.querySelector('[data-eye-clear]').dataset.target),rays:r.dataset.rays,point:r.dataset.point}));
+ const far=await read();assert.equal(far.clear,'true');await root.locator('[data-eye-distance=near]').click();await frame();const near=await read();assert.equal(near.distance,'near');assert.equal(near.clear,'true');assert.equal(near.value,near.target);assert.ok(near.value>far.value);assert.notEqual(near.lens,far.lens);assert.equal(near.retina,far.retina);
+ await slider.fill('20');await frame();assert.equal((await read()).clear,'false');await root.locator('[data-eye-point=bottom]').click();await root.locator('[data-eye-rays]').click();await root.locator('[data-eye-distance=far]').click();await frame();const again=await read();assert.equal(again.clear,'true');assert.equal(again.value,again.target);assert.equal(again.point,'bottom');assert.equal(again.rays,'false');assert.equal(again.retina,far.retina);assert.deepEqual(errors,[]);
+});

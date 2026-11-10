@@ -1,5 +1,5 @@
 import {createEyeModel} from './eye-model.mjs?v=20261105-correction3';
-import {EYE,initialEye,changeEye,eyeState,accommodationFor} from './eye-optics.mjs?v=20261110-clear-center1';
+import {EYE,initialEye,changeEye,eyeState,accommodationFor} from './eye-optics.mjs?v=20261110-auto-focus1';
 const root=document.querySelector('[data-eye-lab]');
 if(root){
  const $=s=>root.querySelector(s),$$=s=>[...root.querySelectorAll(s)],svg=$('[data-eye-scene]'),preview=$('[data-eye-preview]');
