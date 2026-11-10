@@ -48,7 +48,6 @@
 .camera-hint,.camera-result { margin:0; padding:9px 12px; border-radius:9px; background:#fff8e5; color:#4b5837; font-size:.8rem; line-height:1.6; }
 .camera-hint { border-left:3px solid #d3af57; } .camera-hint ol { margin:0 0 6px; padding-left:22px; } .camera-hint li+li { margin-top:4px; } .camera-hint a { color:#35634d; }
 .camera-result { border:1px solid #dbc38b; } .camera-result[data-success=true] { border-color:#a4bd8d; background:#eef4e2; }
-.camera-note { margin-top:12px; font-size:.75rem; }
 @container (max-width:640px) { .camera-quiz .quiz-head { grid-template-columns:40px minmax(0,1fr); gap:9px; padding:12px; } .camera-quiz .quiz-mark { width:38px; height:38px; } .camera-quiz .quiz-head h2 { font-size:1.24rem; } .camera-quiz .quiz-body { padding:8px; } .camera-stage-tools { top:6px; left:6px; right:6px; } .camera-stage-tools button { min-height:30px; font-size:.68rem; padding:4px 7px; } .camera-dock { padding:8px; } .camera-plot { margin:0 38px; } .camera-marker { font-size:.64rem; padding:3px 5px; } .camera-marker[data-camera-marker=sensor] { top:0; } .camera-marker[data-camera-marker=lens] { top:22px; } .camera-marker[data-camera-marker=lens]::after { height:3px; } .camera-marker[data-camera-marker=lens]::before { top:calc(100% + 3px); } }
 
 /* A tactile cutaway keeps the optical elements readable without obscuring them. */

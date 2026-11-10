@@ -88,7 +88,6 @@
 .projector-hint-list { margin:0; padding-left:1.35rem; }
 .projector-hint-list li+li { margin-top:3px; }
 .projector-hint a { display:inline-block; margin-left:6px; color:#35634d; }
-.projector-quiz .projector-note { margin:12px 0 0; font-size:.75rem; }
 .projector-quiz button:focus-visible { outline:3px solid #c59534; outline-offset:3px; }
 @container (max-width:640px) {
  .projector-quiz .quiz-head { grid-template-columns:40px minmax(0,1fr); gap:9px; padding:12px; }
@@ -167,7 +166,6 @@
 .projector-rail-device-lens { top:57px; }
 .projector-rail-device-lens::before { height:18px; }
 .projector-footer button { min-height:38px; padding:6px 14px; }
-.projector-quiz .projector-note { margin-top:6px; }
 .projector-tools-left { display:flex; align-items:flex-start; flex-wrap:wrap; gap:6px; min-width:0; }
 .projector-tools-left .projector-lenses { gap:4px; }
 .projector-tools-left .projector-lenses button { flex:0 0 auto; min-width:66px; min-height:36px; padding:5px 8px; font-size:.72rem; }

@@ -684,3 +684,17 @@
 @media(hover:hover){#insulation-lab .insulation-bottle-canvas:has(.insulation-bottle-hit:not(:disabled):hover) .insulation-selected-layer{opacity:.6}}
 #insulation-lab[data-comparison] .insulation-bottle-hit:focus-visible{outline:3px solid #315b40;outline-offset:2px}
 #insulation-lab[data-comparison] .insulation-bottle-view:has(.insulation-bottle-hit[aria-pressed=true]) .insulation-inspect-hint{display:inline;visibility:visible}
+
+/* 只在展開時安排局部圖，讓待機畫面依器材內容決定高度。 */
+#insulation-lab[data-comparison] .insulation-mechanism-slot{display:none}
+#insulation-lab[data-comparison] .insulation-scene>#insulation-mechanism:not([hidden]),
+#insulation-lab[data-comparison] .insulation-scene>#insulation-lining-focus:not([hidden]){position:relative;inset:auto;flex:none;width:auto;margin:8px 12px 10px;transform:none}
+#insulation-lab[data-comparison] .insulation-bottle-grid{transform:none!important}
+#insulation-lab[data-comparison] .insulation-bottle-canvas,
+#insulation-lab[data-comparison] .insulation-bottle-view figcaption{transform:none!important}
+@media(min-width:900px){
+ #insulation-lab[data-comparison] .insulation-scene{flex:none}
+ #insulation-lab[data-comparison] .insulation-scene .insulation-bottle-grid{flex:none;align-content:start}
+ #insulation-lab[data-comparison] .insulation-chart-block{align-self:start;grid-template-rows:auto 195px auto;margin-bottom:10px}
+ #insulation-lab[data-comparison] .insulation-chart-block .insulation-plot{height:195px;min-height:195px}
+}
