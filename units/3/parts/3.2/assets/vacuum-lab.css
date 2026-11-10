@@ -1,0 +1,58 @@
+/* 教學外框、側欄、標題與重點使用第一區塊的共用版型。 */
+#card-03 .card-main{container-type:inline-size}
+.vacuum-figure{margin:0;padding:8px;border:1px solid #9da86f;border-radius:18px;background:#f8f5e7;overflow:hidden}
+.vacuum-scene{container-type:inline-size;position:relative;isolation:isolate;aspect-ratio:1918/820;overflow:hidden;border-radius:14px}
+.vacuum-photo{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.vacuum-overlay{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+.vacuum-chip,.vacuum-air-readout{position:absolute;z-index:3;pointer-events:none;line-height:1.4}
+.vacuum-chip{right:2%;top:4%;padding:6px 14px;border:1px solid #caa34e;border-radius:999px;background:#fff0bd;color:#6c4910;font-size:.85rem;font-weight:750}
+.vacuum-air-readout{left:84%;top:29%;width:15%;padding:7px 5px;border:1px solid #a3b37f;border-radius:10px;background:#fffff2ed;text-align:center;color:#294936;font-size:clamp(.58rem,2cqw,.8rem)}
+.vacuum-air-readout strong{display:block;margin-top:2px;font-size:clamp(.65rem,2.4cqw,1rem);white-space:nowrap;color:#164836}
+.vacuum-hotspot{position:absolute;z-index:2;min-width:44px;min-height:44px;padding:0;border:2px solid transparent;border-radius:14px;background:transparent;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.vacuum-hotspot:hover:not(:disabled){background:#ffffe714}
+.vacuum-hotspot:focus-visible{outline:3px solid #bb861f;outline-offset:-3px;background:#fff8d41f}
+.vacuum-pump-hit{left:62.5%;top:44%;width:20%;height:40%}
+.vacuum-valve-hit{left:44.5%;top:64%;width:7%;height:18%}
+.vacuum-hotspot:disabled{cursor:default}
+/* 外殼與接觸陰影在照片內，名稱與七段讀值獨立更新。 */
+.vacuum-spl-meter{position:absolute;left:3.2%;top:61.3%;width:16.2%;height:16.4%;pointer-events:none}
+.vacuum-meter-display{display:block;width:100%;height:100%;overflow:visible}
+.vacuum-meter-title{fill:#f4f0e9;font-size:34px;font-family:inherit;font-weight:700}
+.vacuum-meter-unit{fill:#ff413a;font-size:36px;font-family:Arial,sans-serif}
+.vacuum-led-segment{fill:#361410}
+.vacuum-led-segment.is-lit{fill:#ff4035;filter:drop-shadow(0 0 3px #ff332b99)}
+.vacuum-meter-accessible{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.vacuum-controls{justify-content:flex-start;gap:9px}
+.vacuum-switch{display:flex;align-items:center;justify-content:center;gap:14px;min-height:44px;padding:4px 12px;border:1px solid #dddccb;border-radius:15px;background:#faf9ed;color:#273d35;font-weight:650}
+.vacuum-switch-track{display:flex;align-items:center;justify-content:flex-end;position:relative;width:72px;height:35px;border-radius:999px;background:#899789;color:#fff;padding:0 8px}
+.vacuum-switch-track b{font-size:.8rem;line-height:1}
+.vacuum-switch-track i{position:absolute;left:4px;top:4px;width:27px;height:27px;border-radius:50%;background:#fffef7;box-shadow:0 2px 4px #0003;transition:transform .15s}
+.vacuum-switch[aria-checked="true"] .vacuum-switch-track{justify-content:flex-start;background:#165d3f}
+.vacuum-switch[aria-checked="true"] .vacuum-switch-track i{transform:translateX(37px)}
+.vacuum-control{display:flex;align-items:center;justify-content:center;gap:12px;min-width:115px;min-height:44px;border-radius:13px;font-size:1rem;touch-action:manipulation}
+.vacuum-control svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.vacuum-control:disabled{opacity:.45;cursor:default}
+.vacuum-control[aria-pressed="true"]{box-shadow:0 0 0 3px #a5cba08c}
+.vacuum-instruction,.vacuum-status{margin:6px 0;font-size:.86rem;color:var(--muted)}
+.vacuum-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.vacuum-status.vacuum-status-error{position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;color:#8b4b1c}
+.vacuum-model-note{margin:9px 0 0;font-size:.79rem;color:#6e776e}
+@media(max-width:640px){
+ .vacuum-figure{padding:5px;border-radius:13px}
+ .vacuum-scene{border-radius:10px}
+ .vacuum-chip{font-size:.62rem;padding:3px 7px;right:2%;top:3%}
+ .vacuum-air-readout{left:82%;width:17%;top:29%;padding:3px 2px;border-radius:5px}
+ .vacuum-air-readout strong{font-size:clamp(.58rem,2.6vw,.68rem);white-space:nowrap}
+ .vacuum-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+ .vacuum-switch{grid-column:1/-1;justify-self:start;padding:4px 12px;min-height:48px}
+ .vacuum-control{min-width:0;min-height:49px;font-size:1rem;padding:8px 10px;gap:8px}
+ .vacuum-control svg{width:23px;height:23px}
+ .vacuum-instruction,.vacuum-status{font-size:.8rem}
+ .vacuum-model-note{font-size:.73rem}
+}
+
+@container(max-width:550px){
+ .vacuum-controls{display:grid;grid-template-columns:1fr 1fr}
+ .vacuum-switch{grid-column:1/-1;justify-self:start}
+ .vacuum-control{min-width:0}
+}

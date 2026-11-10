@@ -1,0 +1,646 @@
+:root{color-scheme:light;--ink:#182326;--muted:#59696b;--line:#d7e1dd;--paper:#f4f7f1;--card:#fffefa;--green:#176b53;--shadow:0 14px 38px rgb(21 47 38 / 8%);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);line-height:1.7}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--green)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #c78e31;outline-offset:3px}
+button:disabled{opacity:.48;cursor:default}
+[hidden]{display:none!important}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.activity-load{margin:16px 28px;padding:12px 16px;border:1px solid #d9e2cd;border-radius:10px;background:#f2f6eb;color:#365b45;font-size:.9rem}
+[data-activity-state=error]>.activity-load{border-color:#e4cfaa;background:#fff3dc;color:#795b2b}
+.shell{width:min(1120px,calc(100% - 40px));margin:0 auto}
+.masthead{padding:26px 0 18px}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-size:.9rem;font-weight:750;letter-spacing:.04em}
+.crumb{font-size:.9rem;color:var(--muted)}
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(320px,1.1fr);align-items:center;gap:32px;padding:44px 0 38px}
+.eyebrow{color:var(--green);font-size:.82rem;font-weight:800;letter-spacing:.12em;margin:0 0 10px}
+h1{margin:8px 0 14px;font-size:clamp(2rem,4.4vw,3.7rem);line-height:1.18;letter-spacing:-.04em}
+.hero p:not(.eyebrow){max-width:660px;color:var(--muted);font-size:1.08rem}
+.story-opening-figure{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow)}
+.story-opening-figure img{display:block;width:100%;height:auto}
+.story-opening-figure figcaption{padding:9px 13px;color:var(--muted);font-size:.84rem}
+.lesson{padding:34px 0 80px}
+.lesson-layout{display:grid;grid-template-columns:minmax(205px,250px) minmax(0,1fr);gap:34px;align-items:start}
+.route{position:sticky;top:24px;align-self:start;max-height:calc(100svh - 48px);overflow-y:auto;padding:8px 12px 12px 0;scrollbar-width:thin}
+.route-label{font-size:.74rem;letter-spacing:.08em;color:var(--muted);margin:0 0 10px}
+.route-inner{display:grid;gap:4px}
+.route a{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:8px;padding:10px 11px;border:1px solid transparent;border-left:3px solid transparent;border-radius:0 10px 10px 0;color:var(--muted);font-size:.86rem;line-height:1.45;text-decoration:none}
+.route a:hover{border-color:var(--line)}
+.route a[aria-current=step]{border-left-color:var(--green);background:#e7eee0;color:#315a46;font-weight:750}
+.route b{color:var(--green);font-size:.76rem;font-weight:650}
+.next-hint{font-size:.9rem;color:var(--muted)}
+.route a.quiz-nav{margin-top:12px;border-top:1px solid var(--line);padding-top:17px;color:#8a6726;font-weight:750}
+.route a.quiz-nav b{color:#946f2d}
+.route a.quiz-nav[aria-current=step]{border-left-color:#d9a74f;background:#faf3e4;color:#795b25;box-shadow:inset 3px 0 #d9a74f}
+.cards{display:grid;gap:20px;min-width:0}
+.section-top{display:flex;align-items:end;margin:0 0 18px}
+.section-top h2{margin:0;font-size:1.35rem}
+.lesson-card{position:relative;min-width:0;display:block;margin:0;padding:0;overflow:hidden;border:1px solid #d8e2da;border-radius:20px;background:#fffefa;color:#1c2927;line-height:1.72;box-shadow:0 10px 28px rgb(24 52 40 / 7%);scroll-margin-top:100px}
+.card-main{min-width:0}
+.card-main h3{font-size:1rem;margin:0 0 5px}
+.card-main>p{color:var(--muted);margin:0 0 18px}
+.dialogue{display:flex;gap:10px;align-items:center;margin:12px 0;padding:11px 15px;border-left:4px solid #8cae91;border-radius:0 13px 13px 0;background:#f0f5eb}
+.dialogue p{margin:0}
+.speaker{display:block;flex:0 0 48px;width:48px;height:48px;border:2px solid #8cae91;border-radius:50%;background-image:url('../../../../../shared-assets/characters/dialogue-character-avatars.png?v=clean-shaven-grandpa');background-repeat:no-repeat;background-position:100% 50%;background-size:200% 100%;box-shadow:0 2px 6px rgb(21 47 38 / 12%)}
+.dialogue--xiaokui{border-left-color:#d39765;background:#fff4e8}
+.dialogue--xiaokui .speaker{border-color:#d39765;background-position:0 50%}
+.compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.compare-card{display:flex;flex-direction:column;padding:15px;border:1px solid var(--line);border-radius:16px;background:#fff;min-width:0}
+.minor{font-size:.84rem;color:var(--muted);min-height:2.5em;margin:0}
+.wave-panel{margin:12px 0 16px;min-width:0}
+.wave-label{display:block;margin-left:8.333%;color:var(--muted);font-size:.75rem}
+.wave{display:block;width:100%;height:100px;overflow:visible;margin:0}
+.wave-ticks{position:relative;height:1.7em;color:var(--muted);font-size:.75rem;font-variant-numeric:tabular-nums}
+.wave-ticks span{position:absolute;left:8.333%;transform:translateX(-50%);white-space:nowrap}
+.wave-ticks span:nth-child(2){left:50%}
+.wave-ticks span:nth-child(3){left:91.667%}
+.wave .signal{stroke:#217663;stroke-width:2;fill:none;vector-effect:non-scaling-stroke}
+.wave .axis{stroke:#c9d5cc;stroke-width:1;fill:none;vector-effect:non-scaling-stroke}
+.wave .grid{stroke:#edf1ed;stroke-width:1;fill:none;vector-effect:non-scaling-stroke}
+.play,.secondary{min-height:44px;border-radius:13px;padding:9px 16px;font-weight:750}
+.play{background:var(--green);border:0;color:#fff}
+.play:hover{background:#105640}
+.secondary{border:1px solid var(--line);background:#fff;color:var(--ink)}
+.compare-card .play{width:100%;margin-top:auto}
+.slider{display:grid;grid-template-columns:auto auto;align-items:center;gap:5px 10px;font-size:.91rem;margin:15px 0;font-weight:700}
+.slider output{text-align:right;font-variant-numeric:tabular-nums;color:var(--green)}
+.slider input{grid-column:1/-1;width:100%;accent-color:var(--green);min-height:30px}
+.card-main>.model-note{font-size:.84rem;color:var(--muted);margin:12px 0}
+.pitch-notes,.decibel-notes{margin:12px 0;color:var(--muted);font-size:.84rem}
+.pitch-notes summary,.decibel-notes summary{width:fit-content;cursor:pointer}
+.pitch-notes p,.decibel-notes p{margin:8px 0}
+.lab-tools,.button-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:14px 0}
+.play-state{font-size:.87rem;color:var(--muted)}
+.instrument-panel{margin:17px 0;padding:16px;border:1px solid var(--line);border-radius:16px;background:#f4f6ef}
+.apparatus{display:block;width:100%;height:auto}
+.apparatus-caption{margin:0 0 12px;color:#31594a;font-size:.84rem;text-align:center}
+.instrument-controls{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.result-readout{font-size:1rem;color:var(--green);font-weight:650}
+.result-readout output{font-variant-numeric:tabular-nums}
+.timbre-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.timbre-grid .compare-card{padding:12px}
+.timbre-grid .minor{min-height:4em}
+.timbre-grid .play{padding:9px 8px;font-size:.9rem}
+.hearing-main{padding:18px;border-radius:16px;background:#eaf3ed;text-align:center}
+.hearing-main>span{font-size:.9rem}
+.hearing-main strong{display:block;font-size:clamp(1.4rem,3vw,2rem);color:var(--green)}
+.hearing-main small{font-size:1rem}
+.hearing-main p{margin:4px 0;font-size:.84rem;color:var(--muted)}
+.hearing-band{display:grid;grid-template-columns:1fr 2fr 1fr;gap:5px;margin:10px 0}
+.hearing-band span{padding:12px 5px;border-radius:8px;background:#ecedef;text-align:center;font-size:.84rem}
+.hearing-band span:nth-child(2){background:#dcecdf;color:#1e6048}
+.frequency-options button[aria-pressed=true],.level-card[aria-pressed=true]{border-color:var(--green);background:#e7f1e6;color:#135139}
+.observation{padding:14px 16px;border-left:4px solid #b8cda9;background:#f0f5eb;border-radius:0 12px 12px 0}
+.animal-grid,.level-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.animal-grid p{margin:0;padding:12px;background:#f2f5f2;border-radius:12px;font-size:.87rem}
+.animal-grid strong{display:block}
+.level-card{border:1px solid var(--line);border-radius:13px;padding:16px 8px;background:#fff;color:var(--ink);text-align:center}
+.level-card>span{display:block;font-size:.9rem}
+.level-card strong{display:block;font-size:1.25rem}
+.level-card small{font-size:.8rem}
+.explanation-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.explanation-grid p{padding:15px;border-radius:16px;background:#f5f0e5;font-size:.9rem}
+.explanation-grid strong{display:block;margin-bottom:6px}
+.quiz{margin:0 0 28px;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--card);box-shadow:var(--shadow);scroll-margin-top:24px}
+.quiz-head{display:flex;align-items:flex-start;gap:18px;padding:25px 28px 21px;border-bottom:1px solid #e7ece5;background:linear-gradient(105deg,#fffdf6,#fdfbf3)}
+.quiz-mark{display:grid;width:50px;height:50px;flex:none;place-items:center;border-radius:15px;background:#f5ead0;color:#8b6725;font-size:1.45rem;font-weight:800}
+.quiz-kicker{margin:0 0 4px;color:#946f2d;font-size:.82rem;font-weight:800;letter-spacing:.06em}
+.quiz-head h2{margin:0;font-size:clamp(1.22rem,2vw,1.65rem);line-height:1.35}
+.quiz-head p:not(.quiz-kicker){margin:8px 0 0;color:var(--muted);font-size:.94rem}
+.quiz-body{padding:23px 28px 28px}
+.quiz-brief h3{margin:0}
+.quiz-brief>p{padding:14px 16px;background:#f0f5eb;border-radius:12px}
+.quiz-selects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.quiz-selects label{display:grid;gap:5px;font-size:.91rem;font-weight:700}
+.quiz-selects select{width:100%;min-width:0;min-height:44px;padding:8px 11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+#quiz-feedback{padding:11px 13px;border-radius:10px;background:#faf3e4;color:#755a2d;font-size:.92rem}
+#quiz-feedback[data-state=correct]{background:#e8f3e8;color:var(--green)}
+.foot{padding:28px 0 44px;color:var(--muted);font-size:.86rem;border-top:1px solid var(--line)}
+.foot p{margin:0 0 12px}
+.foot details p{max-width:900px}
+.foot summary{cursor:pointer}
+
+@media(max-width:1100px) and (min-width:761px){
+.lesson-layout{grid-template-columns:205px minmax(0,1fr);gap:24px}
+.lesson-card{scroll-margin-top:160px}
+.hero{gap:24px}
+.compare-grid,.instrument-controls{grid-template-columns:1fr}
+.instrument-controls{gap:0}
+.timbre-grid{grid-template-columns:1fr}
+.timbre-grid .minor{min-height:0}
+.timbre-grid .compare-card{padding:15px}
+.timbre-grid .play{width:auto;align-self:flex-start;padding:9px 16px;font-size:1rem}
+.animal-grid,.level-grid{grid-template-columns:1fr}
+.level-card{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px}
+.explanation-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:760px){
+.shell{width:min(calc(100% - 24px),620px)}
+.hero{grid-template-columns:1fr;gap:16px;padding:30px 0}
+.lesson-layout{grid-template-columns:minmax(0,1fr);gap:12px}
+.route{top:0;z-index:5;max-height:none;margin:0 -12px;padding:10px 12px;background:rgb(244 247 241 / 96%);backdrop-filter:blur(12px);border-block:1px solid var(--line)}
+.route-label{margin-bottom:6px}
+.route-inner{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin}
+.route a{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);white-space:nowrap}
+.route a[aria-current=step]{border-color:var(--green)}
+.route a.quiz-nav{margin-top:0;padding-top:7px}
+.route a.quiz-nav[aria-current=step]{border-color:#d9a74f}
+.next-hint{display:none}
+.lesson-card{scroll-margin-top:160px}
+.section-top{align-items:start;margin-top:8px}
+.quiz{scroll-margin-top:116px}
+.timbre-grid,.compare-grid,.instrument-controls,.explanation-grid,.quiz-selects{grid-template-columns:1fr}
+.timbre-grid .compare-card{padding:15px}
+.timbre-grid .minor,.compare-card .minor{min-height:0}
+.instrument-controls,.explanation-grid{gap:3px}
+.animal-grid,.level-grid{grid-template-columns:1fr}
+.level-card{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px}
+.quiz-head{gap:12px;padding:20px 18px}
+.quiz-mark{width:43px;height:43px;border-radius:12px}
+.quiz-body{padding:20px 17px 23px}
+.quiz .button-row{align-items:stretch;flex-direction:column;gap:8px}
+.hearing-band span{font-size:.75rem}
+.brand-row{gap:10px}
+.brand,.crumb{font-size:.8rem}
+}
+
+/* 第一區：同一支音叉；配置依已核可示意圖。 */
+.fork-lab{margin:16px 0 12px;padding:7px;border:1px solid #cbdcd4;border-radius:15px;background:#fffefa}
+.fork-scene{position:relative;overflow:hidden;aspect-ratio:2.35;border-radius:10px;background:#e4c89f url('fork-tabletop-background.png') center/cover no-repeat}
+.fork-fixed-label{position:absolute;z-index:2;top:10px;left:10px;padding:3px 11px;border:1px solid #e8ddc9;border-radius:999px;background:#fffaf0ef;color:#34433d;font-size:.83rem;font-weight:650}
+.fork-apparatus{position:absolute;left:0;bottom:0;display:block;width:65%;height:100%;overflow:visible}
+.fork-closeup{position:absolute;top:10px;bottom:10px;right:10px;width:34%;display:flex;min-width:0;flex-direction:column;overflow:hidden;border:4px solid #fffefa;border-radius:13px;background:#fffdf5}
+.card-main .fork-closeup h3{margin:0;padding:5px 9px;background:#e8efdf;color:#22382e;font-size:.88rem;white-space:nowrap}
+.fork-closeup svg{display:block;width:100%;min-height:0;flex:1;overflow:hidden}
+.fork-closeup text{font-family:inherit;font-size:24px;fill:#b75e2a;font-weight:750}
+.fork-closeup text.fork-equilibrium-label{fill:#667871;font-weight:600}
+.fork-closeup>p{margin:0;padding:0 3px 3px;text-align:center;font-size:.72rem;color:#637369}
+.fork-lab figcaption{margin-top:4px;color:var(--muted);font-size:.78rem;line-height:1.5}
+.fork-actions{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;margin:10px 0 12px}
+.fork-actions button{min-width:0;padding:9px 10px;white-space:nowrap;font-size:.88rem}
+.fork-actions .play[aria-pressed=true]{background:#105640;box-shadow:inset 0 0 0 2px #d3e9d6}
+.fork-actions .stop:disabled{opacity:1;border-color:#d7dfd9;background:#e9eeeb;color:#8a9691;cursor:not-allowed}
+.fork-message:not(.visually-hidden){margin:0 0 12px;padding:10px 13px;border-left:3px solid #be9148;border-radius:0 10px 10px 0;background:#fff3dc;color:#795b2b;font-size:.84rem;line-height:1.6}
+.card-main .fork-records>h3{margin:0 0 8px;font-size:1rem}
+.fork-comparisons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:10px}
+.fork-record{min-width:0;padding:10px;border:1px solid #cadfd8;border-radius:12px;background:#fff}
+.card-main .fork-record>h3{margin:0 0 7px}
+.fork-record[data-observed=false]{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-main .fork-record[data-observed=false]>h3{margin:0}
+.fork-record-body{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;min-height:82px}
+.fork-record .wave{height:80px}
+.fork-findings{display:grid;gap:6px;font-size:.78rem;color:#3d4841}
+.fork-findings span{padding:5px 7px;border-radius:7px;background:#faf5e9;white-space:nowrap}
+.fork-record-pending{margin:0;color:#718176;font-size:.82rem}
+.fork-same-pitch{display:flex;align-items:center;gap:12px;margin:8px 0 0;color:#667870;font-size:.84rem;text-align:center}
+.fork-same-pitch::before,.fork-same-pitch::after{height:1px;flex:1;background:#c7d8d0;content:""}
+.fork-conclusion{margin-bottom:0}
+@media(max-width:1000px) and (min-width:761px){
+.fork-scene{aspect-ratio:1.65}
+.fork-closeup{width:39%;right:7px;top:7px;bottom:7px}
+.fork-apparatus{width:63%}
+.fork-fixed-label{font-size:.7rem;left:6px;top:7px;padding:2px 6px}
+.fork-actions{grid-template-columns:1fr 1fr}
+.fork-comparisons{grid-template-columns:1fr}
+.fork-closeup>p{font-size:.62rem}
+}
+@media(max-width:760px){
+.fork-scene{aspect-ratio:1.65}
+.fork-closeup{width:39%;right:6px;top:7px;bottom:7px;border-width:3px}
+.fork-apparatus{width:63%}
+.card-main .fork-closeup h3{font-size:.75rem;padding:4px}
+.fork-fixed-label{font-size:.68rem;left:6px;top:7px;padding:2px 6px}
+.fork-closeup>p{font-size:.6rem}
+.fork-actions{grid-template-columns:1fr 1fr}
+.fork-comparisons{grid-template-columns:1fr}
+}
+
+.card-main .fork-trace-note{margin:0 0 10px;color:var(--muted);font-size:.78rem;line-height:1.6}
+
+/* 第二區：一個喇叭視圖，共同切換正／側面；兩側使用同一尺度。 */
+.pitch-view-switch{display:flex;align-items:center;justify-content:center;gap:3px;width:max-content;max-width:100%;margin:20px auto 15px;padding:4px;border:1px solid #cedbcc;border-radius:999px;background:#eef3e9;box-shadow:0 2px 5px #254c3210}
+.pitch-view-switch>span{padding:0 15px;color:#365745;font-size:.86rem;font-weight:700}
+.pitch-view-switch button{min-width:90px;min-height:42px;padding:7px 20px;border:0;border-radius:999px;background:transparent;color:#315744;font-weight:750}
+.pitch-view-switch button[aria-pressed=true]{color:#fff;background:#176b53;box-shadow:0 2px 4px #163e2e20}
+.pitch-bench{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:16px 0 8px}
+.pitch-column{min-width:0;text-align:center}
+.card-main .pitch-column>h3{margin:0;padding:7px 0;border-radius:10px;background:#edf5e8;color:#153f32;font-size:1.05rem}
+.pitch-frequency-row{display:flex;justify-content:center;align-items:center;gap:8px;min-height:74px;white-space:nowrap}
+.pitch-frequency{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:850;color:#154f3e;font-variant-numeric:tabular-nums;line-height:1.15}
+.pitch-step{width:38px;min-height:38px;flex:none;padding:0;border:1px solid #438774;border-radius:10px;background:linear-gradient(#2a8a70,#14624d);color:white;font-size:1.35rem;font-weight:750;box-shadow:inset 0 1px 2px #c2e4d2}
+.pitch-apparatus{position:relative;display:grid;place-items:center;isolation:isolate;aspect-ratio:1.16;padding:8px;border:1px solid #e5d9c7;border-radius:15px;background:#eee2cb url('pitch-room-background.png') center/cover no-repeat;box-shadow:inset 0 1px 0 #ffffffb0,0 3px 8px #674a2515}
+.pitch-apparatus::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:#fff8e7b3}
+.pitch-apparatus::after{content:"";position:absolute;z-index:-1;left:0;right:0;bottom:0;height:20%;border-radius:0 0 14px 14px;background:repeating-linear-gradient(2deg,#ffffff18 0 1px,transparent 2px 5px),linear-gradient(#e8bd87aa,#dba86baa);box-shadow:inset 0 1px #f9e4c1}
+.pitch-speaker.play{display:block;position:relative;min-height:0;width:72%;padding:0;border-radius:12px;background:transparent;line-height:0;align-self:end;margin-bottom:6%;touch-action:manipulation}
+.pitch-speaker img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 3px #3b291b24)}
+.pitch-speaker:hover,.pitch-side-view.play:hover{background:transparent;filter:brightness(1.035)}
+.pitch-side-view.play{display:block;width:100%;min-width:0;min-height:0;padding:0;background:transparent;line-height:0;touch-action:manipulation;border-radius:10px}
+.pitch-diaphragm{display:block;width:100%;height:auto;overflow:visible}
+.pitch-side-labels{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:18px;font-weight:750}
+.pitch-in-label{fill:#287e85}.pitch-out-label{fill:#b97029}.pitch-zero-label{fill:#416f8b}
+.pitch-play{width:100%;margin:12px auto;padding:10px 6px;font-size:.95rem;line-height:1.5}
+.pitch-column[data-sounding=true] .pitch-apparatus{box-shadow:inset 0 0 0 2px #ca9b4e,0 3px 8px #674a2515}
+.pitch-column[data-sounding=true] .pitch-play{box-shadow:0 0 0 3px #d6a34866}
+.pitch-wave-card{border:1px solid var(--line);border-radius:11px;padding:9px 2px 4px;background:#fff}
+.pitch-wave-card h4{margin:0;font-size:.85rem;line-height:1.5;color:#223f49}
+.pitch-wave-card .wave-label{text-align:left;font-size:.75rem;margin:5px 0 0 11%}
+.pitch-wave{height:auto;overflow:hidden}
+.pitch-wave text{font:21px "Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#37545a}
+.pitch-wave text.pitch-period-label{font-size:11px}
+.pitch-wave .pitch-guide{stroke:#217663;stroke-width:2;opacity:.28;vector-effect:non-scaling-stroke}
+.pitch-cursor{stroke:#d48730;stroke-width:1.6;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+.pitch-period{stroke:#687f83;stroke-width:1;fill:none}
+.pitch-period-note{margin:0 0 3px;color:#526d70;font-size:.72rem;line-height:1.5}
+@media(min-width:761px) and (max-width:1100px){
+.pitch-bench{gap:12px}.pitch-frequency-row{gap:5px;min-height:64px}.pitch-frequency{font-size:1.6rem}.pitch-step{width:32px;min-height:36px}.pitch-apparatus{padding:3px}.pitch-wave-card h4{font-size:.75rem}
+}
+@media(max-width:600px){
+.pitch-bench{grid-template-columns:1fr;gap:24px}.pitch-column{padding:0}.pitch-frequency-row{min-height:67px}.pitch-frequency{font-size:1.8rem}.pitch-view-switch>span{padding:0 10px}.pitch-view-switch button{min-width:76px;padding:7px 15px}.pitch-apparatus{padding:4px}.pitch-wave-card h4{font-size:.85rem}
+}
+
+/* 第二區在筆電高度內保留完整的控制、器材與波形。 */
+@media(min-width:601px){
+ .pitch-view-switch{margin:8px auto}
+ .pitch-bench{gap:14px;margin:8px 0}
+ .card-main .pitch-column>h3{padding:4px 0;font-size:.95rem;line-height:1.4}
+ .pitch-frequency-row{min-height:48px}
+ .pitch-frequency{font-size:clamp(1.45rem,2.2vw,1.8rem)}
+ .pitch-apparatus{height:clamp(145px,24vh,190px);aspect-ratio:auto;padding:8px}
+ .pitch-speaker.play{width:auto;height:100%;max-width:72%;aspect-ratio:1349/1166;align-self:center;margin-bottom:0}
+ #card-02[data-pitch-view=side] .pitch-apparatus{height:270px}
+ .pitch-side-view.play{width:auto;height:100%;max-width:100%;aspect-ratio:520/420}
+ .pitch-diaphragm{height:100%}
+ .pitch-side-labels text{font-size:20px}
+ .pitch-play{min-height:40px;margin:6px auto;padding:6px;font-size:.9rem;line-height:1.4}
+ .pitch-wave-card{padding:6px 2px 3px}
+ .pitch-wave-card h4{font-size:.8rem;line-height:1.4}
+ .pitch-wave-card .wave-label{margin-top:2px;font-size:.75rem;line-height:1.4}
+ .pitch-wave{height:clamp(110px,16vh,130px)}
+ .pitch-period-note{margin-bottom:0;font-size:.7rem;line-height:1.4}
+}
+
+/* 正面只讓振膜起伏，不搖晃木箱或金屬外框。 */
+.pitch-speaker.play{position:relative}
+.pitch-front{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none;overflow:visible}
+
+/* 與2.1一致：上方編號／問題標頭，下方完整寬度內容。 */
+.lesson-head{display:grid;grid-template-columns:74px minmax(0,1fr);gap:16px;align-items:start;padding:25px 28px 21px;border-bottom:1px solid #e7ece5}
+.lesson-number{display:grid;place-items:center;width:50px;height:50px;border-radius:15px;background:#e9f0e3;color:#416c39;font-weight:850;font-size:1.1rem}
+.lesson-head h2{margin:0;font-size:clamp(1.22rem,2vw,1.65rem);line-height:1.35}
+.lesson-head p{margin:8px 0 0;color:#5b6a65;font-size:.94rem}
+.lesson-body{padding:23px 28px 28px;min-width:0}
+@media(max-width:900px){.lesson-head,.lesson-body{padding-left:21px;padding-right:21px}}
+@media(max-width:700px){.lesson-head{grid-template-columns:48px minmax(0,1fr);gap:10px;padding:18px}.lesson-number{width:40px;height:40px;border-radius:12px}.lesson-body{padding:18px}}
+
+/* 第三區：實際吉他的前後設定，同一條第5弦一次只改一個條件。 */
+.guitar-lab{margin-top:22px}
+.guitar-tools{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding-right:100px;padding-left:100px}
+.guitar-mode-switch{display:flex;padding:4px;border:1px solid #d3ddcf;border-radius:999px;background:#f3f5ef;box-shadow:0 2px 5px #3156330b}
+.guitar-mode-switch button{min-height:43px;padding:7px 19px;border:0;border-radius:999px;background:transparent;color:#596d62;font-weight:750;white-space:nowrap}
+.guitar-mode-switch button[aria-pressed=true]{background:#176b53;color:#fff;box-shadow:0 2px 4px #234c3520}
+.guitar-reset{position:absolute;right:0;min-height:44px;border:0;background:transparent;color:#176b53;font-size:.84rem;font-weight:750;padding:4px}
+.guitar-reset span{font-size:1.25rem;vertical-align:middle}
+.guitar-bench{margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.guitar-column{min-width:0;overflow:hidden;border:1px solid #e0e6dc;border-radius:14px;background:linear-gradient(#fffefa,#f7f9f3)}
+.card-main .guitar-column>h3{margin:0;padding:8px;text-align:center;background:#ecf2e5;color:#234e3a;font-size:1.05rem}
+.guitar-stage{position:relative;isolation:isolate;line-height:0;background:#e9ddc9 url('pitch-room-background.png') center/cover no-repeat}
+.guitar-stage::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(#fff8e055,#ead1a63b)}
+.guitar-picture,.guitar-scene{display:block;width:100%;height:auto}
+.guitar-picture{filter:drop-shadow(0 4px 2px #64411e18)}
+.guitar-scene{overflow:visible}
+.guitar-fixed{pointer-events:none}
+.guitar-fret-zone,.guitar-pluck-target{cursor:pointer;touch-action:manipulation}
+.guitar-pluck-target:focus-visible{outline:none}
+.guitar-pluck-target:focus-visible rect{stroke:#bf8d36;stroke-width:8}
+.guitar-fret-control{position:absolute;top:15%;transform:translateX(-50%);min-width:52px;height:90px;text-align:center;line-height:1.2;cursor:ew-resize;touch-action:none;border-radius:10px;user-select:none;color:#176b53;font-weight:800}
+.guitar-fret-control>span:first-child{display:block;font-size:1.4rem;line-height:1.1;text-shadow:0 0 3px #fff}
+.guitar-fret-reading{display:block;width:max-content;min-width:46px;margin:0 auto;padding:2px 5px;border:1px solid #c5d8c6;border-radius:7px;background:#fffdf2;font-size:.68rem;line-height:1.35}
+.guitar-drag-hint,.guitar-original-label{position:absolute;top:13px;left:14px;line-height:1.5;color:#365b45;font-size:.75rem;font-weight:650;padding:2px 7px;border-radius:6px;background:#fff9e9e8}
+.guitar-drag-hint{left:12px;right:auto}
+.guitar-tension-tools{position:absolute;left:7px;right:7px;top:12px;display:flex;align-items:center;justify-content:center;gap:5px;line-height:1.5}
+.guitar-tension-tools button{min-height:36px;padding:5px 8px;border:1px solid #a8c4b1;border-radius:8px;background:#fffdf2;color:#176b53;font-size:.75rem;font-weight:750;white-space:nowrap}
+.guitar-tension-tools output{min-width:64px;padding:4px 5px;border-radius:7px;background:#fff9eceb;color:#365b45;font-size:.75rem;font-weight:700;white-space:nowrap}
+.guitar-tuner-control{position:absolute;left:90.45%;top:42.6%;transform:translate(-50%,-50%);width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer;touch-action:manipulation}
+.guitar-tuner-control:hover{background:#e2b65d25}
+.guitar-tuner-control:disabled{cursor:default;background:transparent}
+.guitar-readout{display:flex;align-items:baseline;justify-content:center;gap:7px;margin:11px 10px 9px;padding:7px;border-radius:10px;background:#edf3e9;color:#365b45;font-size:.84rem;line-height:1.4;white-space:nowrap}
+.guitar-frequency{font-size:clamp(1.2rem,2.4vw,1.8rem);font-weight:850;color:#174c39;font-variant-numeric:tabular-nums}
+.guitar-play{display:block;width:calc(100% - 20px);margin:0 10px 12px;padding:10px 5px;font-size:.88rem;white-space:nowrap}
+.guitar-column[data-sounding=true]{box-shadow:inset 0 0 0 2px #c99749}
+.guitar-column[data-sounding=true] .guitar-play{box-shadow:0 0 0 2px #d6a34866}
+.guitar-note{text-align:center;margin:11px 0 16px;color:#6b7a70;font-size:.75rem;line-height:1.6}
+@media(min-width:761px) and (max-width:1100px){.guitar-bench{gap:10px}.guitar-play{font-size:.77rem}.guitar-tools{padding:0 92px 0 0}.guitar-mode-switch button{padding-inline:13px}.guitar-drag-hint{font-size:.68rem;top:7px;right:7px}.guitar-tension-tools button{padding:4px 5px;font-size:.7rem}.guitar-tension-tools output{min-width:55px;font-size:.7rem}}
+@media(max-width:600px){.guitar-bench{grid-template-columns:1fr;gap:18px}.guitar-tools{padding:0;justify-content:space-between;gap:6px}.guitar-reset{position:static;font-size:.76rem}.guitar-mode-switch button{padding:6px 12px;font-size:.84rem}.guitar-play{font-size:.86rem}.guitar-frequency{font-size:1.55rem}.guitar-drag-hint{font-size:.71rem}.guitar-readout{font-size:.85rem}}
+
+/* 桌機上下對照：每列圖與操作並排，讓兩把琴同時可見。 */
+@media(min-width:601px){
+.guitar-drag-hint{right:auto}
+.guitar-column{display:grid;grid-template-columns:minmax(0,2fr) minmax(160px,1fr);grid-template-rows:auto 1fr 1fr}
+.card-main .guitar-column>h3{grid-column:1/-1}
+.guitar-stage{grid-column:1;grid-row:2/4;width:100%;max-width:480px;margin-inline:auto}
+.guitar-readout{grid-column:2;grid-row:2;align-self:end;margin-bottom:7px;flex-wrap:wrap}
+.guitar-play{grid-column:2;grid-row:3;align-self:start;margin-top:0;white-space:normal}
+}
+
+/* 第四區：一組排笛自由選管，管內觀察直接呈現在器材上。 */
+.pan-tools{display:flex;align-items:center;justify-content:center;position:relative;margin:18px 0 14px;gap:12px}
+.pan-view-switch{display:flex;gap:3px;padding:4px;border:1px solid #d3ddcf;border-radius:999px;background:#f1f4ec}
+.pan-view-switch button{min-width:90px;min-height:42px;padding:6px 17px;border:0;border-radius:999px;background:transparent;color:#526e5d;font-weight:750}
+.pan-view-switch button[aria-pressed=true]{background:#176b53;color:white}
+.pan-stage{position:relative;isolation:isolate;border:1px solid #e1d5bc;border-radius:14px;overflow:hidden;background:#ead6b6 url('pitch-room-background.png') center/cover no-repeat}
+.pan-stage::before{content:"";position:absolute;inset:0;z-index:-1;background:#fff7dc35}
+.card-main>.pan-hint{margin:0 0 10px;text-align:center;color:var(--green);font-size:.88rem;font-weight:650;line-height:1.6}
+.pan-picture,.pan-scene{display:block;width:100%;height:auto}
+.pan-shell{filter:drop-shadow(2px 4px 2px #5a3e2a35)}
+.pan-window-cut{fill:white}
+.pan-glass,.pan-air,.pan-inside-labels{display:none}
+#card-04[data-pan-view=inside] .pan-pipe[data-selected=true] .pan-window-cut{fill:black}
+#card-04[data-pan-view=inside] .pan-pipe[data-selected=true] .pan-glass,#card-04[data-pan-view=inside] .pan-pipe[data-selected=true] .pan-air,#card-04[data-pan-view=inside] .pan-inside-labels{display:block}
+.pan-particle{fill:#ffdf83;stroke:#fff1c5;stroke-width:.6}
+.pan-selected-outline{fill:none;stroke:#ffcb79;stroke-width:3;opacity:0}
+.pan-pipe[data-selected=true] .pan-selected-outline{opacity:1}
+.pan-pipe[data-sounding=true] .pan-selected-outline{stroke:#ffb844;stroke-width:4}
+.pan-breath{display:none;fill:none;stroke:#b9edf2;stroke-width:3;stroke-linecap:round}
+.pan-pipe[data-sounding=true] .pan-breath{display:block}
+.pan-measure-line{fill:none;stroke:#ac6722;stroke-width:2}
+.pan-measure-label-bg{fill:#fff9e9}
+.pan-measure-label{font-size:23px;font-weight:750;fill:#9c5e22}
+.pan-selected-badge rect{fill:#bb7026;stroke:#ffe7a0;stroke-width:2}
+.pan-selected-badge text{font-size:20px;fill:white;font-weight:700}
+.pan-inside-labels text{font-size:17px;fill:#334e47;paint-order:stroke;stroke:#fff9e9;stroke-width:5;stroke-linejoin:round}
+.pan-callout-line{fill:none;stroke:#536e62;stroke-width:1.4}
+.pan-pipe-button.play{position:absolute;min-height:0;margin:0;padding:0;border:0;border-radius:20px;background:transparent;color:transparent;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.pan-pipe-button.play:hover{background:#ffda7b12}
+.pan-pipe-button.play:focus-visible{outline:3px solid #176b53;outline-offset:3px}
+.pan-reading{display:flex;align-items:center;justify-content:center;gap:32px;margin:12px 0;padding:10px 16px;border-left:5px solid #c18539;border-radius:11px;background:#eff3e9;color:#3e5c49;font-size:.9rem}
+.pan-reading span{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.pan-reading output{font-size:1.5rem;font-weight:800;color:#18553e;font-variant-numeric:tabular-nums}
+.pan-loading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;margin:10px 0;padding:10px 14px;border:1px solid #d9e2cd;border-radius:11px;background:#f2f6eb;color:#365b45}
+.pan-loading p{margin:0;font-size:.85rem}
+.pan-loading button{min-height:44px;padding:7px 14px;font-size:.85rem;white-space:nowrap}
+.pan-note{margin:8px 0 14px;text-align:center;color:#6b7a70;font-size:.75rem}
+@media(max-width:600px){.pan-tools{gap:5px}.pan-view-switch button{min-width:69px;padding:6px 10px;font-size:.84rem}.card-main>.pan-hint{font-size:.82rem}.pan-reading{gap:8px;padding:8px 6px;flex-wrap:wrap}.pan-reading span{gap:6px;font-size:.75rem}.pan-reading output{font-size:1.1rem}}
+
+.pan-direction{display:none;fill:none;stroke:#ffe5a2;stroke-width:1.5;stroke-linecap:round}
+.pan-pipe[data-sounding=true] .pan-direction{display:block}
+
+/* 第五區：同音高音色比較，三列共用訊號／時間尺度。 */
+.timbre-conditions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;margin:17px 0 14px;color:#2b5545;font-size:.81rem}
+.timbre-conditions>span{padding:5px 14px;border:1px solid #dce6d9;border-radius:999px;background:#eff4e9}
+.timbre-conditions strong{font-size:1rem}
+.timbre-bench{display:grid;gap:9px}
+.timbre-row{display:grid;grid-template-columns:minmax(130px,25%) minmax(0,1fr) 128px;align-items:center;min-width:0;overflow:hidden;border:1px solid #d4e0d6;border-radius:14px;background:linear-gradient(110deg,#fffefa,#f9fcf6);transition:box-shadow .15s}
+.timbre-row[data-sounding=true]{box-shadow:inset 0 0 0 2px #c79240}
+.timbre-instrument{position:relative;height:152px;isolation:isolate;overflow:hidden;background:#e7d2af url('pitch-room-background.png') center/cover no-repeat}
+.timbre-picture{position:absolute;inset:3px 0 27px;display:flex;align-items:center;justify-content:center}
+.timbre-fork{height:100%;width:90%;object-fit:contain;filter:drop-shadow(1px 3px 2px #573e2430)}
+.timbre-guitar{display:block;width:95%;height:auto;filter:drop-shadow(1px 4px 2px #573e2430)}
+.timbre-pipes{height:100%;width:100%;filter:drop-shadow(1px 3px 2px #573e2430)}
+.timbre-name{position:absolute;bottom:3px;left:4px;right:4px;display:flex;align-items:baseline;justify-content:center;flex-wrap:wrap;gap:2px 7px;padding:1px 5px;border-radius:6px;background:#fff9efed;color:#234d3d;line-height:1.5}
+.card-main .timbre-name h3{margin:0;font-size:.96rem}
+.timbre-name>span{font-size:.66rem;color:#5f7065}
+.timbre-graph{min-width:0;padding:7px 0 0 6px}
+.timbre-graph .wave-panel{position:relative;margin:0;padding:18px 0 0;border:0;background:transparent}
+.timbre-graph .wave-label{position:absolute;left:12px;top:0;font-size:.65rem;line-height:1.3}
+.timbre-graph .wave{height:95px;overflow:visible}
+.timbre-graph .wave-ticks{height:19px;font-size:.65rem;line-height:1.5}
+.timbre-graph .wave-ticks span:first-child{left:8.667%}
+.timbre-graph .wave-ticks span:nth-child(2){left:50.333%}
+.timbre-graph .wave-ticks span:nth-child(3){left:92%}
+.timbre-row .signal{stroke:#217663;stroke-width:2}
+.timbre-row[data-timbre=string] .signal{stroke:#2f7ab7}
+.timbre-row[data-timbre=pipe] .signal{stroke:#b87718}
+.timbre-axis-text{font-family:inherit;font-size:15px;fill:#63756e}
+.timbre-load{position:absolute;inset:42% 8% auto;text-align:center;font-size:.72rem;color:#60756b;background:#fffdf3ed}
+.timbre-play{min-width:0;min-height:47px;margin:0 10px 0 7px;padding:8px 5px;font-size:.85rem;white-space:nowrap}
+.timbre-play[aria-pressed=true]{background:#105640;box-shadow:0 0 0 3px #dba75166}
+.card-main>.timbre-caption{margin:10px 0 14px;text-align:center;font-size:.83rem;color:#4f6e60;line-height:1.5}
+.timbre-caption small{font-size:.7rem;color:#6f7e75}
+.timbre-sources{margin:13px 0 0;font-size:.74rem;color:#64776a;line-height:1.65}
+.timbre-sources summary{cursor:pointer}
+.timbre-sources p{margin:7px 0}
+@media(min-width:761px) and (max-width:1100px){
+.timbre-row{grid-template-columns:130px minmax(0,1fr) 108px}
+.timbre-play{margin-inline:5px;font-size:.74rem}
+.timbre-instrument{height:148px}
+.timbre-name>span{font-size:.61rem}
+}
+@media(max-width:600px){
+.timbre-row{grid-template-columns:100px minmax(0,1fr);grid-template-rows:132px 44px;gap:0 5px;padding-bottom:7px}
+.timbre-instrument{height:132px;align-self:stretch}
+.timbre-name{bottom:3px;gap:0;line-height:1.35}
+.card-main .timbre-name h3{font-size:.88rem;width:100%;text-align:center}
+.timbre-name>span{font-size:.56rem}
+.timbre-picture{bottom:37px}
+.timbre-play{grid-column:1/-1;margin:2px 10px 0;min-height:42px;font-size:.85rem}
+.timbre-graph{padding-left:0}
+.timbre-graph .wave-label{left:2px;font-size:.55rem}
+.timbre-graph .wave-ticks{font-size:.58rem}
+.timbre-graph .wave{height:85px}
+.timbre-conditions{gap:6px;margin:12px 0;font-size:.67rem}
+.timbre-conditions>span{padding:3px 8px}
+.timbre-conditions strong{font-size:.83rem}
+.card-main>.timbre-caption{font-size:.75rem}
+.timbre-caption small{font-size:.65rem}
+}
+
+.timbre-image-play{position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;border:0;border-radius:12px 0 0 12px;background:transparent;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.timbre-image-play:hover{background:#ffffff12}
+.timbre-image-play:focus-visible{outline:3px solid #c78e31;outline-offset:-4px}
+
+.timbre-cursor{pointer-events:none}
+.timbre-cursor-halo{fill:#e9ab33;opacity:.23}
+.timbre-cursor-dot{fill:#e8a426;stroke:#fffdf5;stroke-width:2;vector-effect:non-scaling-stroke}
+
+/* 第六區：持續純音、彩色頻率帶與手動端點紀錄。 */
+.hearing-workbench{margin:18px 0 12px;padding:12px;border:1px solid #d0e1d1;border-radius:16px;background:linear-gradient(115deg,#eff5e9,#f9fcf6)}
+.hearing-workbench-head{display:flex;align-items:center;gap:15px;margin:1px 2px 11px}
+.card-main .hearing-workbench-head h3{flex:none;margin:0;padding-right:14px;border-right:1px solid #c6d7cb;font-size:1.1rem;color:#183d32}
+.hearing-workbench-head p{margin:0;color:#63796c;font-size:.8rem}
+.hearing-console{display:grid;grid-template-columns:minmax(0,.36fr) minmax(0,.64fr);gap:10px}
+.hearing-speaker-stage{position:relative;min-width:0;min-height:265px;overflow:hidden;border-radius:12px;background:#ecd8b9 url('pitch-room-background.png') center/cover no-repeat}
+.hearing-speaker-stage img{position:absolute;left:13%;bottom:12%;display:block;width:74%;height:78%;object-fit:contain;filter:drop-shadow(4px 8px 4px #563b2835)}
+.hearing-speaker-button{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;touch-action:manipulation}
+.hearing-speaker-button:focus-visible{outline-offset:-5px}
+.hearing-controls{display:grid;gap:7px;min-width:0}
+.hearing-readout{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,.75fr);align-items:center;gap:8px;padding:10px 12px;border:1px solid #dfebdf;border-radius:13px;background:#fffef9;text-align:center}
+.hearing-readout>div>span{font-size:.85rem;color:#385b4a;font-weight:700}
+.hearing-readout output{display:block;font-size:clamp(1.7rem,3vw,2.6rem);font-weight:850;color:#124b39;line-height:1.3;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hearing-readout .play-state{margin:4px 0 0;font-size:.73rem;color:#758276;line-height:1.4}
+.hearing-readout .play-state::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:#a2b0a5}
+#card-06[data-playing=true] .hearing-readout .play-state{color:#177149}
+#card-06[data-playing=true] .hearing-readout .play-state::before{background:#27b94b}
+.hearing-toggle{min-width:0;min-height:49px;padding:9px 6px;font-size:1.06rem;border:1px solid #4a9b7e;box-shadow:0 2px 4px #214f3625}
+.hearing-toggle>span{display:inline-block;margin-right:7px}
+.hearing-toggle,.hearing-record button,.hearing-reset{touch-action:manipulation}
+.hearing-spectrum{min-width:0;padding:11px 12px 9px;border:1px solid #dfebdf;border-radius:13px;background:#fffef9}
+.hearing-band-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#284e40;font-weight:700}
+.card-main .hearing-band-heading h3{font-size:.94rem;margin:0}
+.hearing-band-heading>span{font-size:.71rem}
+.hearing-band-control{position:relative;min-height:75px;padding-top:25px;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none}
+.hearing-band-low{position:absolute;top:3px;left:0;font-size:.71rem;color:#365545;pointer-events:none}
+.hearing-ribbon{position:relative;height:46px;border-radius:10px;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(2.1% - 1px),#fff8 calc(2.1% - 1px),#fff8 2.1%),linear-gradient(90deg,#07879a,#51bbad 23%,#b4d786 48%,#ffe66b 67%,#f5a33e 85%,#c95e39);box-shadow:inset 0 0 0 1px #8ba98e55}
+.hearing-cursor{position:absolute;top:-4px;bottom:-4px;left:var(--frequency-position);width:4px;transform:translateX(-50%);border-radius:3px;background:#fffef1;box-shadow:0 0 0 1px #d7ac42,0 0 9px 3px #f7c951a6;pointer-events:none}
+.hearing-cursor-label{position:absolute;top:-1px;left:clamp(36px,var(--frequency-position),calc(100% - 43px));transform:translateX(-50%);padding:2px 7px;border-radius:6px;background:#244c43;color:#fffefa;font-size:.68rem;line-height:1.6;white-space:nowrap;pointer-events:none}
+.hearing-cursor-label::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:4px solid transparent;border-top-color:#244c43}
+.hearing-ticks{position:relative;height:43px;font-size:.66rem;color:#38594b;font-variant-numeric:tabular-nums;line-height:1.5}
+.hearing-ticks>span{position:absolute;top:7px;transform:translateX(-50%);white-space:nowrap}
+.hearing-ticks>span::before{content:"";position:absolute;left:50%;top:-7px;height:5px;width:1px;background:#9aaea0}
+.hearing-ticks>span:first-child{transform:none}
+.hearing-ticks>span:first-child::before{left:0}
+.hearing-ticks>span:last-child{transform:translateX(-100%)}
+.hearing-ticks>span:last-child::before{left:100%}
+.hearing-ticks>span:nth-child(4){top:24px}
+.hearing-ticks>span:nth-child(4)::before{top:-24px;height:21px}
+.hearing-spectrum .hearing-band-hint,.hearing-spectrum .hearing-volume-note{margin:3px 0 0;text-align:center;font-size:.7rem;color:#5e7868;line-height:1.6}
+.hearing-spectrum .hearing-volume-note{font-size:.66rem;color:#7c8273}
+.hearing-records{padding:12px;border:1px solid #d8e5d7;border-radius:14px;background:#fcfdf8}
+.hearing-records-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.card-main .hearing-records-head h3{margin:0;font-size:1rem;color:#204c3b}
+.hearing-records-head h3 small{display:inline-block;margin-left:7px;padding:2px 8px;border-radius:999px;background:#edf2e9;color:#667f6e;font-size:.65rem;font-weight:600;vertical-align:middle;white-space:nowrap}
+.hearing-reset{flex:none;min-height:36px;padding:4px 9px;border:1px solid #d1ded1;border-radius:9px;background:#f9fbf5;color:#42634f;font-size:.76rem}
+.hearing-record-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hearing-record{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0;padding:9px 10px;border:1px solid #e0e9dc;border-radius:10px;background:#fffefa}
+.hearing-record>div{min-width:0}
+.hearing-record span{font-size:.8rem;color:#476351}
+.hearing-record output{display:block;margin-top:3px;color:#164b38;font-size:clamp(1rem,2vw,1.65rem);font-weight:800;line-height:1.4;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hearing-record button{flex:none;min-height:43px;padding:6px 8px;font-size:.72rem;font-weight:650;white-space:nowrap;background:#fbfdf8;border-color:#abc3af}
+.hearing-records .hearing-record-note,.hearing-records .hearing-limitation{margin:7px 0 0;text-align:center;color:#687b6b;font-size:.7rem;line-height:1.5}
+.hearing-records .hearing-limitation{margin-top:3px;font-size:.67rem}
+.card-main>.hearing-feedback{margin:9px 0;padding:7px 10px;border-radius:9px;background:#f7f1de;color:#685b3d;font-size:.8rem}
+.hearing-knowledge{margin:14px 0;padding:14px 18px;border:1px solid #e4ddc9;border-radius:12px;background:#faf7ed;color:#46534c}
+.card-main .hearing-knowledge h3{margin:0 0 6px;color:#715a2d;font-size:1rem}
+.hearing-knowledge p{margin:0;font-size:.92rem;line-height:1.8}
+.hearing-animals{margin-top:9px;border:1px solid #dbe5d5;border-radius:11px;background:#f7f9f2;color:#647363;font-size:.78rem}
+.hearing-animals>summary{padding:6px 12px;text-align:center;cursor:pointer}
+.hearing-animals>p{margin:10px 14px}
+.hearing-animals .animal-grid{margin:10px 13px}
+@media(min-width:761px) and (max-width:1100px){
+.hearing-console{grid-template-columns:minmax(0,.32fr) minmax(0,.68fr)}
+.hearing-readout{padding:9px 7px;grid-template-columns:minmax(0,1fr) 85px}
+.hearing-readout output{font-size:1.9rem}
+.hearing-toggle{font-size:.95rem}
+.hearing-record{flex-direction:column;align-items:stretch;text-align:center;gap:6px}
+.hearing-record button{min-height:42px}
+.hearing-workbench-head p{font-size:.74rem}
+}
+@media(max-width:600px){
+.hearing-workbench{padding:8px;margin-top:14px}
+.hearing-workbench-head{display:block;margin-bottom:9px}
+.card-main .hearing-workbench-head h3{padding:0;border:0;font-size:1rem}
+.hearing-workbench-head p{font-size:.7rem;margin-top:3px}
+.hearing-console{grid-template-columns:95px minmax(0,1fr);gap:7px}
+.hearing-controls{display:contents}
+.hearing-speaker-stage{grid-column:1;grid-row:1;min-height:153px}
+.hearing-speaker-stage img{left:5%;width:90%;bottom:13%;height:80%}
+.hearing-readout{grid-column:2;grid-row:1;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:8px 5px}
+.hearing-readout output{font-size:1.7rem}
+.hearing-readout>div>span{font-size:.72rem}
+.hearing-readout .play-state{font-size:.65rem}
+.hearing-toggle{min-height:42px;width:100%;font-size:.87rem;padding:6px}
+.hearing-spectrum{grid-column:1/-1;grid-row:2;padding:9px 10px}
+.hearing-band-heading>span,.hearing-band-low{font-size:.65rem}
+.hearing-ribbon{height:44px}
+.hearing-ticks{font-size:.57rem}
+.hearing-records{padding:9px}
+.hearing-records-head{align-items:flex-start}
+.card-main .hearing-records-head h3{font-size:.85rem}
+.hearing-records-head h3 small{display:block;width:max-content;margin:3px 0 0;font-size:.59rem}
+.hearing-reset{font-size:.66rem;padding:3px 6px;min-height:37px}
+.hearing-record-grid{gap:7px}
+.hearing-record{flex-direction:column;text-align:center;padding:8px 5px;gap:6px}
+.hearing-record span{font-size:.73rem}
+.hearing-record output{font-size:1.12rem}
+.hearing-record button{width:100%;font-size:.63rem;padding:4px 2px;min-height:43px}
+.hearing-records .hearing-record-note,.hearing-records .hearing-limitation{font-size:.63rem}
+}
+
+.hearing-record-actions{display:flex;flex-direction:column;align-items:stretch;gap:2px}
+.hearing-record .hearing-clear{min-height:32px;padding:2px 8px;border:0;background:transparent;color:#58735f;font-size:.68rem;font-weight:500}
+.hearing-record .hearing-clear:disabled{opacity:.4}
+@media(max-width:600px){.hearing-record-actions{width:100%}}
+
+.hearing-animals .animal-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.hearing-animal-card{min-width:0;padding:10px 12px 12px;border:1px solid #dce6d8;border-radius:12px;background:#eff4ed}
+.hearing-animal-art{display:block;width:100%;height:108px;overflow:hidden}
+.hearing-animal-card p{margin:0;padding:6px 0 0;background:transparent;color:#45614d;text-align:center;font-size:.82rem;line-height:1.65}
+.hearing-animal-card strong{font-size:.9rem;color:#385640}
+@media(max-width:600px){.hearing-animals .animal-grid{grid-template-columns:1fr;gap:8px}.hearing-animal-card{display:grid;grid-template-columns:92px minmax(0,1fr);align-items:center;gap:12px;padding:9px 12px}.hearing-animal-art{height:82px}.hearing-animal-card p{text-align:left;padding:0}}
+
+/* 第七區：十二個生活情境與分貝探索帶。 */
+.decibel-feature{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1fr);margin:18px 0 0;overflow:hidden;border:1px solid #cfdfcf;border-radius:16px 16px 0 0;background:#fcfbf5}
+.decibel-photo{position:relative;min-width:0;min-height:360px;overflow:hidden;background:linear-gradient(120deg,#e7e9d7,#f7edd8)}
+.decibel-photo svg{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:hidden}
+.decibel-photo>span{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;font-size:.85rem;color:#64745c;pointer-events:none}
+.decibel-photo[data-loading=false]>span{display:none}
+.decibel-photo:not([data-loading=false]) svg{visibility:hidden}
+.decibel-info{min-width:0;padding:18px;background:radial-gradient(ellipse at top left,#fffef8,#faf9f2)}
+.decibel-info-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.decibel-info-head>span{flex:none;padding:4px 10px;border-radius:8px;background:#567f59;color:#fffef5;font-size:.8rem;font-weight:700}
+.decibel-info-head small{font-size:.64rem;color:#7a8873;white-space:nowrap;min-inline-size:12em;font-variant-numeric:tabular-nums}
+.card-main .decibel-info h3{margin:0;color:#173e32;font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.4}
+.decibel-value{display:flex;align-items:baseline;gap:9px;line-height:1.2;color:#237f80;font-variant-numeric:tabular-nums;white-space:nowrap;margin:7px 0 10px}
+.decibel-value>span{font-size:1rem;font-weight:750}
+.decibel-value>strong{font-size:clamp(2.35rem,3.5vw,3rem);font-weight:850;letter-spacing:-.04em}
+.decibel-info p{margin:5px 0 0;color:#535e54;font-size:.88rem;line-height:1.65}
+.decibel-info .decibel-condition{margin-top:13px;padding-top:11px;border-top:1px solid #d6dfd1;color:#778170;font-size:.76rem}
+.decibel-copy-space{display:grid}
+.decibel-copy-space>*{grid-area:1/1}
+.decibel-size-copy{visibility:hidden;pointer-events:none;user-select:none}
+.decibel-explorer{padding:12px 17px 9px;border:1px solid #d7e3d3;border-top:0;border-radius:0 0 15px 15px;background:linear-gradient(110deg,#f3f8f0,#f8faf2)}
+.decibel-band-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card-main .decibel-band-heading h3{margin:0;font-size:1.06rem;color:#244c39}
+.decibel-band-heading>span{font-size:.73rem;color:#7b8976}
+.decibel-band-control{position:relative;margin-top:6px;padding-top:30px;touch-action:none;cursor:crosshair;user-select:none;-webkit-user-select:none;border-radius:9px;outline-offset:4px}
+.decibel-band-control:focus-visible{outline:3px solid #ad8f40}
+.decibel-ribbon{position:relative;height:49px;border-radius:9px;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(2.272727% - 1px),#fff5 calc(2.272727% - 1px),#fff5 2.272727%),linear-gradient(90deg,#147a82,#67af91 23%,#c9da8c 41%,#ffe77d 58%,#f5aa4d 78%,#ae6732);box-shadow:inset 0 0 0 1px #64836b33}
+.decibel-cursor{position:absolute;top:-2px;bottom:-2px;left:var(--decibel-position);width:4px;transform:translateX(-50%);border-radius:3px;background:#fffef4;box-shadow:0 0 0 1px #e0b344,0 0 12px 4px #f8d04bc9;pointer-events:none}
+.decibel-band-control output{position:absolute;top:0;left:clamp(38px,var(--decibel-position),calc(100% - 38px));transform:translateX(-50%);padding:3px 10px;border-radius:7px;background:#254b3d;color:#fffef4;font-size:.85rem;font-weight:750;white-space:nowrap;line-height:1.5;pointer-events:none;box-shadow:0 2px 3px #284c3025}
+.decibel-band-control output::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#254b3d}
+.decibel-ticks{position:relative;height:29px;color:#6d826f;font-size:.73rem;line-height:1.5;font-variant-numeric:tabular-nums}
+.decibel-ticks>span{position:absolute;top:9px;transform:translateX(-50%);white-space:nowrap}
+.decibel-ticks>span::before{content:"";position:absolute;top:-8px;left:50%;height:6px;width:1px;background:#99ad98}
+.decibel-ticks>span:first-child{transform:none}.decibel-ticks>span:first-child::before{left:0}
+.decibel-ticks>span:last-child{transform:translateX(-100%)}.decibel-ticks>span:last-child::before{left:100%}
+.decibel-landmarks{position:relative;height:32px;font-size:.72rem;color:#49775c}
+.decibel-landmarks>i{position:absolute;top:-29px;width:3px;height:6px;border-radius:2px;background:#45684e88;transform:translateX(-50%)}
+.decibel-landmarks>span{position:absolute;top:1px;transform:translateX(-50%);padding:1px 12px;border:1px solid #8fab8e;border-radius:7px;background:#fffffa;font-weight:700}
+.decibel-landmarks>span:first-of-type{transform:none}
+.decibel-landmarks>span:nth-of-type(2){color:#247c7c;border-color:#76a5a0}
+.decibel-landmarks>span:nth-of-type(3){color:#a47533;border-color:#c4a166}
+.decibel-explorer>p{margin:3px 0 0;text-align:center;font-size:.71rem;line-height:1.6;color:#7a8773}
+.decibel-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.decibel-facts>div{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid #e5deca;border-radius:12px;background:#faf6eb}
+.decibel-fact-symbol{display:grid;flex:none;width:36px;height:36px;place-items:center;border-radius:50%;background:#efe5c9;color:#8e753f;font-size:1.35rem;font-weight:800}
+.card-main .decibel-facts h3{margin:0 0 3px;color:#485641;font-size:.86rem}
+.decibel-facts p{margin:0;color:#6e7668;font-size:.74rem;line-height:1.6}
+.card-main>.decibel-note{margin:12px 1px 5px;color:#71806c;font-size:.7rem;line-height:1.65}
+.card-main>.decibel-sources{margin:0;color:#71806c;font-size:.68rem;line-height:1.6}
+@media(min-width:761px) and (max-width:1100px){.decibel-info{padding:17px}.decibel-info-head{flex-wrap:wrap;gap:5px}.decibel-info-head small{width:100%}.decibel-photo{min-height:310px}.decibel-info p{font-size:.85rem}}
+@media(max-width:900px){
+.decibel-feature{grid-template-columns:1fr;margin-top:14px}.decibel-photo{min-height:0;aspect-ratio:16/9}.decibel-info{padding:13px 15px}
+.decibel-info-head{margin-bottom:7px}.decibel-info-head>span{font-size:.72rem;padding:3px 8px}.decibel-info-head small{font-size:.6rem}
+.card-main .decibel-info h3{font-size:1.15rem}.decibel-value{margin:4px 0;gap:7px}.decibel-value>strong{font-size:2.35rem}.decibel-value>span{font-size:1rem}
+.decibel-info p{font-size:.83rem}.decibel-info .decibel-condition{font-size:.69rem;margin-top:8px;padding-top:7px}
+.decibel-explorer{padding:10px 12px 8px}.decibel-band-heading{align-items:flex-start;gap:5px}.card-main .decibel-band-heading h3{font-size:.87rem}.decibel-band-heading>span{font-size:.6rem;max-width:115px;text-align:right}
+.decibel-ribbon{height:47px}.decibel-ticks{font-size:.59rem;height:37px}.decibel-ticks>span:nth-last-child(2){top:22px}.decibel-ticks>span:nth-last-child(2)::before{top:-21px;height:18px}
+.decibel-landmarks{font-size:.65rem;height:28px}.decibel-landmarks>span{padding:1px 8px}.decibel-landmarks>i{top:-37px}
+.decibel-explorer>p{font-size:.63rem}.decibel-facts{grid-template-columns:1fr;gap:8px}.decibel-facts>div{padding:10px}.card-main .decibel-facts h3{font-size:.82rem}.decibel-facts p{font-size:.7rem}.card-main>.decibel-note,.card-main>.decibel-sources{font-size:.65rem}
+}
+
+/* 第七區播放控制僅保留在介紹欄。 */
+.decibel-photo{position:relative}
+.decibel-listening{margin:16px 0 0}
+.decibel-listening .button-row{gap:8px;flex-wrap:wrap}
+.decibel-listening .button-row button{font-size:.8rem;padding:9px 10px}
+.decibel-listening [data-decibel-play]{min-width:10em}
+.decibel-listening .play-state,.decibel-listening .decibel-status-copy{min-height:1.5em;margin:10px 0 0;color:#315b55;font-size:.76rem;line-height:1.6}
+.decibel-listening-note,.decibel-audio-sources{font-size:.9rem;line-height:1.7;color:#53635e}
+.decibel-audio-sources{margin:18px 0;padding:14px 18px;border:1px solid #d8e3da;border-radius:14px;background:#f8faf6;overflow-wrap:anywhere}
+.decibel-audio-sources summary{cursor:pointer;font-weight:700;color:#2f554d}
+.decibel-audio-sources li{margin:10px 0}
+@media(max-width:600px){.decibel-listening .button-row{flex-wrap:wrap}}

@@ -1,0 +1,258 @@
+.camera-quiz { container-type:inline-size; border-color:#a7bb95; color:#31543e; }
+.camera-quiz .quiz-head { grid-template-columns:52px minmax(0,1fr); gap:12px; padding:16px 18px; }
+.camera-headline { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.camera-headline .quiz-kicker { margin:0; }
+.camera-quiz .quiz-subtitle { margin-top:4px; font-size:.85rem; }
+.camera-quiz .quiz-body { padding:12px; }
+.camera-workspace { display:grid; gap:8px; }
+.camera-visual-layout { display:grid; grid-template-columns:minmax(0,1fr) clamp(190px,25%,240px); gap:12px; align-items:stretch; min-width:0; }
+.camera-goal { margin:0; padding:9px 12px; border:1px solid #e6ce8d; border-radius:11px; background:#fbefd0; color:#4a5835; font-size:.85rem; line-height:1.6; }
+.camera-goal strong { margin-right:8px; color:#655021; }
+.camera-stage { position:relative; overflow:hidden; border:1px solid #a1b395; border-radius:13px; background:#e8eae0; }
+.camera-stage svg { display:block; width:100%; height:auto; }
+.camera-stage svg [hidden],.camera-hint[hidden],.camera-result[hidden],.camera-focus[hidden] { display:none; }
+.camera-stage-tools { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; pointer-events:none; }
+.camera-stage-tools button { pointer-events:auto; min-height:36px; padding:6px 10px; border:1px solid #94ab86; border-radius:10px; background:#fffdf0; color:#31543e; font-size:.75rem; box-shadow:0 2px 7px #38493114; }
+.camera-stage-tools button[aria-pressed=true] { background:#f4dfaa; border-color:#bd9c4d; }
+.camera-svg-label { fill:#31543e; font-size:16px; font-weight:700; paint-order:stroke; stroke:#f4f6ea; stroke-width:5px; stroke-linejoin:round; }
+.camera-preview-title { fill:#31543e; font-size:14px; font-weight:700; }
+.camera-raypaths path { fill:none; stroke-width:2.2; stroke-linejoin:round; opacity:.9; }
+.camera-ray-top { stroke:#e88a61; } .camera-ray-bottom { stroke:#79b4cd; }
+.camera-dock { padding:10px 14px 11px; border:1px solid #b9c9a6; border-radius:12px; background:linear-gradient(130deg,#f5f7e9,#e9efdc); }
+.camera-dock-top { display:flex; align-items:center; gap:14px; color:#31543d; font-size:.84rem; }
+.camera-dock-top strong { font-size:.9rem; }
+.camera-dock-top>span:not(.camera-steps) { color:#58735a; font-size:.75rem; }
+.camera-steps { margin-left:auto; display:flex; gap:6px; }
+.camera-steps button { width:34px; height:32px; border:1px solid #b6c6a7; border-radius:7px; background:#fffdf0; color:#31543e; font-size:1.05rem; }
+.camera-steps button:disabled { opacity:.4; cursor:not-allowed; }
+.camera-help-text { margin:4px 0 2px; color:#5a7155; font-size:.72rem; }
+.camera-plot { position:relative; height:104px; margin:0 48px; }
+.camera-track { position:absolute; top:48px; left:0; right:0; height:28px; cursor:pointer; touch-action:manipulation; }
+.camera-track::before { content:''; position:absolute; left:0; right:0; top:12px; height:3px; border-radius:3px; background:#a4b69a; }
+.camera-allowed { position:absolute; top:12px; height:3px; background:#28634b; pointer-events:none; }
+.camera-track:focus-visible,.camera-quiz button:focus-visible { outline:3px solid #c59534; outline-offset:3px; }
+.camera-marker { position:absolute; top:1px; z-index:2; transform:translateX(-50%); min-height:26px; padding:3px 7px; border:1px solid #a8bd9d; border-radius:6px; background:#fffdf2; color:#31543d; font-size:.72rem; white-space:nowrap; cursor:pointer; }
+.camera-marker::after { content:''; position:absolute; left:50%; top:100%; height:25px; border-left:1px solid #89a087; pointer-events:none; }
+.camera-marker::before { content:''; position:absolute; left:50%; top:calc(100% + 25px); transform:translate(-50%,-50%); width:10px; height:10px; border:2px solid #fffdf0; border-radius:50%; background:#b78c3d; box-shadow:0 0 0 1px #a2854b; pointer-events:none; }
+.camera-marker[aria-pressed=true] { background:#28634b; border-color:#28634b; color:#fffdf0; }
+.camera-flower-marker { cursor:default; color:#6b765e; }
+.camera-focus { position:absolute; top:78px; transform:translateX(-50%); color:#75866f; font-size:.7rem; font-weight:700; pointer-events:none; }
+.camera-focus::before { content:''; position:absolute; left:50%; bottom:100%; height:17px; border-left:1px dashed #9bad91; }
+.camera-distance-row { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 22px; color:#526d53; font-size:.75rem; }
+.camera-distance-row output { margin-left:4px; color:#285c43; font-weight:700; }
+.camera-footer { display:flex; justify-content:flex-end; gap:8px; }
+.camera-footer button { min-height:42px; padding:8px 18px; border-radius:10px; font-size:.85rem; }
+.camera-help-button { border:1px solid #d5b86b; background:#f8e3a8; color:#584920; }
+.camera-reset { border:1px solid #94ab86; background:#fffdf0; color:#31543e; }
+.camera-submit { border:1px solid #285c43; background:#285c43; color:#fffdf2; }
+.camera-hint,.camera-result { margin:0; padding:9px 12px; border-radius:9px; background:#fff8e5; color:#4b5837; font-size:.8rem; line-height:1.6; }
+.camera-hint { border-left:3px solid #d3af57; } .camera-hint ol { margin:0 0 6px; padding-left:22px; } .camera-hint li+li { margin-top:4px; } .camera-hint a { color:#35634d; }
+.camera-result { border:1px solid #dbc38b; } .camera-result[data-success=true] { border-color:#a4bd8d; background:#eef4e2; }
+.camera-note { margin-top:12px; font-size:.75rem; }
+@container (max-width:640px) { .camera-quiz .quiz-head { grid-template-columns:40px minmax(0,1fr); gap:9px; padding:12px; } .camera-quiz .quiz-mark { width:38px; height:38px; } .camera-quiz .quiz-head h2 { font-size:1.24rem; } .camera-quiz .quiz-body { padding:8px; } .camera-stage-tools { top:6px; left:6px; right:6px; } .camera-stage-tools button { min-height:30px; font-size:.68rem; padding:4px 7px; } .camera-dock { padding:8px; } .camera-plot { margin:0 38px; } .camera-marker { font-size:.64rem; padding:3px 5px; } .camera-marker[data-camera-marker=sensor] { top:0; } .camera-marker[data-camera-marker=lens] { top:22px; } .camera-marker[data-camera-marker=lens]::after { height:3px; } .camera-marker[data-camera-marker=lens]::before { top:calc(100% + 3px); } }
+
+/* A tactile cutaway keeps the optical elements readable without obscuring them. */
+.camera-scene-tag rect { fill:#fffdf2; stroke:#9fb697; stroke-width:1.2; }
+.camera-scene-tag text { fill:#31543e; font-size:14px; font-weight:700; }
+.camera-scene-tag path { fill:none; stroke:#8aa087; stroke-width:1.2; }
+.camera-plot { height:82px; }
+.camera-track { top:24px; }
+.camera-marker { min-height:24px; }
+.camera-marker::after { height:12px; }
+.camera-marker::before { top:calc(100% + 12px); }
+.camera-focus { top:56px; }
+.camera-focus::before { height:15px; }
+@container (max-width:640px) {
+ .camera-marker[data-camera-marker=lens] { top:15px; }
+ .camera-marker[data-camera-marker=lens]::after { height:0; }
+ .camera-marker[data-camera-marker=lens]::before { top:calc(100% - 3px); }
+}
+@container (max-width:520px) {
+ .camera-stage { display:flex; flex-direction:column-reverse; }
+ .camera-stage-tools { position:static; padding:6px 6px 0; }
+}
+
+/* The canvas rotates the three-dimensional apparatus, separate from both controls. */
+.camera-stage { display:block; height:clamp(320px,46vw,460px); }
+.camera-stage>canvas,.camera-stage>[data-camera-fallback] { position:absolute; inset:0; display:block; width:100%; height:100%; }
+.camera-stage>canvas[hidden],.camera-stage>[data-camera-fallback][hidden],.camera-3d-labels[hidden],.camera-viewbar[hidden],.camera-render-note[hidden] { display:none; }
+.camera-stage>canvas { touch-action:none; cursor:grab; }
+.camera-stage>canvas.projector-orbiting { cursor:grabbing; }
+.camera-stage>canvas:focus-visible { outline:3px solid #c59534; outline-offset:-3px; }
+.camera-stage-tools { position:absolute; z-index:5; padding:0; }
+.camera-preview-pane { position:absolute; z-index:4; top:57px; left:10px; width:142px; padding:6px; border:1px solid #b8cbaa; border-radius:10px; background:#fffdf2ef; color:#31543e; font-size:.69rem; font-weight:700; text-align:center; pointer-events:none; }
+.camera-preview-pane>div { padding:2px 0 5px; }
+.camera-preview-pane svg { display:block; width:100%; height:auto; border-radius:6px; background:#f3f5eb; }
+.camera-3d-labels { position:absolute; inset:0; z-index:3; pointer-events:none; }
+.camera-3d-labels span { position:absolute; transform:translate(-50%,-100%); padding:3px 7px; border:1px solid #9fb697; border-radius:6px; background:#fffdf1ed; color:#31543e; font-size:.72rem; line-height:1.3; font-weight:700; white-space:nowrap; }
+.camera-3d-labels span[hidden] { display:none; }
+.camera-viewbar { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 3px; color:#5a7054; font-size:.72rem; }
+.camera-viewbar button { min-height:30px; padding:4px 9px; border:1px solid #afc29d; border-radius:7px; background:#fffdf0; color:#31543e; font-size:.72rem; }
+.camera-render-note { margin:0; color:#617155; font-size:.72rem; }
+.camera-dock { display:grid; grid-template-columns:1fr 1fr; gap:12px 18px; }
+.camera-dock-heading { grid-column:1/-1; display:flex; justify-content:space-between; align-items:center; gap:8px; color:#31543d; }
+.camera-dock-heading span { color:#61785c; font-size:.72rem; }
+.camera-control-row { min-width:0; padding:9px 10px 7px; border:1px solid #cbd9bf; border-radius:9px; background:#f5f8ef; }
+.camera-control-heading { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:3px 8px; color:#31543d; font-size:.78rem; }
+.camera-control-heading span { font-size:.72rem; color:#58735a; }
+.camera-control-heading output { color:#285c43; font-weight:700; }
+.camera-control-row p { margin:4px 0 6px; min-height:1.35em; color:#64785f; font-size:.7rem; line-height:1.4; }
+.camera-control-line { display:flex; align-items:center; gap:9px; }
+.camera-control-line button { flex:0 0 31px; height:31px; padding:0; border:1px solid #b6c6a7; border-radius:7px; background:#fffdf0; color:#31543e; font-size:1rem; }
+.camera-control-line button:disabled { opacity:.4; cursor:not-allowed; }
+.camera-distance-track { position:relative; flex:1; min-width:0; height:28px; cursor:pointer; touch-action:manipulation; }
+.camera-distance-track::before { content:''; position:absolute; left:0; right:0; top:12px; height:4px; border-radius:4px; background:#c4d1b9; }
+.camera-distance-track:focus-visible { outline:3px solid #c59534; outline-offset:2px; border-radius:4px; }
+.camera-distance-fill { position:absolute; left:0; top:12px; height:4px; border-radius:4px; background:#6b9474; pointer-events:none; }
+.camera-distance-thumb { position:absolute; top:14px; width:14px; height:14px; transform:translate(-50%,-50%); border:2px solid #fff9e9; border-radius:50%; background:#c99f48; box-shadow:0 0 0 1px #ae893e; pointer-events:none; }
+.camera-distance-focus { position:absolute; top:23px; transform:translateX(-50%); color:#7b8b73; font-size:.65rem; line-height:1; pointer-events:none; }
+.camera-track-ends { display:flex; justify-content:space-between; margin:2px 39px 0; color:#7a8a70; font-size:.65rem; }
+@container (max-width:640px) { .camera-stage { height:310px; } .camera-preview-pane { width:105px; top:49px; left:6px; font-size:.61rem; padding:4px; } .camera-3d-labels span { font-size:.64rem; padding:2px 4px; } .camera-dock { grid-template-columns:1fr; gap:8px; } .camera-dock-heading { grid-column:1; } }
+@container (max-width:520px) { .camera-stage-tools { position:absolute; padding:0; } .camera-stage { display:block; } .camera-preview-pane { width:78px; font-size:.48rem; } }
+
+/* One shared optical rail, matching the projector task above. */
+.camera-dock { display:block; }
+.camera-rail-control { width:100%; }
+.camera-rail-control legend { float:left; width:100%; margin:0 0 8px; color:#31543d; font-size:.87rem; font-weight:750; }
+.camera-rail-control .projector-rail-toolbar { clear:both; }
+.camera-rail-control .projector-rail-steps button { min-height:32px; width:34px; padding:3px; border:1px solid #b6c6a7; border-radius:7px; background:#fffdf0; color:#31543e; font-size:1rem; }
+.camera-rail-control .projector-rail-steps button:disabled { opacity:.4; }
+.camera-rail-control .projector-rail-panel { margin-top:8px; }
+.camera-rail-dot-sensor { background:#b98c35; }
+.camera-rail-dot-flower { background:#cc725d; box-shadow:0 0 0 1px #ae6b57; pointer-events:none; }
+
+/* Focal guides fade towards the rail edges instead of popping in or out. */
+.camera-rail-control .projector-focus-mark { color:#81927d; font-weight:600; }
+
+/* Keep the scene and its controls together in common laptop viewports. */
+.camera-stage { height:clamp(230px,calc(100svh - 420px),460px); }
+.camera-viewbar { position:absolute; z-index:5; left:10px; right:10px; bottom:8px; padding:0; pointer-events:none; }
+.camera-viewbar span { padding:3px 7px; border-radius:5px; background:#fffdf0de; }
+.camera-viewbar button { pointer-events:auto; background:#fffdf0ef; }
+.camera-preview-pane { width:clamp(86px,calc((100svh - 470px)*.5),142px); }
+.camera-rail-control legend { margin-bottom:4px; }
+.camera-rail-control .camera-help-text { margin:4px 0; }
+.camera-rail-control .projector-rail-panel { margin-top:4px; padding-top:7px; }
+.camera-rail-control .projector-rail-plot { height:174px; }
+.camera-rail-control .projector-rail-device-card { top:65px; }
+.camera-rail-control .projector-rail-device-card::before { height:14px; }
+.camera-rail-control .projector-rail-device-lens { top:92px; }
+.camera-rail-control .projector-rail-device-lens::before { height:41px; }
+@container (max-width:640px) { .camera-stage { height:clamp(230px,calc(100svh - 420px),310px); } .camera-preview-pane { width:105px; } }
+@container (max-width:520px) { .camera-preview-pane { width:78px; } .camera-viewbar { left:6px; right:6px; bottom:6px; } }
+
+.camera-intro { padding:10px 12px; border:1px solid #cfddc6; border-radius:10px; background:#eef4e8; color:#31543d; font-size:.8rem; line-height:1.65; }
+.camera-intro strong { display:block; margin-bottom:2px; font-size:.84rem; }
+.camera-intro p { margin:0; }
+.camera-rail-control [data-camera-marker],.camera-rail-control [data-camera-dot]:not([data-camera-dot=flower]) { cursor:grab; touch-action:none; user-select:none; }
+.camera-rail-control .camera-rail-dragging { cursor:grabbing; }
+
+.camera-intro p+p { margin-top:4px; }
+
+/* Keep the camera task compact enough to work as one screen-sized activity. */
+.camera-quiz .quiz-head { padding:10px 16px; }
+.camera-quiz .quiz-body { padding:8px; }
+.camera-workspace { gap:6px; }
+.camera-goal { padding:6px 10px; line-height:1.45; }
+.camera-stage { height:clamp(280px,calc(100svh - 420px),460px); }
+.camera-dock { padding:6px 10px; }
+.camera-rail-control .projector-rail-panel { margin-top:2px; padding:4px 10px 0; }
+.camera-rail-control .projector-rail-plot { height:136px; }
+.camera-rail-control .projector-rail-device-card { top:48px; }
+.camera-rail-control .projector-rail-device-card::before { height:10px; }
+.camera-rail-control .projector-rail-device-lens { top:67px; }
+.camera-rail-control .projector-rail-device-lens::before { height:26px; }
+.camera-rail-control .camera-help-text { margin:2px 0; }
+.camera-rail-control legend { margin-bottom:2px; }
+.camera-footer button { min-height:36px; padding:6px 14px; }
+@container (max-width:640px) {
+ .camera-stage { height:clamp(260px,calc(100svh - 420px),360px); }
+ .camera-rail-control .projector-rail-plot { height:136px; }
+}
+@media (max-height:760px) {
+ .camera-stage { height:clamp(240px,calc(100svh - 430px),350px); }
+ .camera-quiz .quiz-head { padding-top:8px; padding-bottom:8px; }
+ .camera-intro { padding:6px 10px; line-height:1.45; }
+ .camera-rail-control .projector-rail-plot { height:130px; }
+ .camera-rail-control .projector-rail-device-card { top:46px; }
+ .camera-rail-control .projector-rail-device-lens { top:64px; }
+}
+
+/* Keep the sensor preview out of the main optical scene. */
+.camera-preview-pane {
+ position:static;
+ z-index:auto;
+ align-self:stretch;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ width:auto;
+ min-width:0;
+ margin:0;
+ padding:12px;
+ border:1px solid #b8cbaa;
+ border-radius:12px;
+ background:#fffdf2;
+ box-shadow:0 4px 12px #48533a16;
+ font-size:.62rem;
+}
+@container (max-width:640px) {
+ .camera-visual-layout { grid-template-columns:minmax(0,1fr) clamp(160px,29%,210px); gap:8px; }
+ .camera-preview-pane { padding:8px; }
+}
+@container (max-width:520px) {
+ .camera-visual-layout { grid-template-columns:minmax(0,1fr) clamp(108px,34%,150px); gap:6px; }
+ .camera-preview-pane { padding:5px; }
+}
+
+/* The camera lens stays fixed; flower and sensor are the two movable marks. */
+.camera-rail-control .projector-rail-plot { height:140px; }
+.camera-rail-control .camera-rail-device-sensor { top:42px; }
+.camera-rail-control .camera-rail-device-sensor::before { height:9px; }
+.camera-rail-control .camera-rail-fixed-lens { top:62px; }
+.camera-rail-control .camera-rail-fixed-lens::before { height:29px; }
+.camera-rail-control .camera-rail-device-flower { top:82px; }
+.camera-rail-control .camera-rail-device-flower::before { height:35px; }
+.camera-rail-control .camera-rail-dot-lens { pointer-events:none; background:#78907c; box-shadow:0 0 0 1px #5c745f; }
+.camera-rail-control .camera-rail-dot-flower { pointer-events:auto; cursor:grab; touch-action:none; user-select:none; }
+.camera-rail-control [data-camera-dot=flower][data-dragging=true] { cursor:grabbing; }
+/* Keep the sensor handle below the nearby F guide line. */
+.camera-rail-control .camera-rail-device-sensor { top:56px; }
+.camera-rail-control .camera-rail-device-sensor::before { height:23px; }
+/* The focal ticks already show the measured distances. */
+.camera-rail-control .projector-rail-plot { height:112px; }
+@container (max-width:640px) { .camera-rail-control .projector-rail-plot { height:112px; } }
+@media (max-height:760px) { .camera-rail-control .projector-rail-plot { height:112px; } }
+
+/* Match the projector task's scene and preview panel sizing. */
+.camera-visual-layout { grid-template-columns:minmax(0,1fr) clamp(190px,25%,240px); gap:12px; align-items:stretch; }
+.camera-visual-layout .camera-stage { width:100%; box-sizing:border-box; height:clamp(380px,calc(100svh - 350px),500px); }
+.camera-preview-pane { align-self:stretch; box-sizing:border-box; padding:12px; }
+@container (max-width:760px) {
+ .camera-visual-layout { grid-template-columns:minmax(0,1fr) clamp(160px,29%,210px); gap:8px; }
+ .camera-visual-layout .camera-stage { height:clamp(350px,calc(100svh - 390px),460px); }
+ .camera-preview-pane { padding:8px; }
+}
+@container (max-width:640px) {
+ .camera-visual-layout { grid-template-columns:minmax(0,1fr) clamp(132px,31%,180px); gap:7px; }
+ .camera-visual-layout .camera-stage { height:clamp(290px,calc(100svh - 430px),400px); }
+ .camera-preview-pane { padding:6px; }
+}
+@container (max-width:520px) {
+ .camera-visual-layout { grid-template-columns:minmax(0,1fr) clamp(108px,34%,150px); gap:6px; }
+ .camera-visual-layout .camera-stage { height:clamp(260px,calc(100svh - 430px),360px); }
+ .camera-preview-pane { padding:4px; }
+}
+
+.camera-preview-status { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:3px; margin:2px 0 4px; }
+.camera-preview-status span { display:block; padding:2px 3px; border:1px solid #c6cbb1; border-radius:5px; background:#f2f1e6; color:#755c32; font-size:.55rem; line-height:1.25; font-weight:750; white-space:nowrap; }
+.camera-preview-status span:last-child { grid-column:1 / -1; }
+.camera-preview-status [data-pass=true] { border-color:#8db298; background:#e4f0df; color:#285c43; }
+.camera-preview-status [data-pass=false] { border-color:#d7b36b; background:#fff0cf; color:#805d27; }
+.camera-preview-pane [data-camera-preview-frame][data-clear=true] { stroke:#26724b; stroke-width:3; }
+.camera-preview-pane [data-camera-preview-frame][data-clear=false] { stroke:#b88739; stroke-width:2; }
+
+.camera-preview-pane [data-camera-image-group][hidden], .camera-preview-pane [data-camera-scatter][hidden] { display:none; }
+.camera-preview-status span { white-space:normal; overflow-wrap:anywhere; }
+.camera-preview-status [data-camera-state-focus] { grid-column:1 / -1; }
+.camera-preview-status span:last-child { grid-column:auto; }

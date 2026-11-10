@@ -1,0 +1,151 @@
+.investigation-card { scroll-margin-top:18px; }
+.unit-quiz.investigation-card { margin:20px 0 28px; overflow:hidden; border:1px solid var(--line); border-radius:20px; background:var(--card); box-shadow:0 7px 20px #243a3508; }
+.investigation-card .quiz-head { display:flex; align-items:flex-start; gap:18px; padding:25px 28px 21px; border-bottom:1px solid #e7ece5; background:linear-gradient(105deg,#fffdf6,#fdfbf3); }
+.investigation-card .quiz-mark { display:grid; width:50px; height:50px; flex:none; place-items:center; border-radius:15px; background:#f5ead0; color:#8b6725; font-size:1.45rem; font-weight:800; }
+.investigation-card .quiz-head .quiz-kicker { margin:0 0 4px; color:#946f2d; font-size:.82rem; font-weight:800; letter-spacing:.06em; }
+.investigation-card .quiz-head h2 { margin:0; color:var(--ink); font-size:clamp(1.22rem,2vw,1.65rem); line-height:1.35; }
+.investigation-card .quiz-head p { margin:8px 0 0; color:var(--muted); font-size:.94rem; }
+.investigation-card .quiz-body { padding:23px 28px 28px; }
+.route-inner a.quiz-nav { margin-top:12px; padding-top:17px; border-top:1px solid var(--line); color:#8a6726; font-weight:750; }
+.route-inner a.quiz-nav b { color:#946f2d; }
+.route-inner a.quiz-nav[aria-current="step"] { background:#faf3e4; color:#795b25; box-shadow:inset 3px 0 #d9a74f; }
+.investigation-card .card-main { min-width:0; }
+.invest-intro { margin-bottom:16px; }
+.invest-intro p { margin:0; color:#65756c; font-size:.94rem; }
+.invest-intro .dialogue { margin:0; padding:8px 12px; }
+.invest-intro .dialogue p { color:#584d3d; font-size:.86rem; }
+.invest-intro .dialogue .speaker::before { width:36px; height:36px; }
+.invest-lab { overflow:hidden; border:1px solid #d6e2d8; border-radius:16px; background:#fafbf5; }
+.invest-stage { position:relative; }
+.invest-picture { position:relative; aspect-ratio:3/2; overflow:hidden; background:#e8e5d9; }
+#invest-canvas { display:block; width:100%; height:100%; }
+.invest-reset { position:absolute; top:12px; padding:5px 10px; border:1px solid #dbe3d7; border-radius:9px; background:#fffff4f2; color:#28513f; font-size:.78rem; font-weight:700; }
+.invest-reset { right:12px; min-height:36px; cursor:pointer; }
+.invest-bottle { position:absolute; left:16.28%; top:20.31%; width:20.83%; height:48.83%; padding:0; border:2px solid transparent; border-radius:38% 38% 15% 15%; background:transparent; cursor:grab; touch-action:none; }
+.invest-take { position:absolute; left:26.7%; top:76%; transform:translate(-50%,-50%); min-height:42px; padding:7px 19px; border:2px solid #fffef5; border-radius:30px; background:#176b53; color:white; font-size:.86rem; font-weight:750; white-space:nowrap; box-shadow:0 3px 10px #163f3325; cursor:pointer; }
+.invest-take span { margin-left:10px; }
+.invest-tools { position:absolute; left:62.2%; top:45%; width:35%; height:27%; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
+.invest-tool { min-width:0; display:flex; justify-content:center; align-items:end; padding:0 0 5px; background:transparent; border:2px solid transparent; border-radius:12px; cursor:grab; touch-action:none; }
+.invest-tool span { padding:4px 5px; border:1px solid #ded8c6; border-radius:6px; background:#fffbedf5; color:#3e5746; font-size:clamp(10px,1vw,12px); white-space:nowrap; }
+.invest-tool svg { display:none; width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.5; }
+.invest-tool:hover,.invest-tool:focus-visible { background:#fffdf52e; border-color:#4b8b6b; }
+.invest-tool[aria-pressed="true"] span { color:#175d3d; border-color:#4b8b6b; background:#e7f1dff2; }
+.invest-loading { position:absolute; inset:0; display:grid; place-items:center; padding:24px; text-align:center; color:#47624f; background:#f4f5ebe8; }
+.invest-lab [hidden]{ display:none!important; }
+.invest-lab button:disabled { cursor:wait; }
+.invest-lab[data-ready="error"] .invest-loading { color:#8d4c34; }
+.invest-bottle:not(:disabled):hover,.invest-bottle:focus-visible { border-color:#458e70; background:#fffdf51a; outline:2px solid #ffffffa8; outline-offset:2px; }
+.invest-lab[data-busy="true"] .invest-bottle { opacity:0; }
+.invest-lab[data-has-sample="true"] .invest-take { background:#fffdf0ed; border-color:#c4d7be; color:#23583f; box-shadow:none; font-size:.75rem; padding:5px 12px; }
+.invest-lab[data-busy="true"] .invest-take,.invest-lab[data-busy="true"] .invest-tools { opacity:.55; }
+.invest-picture.is-drop-ready { box-shadow:inset 0 0 0 5px #4f9477; }
+.invest-drag-ghost { position:fixed; z-index:1000; pointer-events:none; transform:translate(-50%,-50%); border:1px solid #4b8b6b; border-radius:10px; background:#fffef3e6; color:#176b53; padding:10px 16px; font-weight:700; box-shadow:0 4px 15px #163f3340; }
+.invest-status { margin:0; padding:11px 15px; color:#64746a; font-size:.78rem; text-align:center; min-height:43px; }
+.invest-status[data-observation="true"] { color:#315d45; background:#edf4e9; text-align:left; }
+.invest-current { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 14px 0; font-size:.8rem; }
+.invest-current button,.invest-retry { border:1px solid #bdcfbb; border-radius:8px; padding:6px 12px; background:#fff; color:#2c6246; cursor:pointer; font-size:.78rem; }
+.invest-retry { display:block; margin:0 auto 15px; }
+.invest-notebook-icon { color:#23634b; font-size:2.1rem; line-height:1; }
+.invest-notebook-body { padding:0 16px 16px; min-width:0; }.invest-reset-dialog button { border:1px solid #b4cbb1; padding:9px 14px; border-radius:9px; background:#fff; color:#2c6246; font:inherit; font-size:.82rem; cursor:pointer; }.invest-reset-dialog button[value="reset"] { border-color:#176b53; background:#176b53; color:#fff; font-weight:700; }
+.invest-feedback { margin-top:14px; padding:12px 15px; border-left:3px solid #c9a66f; border-radius:5px; background:#fff4e2; color:#6e5837; font-size:.83rem; }
+.invest-feedback p:last-child { margin-bottom:0; }
+.invest-feedback ul { margin:7px 0 0; padding-left:20px; }
+.invest-feedback[data-result="correct"] { border-color:#4d8d61; color:#2a603f; background:#e8f3e2; }
+.invest-note-foot { margin:15px 0 0; font-size:.69rem; color:#85907c; }
+.invest-reset-dialog { max-width:min(420px,calc(100% - 32px)); border:1px solid #c9d9bf; border-radius:15px; padding:24px; color:#31563c; }
+.invest-reset-dialog::backdrop { background:#1d392e66; }
+.invest-reset-dialog h3 { margin:0 0 8px; }
+.invest-reset-dialog p { font-size:.9rem; }
+.invest-reset-dialog form>div { display:flex; justify-content:flex-end; gap:8px; }
+@media(max-width:680px) { .investigation-card .quiz-head { padding:20px 17px 17px; gap:12px; }.investigation-card .quiz-mark { width:40px; height:40px; border-radius:12px; }.investigation-card .quiz-body { padding:17px; }.investigation-card .quiz-head p { font-size:.82rem; }.invest-reset { top:8px; font-size:.7rem; padding:4px 7px; }.invest-reset { right:8px; }.invest-take { font-size:.79rem; padding:5px 12px; min-height:40px; }.invest-status { font-size:.75rem; padding:10px; } }
+@media(max-width:560px) {
+  .invest-tools { position:static; width:auto; height:auto; padding:9px; gap:7px; background:#f4f3e6; border-top:1px solid #dedfcd; }
+  .invest-tool { min-height:51px; align-items:center; flex-direction:column; gap:4px; padding:5px 2px; border:1px solid #cbd8bf; background:#fffdf5; border-radius:9px; }
+  .invest-tool svg { display:block; }.invest-tool span { border:0; background:none; font-size:.7rem; padding:0; }
+  .invest-picture .invest-reset { min-height:32px; }.invest-lab[data-has-sample="true"] .invest-take { font-size:.68rem; min-height:36px; padding:3px 9px; }
+  .invest-take { min-height:39px; font-size:.74rem; }.invest-take span { margin-left:3px; }
+  .invest-notebook-body { padding:0 10px 12px; }
+}
+
+/* One mission: dry crystals and mass-percent concentration, with automatic tare. */
+.invest-hint {margin:0;padding:10px 14px;border-left:3px solid #c79c53;background:#fff6e7;color:#806135;font-size:.8rem;line-height:1.65;}
+.invest-mission-result {margin-top:15px;padding:16px;border:1px solid #cbdcc5;border-radius:13px;background:#f5f9f0;}
+.invest-mission-result[hidden],.invest-mission-result [hidden] {display:none!important;}
+.invest-mission-result button[type="submit"] {margin-left:auto;padding:9px 15px;border:1px solid #176b53;border-radius:8px;background:#176b53;color:#fff;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer;}
+.invest-mission-result button:disabled {opacity:.5;cursor:wait;}
+@media(max-width:680px){
+ .invest-mission-result {padding:12px;}
+}
+
+/* A single visible notebook connects measurements, prompts and the calculation. */
+.invest-calculation-notebook {position:relative;margin-top:16px;padding:0 18px 15px 38px;border:1px solid #cbd8c2;border-radius:13px;background:linear-gradient(90deg,#edf2e5 25px,#fcfdf7 25px);box-shadow:0 3px 10px #304a3010;overflow:hidden;}
+.invest-calculation-notebook::before {content:'';position:absolute;left:10px;top:15px;bottom:15px;width:7px;background:radial-gradient(circle,#b6c5aa 0 2.5px,transparent 3px) 0 0/7px 46px repeat-y;pointer-events:none;}
+.invest-notebook-heading {display:flex;align-items:center;gap:10px;padding:16px 0 13px;border-bottom:1px solid #d6e0cc;}
+.invest-notebook-symbol {color:#3b7351;font-size:1.7rem;line-height:1;}
+.invest-notebook-heading h3 {margin:0;color:#29573d;font-size:1.05rem;line-height:1.5;}
+.invest-notebook-heading p {margin:3px 0 0;color:#7b886f;font-size:.72rem;line-height:1.65;}
+.invest-notebook-sample {flex:none;margin-left:auto;padding:3px 8px;border-radius:5px;background:#e7eede;color:#607754;font-size:.72rem;}
+.invest-calculation-notebook .invest-notebook-page {margin:0;padding:0;border:0;border-radius:0;background:none;}
+.invest-notebook-entry {display:grid;grid-template-columns:27px minmax(0,1fr) auto;gap:9px;align-items:center;padding:14px 0;border-bottom:1px solid #dce5d3;}
+.invest-entry-number {display:inline-grid;place-items:center;flex:none;width:25px;height:25px;border-radius:50%;background:#e4ecda;color:#537448;font-size:.68rem;font-weight:700;font-variant-numeric:tabular-nums;}
+.invest-entry-label {min-width:0;font-size:.87rem;font-weight:650;line-height:1.6;color:#3a5e42;}
+.invest-entry-label small {display:block;margin-top:3px;font-size:.72rem;font-weight:400;color:#7e8d73;line-height:1.65;}
+.invest-entry-value {display:flex;align-items:center;gap:5px;min-width:105px;color:#24633d;font-size:.95rem;line-height:1.5;}
+.invest-entry-value input {box-sizing:border-box;min-width:0;width:90px;padding:6px 5px;border:1px solid #bdcdb2;border-radius:4px;background:#f0f5e9;color:#245b3a;font:inherit;text-align:center;font-variant-numeric:tabular-nums;}
+.invest-entry-value input:focus {outline:2px solid #86aa7666;outline-offset:2px;}
+.invest-entry-value input::placeholder {font-size:.72rem;color:#7b886f;}
+.invest-notebook-entry[data-valid="false"] {background:#fff6e7;}
+.invest-notebook-entry[data-valid="false"] small {color:#9a763c;}
+.invest-notebook-entry[data-valid="false"] .invest-entry-value input {border-color:#d2a962;color:#96632b;}
+.invest-notebook-calculation {padding:14px 0 2px;}
+.invest-notebook-calculation h4 {display:flex;align-items:center;gap:9px;margin:0;color:#3a5e42;font-size:.87rem;font-weight:650;}
+.invest-worked-calculation {display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin-top:14px;color:#315f42;font-size:.87rem;line-height:1.65;}
+.invest-equation-name,.invest-equation-factor {white-space:nowrap;}
+.invest-calculation-fraction {display:inline-flex;flex-direction:column;min-width:105px;text-align:center;}
+.invest-calculation-fraction>span {display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;}
+.invest-calculation-fraction>span:first-child {border-bottom:1px solid #6d8a64;}
+.invest-calculation-fraction small {font-size:.65rem;font-weight:400;color:#809078;}
+.invest-mass-input {display:flex;align-items:center;gap:4px;font-size:.85rem;}
+.invest-mass-input input {box-sizing:border-box;min-width:0;width:84px;padding:5px 4px;border:1px solid #bdcdb2;border-radius:4px;background:#f0f5e9;color:#245b3a;font:inherit;font-size:.95rem;text-align:center;font-variant-numeric:tabular-nums;}
+.invest-mass-input input:focus {outline:2px solid #86aa7666;outline-offset:2px;}
+.invest-mass-input input::placeholder {font-size:.72rem;color:#7b886f;}
+.invest-notebook-answer {display:flex;align-items:center;gap:5px;min-width:0;}
+.invest-notebook-answer input {min-width:0;width:100px;padding:8px 6px;border:0;border-bottom:1.5px solid #7c9f6e;border-radius:0;background:#f0f5e9;color:#245b3a;font:inherit;font-size:.95rem;text-align:center;font-variant-numeric:tabular-nums;}
+.invest-notebook-answer input:focus {outline:2px solid #86aa7666;outline-offset:2px;}
+.invest-notebook-entry.is-review-target {background:#fff7e8;}
+.invest-notebook-page input[aria-invalid="true"] {border-color:#bd832c;background:#fff6e7;outline:2px solid #c69b55;outline-offset:2px;scroll-margin-block:100px;}
+.invest-notebook-entry+.invest-feedback,.invest-notebook-calculation+.invest-feedback {margin:8px 0;}
+.invest-notebook-actions {display:flex;justify-content:flex-end;margin-top:13px;}
+.invest-notebook-page .invest-note-foot {margin:12px 0 0;padding-top:10px;border-top:1px solid #e0e7d9;}
+@media(max-width:680px){
+ .invest-calculation-notebook {padding:0 11px 12px 30px;background:linear-gradient(90deg,#edf2e5 20px,#fcfdf7 20px);}
+ .invest-calculation-notebook::before {left:7px;}
+ .invest-notebook-heading {gap:7px;padding-top:13px;flex-wrap:wrap;}
+ .invest-notebook-symbol {font-size:1.35rem;}
+ .invest-notebook-heading h3 {font-size:.95rem;}
+ .invest-notebook-heading p {font-size:.66rem;}
+ .invest-notebook-sample {font-size:.66rem;}
+ .invest-notebook-entry {grid-template-columns:23px minmax(0,1fr);gap:5px 7px;padding:12px 0;}
+ .invest-entry-number {width:22px;height:22px;font-size:.62rem;}
+ .invest-entry-label {font-size:.78rem;}
+ .invest-entry-label small {font-size:.66rem;}
+ .invest-entry-value {grid-column:2;justify-self:end;min-width:85px;font-size:.85rem;}
+ .invest-notebook-calculation h4 {font-size:.78rem;gap:7px;}
+ .invest-worked-calculation {display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;font-size:.76rem;}
+ .invest-equation-name {grid-column:1/-1;text-align:center;}
+ .invest-calculation-fraction {min-width:0;}
+ .invest-calculation-fraction small {font-size:.6rem;}
+ .invest-mass-input {width:100%;gap:2px;font-size:.7rem;}
+ .invest-mass-input input {width:100%;font-size:.83rem;padding-inline:2px;}
+ .invest-notebook-answer input {width:100%;padding-inline:2px;font-size:.83rem;}
+ .invest-notebook-answer {min-width:0;}
+}
+
+.invest-tools-hint {position:absolute;left:62.2%;top:37%;width:35%;box-sizing:border-box;margin:0;padding:7px 8px;border:2px solid #fff;border-radius:11px;background:#176b53;color:#fff;text-align:center;font-size:clamp(12px,1.15vw,16px);font-weight:750;line-height:1.5;pointer-events:none;box-shadow:0 3px 12px #173f3540;}
+.invest-tools-hint::after {content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:#176b53;}
+.invest-lab:not([data-has-sample="true"]) .invest-tools-hint {display:none;}
+.invest-lab:not([data-next-step="true"]) .invest-tools-hint {visibility:hidden;}
+@media(max-width:560px){.invest-tools-hint {position:relative;left:auto;top:auto;width:auto;margin:9px 9px 4px;padding:7px 8px;font-size:.8rem;}}
+.invest-lab[data-tool-warning="true"] .invest-tools-hint {top:auto;bottom:57%;background:#875016;box-shadow:0 3px 12px #51350b40;}
+.invest-lab[data-tool-warning="true"] .invest-tools-hint::after {border-top-color:#875016;}
+@media(max-width:560px){.invest-lab[data-tool-warning="true"] .invest-tools-hint {bottom:auto;}}

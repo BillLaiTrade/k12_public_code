@@ -1,0 +1,365 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { spawn } = require('node:child_process');
+const { existsSync, mkdirSync } = require('node:fs');
+const path = require('node:path');
+const { chromium } = require('playwright');
+
+test('2.3: complete learning page preserves cup dragging, water retention and reset', { timeout: 180000 }, async t => {
+  const server = spawn('python3', ['-u', '-m', 'http.server', '0', '--bind', '127.0.0.1'], { cwd: path.resolve(__dirname, '../..'), stdio: ['ignore', 'pipe', 'pipe'] });
+  t.after(() => server.kill());
+  const port = await new Promise((resolve, reject) => {
+    let output = ''; const timer = setTimeout(() => reject(new Error('Server startup timeout')), 5000);
+    server.stdout.on('data', b => { output += b; const m = output.match(/port (\d+)/); if (m) { clearTimeout(timer); resolve(m[1]); } });
+    server.once('error', e => { clearTimeout(timer); reject(e); });
+    server.once('exit', c => { clearTimeout(timer); reject(new Error('Server exited: ' + c)); });
+  });
+  const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || (existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : undefined), args: ['--no-sandbox'] });
+  t.after(() => browser.close());
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const failures = [];
+  page.on('pageerror', e => failures.push(e.message));
+  page.on('response', r => { if (r.status() >= 400) failures.push(r.url()); });
+  page.on('requestfailed', r => failures.push(r.url()));
+  await page.clock.install();
+  const base = process.env.AIR_BASE_URL || `http://127.0.0.1:${port}/k12-learning-demos/`;
+  await page.goto(base + 'units/2/parts/2.3/', { waitUntil: 'networkidle' });
+  const artifacts = process.env.AIR_ARTIFACT_DIR ? path.resolve(process.env.AIR_ARTIFACT_DIR) : '/tmp/unit23-cup-regression'; mkdirSync(artifacts, { recursive: true });
+  const captureCup = async name => {
+    await page.evaluate(() => { document.activeElement?.blur(); const el = document.querySelector('#s1'); window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top, behavior: 'instant' }); });
+    await page.locator('#s1').screenshot({ path: path.join(artifacts, name) });
+  };
+  const pointOnCup = (x, y, target = page) => target.evaluate(({ x, y }) => {
+    const el = document.querySelector('#cup-scene .cup-glass'), matrix = el.getScreenCTM();
+    if (!matrix) throw new Error('Cup is not rendered');
+    const p = new DOMPoint(x, y).matrixTransform(matrix); return { x: p.x, y: p.y };
+  }, { x, y });
+  const rotateRim = async (delta, target = page) => {
+    await target.clock.runFor(100);
+    await target.locator('#cup-scene').scrollIntoViewIfNeeded();
+    const center = await pointOnCup(0, 0, target), rim = await pointOnCup(0, 90, target);
+    const radius = Math.hypot(rim.x - center.x, rim.y - center.y), start = Math.atan2(rim.y - center.y, rim.x - center.x);
+    await target.mouse.move(rim.x, rim.y); await target.mouse.down();
+    assert.equal(await target.locator('#cup-scene').getAttribute('data-drag-mode'), 'rotate', 'rim receives rotation gesture');
+    for (let i = 1; i <= 8; i++) { const a = start - delta * Math.PI / 180 * i / 8; await target.mouse.move(center.x + Math.cos(a) * radius, center.y + Math.sin(a) * radius); }
+    await target.mouse.up();
+  };
+  const dragCupVertically = async (delta, target = page) => {
+    await target.clock.runFor(100);
+    await target.locator('#cup-scene').scrollIntoViewIfNeeded();
+    const body = await pointOnCup(0, -10, target);
+    const scale = await target.evaluate(() => { const m = document.querySelector('#cup-scene svg').getScreenCTM(); return Math.hypot(m.c, m.d) * 24; });
+    await target.mouse.move(body.x, body.y); await target.mouse.down();
+    assert.equal(await target.locator('#cup-scene').getAttribute('data-drag-mode'), 'vertical');
+    for (let i = 1; i <= 8; i++) await target.mouse.move(body.x, body.y + delta * scale * i / 8);
+    await target.mouse.up();
+  };
+  const phase = () => page.locator('html').getAttribute('data-phase');
+  const volume = () => page.locator('#reaction-scene').getAttribute('data-volume').then(Number);
+
+  await t.test('five teaching sections and one quiz have matching anchors and shared avatars', async () => {
+    assert.equal(await page.locator('section.lesson').count(), 6);
+    assert.deepEqual(await page.locator('.route a').evaluateAll(nodes => nodes.map(n => n.getAttribute('href'))), ['#s1', '#s2', '#s3', '#s4', '#s5', '#s6']);
+    assert.equal(await page.locator('#s2 .dialogue.xiaokui, #s2 .dialogue.grandpa').count(), 2);
+    assert.equal(await page.locator('#s2 .air-share').count(), 3);
+    assert.equal(await page.locator('#setup-scene, #reaction-scene, #humidity-chart, #report-form').count(), 0);
+    assert.equal(await page.locator('script[src*="air.js"]').count(), 0);
+  });
+
+  await t.test('main cup water stays at physical scale without a magnified panel or minimum water band', async () => {
+    await page.locator('#cup-reset').click();
+    assert.equal(await page.locator('#cup-scene .cup-entry-detail').count(), 0);
+    await dragCupVertically(13);
+    const scene = page.locator('#cup-scene');
+    const depth = Number(await scene.getAttribute('data-depth')), level = Number(await scene.getAttribute('data-water'));
+    const entry = depth - level;
+    assert.ok(entry > .05 && entry < .2);
+    const clipY = Number(await scene.locator('#watercut-cup-main>rect').getAttribute('y'));
+    assert.ok(Math.abs(clipY - (210 + level * 24)) < 1e-8);
+    assert.ok(Math.abs((210 + depth * 24 - clipY) - entry * 24) < 1e-8);
+    assert.ok(210 + depth * 24 - clipY < 4, 'shallow immersion has no exaggerated minimum thickness');
+    assert.equal(await page.locator('#s1 .cup-entry-detail, #s1 .cup-mouth-ingress').count(), 0);
+    assert.equal(await scene.getAttribute('data-wet'), 'false');
+    assert.equal(await scene.getAttribute('data-escaped'), '0');
+    assert.equal(await scene.locator('.cup-bubble').count(), 0);
+    await scene.screenshot({path:path.join(artifacts,'upright-small-entry.png')});
+    await rotateRim(125);
+    assert.equal(await scene.getAttribute('data-wet'), 'true');
+    assert.equal(await scene.locator('.cup-entry-detail').count(), 0);
+    await page.locator('#cup-reset').click();
+  });
+
+  await t.test('cup first drag stays vertical until release; dragging the rim then rotates both ways', async () => {
+    await page.locator('#cup-reset').click(); await page.locator('#cup-scene').scrollIntoViewIfNeeded();
+    assert.equal(await page.locator('#s1 .cup-callout, #s1 .cup-parts, #cup-hint').count(), 0);
+    assert.equal(await page.locator('#cup-scene image[href*="cup-paper"]').getAttribute('width'), '64');
+    const rim = await pointOnCup(0, 90), centerBefore = await pointOnCup(0, 0);
+    const scale = await page.evaluate(() => { const m = document.querySelector('#cup-scene svg').getScreenCTM(); return Math.hypot(m.c, m.d) * 24; });
+    await page.mouse.move(rim.x, rim.y); await page.mouse.down();
+    await page.mouse.move(rim.x + 60, rim.y + 13 * scale, { steps: 12 });
+    assert.equal(Number(await page.locator('#cup-scene').getAttribute('data-angle')), 0);
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'false');
+    await page.mouse.up();
+    assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-depth')) - 12) < .05);
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'true');
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'false');
+    assert.ok(Math.abs((await pointOnCup(0, 0)).x - centerBefore.x) < 1);
+    const depth = Number(await page.locator('#cup-scene').getAttribute('data-depth'));
+    await rotateRim(70);
+    assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) - 70) < 1);
+    assert.equal(Number(await page.locator('#cup-scene').getAttribute('data-depth')), depth);
+    await rotateRim(-110);
+    assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) + 40) < 1, 'reverse rim drag: ' + await page.locator('#cup-scene').getAttribute('data-angle'));
+    await page.locator('#cup-reset').click();
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'false');
+  });
+
+  await t.test('dragging alone completes both observations; reset stays compact above the scene', async () => {
+    for (const width of [1440, 820, 390, 320]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.locator('#cup-reset').click();
+      assert.equal(await page.locator('#cup-action, .cup-actions').count(), 0);
+      assert.equal(await page.locator('.cup-toolbar button').count(), 1);
+      const reset = await page.locator('#cup-reset').boundingBox();
+      const scene = await page.locator('#cup-scene').boundingBox();
+      assert.ok(reset.height >= 32 && reset.height <= 40, 'compact reset remains usable');
+      assert.ok(reset.y + reset.height <= scene.y, 'reset does not cover the scene');
+      assert.ok(Math.abs(reset.x + reset.width - scene.x - scene.width) < 2, 'reset aligns right');
+      assert.ok(reset.width < scene.width * .6, 'reset is not a full-width action');
+      await dragCupVertically(13);
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'false');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-submerged'), 'true');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-within-tank'), 'true');
+      await rotateRim(125);
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'true');
+      assert.equal(await page.locator('#cup-comparison').isVisible(), true);
+      assert.equal(await page.locator('#cup-conclusion').isVisible(), true);
+      await captureCup(`drag-reset-${width}.png`);
+      await page.locator('[data-cup-preview="before"]').click();
+      assert.match(await page.locator('#cup-status').innerText(), /回看杯口朝下入水/);
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'true');
+      await page.locator('[data-cup-preview="before"]').click();
+      await rotateRim(-125);
+      assert.match(await page.locator('#cup-status').innerText(), /不會自動補回/);
+      await page.locator('#cup-reset').focus(); await page.keyboard.press('Enter');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'false');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-depth'), '-1');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-angle'), '0');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'false');
+      assert.equal(await page.locator('#cup-comparison').isVisible(), true);
+      assert.equal(await page.locator('#cup-conclusion').isVisible(), true);
+      await captureCup(`reset-initial-${width}.png`);
+    }
+    await page.setViewportSize({ width: 1440, height: 1000 });
+  });
+
+  await t.test('a filled cup retains visible water above the tank, then drains gradually when the mouth emerges', async () => {
+    for (const mode of ['no-preference', 'reduce']) {
+      const probe = await browser.newPage({ reducedMotion: mode, viewport: { width: mode === 'reduce' ? 390 : 1440, height: 1000 } });
+      try {
+        const start = new Date('2026-10-29T00:00:00Z');
+        await probe.clock.install({ time: start }); await probe.clock.pauseAt(start);
+        await probe.goto(base + 'units/2/parts/2.3/', { waitUntil: 'networkidle' });
+        await dragCupVertically(13, probe);
+        await rotateRim(125, probe);
+        await rotateRim(-125, probe);
+        await dragCupVertically(-9, probe);
+        assert.equal(await probe.locator('#cup-scene').getAttribute('data-mouth-exposed'), 'false');
+        assert.ok(Math.abs(Number(await probe.locator('#cup-scene').getAttribute('data-water-area')) - 72) < 1e-6);
+        assert.ok(Number(await probe.locator('#cup-scene').getAttribute('data-min-y')) < 0);
+        const waterTop = Number(await probe.locator('#cup-scene').getAttribute('data-water')) * 24 + 210;
+        assert.ok(waterTop < 130, 'retained water extends above the old drawing cutoff');
+        assert.ok(Number(await probe.locator('.cup-water-fill').first().getAttribute('y')) < waterTop);
+        assert.match(await probe.locator('#cup-status').innerText(), /水仍留在杯內/);
+        await probe.locator('#cup-scene').screenshot({ path: path.join(artifacts, `retained-${mode}.png`) });
+        await rotateRim(15, probe);
+        await dragCupVertically(-3.9, probe);
+        assert.equal(await probe.locator('#cup-scene').getAttribute('data-draining'), 'true');
+        assert.ok(Number(await probe.locator('#cup-scene').getAttribute('data-water-area')) > 70, 'exposure does not instantly remove water');
+        assert.equal(await probe.locator('#cup-scene .cup-drain-stream').count(), 1);
+        await probe.clock.runFor(700);
+        const remaining = Number(await probe.locator('#cup-scene').getAttribute('data-water-area'));
+        assert.ok(remaining > 30 && remaining < 60, `${mode}: intermediate retained water ${remaining}`);
+        assert.equal(await probe.locator('#cup-scene').getAttribute('data-wet'), 'true');
+        await probe.locator('#cup-scene').screenshot({ path: path.join(artifacts, `draining-${mode}.png`) });
+        await probe.clock.runFor(3500);
+        assert.equal(await probe.locator('#cup-scene').getAttribute('data-draining'), 'false');
+        assert.ok(Number(await probe.locator('#cup-scene').getAttribute('data-water-area')) < 1e-6);
+        assert.equal(await probe.locator('#cup-scene .cup-drain-stream').count(), 0);
+        assert.equal(await probe.locator('#cup-scene').getAttribute('data-wet'), 'true');
+        assert.ok(Math.abs(Number(await probe.locator('#cup-scene').getAttribute('data-angle')) - 15) < .01);
+        await probe.locator('#cup-scene').screenshot({ path: path.join(artifacts, `drained-${mode}.png`) });
+        await probe.locator('#cup-reset').click();
+        assert.equal(await probe.locator('#cup-scene').getAttribute('data-wet'), 'false');
+        assert.equal(Number(await probe.locator('#cup-scene').getAttribute('data-water-area')), 0);
+      } finally { await probe.close(); await page.bringToFront(); }
+    }
+  });
+
+  await t.test('mouth-up cup keeps painted water after direct lifting on both sides and fits inside the scene', async () => {
+    for (const width of [1440, 390]) {
+      const probe = await browser.newPage({ reducedMotion: 'reduce', viewport: { width, height: 1000 } });
+      try {
+        const start = new Date('2026-10-30T00:00:00Z');
+        await probe.clock.install({ time: start }); await probe.clock.pauseAt(start);
+        await probe.goto(base + 'units/2/parts/2.3/', { waitUntil: 'networkidle' });
+        for (const angle of [-125, 125]) {
+          await probe.locator('#cup-reset').click();
+          await dragCupVertically(13, probe);
+          await rotateRim(angle, probe);
+          await dragCupVertically(-13, probe);
+          await probe.clock.runFor(3500);
+          const amount = Number(await probe.locator('#cup-scene').getAttribute('data-water-area'));
+          assert.ok(amount > 30 && amount < 32, `${width}px ${angle} degrees retains water: ${amount}`);
+          assert.equal(await probe.locator('#cup-scene').getAttribute('data-draining'), 'false');
+          assert.equal(await probe.locator('#cup-scene').getAttribute('data-wet'), 'true');
+          const bounds = await probe.locator('#cup-scene svg').evaluate(el => {
+            const view = el.viewBox.baseVal;
+            const points = [...el.querySelector('clipPath polygon').points].map(p => p.y);
+            return { top: view.y, cupTop: Math.min(...points) };
+          });
+          assert.ok(bounds.cupTop - bounds.top >= 23, 'raised cup is not cropped');
+          assert.match(await probe.locator('#cup-scene svg').getAttribute('aria-label'), /杯內有水/);
+          // Screenshot capture scrolls the scene into view; settle that scroll before sampling coordinates.
+          await probe.locator('#cup-scene').scrollIntoViewIfNeeded();
+          // Local SVG coordinates: sample inside the retained water, away from its anti-aliased surface.
+          const sample = await pointOnCup(-Math.sign(angle) * 30, -10, probe);
+          const box = await probe.locator('#cup-scene').boundingBox();
+          const shot = await probe.locator('#cup-scene').screenshot({ path: path.join(artifacts, `mouth-up-${width}-${angle}.png`) });
+          const paint = await probe.evaluate(({ png, x, y }) => new Promise((resolve, reject) => {
+            const img = new Image(); img.onerror = reject;
+            img.onload = () => {
+              const canvas = document.createElement('canvas'); canvas.width = img.width; canvas.height = img.height;
+              const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0);
+              const pixels = ctx.getImageData(Math.round(x) - 3, Math.round(y) - 3, 7, 7).data;
+              let red = 0, blue = 0;
+              for (let i = 0; i < pixels.length; i += 4) { red += pixels[i]; blue += pixels[i + 2]; }
+              resolve({ red: red / 49, blue: blue / 49 });
+            };
+            img.src = 'data:image/png;base64,' + png;
+          }), { png: shot.toString('base64'), x: sample.x - box.x, y: sample.y - box.y });
+          assert.ok(paint.blue - paint.red > 12, `${width}px ${angle} degrees visibly paints water: ${JSON.stringify(paint)}`);
+          await probe.clock.runFor(5000);
+          assert.ok(Math.abs(Number(await probe.locator('#cup-scene').getAttribute('data-water-area')) - amount) < 1e-6, 'carried water does not drain away later');
+        }
+      } finally { await probe.close(); await page.bringToFront(); }
+    }
+  });
+
+  await t.test('lifting a tilted cup never snaps upright and rotation remains available after lifting', async () => {
+    for (const sign of [-1, 1]) {
+      await page.locator('#cup-reset').click();
+      await page.locator('#cup-scene').focus(); await page.keyboard.press('ArrowRight');
+      assert.equal(Number(await page.locator('#cup-scene').getAttribute('data-angle')), 0, 'first immersion remains locked');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'false');
+      await dragCupVertically(13);
+      await rotateRim(sign * 125);
+      const angleBeforeLift = Number(await page.locator('#cup-scene').getAttribute('data-angle'));
+      assert.ok(Math.abs(angleBeforeLift - sign * 125) < .01);
+      await page.locator('#cup-scene').scrollIntoViewIfNeeded();
+      const body = await pointOnCup(0, -10);
+      const scale = await page.evaluate(() => { const m = document.querySelector('#cup-scene svg').getScreenCTM(); return Math.hypot(m.c, m.d) * 24; });
+      await page.mouse.move(body.x, body.y); await page.mouse.down();
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-drag-mode'), 'vertical');
+      for (let step = 1; step <= 12; step++) {
+        await page.mouse.move(body.x, body.y - 6 * scale * step / 12);
+        assert.equal(Number(await page.locator('#cup-scene').getAttribute('data-angle')), angleBeforeLift, 'orientation retained throughout lift');
+      }
+      await page.mouse.up();
+      assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-depth')) - 6) < .05,
+        'lift depth: ' + await page.locator('#cup-scene').getAttribute('data-depth'));
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'true');
+      assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'true');
+      if (sign === 1) await captureCup('tilted-lift.png');
+      await rotateRim(-sign * 20);
+      assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) - sign * 105) < 1);
+      await page.locator('#cup-scene').focus(); await page.keyboard.press('ArrowUp');
+      await dragCupVertically(-2);
+      assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) - sign * 105) < 1);
+      await dragCupVertically(12 - Number(await page.locator('#cup-scene').getAttribute('data-depth')));
+      assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) - sign * 105) < 1);
+      await rotateRim(-sign * 105);
+      assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle'))) < 1, 'dragging the rim back straightens the cup');
+    }
+    await page.locator('#cup-reset').click();
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'false');
+  });
+
+  await t.test('cup uses direct dragging without a control panel; keyboard and fresh paper work', async () => {
+    await page.locator('#cup-reset').click();
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-depth'), '-1');
+    assert.equal(await page.locator('#cup-comparison').isVisible(), true);
+    assert.equal(await page.locator('#s1 details, #cup-depth, #cup-angle, #cup-straight, #cup-up').count(), 0);
+    await dragCupVertically(13);
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'true');
+    await rotateRim(40);
+    assert.equal(await page.locator('#cup-zoom-toggle, #cup-zoom').count(), 0);
+    assert.equal(await page.locator('#s1 [data-cup-hint]').count(), 0);
+    await page.locator('#cup-scene').focus(); await page.keyboard.press('ArrowRight');
+    assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) - 45) < 1);
+    await rotateRim(25);
+    assert.ok(Math.abs(Number(await page.locator('#cup-scene').getAttribute('data-angle')) - 70) < 1);
+    await page.locator('#cup-reset').click();
+    assert.equal(await page.locator('#cup-scene').getAttribute('data-wet'), 'false');
+    assert.equal(await page.locator('#cup-conclusion').isVisible(), true);
+  });
+
+  await t.test('narrow viewport, keyboard focus, and reduced motion stay usable', async () => {
+    await page.evaluate(() => document.activeElement?.blur());
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.clock.runFor(300);
+    await page.evaluate(() => document.querySelector('#s2').scrollIntoView({ behavior: 'instant', block: 'start' }));
+    await page.clock.runFor(100);
+    await page.waitForFunction(() => document.querySelector('.route a[aria-current]')?.getAttribute('href') === '#s2');
+    assert.equal(await page.locator('.route a[aria-current]').getAttribute('href'), '#s2');
+    for (let i = 1; i <= 5; i++) {
+      await page.evaluate(n => document.querySelector('#s' + n).scrollIntoView({ behavior: 'instant', block: 'start' }), i);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'section ' + i);
+    }
+    await page.evaluate(() => document.querySelector('#s2').scrollIntoView({ behavior: 'instant', block: 'start' }));
+    await page.screenshot({ path: path.join(artifacts, 'mobile.png') });
+    const reduced = await browser.newPage({ reducedMotion: 'reduce', viewport: { width: 390, height: 844 }, hasTouch: true });
+    await reduced.clock.install();
+    await reduced.goto(base + 'units/2/parts/2.3/', { waitUntil: 'networkidle' });
+    await dragCupVertically(13, reduced);
+    await rotateRim(125, reduced);
+    assert.equal(await reduced.locator('#cup-comparison').isVisible(), true);
+    assert.equal(await reduced.locator('#cup-scene').getAttribute('data-wet'), 'true');
+    assert.equal(await reduced.locator('#cup-zoom-toggle, #cup-zoom').count(), 0);
+    assert.equal(await reduced.locator('#s1 [data-cup-hint]').count(), 0);
+    assert.equal(await reduced.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await reduced.locator('[data-cup-preview="before"]').click();
+    await reduced.evaluate(() => { document.activeElement?.blur(); const el = document.querySelector('#s1'); window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top, behavior: 'instant' }); });
+    await reduced.locator('#s1').screenshot({ path: path.join(artifacts, 'cup-mobile.png') });
+    await reduced.locator('#cup-reset').click(); await reduced.locator('#cup-scene').scrollIntoViewIfNeeded();
+    const touch = await reduced.context().newCDPSession(reduced);
+    const rim = await pointOnCup(0, 90, reduced);
+    const pixels = await reduced.evaluate(() => { const m = document.querySelector('#cup-scene svg').getScreenCTM(); return Math.hypot(m.c, m.d) * 24; });
+    await touch.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: rim.x, y: rim.y }] });
+    for (let i = 1; i <= 8; i++) await touch.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: rim.x + i * 2, y: rim.y + 13 * pixels * i / 8 }] });
+    assert.equal(Number(await reduced.locator('#cup-scene').getAttribute('data-angle')), 0);
+    await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    assert.equal(await reduced.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'true');
+    const center = await pointOnCup(0, 0, reduced), end = await pointOnCup(0, 90, reduced), radius = Math.hypot(end.x - center.x, end.y - center.y), start = Math.atan2(end.y - center.y, end.x - center.x);
+    await touch.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: end.x, y: end.y }] });
+    for (let i = 1; i <= 8; i++) { const a = start - 80 * Math.PI / 180 * i / 8; await touch.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: center.x + radius * Math.cos(a), y: center.y + radius * Math.sin(a) }] }); }
+    await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    assert.ok(Math.abs(Number(await reduced.locator('#cup-scene').getAttribute('data-angle')) - 80) < 1);
+    assert.equal(await reduced.locator('#cup-scene').getAttribute('data-wet'), 'true');
+    const body = await pointOnCup(0, -10, reduced);
+    const liftScale = await reduced.evaluate(() => { const m = document.querySelector('#cup-scene svg').getScreenCTM(); return Math.hypot(m.c, m.d) * 24; });
+    await touch.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: body.x, y: body.y }] });
+    assert.equal(await reduced.locator('#cup-scene').getAttribute('data-drag-mode'), 'vertical');
+    for (let i = 1; i <= 8; i++) {
+      await touch.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: body.x, y: body.y - 6 * liftScale * i / 8 }] });
+      assert.ok(Math.abs(Number(await reduced.locator('#cup-scene').getAttribute('data-angle')) - 80) < 1);
+    }
+    await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    assert.ok(Math.abs(Number(await reduced.locator('#cup-scene').getAttribute('data-depth')) - 6) < .05);
+    assert.equal(await reduced.locator('#cup-scene').getAttribute('data-rotation-unlocked'), 'true');
+    await reduced.locator('#cup-scene').screenshot({ path: path.join(artifacts, 'touch-lift.png') });
+    await touch.detach();
+    await reduced.close();
+  });
+  assert.deepEqual(failures, [], 'no broken resources or browser errors');
+});

@@ -1,0 +1,128 @@
+import {BODY_HOME,bodyOffset,bodyPoint} from './collection-task-layout.mjs?v=b-decisions-20261104';
+import {jarPose,jarMouth,outletPose,clamp,rigPosition,heldMaterial,usedMarbleIds} from './collection-task-model.mjs?v=water-guidance-20261104';
+import {contactRegions,contains} from './collection-task-contact.mjs?v=water-guidance-20261104';
+export const TOOL_HOME={forceps:{x:485,y:305},water:{x:660,y:130},acid:{x:440,y:65},rig:{x:500,y:50},funnel:{x:535,y:550},plate:{x:605,y:-20},peroxide:{x:680,y:65},catalyst:{x:490,y:450}};
+export function directPosition(s,id){
+ if(s.dragging?.id===id)return s.dragging.position;
+ if(BODY_HOME[id])return bodyPoint(s,id,BODY_HOME[id].x,BODY_HOME[id].y);
+ if(id==='jar'){const p=jarPose(s);return{x:870+p.x,y:330+p.y};}
+ if(id==='outlet'){const p=outletPose(s);return{x:p.x+260,y:p.y+10};}
+ if(id==='rig')return rigPosition(s);
+ if(id==='funnel'&&s.funnel){const q=rigPosition(s);return{x:q.x-26,y:q.y+350};}
+ if(id==='plate'&&s.jarCovered)return jarMouth(s);
+ return s.positions[id]||TOOL_HOME[id];
+}
+function connectedBodyLimit(s,id,q){
+ if(!s.rig||id==='tank'&&s.outlet!=='jar')return q;
+ const a=bodyPoint(s,'flask',446,135),out=outletPose(s),b={x:out.x,y:out.y-140};
+ if(id==='flask'){a.x=q.x+146;a.y=q.y-275;}else{const t=bodyPoint(s,'tank',1000,480);b.x+=q.x-t.x;b.y+=q.y-t.y;}
+ const dx=b.x-a.x,dy=b.y-a.y,distance=Math.hypot(dx,dy);if(distance<=420)return q;
+ const ratio=420/distance;
+ return id==='flask'?{x:b.x-dx*ratio-146,y:b.y-dy*ratio+275}:{x:q.x+(a.x+dx*ratio-b.x),y:q.y+(a.y+dy*ratio-b.y)};
+}
+export function limitPosition(s,id,p){
+ const q={x:clamp(p.x,65,1035),y:clamp(p.y,-25,590)};
+ if(id==='flask')return connectedBodyLimit(s,id,{x:clamp(p.x,160,940),y:clamp(p.y,210,420)});
+ if(id==='tank')return connectedBodyLimit(s,id,{x:clamp(p.x,440,1040),y:clamp(p.y,170,485)});
+ if(id==='marble')return{x:clamp(p.x,115,985),y:clamp(p.y,0,565)};
+ if(id==='funnel'){q.x=clamp(q.x,65,1035);q.y=clamp(q.y,140,590);}
+ if(id==='rig'&&s.rig){const a=bodyPoint(s,'flask',300,205);q.x=a.x;q.y=Math.min(a.y,q.y);}
+ if(id==='outlet'){
+  const t=bodyOffset(s,'tank'),mouth=jarMouth(s),under=s.jarPlace>.5&&s.jarAngle>90?mouth.y+28:460+t.y;
+  q.x=clamp(q.x,350,1035);q.y=clamp(q.y,120,590);
+  if(s.outlet==='jar'&&s.dragging?.position.y<under&&q.y<under)q.x=mouth.x;
+  else if(q.x>mouth.x-75)q.y=Math.max(under,q.y);
+  const f=bodyOffset(s,'flask'),dx=q.x-(706+f.x),dy=q.y-(285+f.y),distance=Math.hypot(dx,dy);if(distance>385){q.x=706+f.x+dx*385/distance;q.y=285+f.y+dy*385/distance;}
+ }
+
+ if(id==='jar'){q.x=clamp(q.x,150,1000);q.y=clamp(q.y,120,500);}
+ return q;
+}
+const intent=(action,value,label,target,region,extra={})=>({action,value,label,target,region,...extra});
+export function approach(s,id,p,origin){
+ const tank=bodyOffset(s,'tank');
+ const has=id=>s.selected.includes(id),r=contactRegions(s),mouth=jarMouth(s);
+ const hit=(region,point=p)=>contains(region,point);
+ const use=(value,label,target,region,extra)=>intent('target',value,label,target,region,extra);
+ if(id==='jar'){
+  if(s.jarPlace>.5&&p.y<(origin?.y??330+tank.y)-60&&hit(r.extract,{x:p.x,y:p.y+102}))return intent('extract',null,s.outlet==='jar'?'先撤出導管，再取出集氣瓶':'向上取出，保持封口並扶正','jar',r.extract);
+  if(s.jarPlace<.5&&has('tank')&&hit(r.immerse,{x:p.x,y:p.y+119}))return intent('immerse',null,'瓶底已到槽口：保持蓋片、倒置入水','tank',r.immerse);
+  return null;
+ }
+ if(id==='outlet'){
+  if(has('jar')&&has('tank')&&s.jarAngle>179&&s.jarPlace>.99&&hit(r.jar)&&p.y>=mouth.y&&s.outlet!=='jar')return intent('outlet','jar',s.jarCovered?'先移開玻璃片，再從下方移入':'由瓶口下方向上移入','jar',r.jar);
+  if(has('tank')&&s.tankWater>0&&hit(r.tankWater)&&!(has('jar')&&s.jarPlace>.5&&p.x>mouth.x-80&&p.x<mouth.x+80)&&s.outlet!=='tank')return intent('outlet','tank',s.outlet==='jar'?'從瓶口下方撤管，移到瓶外水中':'管口已浸水：在瓶外排氣','outlet',r.tankWater);
+  if(has('tank')&&hit(r.tankAir)&&s.outlet!=='air')return intent('outlet','air','管口已離水：向空氣排氣','outlet',r.tankAir);
+  return null;
+ }
+ if(id==='forceps'){
+  const held=heldMaterial(s);
+  if(has('catalyst')&&hit(r.catalyst))return use('catalyst',held==='catalyst'?'將二氧化錳放回碟中':held?'先放下鑷子夾著的大理石':'鑷尖夾取少量二氧化錳','catalyst',r.catalyst);
+  if(s.heldMarble&&has('marble')&&hit(r.bowl))return use('marble','將大理石放回盤中','marble',r.bowl);
+  const index=s.heldMarble?(s.heldStoneId??s.flaskMarbles):r.stones.findIndex((q,i)=>!usedMarbleIds(s).includes(i)&&hit(q));
+  if(has('marble')&&index>=0&&hit(r.stones[index]))return use('marble',s.heldMarble?'將大理石放回盤中':'鑷尖夾起這塊大理石','marble',r.stones[index],{stoneIndex:index});
+  const name=held==='catalyst'?'二氧化錳':'大理石';
+  if(has('flask')&&hit(r.flask))return use('flask',s.rig?'瓶口已被塞子擋住：先移開塞子':!held?'先用鑷尖夾取材料':`由錐形瓶口放入${name}`,'flask',r.flask);
+  if(held&&has('jar')&&s.jarAngle<1&&s.jarPlace<.01&&hit(r.jar))return use('jar',s.jarCovered?'瓶口已蓋住：先移開玻璃片':`由集氣瓶口放入${name}`,'jar',r.jar);
+  if(held&&has('tank')&&hit(r.tankDrop))return use('tank',`由水槽上方放入${name}`,'tank',r.tankDrop,{dropAt:{x:p.x,y:p.y}});
+ }
+ if(id==='water'||id==='acid'||id==='peroxide'){
+  const target=s.rig&&s.funnel?r.funnel:r.pourFlask,name=id==='water'?'清水':id==='acid'?'稀鹽酸':'雙氧水';
+  if(has('flask')&&hit(target))return use(s.rig&&s.funnel?'funnel':'flask',s.rig&&!s.funnel?'瓶口被塞子擋住：先插入漏斗':`${name}由開口倒入錐形瓶`,'flask',target);
+  if(has('jar')&&s.jarAngle<1&&s.jarPlace<.01&&hit(r.pourJar))return use('jar',s.jarCovered?'瓶口已蓋住：先移開玻璃片':`${name}由瓶口倒入集氣瓶`,'jar',r.pourJar);
+  const jarBlocks=has('jar')&&s.jarAngle<1&&s.jarPlace<.01&&Math.abs(p.x-mouth.x)<69&&p.y>mouth.y+20&&p.y<mouth.y+211;
+  if(has('tank')&&!jarBlocks&&hit(r.tank))return use('tank',`${name}由槽口倒入水槽`,'tank',r.tank,{pourAt:{x:p.x,y:p.y}});
+ }
+ if(id==='plate'&&s.jarCovered){
+  // 接觸面已移離瓶口才移開，不因在瓶口內微調就解除封口。
+  if(Math.abs(p.x-mouth.x)>95||Math.abs(p.y-mouth.y)>35)return intent('uncover',null,'移開瓶口上的玻璃片','jar',r.jarSeal);
+  return null;
+ }
+ if(id==='plate'&&has('jar')&&hit(r.jarSeal))return use('jar',s.outlet==='jar'?'先撤出導管，再蓋玻璃片':'玻璃片貼合瓶口','jar',r.jarSeal);
+ // 塞子以下緣對瓶口；漏斗以細長管整段對空孔（p 是可見管尖）。
+ if(id==='rig'&&s.rig){if(p.y<(origin?.y??205+bodyOffset(s,'flask').y)-12)return intent('remove-rig',null,'向上拔出雙孔塞與整組器材','flask',r.flask);return null;}
+ if(id==='rig'&&has('flask')&&hit(r.flask,{x:p.x,y:p.y+59}))return use('flask','塞子下緣已對準瓶口：裝入','flask',r.flask);
+ if(id==='funnel'&&has('rig')&&!s.funnel){
+  // 長管全部有效，排除上端球狀膨大部；以長管輪廓對空孔。
+  const rig=rigPosition(s),q={x:clamp(rig.x-26,p.x-8,p.x+8),y:clamp(rig.y-7,p.y-345,p.y)};
+  if(hit(r.stopper,q))return use(s.rig?'flask':'rig','細長管已對準空孔：插入漏斗',s.rig?'flask':'rig',r.stopper);
+ }
+ if(id==='catalyst'&&has('flask')&&hit(r.flask,{x:p.x+55,y:p.y-10}))return use('flask','由材料碟邊緣嘗試加入二氧化錳','flask',r.flask);
+ return null;
+}
+function preferredPark(s,id,target){
+ const mouth=jarMouth(s);
+ if(id==='forceps')return target==='marble'?{x:520,y:305}:target==='catalyst'?{x:610,y:290}:target==='jar'?{x:715,y:120}:target==='tank'?{x:945,y:190}:{x:445,y:310};
+ if(id==='water'||id==='acid'||id==='peroxide')return target==='jar'?{x:715,y:90}:target==='tank'?{x:945,y:170}:{x:435,y:40};
+ if(id==='plate')return{x:Math.min(1020,mouth.x+140),y:mouth.y-75};
+ return TOOL_HOME[id];
+}
+
+// 自動停放只調整目前使用的器材，不挪動學生已擺放的其他物件。
+// 塞子按整組管線與已接漏斗計算，不能只檢查塞子的圓心。
+export function parkingParts(s,id,p){
+ const rect=(x,y,w,h)=>({x:p.x+x,y:p.y+y,w,h});
+ if(id==='rig')return [rect(-55,-12,110,75),rect(8,-90,150,90),rect(125,-90,280,210),...(s.funnel?[rect(-43,-150,34,505)]:[])];
+ if(id==='funnel')return [rect(-29,-495,58,140),rect(-9,-355,18,355)];
+ if(['water','acid','peroxide'].includes(id))return [rect(-40,-22,155,180)];
+ if(id==='forceps')return [rect(-75,-300,100,310)];
+ if(id==='plate')return [rect(-140,-35,280,75)];
+ return [rect(-65,-50,130,105)];
+}
+const overlap=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+export function safeParkPosition(state,id,preferred=TOOL_HOME[id]){
+ const s={...state,dragging:null},critical=[],obstacles=[];
+ const protect=(p,w,h)=>critical.push({x:p.x-w/2,y:p.y-h/2,w,h});
+ if(s.selected.includes('flask')){protect(bodyPoint(s,'flask',300,205),130,70);protect(bodyPoint(s,'flask',300,430),100,150);}
+ if(s.selected.includes('jar')){protect(jarMouth(s),150,60);const p=jarPose(s);protect({x:870+p.x,y:330+p.y},100,140);}
+ if(s.selected.includes('tank'))protect(bodyPoint(s,'tank',825,355),450,50);
+ for(const other of s.selected){if(other===id||!TOOL_HOME[other]||other==='funnel'&&s.funnel||other==='rig'&&s.rig||other==='plate'&&s.jarCovered)continue;const p=directPosition(s,other);obstacles.push(...parkingParts(s,other,p));const grip=other==='forceps'?{x:p.x-31,y:p.y-147}:['water','acid','peroxide'].includes(other)?{x:p.x+40,y:p.y+83}:p;protect(grip,65,65);}
+ const candidates=[preferred];for(let y=50;y<=540;y+=35)for(let x=90;x<=970;x+=40)candidates.push({x,y});
+ let best=preferred,score=Infinity;
+ for(const p of candidates){const parts=parkingParts(s,id,p);let n=Math.hypot(p.x-preferred.x,p.y-preferred.y)*.05;
+ for(const a of parts){n+=Math.max(0,65-a.x)*a.h*10+Math.max(0,a.x+a.w-1090)*a.h*10+Math.max(0,-100-a.y)*a.w*10+Math.max(0,a.y+a.h-640)*a.w*10;for(const b of critical)n+=overlap(a,b)*100;for(const b of obstacles)n+=overlap(a,b);}
+ if(n<score){score=n;best=p;}}
+ return {...best};
+}
+
+export function parkPosition(s,id,target){return safeParkPosition(s,id,preferredPark(s,id,target));}

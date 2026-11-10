@@ -1,0 +1,32 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const {openBench}=require('./helpers/convex-bench-fixture.cjs');
+
+test('顯微鏡可旋轉縮放，光路與標籤同步，重新觀察回到初始視角',{timeout:180000},async t=>{
+ const {p,frame,errors}=await openBench(t,{url:process.env.MICRO_URL}),lab=p.locator('#microscope-lab'),stage=lab.locator('.micro-stage');
+ await p.waitForFunction(()=>document.querySelector('#microscope-lab').dataset.microRender==='3d');
+ const ray=()=>lab.locator('[data-micro-ray]').first().getAttribute('d');
+ const raySpread=()=>lab.locator('[data-micro-ray]').evaluateAll(paths=>{const xs=paths.flatMap(path=>[...path.getAttribute('d').matchAll(/[ML](-?[\d.]+) (-?[\d.]+)/g)].map(m=>Number(m[1])));return Math.max(...xs)-Math.min(...xs);});
+ const view=()=>lab.getAttribute('data-view');
+ const labelPositions=()=>stage.locator('.micro-labels .micro-label').evaluateAll(es=>es.map(e=>{const b=e.getBoundingClientRect();return [e.textContent.trim(),b.x,b.y,b.right,b.bottom]}));
+ const within=async()=>{const box=await stage.boundingBox();for(const [name,x,y,right,bottom]of await labelPositions())assert.ok(x>=box.x-1&&right<=box.x+box.width+1&&y>=box.y-1&&bottom<=box.y+box.height+1,JSON.stringify({name,box,x,y,right,bottom}));};
+ await stage.scrollIntoViewIfNeeded();await frame();assert.equal(await view(),'whole');await within();
+ const original=await ray(),r=await stage.boundingBox();
+ await p.mouse.move(r.x+r.width*.74,r.y+r.height*.42);await p.mouse.down();await p.mouse.move(r.x+r.width*.84,r.y+r.height*.50,{steps:5});await p.mouse.up();await frame();
+ const rotated=await ray();assert.notEqual(rotated,original);assert.equal(await view(),'whole');
+ await stage.screenshot({path:'/tmp/unit44-microscope-rotated-3d.png'});
+ await p.mouse.wheel(0,-180);await frame();const zoomed=await ray();assert.notEqual(zoomed,rotated);
+ await lab.locator('[data-micro-reset]').click();await frame();assert.equal(await ray(),original);
+ await stage.focus();const beforeKey=await stage.screenshot();await p.keyboard.press('ArrowRight');await frame();assert.notDeepEqual(await stage.screenshot(),beforeKey);
+ await lab.locator('[data-micro-reset]').click();await frame();assert.equal(await ray(),original);
+ const frontSpread=await raySpread(),sideBox=await stage.boundingBox();
+ await p.mouse.move(sideBox.x+sideBox.width*.85,sideBox.y+sideBox.height*.7);await p.mouse.down();await p.mouse.move(sideBox.x+sideBox.width*.85-229,sideBox.y+sideBox.height*.7,{steps:8});await p.mouse.up();await frame();
+ const sideSpread=await raySpread();assert.ok(sideSpread>frontSpread*.8,JSON.stringify({frontSpread,sideSpread}));assert.equal(await view(),'whole');await stage.screenshot({path:'/tmp/unit44-microscope-side-rays.png'});
+ await lab.locator('[data-micro-reset]').click();await frame();assert.equal(await ray(),original);
+ await lab.locator('[data-set=micro][data-value=eyepiece]').click();await frame();assert.equal(await view(),'eyepiece');await within();
+ const detail=await stage.screenshot(),b=await stage.boundingBox();await p.mouse.move(b.x+b.width*.8,b.y+b.height*.5);await p.mouse.down();await p.mouse.move(b.x+b.width*.9,b.y+b.height*.5,{steps:5});await p.mouse.up();await frame();assert.equal(await view(),'eyepiece');assert.notDeepEqual(await stage.screenshot(),detail);
+ await lab.locator('[data-micro-reset]').click();await frame();assert.equal(await view(),'whole');assert.equal(await ray(),original);
+ await stage.screenshot({path:'/tmp/unit44-microscope-whole-3d.png'});
+ await p.setViewportSize({width:390,height:844});await frame();await within();await stage.screenshot({path:'/tmp/unit44-microscope-whole-mobile.png'});
+ assert.deepEqual(errors,[]);
+});

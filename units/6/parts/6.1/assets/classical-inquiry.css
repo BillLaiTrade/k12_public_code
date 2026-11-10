@@ -1,0 +1,127 @@
+/* Compact overview; detailed studies remain inside the optional disclosure. */
+.visual-inquiry{padding:22px 24px;background:#fffdf8;container-type:inline-size}
+.compact-inquiry{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:center}
+.inquiry-main-figure{min-width:0;width:100%;max-width:360px;margin:0 auto}
+#inquiry-illustration img{display:block;width:100%;height:auto;border-radius:9px}
+#inquiry-illustration .compact-earth{max-width:260px;margin:auto}
+#inquiry-illustration>.inquiry-svg{max-width:360px;margin:auto}
+.compact-image-labels,.compact-image-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));text-align:center;gap:8px;font-size:.78rem;line-height:1.6;color:#617050;margin:0 0 7px}
+.compact-image-labels.three,.compact-image-results{grid-template-columns:repeat(3,minmax(0,1fr))}
+.compact-image-results{margin:7px 0 0;font-size:.75rem}
+#inquiry-figure-note{font-size:.73rem;line-height:1.7;color:#6d7762;text-align:center;margin:10px 0 0}
+.inquiry-path{display:grid;gap:17px;margin:0;padding:0;list-style:none}
+.inquiry-stage{min-width:0;padding:0 0 0 15px;border-left:2px solid #e1e5d5}
+.inquiry-stage>span{display:block;font-size:.76rem;font-weight:650;line-height:1.6;color:#7c805f;margin-bottom:4px}
+.inquiry-stage>p{font-size:.98rem;line-height:1.8;color:#43563d;margin:0}
+.inquiry-stage:last-child{border-left-color:#7d9a6e}
+.inquiry-stage:last-child>p{font-weight:650;color:#345536}
+#inquiry-research{margin-top:18px;padding-top:7px;border-top:1px solid #e2e4d6;font-size:.85rem}
+#inquiry-research summary{min-height:44px;padding:10px 0;color:#496943;cursor:pointer;font-weight:650;line-height:1.7}
+.inquiry-background{padding:16px 20px;border:1px solid #dce4d4;border-radius:10px;background:#f5f7ef;line-height:1.9}
+.inquiry-background h5{font-size:.95rem;margin:15px 0 5px}
+.inquiry-background h5:first-child{margin-top:0}
+.inquiry-background p{margin:5px 0 12px}
+#history-scope{font-size:.83rem;color:#66765d}
+#history-sources{overflow-wrap:anywhere}
+.inquiry-study{margin-top:24px;padding-top:20px;border-top:1px solid #d7e0cb;container-type:inline-size}
+.inquiry-study>h5{font-size:1.1rem;color:#3d5639}
+#inquiry-instruction{font-size:.86rem;color:#6c7b65}
+.inquiry-controls{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 12px}
+.inquiry-controls button{flex:1 1 auto;min-height:42px;padding:8px 12px;border:1px solid #cbd8c5;border-radius:8px;background:#fffefa;color:#365d43;font-weight:700;font-size:.86rem}
+.inquiry-controls button[aria-pressed=true]{background:#35654e;border-color:#35654e;color:white}
+#inquiry-feedback{padding:12px 14px;margin:0;border-left:3px solid #a6b895;background:#eef3e7;color:#3a5c43;font-size:.88rem;line-height:1.8;border-radius:0 8px 8px 0}
+.inquiry-controls[hidden],#inquiry-feedback[hidden]{display:none}
+#inquiry-diagram-note{font-size:.75rem;line-height:1.8;color:#6e7865;margin:14px 0 0}
+@container(max-width:600px){
+ .compact-inquiry{grid-template-columns:1fr;gap:19px}
+ .inquiry-main-figure{max-width:280px}
+ #inquiry-illustration .compact-earth{max-width:230px}
+ .inquiry-path{gap:13px}
+ .inquiry-stage>p{font-size:.91rem;line-height:1.75}
+}
+@media(max-width:600px){.visual-inquiry{padding:18px 14px}.inquiry-background{padding:13px}}
+
+/* Preserve the approved soil image and marker coordinates. */
+.soil-observer{max-width:480px;width:100%;margin:auto;border-radius:14px;overflow:hidden;background:#fbfaf1}
+.soil-observer svg{display:block;width:100%;height:auto}
+.soil-target{cursor:pointer}
+.soil-ring{fill:transparent;stroke:#f6f7f0;stroke-width:5;stroke-dasharray:10 8}
+.soil-target.focused .soil-ring{stroke:#20a0cb;stroke-width:9;stroke-dasharray:none;fill:#e5f8ff28}
+.soil-target:focus-visible{outline:none}
+.soil-target:focus-visible .soil-ring{stroke:#b9791f;stroke-width:10;stroke-dasharray:none}
+.soil-legend{display:flex;flex-wrap:wrap;gap:5px 15px;justify-content:center;margin:10px 0;color:#65775c;font-size:.77rem}
+
+/* Water diagrams compare side by side when the content area is wide enough. */
+.inquiry-svg{display:block;width:100%;height:auto}
+.inquiry-svg text{font-family:inherit;font-size:21px;font-weight:700;fill:#2f5144}
+.inquiry-svg .water-label{font-size:24px}
+.inquiry-svg .water-small{font-size:20px;font-weight:600}
+.water-investigation{display:grid;gap:12px}
+.water-record{display:flex;flex-direction:column;overflow:hidden;border:1px solid #d5ded0;border-radius:12px;background:#f4f7f3;transition:border-color .15s,background-color .15s}
+.water-record.focused{border-color:#90aa85;background:#eff5e9;box-shadow:inset 0 0 0 1px #90aa85}
+.water-record header{display:flex;align-items:center;gap:8px;padding:14px 12px 6px;color:#3b5b42;font-size:.87rem;line-height:1.6}
+.water-direction{flex:none;padding:3px 7px;border-radius:6px;background:#e2eadc;font-size:.76rem;font-weight:750}
+.water-record.focused .water-direction{background:#4e7955;color:white}
+.water-record .inquiry-svg{max-width:600px;margin:auto}
+.water-finding{display:flex;gap:8px;align-items:baseline;padding:11px 12px;margin:0;background:#edf2e9;color:#3b5b42;font-size:.86rem;line-height:1.7}
+.water-finding>span{flex:none;font-size:.75rem;font-weight:700;border:1px solid #b6c9ad;border-radius:4px;padding:0 4px}
+.water-record.focused .water-finding{background:#e4eddc}
+.water-evidence-link{text-align:center;padding:3px 0;color:#6b7e5d;font-size:.83rem;line-height:1.7}
+
+/* Detailed illustrations keep readable native captions. */
+.study-picture{position:relative;overflow:hidden;aspect-ratio:2/3;isolation:isolate}
+.study-picture img{position:absolute;top:0;max-width:none;height:100%;object-fit:fill;display:block}
+.gas-picture img{width:300%}
+.candle-picture img{width:200%}
+.air-study{display:grid;gap:16px;max-width:690px;margin:auto}
+.gas-observations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.gas-record{min-width:0;border:1px solid #deddd0;border-radius:11px;overflow:hidden;background:#faf6e9;transition:border-color .15s,box-shadow .15s}
+.gas-record h6{margin:0;padding:12px 3px;text-align:center;color:#54634e;font-size:.95rem;font-weight:750;background:#fffdf6}
+.gas-record.focused{border-color:#638666;box-shadow:0 0 0 1px #638666}
+.gas-record.focused h6{background:#edf3e7;color:#365b40}
+.gas-record p{display:grid;align-content:start;gap:5px;min-height:84px;margin:0;padding:12px 7px;text-align:center;font-size:.8rem;line-height:1.65;color:#65745f;background:#fffdf6}
+.gas-record p>span{color:#425c40;font-size:.94rem;font-weight:700}
+.air-composition{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 14px;padding:15px 12px;background:#f3f6ed;border-radius:10px;color:#536849}
+.air-composition>span{font-size:.76rem;color:#71795f}
+.air-composition>strong{font-size:.92rem}
+.air-composition>div{display:flex;gap:7px;align-items:center;font-size:.82rem}
+.air-composition b{font-weight:600;padding:4px 7px;background:#fffdf8;border-radius:5px}
+
+/* A single candle spread replaces the narrow column and repeated result cards. */
+.fire-investigation{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:center}
+.fire-sequence{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fire-sequence article{min-width:0;overflow:hidden;border:1px solid #e1d9c6;border-radius:11px;background:#fbf7ec}
+.fire-sequence h6{display:flex;justify-content:center;gap:7px;align-items:center;padding:11px 5px;margin:0;color:#686c53;font-size:.84rem;font-weight:650}
+.fire-sequence h6>span{font-size:.68rem;color:#8d8365;letter-spacing:.07em}
+.fire-sequence p{margin:0;padding:12px 6px;text-align:center;line-height:1.7;font-size:.85rem;font-weight:650;color:#5f674c;background:#fffdf7}
+.fire-sequence .fire-burning{border-color:#d6b47c}
+.fire-burning h6{background:#fbefd7;color:#7e6539}
+.fire-explanation{min-width:0}
+.evidence-eyebrow{font-size:.78rem;letter-spacing:.04em;color:#8a7d5e;margin:0 0 10px}
+.fire-explanation>h6{font-size:1.16rem;font-weight:650;color:#5b543f;line-height:1.8;margin:0}
+.candle-reaction{display:grid;gap:13px;margin-top:22px;padding-top:20px;border-top:1px solid #e3ddca;color:#617252;font-size:.88rem;line-height:1.8}
+.candle-reaction>b{font-size:.78rem;font-weight:500;color:#7e876e}
+.fire-after strong{font-size:1.02rem;font-weight:650;color:#4b6240}
+.fire-after small{display:block;margin-top:6px;font-size:.77rem;color:#6a765e}
+
+@container(min-width:680px){
+  .fire-investigation{grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr);gap:28px}
+  .water-investigation{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .water-record[data-focus=formation]{grid-column:1;grid-row:1}
+  .water-record[data-focus=decomposition]{grid-column:2;grid-row:1}
+  .water-evidence-link{grid-column:1/-1;grid-row:2}
+}
+@container(max-width:480px){
+ .gas-observations{gap:6px}.gas-record h6{font-size:.81rem;padding:11px 2px}
+ .gas-record p{padding:10px 4px;font-size:.72rem;min-height:90px}.gas-record p>span{font-size:.75rem}
+ .air-composition{padding:13px 8px;gap:7px}.air-composition>div{font-size:.75rem;gap:5px}
+ .fire-sequence{gap:9px}.fire-sequence h6{font-size:.79rem;padding:10px 3px}
+ .fire-sequence p{font-size:.8rem;padding:11px 5px}.fire-explanation>h6{font-size:1.06rem}
+ .fire-explanation>h6 br{display:none}.candle-reaction{margin-top:15px;padding-top:15px;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){.water-record,.gas-record{transition:none}}
+
+/* Observe pictures first; the concept path uses labels instead of narrative paragraphs. */
+#inquiry-illustration .soil-observer{max-width:280px}#inquiry-illustration .soil-legend{gap:5px;margin:8px 0 0}.soil-legend button{min-height:36px;flex:1 1 auto;padding:5px 7px;font-size:.73rem;border:1px solid #d3ddc9;background:#fffdf7;border-radius:7px;color:#526b46}.soil-legend button[aria-pressed=true]{background:#426e52;color:white;border-color:#426e52}.inquiry-path{gap:19px}.inquiry-stage>p{font-size:1.06rem;line-height:1.65;letter-spacing:.01em}.inquiry-stage:last-child>p{font-size:1.18rem}.main-gas-comparison{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.gas-thumbnail{min-width:0;overflow:hidden;padding:0;border:1px solid #dddccf;border-radius:9px;background:#faf6eb;color:#556a48;cursor:zoom-in}.gas-thumbnail>span:first-child{display:block;padding:8px 2px;font-size:.77rem;font-weight:650}.gas-thumbnail small{display:block;padding:7px 2px;font-size:.73rem}.gas-thumbnail .study-picture{display:block}.gas-thumbnail[aria-pressed=true]{border-color:#698c64;box-shadow:0 0 0 1px #698c64}.gas-thumbnail:focus-visible,.soil-legend button:focus-visible{outline:3px solid #bf945b;outline-offset:2px}#inquiry-illustration .gas-picture img{width:300%;height:100%;max-width:none;border-radius:0}
+#observation-view{width:290px;max-width:calc(100vw - 36px);max-height:calc(100dvh - 32px);overflow:auto;padding:18px 20px;border:1px solid #dedbc9;border-radius:14px;background:#fffdf6;color:#42563c;box-shadow:0 14px 50px #243d2a35}#observation-view::backdrop{background:#233c2d70}#observation-view-close{display:block;margin-left:auto;padding:6px 0 6px 12px;border:0;background:transparent;color:#566d49;font-size:.85rem;min-height:36px}#observation-view h5{font-size:1.03rem;margin:2px 0 14px}#observation-view-image{width:180px;margin:auto}#observation-view-caption{font-size:.88rem;line-height:1.8;margin:14px 0 0}
+@container(max-width:600px){#inquiry-illustration .soil-observer{max-width:240px}.inquiry-stage>p{font-size:1rem}.inquiry-stage:last-child>p{font-size:1.1rem}.inquiry-path{gap:13px}.soil-legend button{min-height:36px}}

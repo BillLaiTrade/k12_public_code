@@ -1,0 +1,42 @@
+import {WIDTH,HEIGHT,RGB_BASE64,QUICK_POINTS} from './pixel-tv-picture.mjs?v=tv-loupe-20261105';
+export {WIDTH,HEIGHT,QUICK_POINTS};
+export const MODES=Object.freeze(['inspect','colour','screen']);
+export const DEFAULT_INDEX=QUICK_POINTS.find(p=>p.id==='cloud').index;
+export function sourcePixels(){return Uint8ClampedArray.from(atob(RGB_BASE64),c=>c.charCodeAt(0));}
+export function validateIndex(index){if(!Number.isInteger(index)||index<0||index>=WIDTH*HEIGHT)throw new RangeError('像素位置超出圖片');return index;}
+export function validateValues(values){if(!Array.isArray(values)||values.length!==3||!values.every(n=>Number.isInteger(n)&&n>=0&&n<=255))throw new RangeError('RGB數值必須是0～255的整數');return values;}
+export function pixelAt(source,index){validateIndex(index);if(source.length!==WIDTH*HEIGHT*3)throw new RangeError('圖片RGB資料不完整');return Array.from(source.slice(index*3,index*3+3));}
+export const colourCss=rgb=>`rgb(${rgb.join(', ')})`;
+export function sameColour(source,index,selected){const rgb=pixelAt(source,index),target=pixelAt(source,selected);return rgb.every((n,c)=>n===target[c]);}
+export function matchingIndices(source,selected){validateIndex(selected);const target=pixelAt(source,selected),matches=[];for(let i=0;i<WIDTH*HEIGHT;i++)if(target.every((n,c)=>n===source[i*3+c]))matches.push(i);return matches;}
+// Image bytes are sRGB encoded; scale light in linear space, then re-encode.
+// 128 is the existing internal token for the exact half-light option.
+export function screenChannel(value,setting){
+ if(setting===255)return value;if(setting===0||value===0)return 0;
+ const encoded=value/255,linear=encoded<=.04045?encoded/12.92:((encoded+.055)/1.055)**2.4;
+ const scaled=linear*(setting===128?.5:setting/255);
+ return Math.round(255*(scaled<=.0031308?12.92*scaled:1.055*scaled**(1/2.4)-.055));
+}
+export function currentPixel(source,index,{mode,selected,values}){if(!MODES.includes(mode))throw new RangeError('未知觀察模式');validateIndex(selected);validateValues(values);const original=pixelAt(source,index);if(mode==='colour'&&sameColour(source,index,selected))return [...values];if(mode==='screen')return original.map((n,c)=>screenChannel(n,values[c]));return original;}
+export function renderPixels(source,state){currentPixel(source,state.selected,state);const result=new Uint8ClampedArray(source);if(state.mode==='inspect')return result;const indices=state.mode==='colour'?matchingIndices(source,state.selected):Array.from({length:WIDTH*HEIGHT},(_,i)=>i);for(const i of indices)result.set(state.mode==='colour'?state.values:pixelAt(source,i).map((n,c)=>screenChannel(n,state.values[c])),i*3);return result;}
+export function colourName([r,g,b]){const high=Math.max(r,g,b),low=Math.min(r,g,b),delta=high-low;if(high<32)return'黑色';if(delta<24)return low>230?'白色':high<100?'深灰色':'灰色';let hue=high===r?((g-b)/delta+6)%6:high===g?(b-r)/delta+2:(r-g)/delta+4;hue*=60;return hue<15||hue>=345?'紅色':hue<45?'橙色':hue<70?'黃色':hue<165?'綠色':hue<195?'青色':hue<265?'藍色':hue<295?'紫色':'洋紅色';}
+export function groupOutline(indices){const set=new Set(indices);let path='';for(const i of indices){const x=i%WIDTH,y=Math.floor(i/WIDTH);if(y===0||!set.has(i-WIDTH))path+=`M${x} ${y}h1`;if(x===WIDTH-1||!set.has(i+1))path+=`M${x+1} ${y}v1`;if(y===HEIGHT-1||!set.has(i+WIDTH))path+=`M${x+1} ${y+1}h-1`;if(x===0||!set.has(i-1))path+=`M${x} ${y+1}v-1`;}return path;}
+export function rgbaPixels(rgb){if(rgb.length!==WIDTH*HEIGHT*3)throw new RangeError('圖片RGB資料不完整');const rgba=new Uint8ClampedArray(WIDTH*HEIGHT*4);for(let i=0;i<WIDTH*HEIGHT;i++){rgba.set(rgb.subarray(i*3,i*3+3),i*4);rgba[i*4+3]=255;}return rgba;}
+export function neighbourhood(index,radius=1){validateIndex(index);if(!Number.isInteger(radius)||radius<1||radius>2)throw new RangeError('無效的放大範圍');const x=index%WIDTH,y=Math.floor(index/WIDTH),side=radius*2+1;return Array.from({length:side*side},(_,i)=>{const nx=x+i%side-radius,ny=y+Math.floor(i/side)-radius;return nx<0||nx>=WIDTH||ny<0||ny>=HEIGHT?null:ny*WIDTH+nx;});}
+export function pointerIndex(clientX,clientY,rect){if(![clientX,clientY,rect.left,rect.top,rect.width,rect.height].every(Number.isFinite)||rect.width<=0||rect.height<=0)throw new RangeError('無效的圖片位置');const x=Math.max(0,Math.min(WIDTH-1,Math.floor((clientX-rect.left)/rect.width*WIDTH))),y=Math.max(0,Math.min(HEIGHT-1,Math.floor((clientY-rect.top)/rect.height*HEIGHT)));return y*WIDTH+x;}
+export function moveSelection(index,key){validateIndex(index);if(key==='Home')return 0;if(key==='End')return WIDTH*HEIGHT-1;let x=index%WIDTH,y=Math.floor(index/WIDTH);if(key==='ArrowLeft')x--;else if(key==='ArrowRight')x++;else if(key==='ArrowUp')y--;else if(key==='ArrowDown')y++;return Math.max(0,Math.min(HEIGHT-1,y))*WIDTH+Math.max(0,Math.min(WIDTH-1,x));}
+export function observationText(original,current,{mode}){if(mode==='inspect')return'上方是這一格的顏色，下方是組成它的紅、綠、藍數值。';const changes=original.flatMap((n,c)=>n===current[c]?[]:[`${['R','G','B'][c]} ${n} → ${current[c]}`]);if(!changes.length)return'這一格目前與原圖相同。可以調整下方數值，觀察顏色變化。';return changes.join('；')+(current.every(n=>n===0)?'。三色都為0，這格呈黑色。':'。');}
+export function loupeLayout(index,size,preferred=null){
+ validateIndex(index);if(!Number.isFinite(size)||size<60)throw new RangeError('無效的放大鏡尺寸');
+ const diameter=Math.min(112,Math.max(64,size*.3),(size-28)*.42),inset=5,handle=16,gap=28,x=(index%WIDTH+.5)/WIDTH*size,y=(Math.floor(index/WIDTH)+.5)/HEIGHT*size;
+ const clamp=n=>Math.max(inset,Math.min(size-diameter-handle-inset,n));
+ const candidates=[['above-right',x+gap,y-diameter-gap],['above-left',x-diameter-gap,y-diameter-gap],['below-right',x+gap,y+gap],['below-left',x-diameter-gap,y+gap]].map(([side,a,b])=>{
+  const left=clamp(a),top=clamp(b),cx=left+diameter/2,cy=top+diameter/2;
+  const hx=left+diameter-3,hy=top+diameter-3,t=Math.max(0,Math.min(1,((x-hx)+(y-hy))/32));
+  const clearance=Math.min(Math.hypot(x-cx,y-cy)-diameter/2,Math.hypot(x-hx-t*16,y-hy-t*16)-7);
+  return{side,left,top,diameter,cx,cy,clearance};
+ });
+ // Keep the current side while it still leaves room around the draggable point.
+ return candidates.find(p=>p.side===preferred&&p.clearance>=24)||candidates.find(p=>p.clearance>=24)||candidates.reduce((a,b)=>a.clearance>=b.clearance?a:b);
+}
+export function sampleDragIndex(clientX,clientY,rect,grabX,grabY){if(![grabX,grabY].every(Number.isFinite))throw new RangeError('無效的抓取位置');return pointerIndex(clientX-grabX,clientY-grabY,rect);}

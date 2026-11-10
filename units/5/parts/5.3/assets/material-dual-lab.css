@@ -1,0 +1,77 @@
+#material-lab{font-size:1rem;color:#294f38}#material-lab [hidden]{display:none!important}.dual-material{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;background:#eef4e9;border:1px solid #cddfc3;border-radius:12px}.dual-material label,.dual-controls label{display:flex;align-items:center;gap:8px;font-weight:650}.dual-material select,.dual-controls input{font:inherit;color:#294f38;border:1px solid #b9cbb0;border-radius:8px;background:#fffefa;min-height:44px;padding:6px 9px}.dual-controls input{width:105px}.dual-experiment{margin:16px 0;padding:16px;border:1px solid #cbdcc2;border-radius:15px;background:#f8faf4}.dual-experiment h3,.dual-analysis>h3{margin:0 0 14px;color:#2c5538;font-size:1.2rem}.dual-controls{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-bottom:12px}.dual-controls p{margin:0;color:#506b52}.dual-controls button,.dual-material button{min-height:44px;font-size:1rem}.dual-help{margin:0 0 12px;color:#5a6e59;font-size:.9rem}.dual-error{color:#9a4d2e}.dual-workbench{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start;gap:12px}.dual-apparatus,.dual-chart{min-width:0}.dual-photo{position:relative;container-type:inline-size;margin:0;border-radius:10px;overflow:hidden;background:#cba481}.dual-photo img{display:block;width:100%;height:auto}.dual-photo svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.dual-label{position:absolute;top:32%;padding:3px 6px;background:#fff9e9ef;border-radius:6px;font-size:1rem;color:#315a3b;font-weight:650;transform:translateX(-50%);white-space:nowrap}.dual-water-label{left:26%}.dual-metal-label{left:72%;color:#a45425}.dual-meter{position:absolute;top:59.2%;width:9.4%;height:8.7%;display:flex;align-items:center;justify-content:center;font:700 clamp(10px,2.6cqi,22px)/1 ui-monospace,monospace;letter-spacing:-.07em;color:#203522;white-space:nowrap}.dual-water-meter{left:39.5%}.dual-metal-meter{left:85.8%}.dual-meter small{font:inherit;font-size:.48em}.dual-loading{position:absolute;inset:0;display:grid;place-items:center;background:#f5f4e9ed;text-align:center}.dual-readings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.dual-readings p{margin:0;padding:8px;background:#edf4e8;border-radius:8px;line-height:1.5}.dual-readings p+ p{background:#fff1e3}.dual-readings strong{color:#a75a24;font-variant-numeric:tabular-nums}.dual-chart{padding:12px;border:1px solid #d2dfc9;border-radius:10px;background:#fffefa}.dual-chart h4{font-size:1rem;margin:0;color:#31583c}.dual-chart svg{display:block;width:100%;height:auto;overflow:visible}.dual-chart svg text{font:36px sans-serif;fill:#385b40;stroke:none}.dual-grid path{stroke:#dbe5d5;fill:none}.dual-axis{stroke:#496b50;stroke-width:2;fill:none}.dual-line{fill:none;stroke-width:3}.dual-line.water{stroke:#2d7950}.dual-line.metal{stroke:#db7825}.dual-points.water circle{fill:#2d7950;stroke:#fff;stroke-width:1}.dual-points.metal circle{fill:#db7825;stroke:#fff;stroke-width:1}.dual-dot.water{fill:#2d7950;stroke:#fff;stroke-width:2}.dual-dot.metal{fill:#e47b25;stroke:#fff;stroke-width:2}.dual-predict{fill:#fffefa;stroke-width:2}.dual-predict.water{stroke:#2d7950}.dual-predict.metal{stroke:#db7825}.dual-legend{display:flex;flex-wrap:wrap;gap:4px 15px;font-size:.875rem;color:#596d58;margin:4px 0 0}.dual-legend span:first-child{color:#2d7950}.dual-legend span:nth-child(2){color:#b95e22}.dual-status{margin:10px 0 0;color:#526c52}.dual-analysis{margin:22px 0;padding:20px;background:#fffefa;border:1px solid #cbdcc2;border-radius:15px}.dual-table-wrap{overflow-x:auto}.dual-analysis table{width:100%;border-collapse:collapse;text-align:center;font-variant-numeric:tabular-nums}.dual-analysis caption{text-align:left;color:#60715e;margin-bottom:8px}.dual-analysis th,.dual-analysis td{padding:10px 7px;border:1px solid #d6e1ce}.dual-analysis th{background:#edf4e7}.dual-takeaway{padding:12px;background:#edf4e7;border-radius:8px;font-weight:650}.dual-step{margin-top:12px;padding:14px;border:1px solid #d4e0cc;border-radius:10px;line-height:1.65}.dual-step h4{margin:0 0 8px;font-size:1.05rem;color:#315b3b}.dual-step p{margin:5px 0}.dual-c-values{display:flex;gap:8px;flex-wrap:wrap}.dual-c-values p{flex:1;min-width:180px;padding:8px;background:#edf4e7;border-radius:8px}.dual-c-values p+p{background:#fff0e2;color:#a75423}.dual-formula{font-size:1.4rem;font-weight:700;color:#176b50}.dual-step #dual-step-ratio{font-weight:650;color:#315b3b}@media(max-width:800px){.dual-workbench{grid-template-columns:1fr}.dual-photo{max-width:650px;margin:auto}.dual-chart{max-width:650px;margin:auto;width:100%}}@media(max-width:600px){.dual-analysis,.dual-experiment{padding:12px}.dual-analysis table{min-width:570px}.dual-readings{grid-template-columns:1fr}.dual-label{font-size:.75rem}.dual-meter{font-size:clamp(10px,2.6cqi,18px)}}
+
+/* 水與金屬讀值移至圖表上方；完整器材影像保持比例，兩欄等高。 */
+.dual-workbench{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+.dual-apparatus{display:flex;min-width:0}.dual-photo{display:flex;align-items:center;flex:1;min-height:0;isolation:isolate}
+.dual-photo::before,.dual-photo::after{content:"";position:absolute;left:-2px;right:-2px;z-index:-1;background-image:url('material-comparison-bench.webp');background-size:100% 900%;filter:blur(2px)}.dual-photo::before{top:-2px;bottom:50%;background-position:center top}.dual-photo::after{top:50%;bottom:-2px;background-position:center bottom}
+.dual-scene{position:relative;width:100%;flex:none}.dual-scene svg{position:absolute;inset:0;width:100%;height:100%}
+.dual-right{min-width:0;display:flex;flex-direction:column;gap:8px}.dual-right .dual-chart{flex:1}
+.dual-readings{display:block;margin:0;padding:6px 8px;border:1px solid #d2dfc9;border-radius:10px;background:#fffefa}
+.dual-readings .dual-shared-heat{padding:0;margin:0 0 4px;background:none;color:#506b52;line-height:1.4}
+.dual-readings table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:center;font-variant-numeric:tabular-nums}
+.dual-readings th,.dual-readings td{padding:4px 4px;line-height:1.4;border-bottom:1px solid #e1e8dc;font-size:1rem}
+.dual-readings tbody tr:last-child>*{border-bottom:0}.dual-readings thead th:nth-child(2){color:#2d7950}.dual-readings thead th:nth-child(3){color:#b95e22}.dual-readings td{color:#a75a24;font-weight:650;white-space:nowrap}
+.dual-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:800px){.dual-workbench{grid-template-columns:1fr}.dual-apparatus{display:block}.dual-photo{height:auto}.dual-right{width:100%;max-width:650px;margin:auto}}
+
+.dual-readings th:first-child{width:46%;text-align:left}.dual-readings .dual-shared-heat{white-space:nowrap;font-weight:400}
+
+@media(max-width:400px){.dual-readings .dual-shared-heat{white-space:normal}}
+@media(max-width:400px){.dual-readings th:first-child{width:38%}.dual-readings th,.dual-readings td{padding-left:1px;padding-right:1px}}
+
+.dual-scene img{mask-image:linear-gradient(to bottom,transparent,black 8%,black 92%,transparent)}
+
+/* 第四區方形器材圖：螢幕與疊加讀值採同一座標。 */
+.dual-photo::before,.dual-photo::after{display:none}.dual-scene img{mask-image:none}
+.dual-label{top:40%;font-size:clamp(.75rem,3.5cqi,1rem)}
+.dual-water-label{left:19.5%}.dual-metal-label{left:65.5%}
+.dual-meter{top:59.6%;width:14.7%;height:11.1%;font-size:clamp(8px,4.2cqi,24px);letter-spacing:-.06em}
+.dual-water-meter{left:33.3%}.dual-metal-meter{left:82.8%}
+
+/* 依示意圖由數據比較、比熱意義到完整公式逐步整理。 */
+.dual-analysis>h3{margin:0 0 4px}.dual-intro{margin:0 0 20px;color:#526b54}
+.dual-stage{padding:18px;border:1px solid #d1dfc9;border-radius:12px;background:#fffefa}.dual-stage+.dual-stage{margin-top:14px}
+.dual-stage-title{display:flex;align-items:center;gap:10px;margin:0 0 14px;color:#315b3b;font-size:1.08rem;line-height:1.45}.dual-stage-number{display:inline-grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:#4c7d50;color:#fff;font-size:1rem}
+.dual-stage p{margin:8px 0}.dual-stage .dual-takeaway{margin-top:14px;font-weight:400}.dual-takeaway p:first-child{font-weight:700}.dual-takeaway p:last-child{font-size:.95rem}
+.dual-example-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.dual-example{min-width:0;padding:14px;border-radius:10px;background:#edf4e7}.dual-example.metal{background:#fff0e2}
+.dual-example h5{margin:0 0 6px;font-size:1.05rem;color:#315b3b}.dual-example.metal h5{color:#a75423}.dual-example .dual-calc-label{margin:10px 0 2px;color:#566a55;font-size:.88rem}.dual-calculation{font-variant-numeric:tabular-nums}.dual-example .dual-example-result{margin:10px 0 0;padding:8px;border-radius:7px;background:#fffefa}.dual-example-result strong{color:#a75423}.dual-rounding{color:#5b705b;font-size:.88rem}
+.dual-formula-stage .dual-formula-words{text-align:center;font-weight:650}.dual-formula-stage .dual-formula{padding:12px;text-align:center;background:#eaf3e5;border-radius:9px}.dual-symbols{text-align:center;color:#526b54;font-size:.95rem}
+@media(max-width:600px){.dual-stage{padding:14px}.dual-example-cards{grid-template-columns:1fr}.dual-stage-title{align-items:flex-start}.dual-symbols{text-align:left}}
+
+/* 保留 Q 在左邊，依兩個實驗各自的有效設定代入。 */
+.dual-apply{margin-top:20px;border-top:1px solid #dbe5d6;padding-top:16px}.dual-apply h5{margin:0;color:#315b3b;font-size:1rem}.dual-apply-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.dual-apply-card{min-width:0;padding:12px;border:1px solid #d6e2ce;border-radius:9px;background:#f8faf4}.dual-apply-card h6{margin:0;color:#315b3b;font-size:1rem}.dual-apply-card p{margin:6px 0;overflow-wrap:anywhere}.dual-apply-card .dual-apply-state{color:#60735d;font-size:.88rem}.dual-apply-note{color:#60735d;font-size:.88rem}
+@media(max-width:600px){.dual-apply-cards{grid-template-columns:1fr}}
+
+/* 推導區沿用學習卡的完整外觀。 */
+#card-04-summary{display:block;min-width:0;margin:0;padding:0;overflow:hidden;border:1px solid #d8e2da;border-radius:20px;background:var(--card);color:#1c2927;line-height:1.72;box-shadow:0 10px 28px rgb(24 52 40 / 7%);scroll-margin-top:22px}
+/* 窄版導覽不遮住標題。 */
+@media(max-width:760px){#card-04-summary{scroll-margin-top:110px}}
+
+/* 原始數據、算式及結果依推導順序排列，兩種物質保持相同結構。 */
+.dual-example-rows{overflow:hidden;border:1px solid #d1dfc9;border-radius:8px;background:#fffefa}
+.dual-example-rows p,.dual-example-rows p.dual-example-result{display:grid;grid-template-columns:5.2em minmax(0,1fr);align-items:center;gap:9px;margin:0;padding:9px 10px;border-radius:0;background:transparent;line-height:1.5}
+.dual-example-rows p+p{border-top:1px solid #e1eadb}.dual-example-rows p.dual-example-result{background:#eef6e8}.dual-example-rows b{color:#315b3b;font-size:.9rem}.dual-example-rows span{min-width:0;overflow-wrap:anywhere}
+@media(max-width:600px){.dual-analysis table{min-width:440px}}
+.dual-example-result strong{white-space:nowrap}
+
+/* 第五區保留兩實驗的關係線與對應數據的三組標記。 */
+.dual-summary-graphs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 8px}
+.dual-summary-graph{min-width:0;padding:12px;border:1px solid #d2dfc9;border-radius:10px;background:#fffefa}
+.dual-summary-graph h5{margin:0;color:#31583c;font-size:1rem;line-height:1.5}.dual-summary-graph svg{display:block;width:100%;height:auto;overflow:visible}
+.dual-summary-graph svg text{fill:#385b40;font:26px sans-serif;stroke:none}.dual-summary-grid path{stroke:#dbe5d5;fill:none}.dual-summary-axis{stroke:#496b50;stroke-width:2;fill:none}.dual-summary-line{fill:none;stroke-width:4}.dual-summary-line.water{stroke:#2d7950}.dual-summary-line.metal{stroke:#db7825}
+.dual-summary-point circle{stroke-width:4;fill:#fffefa}.dual-summary-point.water circle{stroke:#2d7950}.dual-summary-point.metal circle{stroke:#db7825}.dual-summary-point.water[data-verified=true] circle{fill:#2d7950}.dual-summary-point.metal[data-verified=true] circle{fill:#db7825}.dual-summary-point text{paint-order:stroke;stroke:#fffefa!important;stroke-width:5px;stroke-linejoin:round;font-weight:700!important}.dual-summary-point.water text{fill:#21653f}.dual-summary-point.metal text{fill:#a95012}
+#card-04-summary .dual-summary-legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:8px 0;color:#526b54;font-size:.9rem}#card-04-summary .dual-summary-note{margin:4px 0 12px;color:#526b54;font-size:.9rem}.dual-legend-water{color:#2d7950}.dual-legend-metal{color:#b95e22}.dual-row-index{font-weight:700;color:#315b3b}
+@media(max-width:800px){.dual-summary-graphs{grid-template-columns:1fr}.dual-summary-graph{max-width:650px;width:100%;margin:0 auto}}
+
+/* 整列可點選；質量欄按鈕提供鍵盤及目前選取狀態。 */
+#card-04-summary .dual-selection-help{margin:8px 0;color:#526b54;font-size:.9rem}
+.dual-analysis tbody tr[data-row-index]{cursor:pointer}.dual-analysis tbody tr[data-selected=true]>td{background:#edf5e8}.dual-analysis tbody tr[data-row-index]:hover>td{background:#f2f7ed}
+.dual-analysis tbody td:first-child{padding:3px}.dual-row-choice{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;width:100%;min-height:44px;padding:6px 8px;border:0;border-radius:6px;background:transparent;color:#315b3b;font:inherit;cursor:pointer}.dual-row-choice:focus-visible{outline:3px solid #b88b3b;outline-offset:-3px}.dual-selected-label{padding:1px 5px;border-radius:5px;background:#d8e9d2;color:#285839;font-size:.75rem;white-space:nowrap}
+#card-04-summary .dual-selected-context{margin:4px 0;color:#526b54;font-size:.9rem}
+
+/* 比熱定義是換算後的重點，保持精簡並提升辨識度。 */
+#card-04-summary .dual-definition{margin:16px 0 0;padding:14px 16px;border-left:4px solid #70a16e;border-radius:0 10px 10px 0;background:#eaf3e5;color:#294f38;font-size:1.06rem;font-weight:650;line-height:1.65}
+#card-04-summary .dual-definition strong{color:#12644a;font-weight:800}
+
+/* 整理步驟之間的對話銜接。 */
+#card-04-summary .dual-step-bridge{margin:16px 0}

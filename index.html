@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="國二上理化互動學習單元入口。">
+  <title>國二上理化｜學習單元</title>
+  <style>
+    :root { color-scheme:light; --ink:#243a35; --muted:#63736b; --paper:#f4f1e8; --card:#fffdf8; --line:#d9d3c4; --green:#176b53; --gold:#d7a94a; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:ui-sans-serif,system-ui,-apple-system,"Noto Sans TC",sans-serif; line-height:1.7; }
+    .shell { width:min(1040px,calc(100% - 36px)); margin-inline:auto; }
+    header { padding:58px 0 30px; }
+    .eyebrow { color:var(--green); font-size:.8rem; font-weight:850; letter-spacing:.12em; }
+    h1 { margin:9px 0 12px; font-size:clamp(2.1rem,5vw,3.6rem); line-height:1.18; letter-spacing:-.04em; }
+    .intro { max-width:700px; margin:0; color:#53645d; font-size:1.08rem; }
+    main { padding:10px 0 70px; }
+    .unit-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .unit-card { display:flex; min-height:240px; flex-direction:column; padding:24px; border:1px solid var(--line); border-radius:19px; background:var(--card); box-shadow:0 10px 26px #243a3509; }
+    .unit-number { width:max-content; padding:3px 11px; border-radius:999px; background:#efe6cd; color:#594a28; font-size:.8rem; font-weight:850; }
+    h2 { margin:14px 0 8px; font-size:1.45rem; line-height:1.4; }
+    .unit-card p { margin:0 0 18px; color:var(--muted); }
+    .unit-card a { width:max-content; margin-top:auto; padding:9px 15px; border-radius:10px; background:var(--green); color:white; font-weight:750; text-decoration:none; }
+    .unit-card a:hover,.unit-card a:focus-visible { outline:3px solid #d6a83d; outline-offset:3px; }
+    footer { padding:20px 0 32px; color:#738078; font-size:.84rem; }
+    @media(max-width:680px) { .shell { width:min(100% - 24px,600px); } header { padding-top:38px; } .unit-list { grid-template-columns:1fr; } .unit-card { min-height:210px; } }
+  </style>
+</head>
+<body>
+  <header class="shell">
+    <div class="eyebrow">國二上・自然科學</div>
+    <h1>選擇一個單元開始學習</h1>
+    <p class="intro">從量測、物質與水溶液，到波動、光學與溫度熱現象；先選擇單元，再進入各段學習內容。</p>
+  </header>
+  <main class="shell">
+    <section class="unit-list" aria-label="國二上學習單元">
+      <article class="unit-card">
+        <span class="unit-number">單元 1</span>
+        <h2>密度與測量</h2>
+        <p>從量測方法與物體體積出發，再用數據比較物質。</p>
+        <a href="units/1/">進入單元 1</a>
+      </article>
+      <article class="unit-card">
+        <span class="unit-number">單元 2</span>
+        <h2>物質、分離與水溶液</h2>
+        <p>從雨水桶裡變混濁的水出發，整理物質與樣本的證據。</p>
+        <a href="units/2/">進入單元 2</a>
+      </article>
+      <article class="unit-card">
+        <span class="unit-number">單元 3</span>
+        <h2>波動與聲音</h2>
+        <p>從繩上的波形往前傳開始，認識波的傳播與聲音。</p>
+        <a href="units/3/">進入單元 3</a>
+      </article>
+      <article class="unit-card">
+        <span class="unit-number">單元 4</span>
+        <h2>光的反射、折射與成像</h2>
+        <p>從認識光開始，逐步探索光的傳播、反射、折射、透鏡成像與顏色。</p>
+        <a href="units/4/">進入單元 4</a>
+      </article>
+      <article class="unit-card">
+        <span class="unit-number">單元 5</span>
+        <h2>溫度與熱</h2>
+        <p>從溫度與熱量開始，探索熱的傳遞、比熱，以及熱造成的物質變化。</p>
+        <a href="units/5/">進入單元 5</a>
+      </article>
+      <article class="unit-card">
+        <span class="unit-number">單元 6</span>
+        <h2>探索物質的組成</h2>
+        <p>從元素的性質與符號開始，探索描述物質組成的方法。</p>
+        <a href="units/6/">進入單元 6</a>
+      </article>
+    </section>
+  </main>
+  <footer class="shell">國二上・自然科學互動學習</footer>
+</body>
+</html>

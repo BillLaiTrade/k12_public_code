@@ -1,0 +1,230 @@
+.projector-quiz { --pj-green:#285c43; --pj-ink:#31543e; container-type:inline-size; border-color:#a7bb95; color:var(--pj-ink); }
+.projector-quiz .quiz-head { grid-template-columns:52px minmax(0,1fr); gap:12px; padding:16px 18px; }
+.projector-heading-top { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:3px; }
+.projector-quiz .quiz-kicker { margin:0; }
+.projector-quiz .quiz-subtitle { margin-top:4px; font-size:.85rem; }
+.projector-quiz .quiz-body { padding:12px; }
+.projector-workspace { display:grid; gap:8px; margin:0; }
+.projector-goal { margin:0; padding:9px 12px; border:1px solid #e6ce8d; border-radius:11px; background:#fbefd0; color:#4a5835; font-size:.85rem; line-height:1.6; }
+.projector-goal strong { margin-right:8px; color:#655021; }
+.projector-stage { position:relative; isolation:isolate; height:clamp(270px,calc(100svh - 425px),450px); min-width:0; overflow:hidden; border:1px solid #a1b395; border-radius:13px; background:#e8e5db; }
+.projector-stage>canvas,.projector-fallback { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.projector-stage [hidden] { display:none; }
+.projector-tools { position:absolute; z-index:4; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px; pointer-events:none; }
+.projector-tools button { pointer-events:auto; min-height:36px; padding:6px 10px; border:1px solid #94ab86; border-radius:10px; font-size:.75rem; background:#fffdf0; color:var(--pj-ink); box-shadow:0 2px 7px #38493114; }
+.projector-tools button[aria-pressed=true] { background:#f4dfaa; border-color:#bd9c4d; color:#594623; }
+.projector-labels { position:absolute; inset:0; z-index:3; pointer-events:none; }
+.projector-label { position:absolute; transform:translate(-50%,-100%); display:block; width:max-content; max-width:140px; padding:3px 8px; border:1px solid #839b79; border-radius:6px; color:#31543d; background:#fffdf0ef; font-size:.78rem; font-weight:700; line-height:1.35; text-align:center; white-space:nowrap; }
+.projector-label small { display:block; margin-top:2px; font-size:.62rem; font-weight:500; color:#99762c; }
+.projector-leaders { position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none; }
+.projector-leaders path { fill:none; stroke:#7c8d71; stroke-width:1; }
+.projector-leaders circle { fill:#526e4d; stroke:#f9f6e9; stroke-width:.6; }
+.projector-stage-focals { position:absolute; inset:0; z-index:3; pointer-events:none; }
+.projector-stage-focals span { position:absolute; transform:translate(-50%,-100%); padding:1px 4px; border:1px solid #bca96e; border-radius:4px; background:#fff8dcf2; color:#675a31; font-size:.65rem; line-height:1.3; font-weight:700; white-space:nowrap; }
+.projector-stage-focals span[hidden] { display:none; }
+.projector-render-note { position:absolute; z-index:4; bottom:7px; right:8px; margin:0; padding:3px 7px; border-radius:5px; background:#fffdf1e8; color:#586b50; font-size:.65rem; }
+.projector-dock { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 16px; padding:12px; border:1px solid #b9c9a6; border-radius:12px; background:linear-gradient(130deg,#f5f7e9,#e9efdc); }
+.projector-control { min-inline-size:0; min-width:0; margin:0; padding:0; border:0; }
+.projector-direction-controls { padding-left:16px; border-left:1px solid #c0ceb1; }
+.projector-position-controls { grid-column:1 / -1; padding-top:10px; border-top:1px solid #c0ceb1; }
+.projector-position-controls[data-cue] { outline:3px solid #d29a26; outline-offset:2px; border-radius:9px; animation:projector-control-cue 1.25s ease-in-out 2; }
+@keyframes projector-control-cue { 50% { outline-color:#f0c95f; outline-offset:4px; } }
+.projector-control legend { float:left; width:100%; margin:0 0 8px; padding:0; color:#31543d; font-size:.87rem; line-height:1.4; font-weight:750; }
+.projector-control>div,.projector-control>label { clear:both; }
+.projector-lenses { display:flex; gap:6px; }
+.projector-control button { min-height:40px; margin:0; padding:7px 10px; border-radius:9px; border:1px solid #b6c6a7; background:#fffdf0; color:var(--pj-ink); font-size:.8rem; white-space:nowrap; }
+.projector-lenses button { flex:1; padding-inline:6px; }
+.projector-lenses [aria-pressed=true] { background:var(--pj-green); border-color:var(--pj-green); color:#fffdf0; }
+.projector-rail-toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; clear:both; }
+.projector-rail-selection,.projector-rail-steps { display:flex; align-items:center; gap:6px; }
+.projector-rail-selection>span { color:#4c684d; font-size:.76rem; }
+.projector-control .projector-rail-selection button,.projector-control .projector-rail-steps button { min-height:32px; padding:4px 12px; border-radius:7px; font-size:.76rem; }
+.projector-rail-selection button[aria-pressed=true] { background:#28634b; border-color:#28634b; color:#fffdf0; }
+.projector-control .projector-rail-steps button { width:34px; padding:3px; font-size:1rem; }
+.projector-rail-steps button:disabled { opacity:.4; cursor:not-allowed; }
+.projector-rail-help,.projector-focal-note { margin:7px 0; color:#5a7155; font-size:.72rem; line-height:1.5; }
+.projector-focal-note[hidden],.projector-focus-mark[hidden] { display:none; }
+.projector-rail-panel { margin-top:8px; padding:9px 14px 3px; border:1px solid #cbd9bf; border-radius:10px; background:#f5f8ef; overflow:hidden; }
+.projector-rail-plot { position:relative; height:126px; margin:0 25px; }
+.projector-control .projector-focus-mark { position:absolute; z-index:2; top:0; transform:translateX(-50%); min-width:27px; height:22px; min-height:22px; padding:1px 4px; border:1px solid #a4b893; border-radius:5px; background:#fffdf3; color:#31583c; font-size:.7rem; line-height:1.4; text-align:center; white-space:nowrap; }
+.projector-focus-mark:disabled { opacity:.65; cursor:not-allowed; }
+.projector-focus-mark::after { content:''; position:absolute; top:100%; left:50%; height:25px; border-left:1px dashed #87a07f; pointer-events:none; }
+.projector-rail-axis { position:absolute; z-index:1; inset:32px 0 auto; height:30px; cursor:pointer; touch-action:manipulation; }
+.projector-rail-axis::before { content:''; position:absolute; top:6px; left:0; right:0; height:9px; background:repeating-linear-gradient(to right,#9bad92 0 1px,transparent 1px 5%); border-bottom:3px solid #819777; }
+.projector-rail-allowed { position:absolute; top:16px; height:1px; background:#28634b; pointer-events:none; }
+.projector-rail-axis:focus-visible { outline:3px solid #c79d49; outline-offset:3px; border-radius:3px; }
+.projector-rail-dot { position:absolute; top:15px; transform:translate(-50%,-50%); width:12px; height:12px; border:2px solid #fffdf3; border-radius:50%; background:#b98c35; box-shadow:0 0 0 1px #8d7135; pointer-events:none; }
+.projector-rail-dot-lens { background:#39826b; box-shadow:0 0 0 1px #27674f; }
+.projector-rail-end { position:absolute; top:50px; color:#647a5b; font-size:.68rem; line-height:1.4; white-space:nowrap; pointer-events:none; }
+.projector-rail-source { left:0; transform:translateX(-50%); }
+.projector-rail-screen { right:0; transform:translateX(50%); }
+.projector-rail-device { position:absolute; z-index:2; transform:translateX(-50%); min-width:44px; padding:2px 5px; border:1px solid #b2c4a8; border-radius:6px; background:#fffdf3; color:#456447; font-size:.7rem; line-height:1.35; text-align:center; white-space:nowrap; pointer-events:none; }
+.projector-rail-device::before { content:''; position:absolute; left:50%; bottom:100%; border-left:1px solid #93aa8e; }
+.projector-rail-device-card { top:70px; }
+.projector-rail-device-card::before { height:19px; }
+.projector-rail-device-lens { top:100px; }
+.projector-rail-device-lens::before { height:49px; }
+.projector-rail-device[data-selected=true] { border-color:#28634b; background:#28634b; color:#fffdf0; }
+.projector-rotate { width:100%; }
+.projector-rotate[aria-pressed=true] { background:#f8e5b8; border-color:#c1a25d; color:#4a5835; }
+.projector-rotation { display:block; margin-top:4px; color:#697859; font-size:.65rem; line-height:1.3; text-align:center; }
+.projector-key { margin:0; padding:0 3px; color:#617155; font-size:.7rem; line-height:1.5; }
+.projector-key[hidden] { display:none; }
+.projector-footer { display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:8px; }
+.projector-footer button { min-height:42px; border-radius:10px; font-size:.85rem; padding:8px 18px; }
+.projector-footer .projector-reset { background:#fffdf0; border-color:#94ab86; color:var(--pj-ink); }
+.projector-help { background:#f8e3a8; border-color:#d5b86b; color:#584920; }
+.projector-submit { background:var(--pj-green); border-color:var(--pj-green); color:#fffdf2; }
+.projector-submit[data-ready=true] { border-color:#28714e; background:#28714e; box-shadow:0 0 0 3px #28714e38,0 3px 10px #28714e30; font-weight:800; }
+.projector-workspace #quiz-result { margin:0; padding:10px 12px; border:1px solid #dbc38b; border-radius:10px; background:#fff6df; color:#4b5837; line-height:1.6; font-size:.8rem; }
+.projector-workspace #quiz-result[data-result=success] { border-color:#a4bd8d; background:#eef4e2; }
+.projector-workspace #quiz-result strong { font-size:.88rem; }
+.projector-workspace #quiz-result p { margin:5px 0 0; }
+.projector-workspace #quiz-result[hidden],.projector-hint[hidden] { display:none; }
+.projector-checks { display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:5px; }
+.projector-checks span { color:#8a6839; }
+.projector-checks [data-pass=true] { color:#356244; font-weight:700; }
+.projector-hint { margin:0; padding:8px 12px; border-left:3px solid #d3af57; border-radius:0 8px 8px 0; background:#fff8e5; font-size:.78rem; line-height:1.65; }
+.projector-hint-list { margin:0; padding-left:1.35rem; }
+.projector-hint-list li+li { margin-top:3px; }
+.projector-hint a { display:inline-block; margin-left:6px; color:#35634d; }
+.projector-quiz .projector-note { margin:12px 0 0; font-size:.75rem; }
+.projector-quiz button:focus-visible { outline:3px solid #c59534; outline-offset:3px; }
+@container (max-width:640px) {
+ .projector-quiz .quiz-head { grid-template-columns:40px minmax(0,1fr); gap:9px; padding:12px; }
+ .projector-quiz .quiz-mark { width:38px; height:38px; }
+ .projector-quiz .quiz-head h2 { font-size:1.24rem; }
+ .projector-quiz .quiz-subtitle { font-size:.76rem; }
+ .projector-quiz .quiz-body { padding:8px; }
+ .projector-goal { padding:7px 9px; font-size:.76rem; }
+ .projector-stage { height:260px; }
+ .projector-tools { top:7px; left:7px; right:7px; }
+ .projector-tools button { min-height:34px; padding:5px 7px; font-size:.7rem; }
+ .projector-dock { grid-template-columns:minmax(0,1fr) minmax(0,1fr); padding:8px; gap:10px 8px; }
+ .projector-control { padding:0; border:0; }
+ .projector-direction-controls { padding-left:8px; border-left:1px solid #c0ceb1; }
+ .projector-control legend { font-size:.8rem; margin-bottom:5px; }
+ .projector-position-controls { grid-column:1 / -1; grid-row:2; padding-top:8px; border-top:1px solid #c0ceb1; }
+ .projector-control button { font-size:.75rem; padding:6px; min-height:38px; }
+ .projector-footer button { min-height:40px; padding:7px 14px; font-size:.8rem; }
+}
+@container (max-width:520px) {
+ .projector-stage { height:235px; }
+ .projector-labels { inset:auto 5px 5px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:3px; align-items:center; }
+ .projector-label { position:static; transform:none; width:auto; max-width:none; padding:3px 1px; border-color:#b3c2a4; font-size:.65rem; white-space:normal; }
+ .projector-label small { display:none; }
+ .projector-leaders { display:none; }
+ .projector-render-note { bottom:32px; left:6px; right:6px; text-align:center; }
+}
+
+/* Camera gestures stay inside the 3D canvas; the form keeps native scrolling. */
+.projector-stage>[data-projector-model] { touch-action:none; cursor:grab; }
+.projector-stage>[data-projector-model].projector-orbiting { cursor:grabbing; }
+.projector-stage>[data-projector-model]:focus-visible { outline:3px solid #c59534; outline-offset:-3px; }
+.projector-label[hidden] { display:none; }
+.projector-viewbar { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 3px; }
+.projector-viewbar[hidden] { display:none; }
+.projector-view-hint { margin:0; color:#5a7054; font-size:.72rem; line-height:1.5; }
+.projector-touch-help { display:none; }
+.projector-viewbar button { min-height:30px; padding:4px 9px; border:1px solid #afc29d; border-radius:7px; background:#fffdf0; color:#31543e; font-size:.72rem; }
+@media (pointer:coarse) { .projector-desktop-help { display:none; } .projector-touch-help { display:inline; } .projector-viewbar button { min-height:36px; } }
+@container (max-width:520px) { .projector-labels { display:flex; } .projector-label { flex:1; min-width:0; } }
+
+/* Directly select each device on the common rail. */
+.projector-position-controls { grid-row:1; padding-top:0; padding-bottom:10px; border-top:0; border-bottom:1px solid #c0ceb1; }
+.projector-selected-name { color:#315c43; font-size:.78rem; font-weight:700; }
+.projector-rail-steps { display:flex; align-items:center; gap:6px; }
+.projector-rail-panel { padding-top:9px; }
+.projector-rail-plot { height:188px; }
+.projector-control .projector-focus-mark { min-width:0; height:auto; padding:0 3px; border:0; background:transparent; color:#78886d; font-size:.7rem; font-weight:700; pointer-events:none; }
+.projector-focus-mark::after { height:30px; }
+.projector-rail-dot { pointer-events:auto; cursor:grab; width:16px; height:16px; touch-action:none; user-select:none; }
+.projector-rail-dot[data-dragging=true],.projector-control .projector-rail-device[data-dragging=true] { cursor:grabbing; }
+.projector-control .projector-rail-device { min-height:25px; padding:3px 8px; font-size:.7rem; line-height:1.25; pointer-events:auto; cursor:grab; touch-action:none; user-select:none; }
+.projector-rail-device[aria-pressed=true] { border-color:#28634b; background:#28634b; color:#fffdf0; }
+.projector-rail-device[data-cue=true] { outline:3px solid #d29a26; outline-offset:2px; background:#ffe7a0; color:#61430f; animation:projector-control-cue 1.25s ease-in-out 2; }
+.projector-preview { position:absolute; z-index:3; right:9px; bottom:9px; width:108px; padding:5px; border:1px solid #c6b88f; border-radius:8px; background:#fffdf2ef; box-shadow:0 2px 8px #3b46381c; pointer-events:none; }
+.projector-preview[data-ready=true] { border:2px solid #28714e; box-shadow:0 0 0 3px #28714e38,0 2px 10px #28714e30; }
+.projector-preview-checks { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; margin:0 0 8px; }
+.projector-preview .projector-preview-checks span { display:block; min-width:0; margin:0; padding:4px 3px; border:1px solid #d5a33e; border-radius:6px; background:#fff0c9; color:#755116; font-size:.7rem; line-height:1.2; text-align:center; font-weight:800; }
+.projector-preview .projector-preview-checks span[data-pass=true] { border-color:#a5c3a2; background:#e7f1e3; color:#285c43; }
+.projector-preview canvas { display:block; width:100%; aspect-ratio:1; border-radius:3px; }
+@container (max-width:640px) { .projector-position-controls { grid-row:1; padding-top:0; padding-bottom:8px; border-top:0; border-bottom:1px solid #c0ceb1; } }
+@container (max-width:520px) { .projector-preview { top:48px; right:auto; bottom:auto; left:6px; width:82px; padding:3px; } .projector-preview-checks { gap:2px; margin-bottom:4px; } .projector-preview .projector-preview-checks span { padding:2px 1px; font-size:.48rem; } }
+@media (prefers-reduced-motion:reduce) { .projector-position-controls[data-cue],.projector-rail-device[data-cue=true] { animation:none; } }
+
+/* Keep the rail below the model and move the lens controls into its toolbar. */
+.projector-workspace { grid-template-columns:minmax(0,1fr); gap:6px; }
+.projector-goal { padding:6px 10px; line-height:1.45; }
+.projector-stage { height:clamp(280px,calc(100svh - 390px),440px); }
+.projector-dock { display:block; padding:0; border:0; border-radius:0; background:none; }
+.projector-position-controls { padding-bottom:0; border-bottom:0; }
+.projector-rail-help,.projector-focal-note { margin:2px 0; line-height:1.35; }
+.projector-rail-panel { margin-top:3px; padding:4px 10px 0; }
+.projector-rail-plot { height:110px; }
+.projector-rail-device-card { top:40px; }
+.projector-rail-device-card::before { height:9px; }
+.projector-rail-device-lens { top:57px; }
+.projector-rail-device-lens::before { height:18px; }
+.projector-footer button { min-height:38px; padding:6px 14px; }
+.projector-quiz .projector-note { margin-top:6px; }
+.projector-tools-left { display:flex; align-items:flex-start; flex-wrap:wrap; gap:6px; min-width:0; }
+.projector-tools-left .projector-lenses { gap:4px; }
+.projector-tools-left .projector-lenses button { flex:0 0 auto; min-width:66px; min-height:36px; padding:5px 8px; font-size:.72rem; }
+.projector-direction-tools { display:flex; align-items:center; gap:5px; }
+.projector-tools-left .projector-rotate { width:auto; min-height:36px; padding:5px 8px; font-size:.72rem; }
+.projector-tools-left .projector-rotation { display:inline; margin:0; color:#526747; font-size:.65rem; white-space:nowrap; }
+@container (max-width:640px) {
+ .projector-stage { height:clamp(240px,calc(100svh - 470px),350px); }
+ .projector-dock { gap:6px; padding:6px; }
+ .projector-tools-left { gap:4px; }
+ .projector-tools-left .projector-lenses button { min-width:58px; padding-inline:5px; font-size:.67rem; }
+ .projector-tools-left .projector-rotate { padding-inline:6px; font-size:.67rem; }
+}
+@container (max-width:520px) {
+ .projector-stage { height:clamp(220px,calc(100svh - 470px),320px); }
+ .projector-tools { align-items:flex-start; }
+ .projector-tools-left { max-width:calc(100% - 80px); }
+ .projector-tools-left .projector-lenses button { min-width:52px; min-height:32px; font-size:.62rem; }
+ .projector-tools-left .projector-rotate { min-height:32px; font-size:.62rem; }
+ .projector-tools-left .projector-rotation { font-size:.58rem; }
+}
+.projector-rail-plot { height:140px; }
+.projector-rail-device-card { top:40px; }
+.projector-rail-device-lens { top:58px; }
+.projector-rail-device-screen { top:76px; }
+.projector-rail-device-screen::before { height:29px; }
+.projector-rail-device-lens::before { height:26px; }
+.projector-rail-dot-screen { background:#e8d58d; box-shadow:0 0 0 1px #9b803d; }
+/* Keep the movable card tag below the F/2F guide lines. */
+.projector-rail-device-card { top:55px; }
+.projector-rail-device-card::before { height:24px; }
+/* The focal ticks already show the measured distances. */
+.projector-rail-plot { height:110px; }
+.projector-label[data-edge=right] { transform:translate(0,-100%); }
+.projector-label[data-edge=left] { transform:translate(-100%,-100%); }
+@container (max-width:520px) { .projector-label[data-edge] { transform:none; } }
+
+/* Keep the optical controls and live image in adjacent panels. */
+.projector-visual-layout { display:grid; grid-template-columns:minmax(0,1fr) clamp(190px,25%,240px); gap:12px; align-items:stretch; min-width:0; }
+.projector-visual-layout .projector-stage { width:100%; box-sizing:border-box; height:clamp(380px,calc(100svh - 350px),500px); }
+.projector-visual-layout .projector-preview { position:static; align-self:stretch; display:flex; flex-direction:column; justify-content:center; width:auto; min-width:0; box-sizing:border-box; padding:12px; border:1px solid #d4c18a; border-radius:12px; background:#fffdf5; box-shadow:0 4px 12px #48533a16; pointer-events:none; }
+.projector-preview .projector-preview-checks span { padding:4px 2px; font-size:.72rem; }
+.projector-preview canvas { width:100%; }
+@container (max-width:760px) {
+ .projector-visual-layout { grid-template-columns:minmax(0,1fr) clamp(160px,29%,210px); gap:8px; }
+ .projector-visual-layout .projector-stage { height:clamp(350px,calc(100svh - 390px),460px); }
+ .projector-visual-layout .projector-preview { padding:8px; }
+}
+@container (max-width:640px) {
+ .projector-visual-layout { grid-template-columns:minmax(0,1fr) clamp(132px,31%,180px); gap:7px; }
+ .projector-visual-layout .projector-stage { height:clamp(290px,calc(100svh - 430px),400px); }
+ .projector-visual-layout .projector-preview { padding:6px; }
+}
+@container (max-width:520px) {
+ .projector-visual-layout { grid-template-columns:minmax(0,1fr) clamp(108px,34%,150px); gap:6px; }
+ .projector-visual-layout .projector-stage { height:clamp(260px,calc(100svh - 430px),360px); }
+ .projector-visual-layout .projector-preview { padding:4px; }
+}
+.projector-preview .projector-preview-checks [data-projector-preview-check="clear"][data-pass="false"] { grid-column:1 / -1; }
+.projector-preview .projector-preview-checks span { overflow-wrap:anywhere; }

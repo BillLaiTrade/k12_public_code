@@ -1,0 +1,27 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {HEAT,heating,ballDiameter,ballPasses,ringDiameter,waterDensity,waterVolume,gasVolume,thermometer,PHASES,QUIZ,grade} from '../units/5/parts/5.4/assets/thermal-model.mjs';
+test('融冰、升溫、沸騰平台及蒸乾的能量與質量一致',()=>{for(let e=0;e<HEAT.total;e+=500){const s=heating(e);assert.ok(Math.abs(s.ice+s.water+s.vapor-100)<1e-9);if(e<HEAT.melt)assert.equal(s.temperature,0);else if(e<HEAT.melt+HEAT.warm)assert.ok(s.temperature>=0&&s.temperature<100);else assert.equal(s.temperature,100);}assert.equal(heating(HEAT.total).temperature,null);assert.equal(heating(HEAT.total).water,0);assert.equal(heating(-1).ice,50);assert.equal(heating(Infinity).vapor,100);});
+test('反向與液氣態轉變的能量方向以樣品為準',()=>{assert.equal(PHASES.melt.direction,'in');assert.equal(PHASES.freeze.direction,'out');assert.equal(PHASES.evaporate.direction,'in');assert.equal(PHASES.condense.direction,'out');});
+test('真實銅膨脹量跨越所選球環間隙，冷卻恢復',()=>{assert.equal(ballDiameter(20),30);assert.ok(Math.abs(ballDiameter(80)-30.0306)<1e-10);assert.ok(ballDiameter(20)<ringDiameter&&ballDiameter(80)>ringDiameter);assert.equal(ballPasses(20),true);assert.equal(ballPasses(80),false);assert.equal(ballPasses(20),true);});
+test('水的反常脹縮與一般溫域、質量體積關係',()=>{assert.ok(waterVolume(0)>waterVolume(4));assert.ok(waterVolume(20)>waterVolume(4));assert.ok(waterVolume(60)>waterVolume(20));assert.ok(waterDensity(4)>waterDensity(0));for(const t of [0,4,20,60])assert.ok(Math.abs(waterVolume(t)*waterDensity(t)/1000-100)<1e-9);});
+test('固定量氣體近似定壓比較使用絕對溫度且可逆',()=>{assert.equal(gasVolume(20),100);assert.ok(Math.abs(gasVolume(60)/gasVolume(20)-333.15/293.15)<1e-10);assert.ok(gasVolume(60)>100);});
+test('同尺度液體增量減去玻璃容量增量等於細管餘量',()=>{assert.equal(thermometer(20).extra,0);for(let t=20;t<=60;t++){const s=thermometer(t);assert.ok(s.water>=s.glass);assert.ok(Math.abs(s.water-s.glass-s.extra)<1e-12);assert.ok(Math.abs(s.height*.05-s.extra)<1e-12);}});
+test('整合小測完整、缺項、錯誤與所有選項判定',()=>{const correct=QUIZ.map(q=>q.answer);assert.equal(QUIZ.length,6);assert.ok(grade(correct).every(x=>x.complete&&x.correct));assert.ok(grade([]).every(x=>!x.complete));for(let i=0;i<QUIZ.length;i++)for(let a=0;a<QUIZ[i].options.length;a++){const answers=[...correct];answers[i]=a;assert.equal(grade(answers)[i].correct,a===correct[i]);}});
+
+import {HEATING_STEPS,heatingStep,observedHeatChart,heatObservation} from '../units/5/parts/5.4/assets/heating-observation.mjs';
+test('第一區觀察在融完、初沸及部分汽化停止，末端探針仍有水可量',()=>{assert.equal(heatingStep(0),0);assert.equal(heatingStep(HEATING_STEPS[0].end),1);assert.equal(heatingStep(HEATING_STEPS[1].end),2);assert.deepEqual(HEATING_STEPS.map(x=>heating(x.end).temperature),[0,100,100]);const end=heating(HEATING_STEPS[2].end);assert.equal(end.water,80);assert.equal(end.vapor,20);assert.equal(heatObservation(0,false).discovery,'');assert.ok(!heatObservation(HEAT.melt,false).discovery.includes('沸騰'));});
+test('曲線不畫未觀察段落，吸熱量與物理狀態對應，固定座標在三段保持一致',()=>{const initial=observedHeatChart(0);assert.ok(initial.includes('d="M56.00 254.00"'));assert.ok(!initial.includes('clipPath'));const e=HEAT.melt+HEAT.warm*.6;const plot=observedHeatChart(e);assert.ok(plot.includes('data-observed-cal="9995.215311004786"'));assert.ok(plot.includes('L170.61 142.40'));assert.ok(plot.includes('data-axis-max="30000"'));assert.ok(observedHeatChart(HEATING_STEPS[2].end).includes('data-axis-max="30000"'));});
+
+test('第一區標籤與說明只連結已觀察內容，初始與停熱不誤稱正在加熱',()=>{for(const e of [0,HEAT.melt/2,HEAT.melt,HEAT.melt+HEAT.warm/2,HEAT.melt+HEAT.warm,HEATING_STEPS[2].end])assert.ok(observedHeatChart(e).includes('data-axis-max="30000"'));assert.ok(!observedHeatChart(0).includes('>冰融化<'));assert.ok(observedHeatChart(HEAT.melt/2).includes('>冰融化<'));assert.ok(!observedHeatChart(HEAT.melt).includes('>水升溫<'));assert.ok(!observedHeatChart(HEAT.melt+HEAT.warm).includes('>水沸騰<'));assert.ok(observedHeatChart(HEATING_STEPS[2].end).includes('>水沸騰<'));assert.ok(heatObservation(HEAT.melt,false).note.includes('下一段'));assert.ok(heatObservation(HEATING_STEPS[2].end,false).discovery.includes('吸熱不代表溫度一定上升'));});
+
+import {heatingPhotoState} from '../units/5/parts/5.4/assets/photo-apparatus.mjs';
+test('寫實器材的水位下降時探針末端仍浸水，冰消失而不改模型',()=>{let previous=0;for(let e=0;e<=HEATING_STEPS[2].end;e+=100){const state=heating(e),photo=heatingPhotoState(state);assert.ok(photo.surface<photo.probeTip&&photo.probeTip<600);assert.ok(photo.surface>=previous);assert.ok(Math.abs(photo.iceScale**3-state.ice/50)<1e-9);previous=photo.surface;}assert.equal(heatingPhotoState(heating(HEAT.melt)).iceScale,0);});
+
+import {observedMeltingChart} from '../units/5/parts/5.4/assets/heating-observation.mjs';
+test('局部圖以相同cal換算只畫已觀察的0°C段，完整圖仍保留固定尺度',()=>{const local=observedMeltingChart(8360);assert.ok(Math.abs(Number(local.match(/data-observed-cal="([^"]+)/)[1])-2000)<1e-9);assert.ok(local.includes('d="M56.00 164.00 H193.60"'));assert.ok(local.includes('data-axis-max="5000"'));assert.ok(!local.includes('水升溫'));assert.ok(observedHeatChart(8360).includes('data-axis-max="30000"'));});
+
+test('自由調溫覆蓋 5–80°C，冷卻收縮及 80°C 水密度可對照參考值',()=>{
+ assert.ok(Math.abs(waterDensity(80)-971.8)<0.2);
+ assert.ok(thermometer(5).water<0&&thermometer(5).glass<0&&thermometer(5).extra<0);
+ assert.ok(thermometer(5.5).extra<thermometer(5).extra,'低溫下不能強制液面單調上升');let previous=thermometer(7).extra;for(let t=7.5;t<=80;t+=.5){const now=thermometer(t);assert.ok(now.extra>previous,`液面應隨溫度上升：${t}`);assert.ok(Math.abs(now.water-now.glass-now.extra)<1e-12);previous=now.extra;}
+});

@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f7f2">
+  <meta name="description" content="透過過濾、蒸發、濾紙層析與糖水配製互動，認識混合物分離及重量百分濃度；再用泳池比例模型理解 ppm，完成未知樣本的濃度調查。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="混在一起的東西，怎麼分開？">
+  <meta property="og:description" content="透過過濾、蒸發、濾紙層析與糖水配製互動，認識混合物分離及重量百分濃度；再用泳池比例模型理解 ppm，完成未知樣本的濃度調查。">
+  <meta property="og:url" content="https://billlaitrade.github.io/k12-learning-demos/units/2/parts/2.2/index.html">
+  <meta property="og:image" content="https://billlaitrade.github.io/k12-learning-demos/units/2/parts/2.2/assets/unit-opening-cover.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1672">
+  <meta property="og:image:height" content="941">
+  <meta property="og:image:alt" content="阿公和小葵在工作桌前觀察泥沙水；桌上有過濾器材、不同份量的液體樣本、色帶分離的濾紙和一盤晶體。">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="混在一起的東西，怎麼分開？">
+  <meta name="twitter:description" content="透過過濾、蒸發、濾紙層析與糖水配製互動，認識混合物分離及重量百分濃度；再用泳池比例模型理解 ppm，完成未知樣本的濃度調查。">
+  <meta name="twitter:image" content="https://billlaitrade.github.io/k12-learning-demos/units/2/parts/2.2/assets/unit-opening-cover.png">
+  <meta name="twitter:image:alt" content="阿公和小葵在工作桌前觀察泥沙水；桌上有過濾器材、不同份量的液體樣本、色帶分離的濾紙和一盤晶體。">
+  <link rel="canonical" href="https://billlaitrade.github.io/k12-learning-demos/units/2/parts/2.2/index.html">
+  <link rel="icon" href="data:,">
+  <title>混在一起的東西，怎麼分開？</title>
+  <style>
+    :root { color-scheme:light; --ink:#243a35; --muted:#64736d; --paper:#f3f7f2; --card:#fff; --line:#d8e2da; --green:#176b53; --gold:#82a98c; --blue:#dce9e5; --rust:#a85c3d; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:18px; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:ui-sans-serif,system-ui,-apple-system,"Noto Sans TC",sans-serif; line-height:1.7; }
+    button,select { font:inherit; }
+    button { color:inherit; }
+    .shell { width:min(1160px,calc(100% - 36px)); margin-inline:auto; }
+    .masthead { padding:28px 0 22px; }
+    .brand-row { margin-bottom:20px; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+    .brand { color:var(--green); font-size:.9rem; font-weight:750; text-decoration:none; }
+    .crumb { color:var(--muted); font-size:.83rem; }
+    .hero { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:28px; align-items:center; padding:26px 0 14px; }
+    .eyebrow { color:var(--green); font-size:.78rem; font-weight:800; letter-spacing:.1em; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:800px; margin:6px 0 12px; font-size:clamp(2rem,5vw,3.25rem); line-height:1.2; letter-spacing:-.035em; }
+    .hero-copy { max-width:740px; color:#52635d; font-size:1.06rem; }
+    .hero-cover { margin:0; overflow:hidden; border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:0 8px 24px #243a3512; }
+    .hero-cover img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
+    .lesson-layout { display:grid; grid-template-columns:minmax(205px,250px) minmax(0,1fr); gap:34px; align-items:start; }
+    .route {font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;--ink:#182326;--muted:#59696b;--line:#d7e1dd;}
+    .route { position:sticky; top:24px; align-self:start; max-height:calc(100svh - 48px); overflow-y:auto; padding:8px 12px 12px 0; scrollbar-width:thin; }
+    .route-label { margin:0 0 10px; color:var(--muted); font-size:.74rem; letter-spacing:.08em; }
+    .route-progress { margin:3px 0 10px; color:var(--muted); font-size:.78rem; }
+    .route-inner { display:grid; gap:4px; }
+    .route-inner a { display:grid; grid-template-columns:28px minmax(0,1fr); gap:8px; align-items:start; padding:10px 11px; border:1px solid transparent; border-left:3px solid transparent; border-radius:0 10px 10px 0; color:var(--muted); text-decoration:none; font-size:.86rem; line-height:1.45; }
+    .route-inner a:hover,.route-inner a:focus-visible {border-color:var(--line);outline:2px solid transparent;}
+    .route-inner a b { color:var(--green); font-size:.76rem; font-weight:650; }
+    .route-inner a[aria-current="step"] { border-left-color:var(--green); background:#e7eee0; color:#315a46; font-weight:750; }
+    .route-inner a.quiz-nav[aria-current="step"] {border-left-color:#d9a74f;}
+    .cards { min-width:0; }
+    .section-top { display:flex; justify-content:space-between; gap:12px; align-items:baseline; padding:4px 0 12px; }
+    .section-top h2 { margin:0; font-size:1.05rem; }
+    .progress-copy { color:var(--muted); font-size:.78rem; }
+    .lesson-card { position:relative; min-width:0; display:block; margin:0 0 20px; padding:0; overflow:hidden; border:1px solid #d8e2da; border-radius:20px; background:#fffefa; color:#1c2927; line-height:1.72; box-shadow:0 10px 28px rgb(24 52 40 / 7%); }
+    .lesson-head { display:grid; grid-template-columns:74px minmax(0,1fr); gap:16px; align-items:start; padding:25px 28px 21px; border-bottom:1px solid #e7ece5; }
+    .lesson-number { display:grid; place-items:center; width:50px; height:50px; border-radius:15px; background:#e9f0e3; color:#416c39; font-weight:850; font-size:1.1rem; }
+    .lesson-head h2 { margin:0; font-size:clamp(1.22rem,2vw,1.65rem); line-height:1.35; }
+    .lesson-head p { margin:8px 0 0; color:#5b6a65; font-size:.94rem; }
+    .lesson-body { padding:23px 28px 28px; min-width:0; }
+    .lesson-body p { max-width:880px; }
+    @media(max-width:900px) { .lesson-head,.lesson-body { padding-left:21px; padding-right:21px; } }
+    @media(max-width:700px) { .lesson-head { grid-template-columns:48px minmax(0,1fr); gap:10px; padding:18px; } .lesson-number { width:40px; height:40px; border-radius:12px; } .lesson-body { padding:18px; } }
+    .card-main h2 { margin:0 0 8px; font-size:clamp(1.17rem,2.4vw,1.55rem); line-height:1.4; }
+    .card-main>p { color:#53645d; }
+    .dialogue { display:flex; gap:10px; align-items:center; margin:12px 0; padding:11px 15px; border-left:4px solid #8cae91; border-radius:0 13px 13px 0; background:#f0f5eb; }
+    .dialogue p { margin:0; }
+    .dialogue .speaker { display:inline-flex; flex:0 0 auto; align-items:center; color:#315a46; font-weight:800; }
+    .dialogue .speaker::before { content:""; display:block; width:44px; height:44px; border:2px solid #8cae91; border-radius:50%; background-image:url("../../../../shared-assets/characters/dialogue-character-avatars.png?v=clean-shaven-grandpa"); background-repeat:no-repeat; background-position:100% 50%; background-size:200% 100%; box-shadow:0 2px 6px rgb(21 47 38 / 12%); }
+    .dialogue--xiaokui { border-left-color:#d39765; background:#fff4e8; }
+    .dialogue--xiaokui .speaker { color:#945523; }
+    .dialogue--xiaokui .speaker::before { border-color:#d39765; background-position:0 50%; }
+    .dialogue .visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    #chrom-observation-dialogue[hidden] { display:none; }
+    .evidence-box,.note-box { margin:12px 0; padding:12px 14px; border-left:4px solid #82a98c; border-radius:7px; background:#f0f6f0; }
+    .evidence-box strong { display:block; margin-bottom:3px; }
+    .filter-animation { position:relative; margin:16px 0 10px; overflow:hidden; border:1px solid #d8e2da; border-radius:18px; background:#f1f6f1; box-shadow:0 12px 30px #243a350d; }
+    .filter-play {display:block;width:100%;padding:0;border:0;background:transparent;cursor:pointer;}
+    .filter-play canvas {display:block;width:100%;height:auto;aspect-ratio:1672/941;}
+    .filter-play:focus-visible {outline:4px solid #176b53;outline-offset:-4px;}
+    .filter-animation .filter-hotspot {position:absolute;z-index:2;min-width:46px;min-height:36px;padding:5px 9px;border:2px solid #fff;border-radius:9px;background:#176b53;color:white;box-shadow:0 2px 10px #243a3540;font-size:clamp(.65rem,1.2vw,.8rem);font-weight:750;pointer-events:none;transform:translate(-50%,-50%);}
+    .filter-animation button.filter-hotspot:enabled {pointer-events:auto;cursor:zoom-in;}
+    .filter-animation button.filter-hotspot:enabled:hover {background:#10533f;}
+    .filter-animation button.filter-hotspot:disabled {opacity:1;}
+    .filter-observation {width:min(540px,calc(100vw - 32px));max-height:90vh;box-sizing:border-box;padding:20px;border:1px solid #cddbd1;border-radius:18px;background:#fbfdf9;color:#315345;box-shadow:0 20px 70px #163e3438;}
+    .filter-observation::backdrop {background:#18362d66;}
+    .filter-observation header {display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;}
+    .filter-observation h3 {margin:0;font-size:1.1rem;}
+    .filter-observation-close {display:grid;place-items:center;flex:none;width:36px;height:36px;border:1px solid #cddbd1;border-radius:50%;background:#fff;color:#315345;font-size:1.3rem;cursor:pointer;}
+    .filter-observation canvas {display:block;width:100%;height:auto;max-height:55vh;object-fit:contain;border-radius:12px;background:#edf4ee;}
+    .filter-observation p {margin:12px 0 0;font-size:.9rem;line-height:1.7;}
+    .filter-reset {position:absolute;right:12px;bottom:12px;z-index:3;display:grid;place-items:center;width:38px;height:38px;padding:6px;border:1px solid #bdc8bf;border-radius:10px;background:#ffffffeb;color:#176b53;cursor:pointer;}
+    .filter-reset svg {width:23px;height:23px;}
+    .filter-reset:disabled {opacity:.45;cursor:default;}
+    .filter-reset:focus-visible {outline:3px solid #176b53;outline-offset:2px;}
+    .filter-hotspot.sample {left:22%;top:93.5%;}
+    .filter-hotspot.filter {left:65%;top:36%;}
+    .filter-hotspot.result {left:64%;top:78%;}
+    #filter-status {display:flex;align-items:center;justify-content:center;gap:6px;margin:6px 0 12px;text-align:center;color:#176b53;font-size:.8rem;line-height:1.5;}
+    #filter-status[hidden] {display:none;}
+    #filter-status svg {width:17px;height:20px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;}
+    .filter-steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; margin:0 0 12px; padding:0; list-style:none; }
+    .filter-steps li { min-width:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .filter-steps b { display:block; margin-bottom:4px; color:var(--green); font-size:.84rem; }
+    .filter-steps span { display:block; color:#53645d; font-size:.82rem; line-height:1.5; }
+    .filter-principle { margin:12px 0; padding:14px 16px; border:1px solid #d8e2da; border-radius:12px; background:#edf4ee; color:#40564b; }
+    .filter-principle strong { display:block; margin-bottom:3px; color:var(--green); }
+    .note-box { border-left-color:var(--green); background:#edf3ee; font-size:.88rem; }
+    .choice-row { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+    .choice-button { border:1px solid #bdc8bf; border-radius:9px; padding:8px 12px; background:#fff; cursor:pointer; font-weight:700; }
+    .choice-button:hover { border-color:var(--green); }
+    .choice-button[aria-pressed="true"] { color:#fff; border-color:var(--green); background:var(--green); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid #79ad8d; outline-offset:2px; }
+    .live-note { min-height:1.6em; color:#315e4e; font-size:.9rem; font-weight:650; }
+    .scene { position:relative; min-height:190px; margin:12px 0; overflow:hidden; border:1px solid #cdd8d2; border-radius:13px; background:linear-gradient(#f6faf7,#eef3ef); }
+    .scene-label { position:absolute; top:10px; left:12px; color:var(--muted); font-size:.78rem; font-weight:700; }
+    .evap-stepper { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:7px; margin:18px 0 14px; padding:0; list-style:none; }
+    .evap-stepper > li { min-width:0; align-self:stretch; }
+    .evap-step { width:100%; height:100%; min-width:0; min-height:54px; padding:9px 8px; border:1px solid #d8e2da; border-radius:12px; background:#fff; color:#53645d; font-weight:750; cursor:pointer; transition:background-color .25s,border-color .25s,color .25s,box-shadow .25s,transform .25s; }
+    .evap-step:hover { border-color:#8cae91; transform:translateY(-1px); }
+    .evap-step[aria-pressed="true"] { border-color:#176b53; background:#eaf3ec; color:#145540; box-shadow:0 0 0 2px #176b5314; }
+    .evap-step:focus-visible { outline:3px solid #82a98c; outline-offset:3px; }
+    .evap-arrow { color:#a4b5a8; font-size:1.2rem; font-weight:800; text-align:center; }
+    .evap-stage { min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 210px; gap:14px; align-items:center; padding:38px 18px 14px; background:radial-gradient(ellipse at 48% 68%,#fff8eb 0,#faf5ea 49%,#f0f4ef 100%); }
+    .evap-visual { position:relative; display:block; width:100%; max-width:620px; margin:0 auto; padding:0; border:0; aspect-ratio:1586/992; overflow:hidden; border-radius:10px; background:#e7e0d4; cursor:pointer; touch-action:manipulation; }
+    .evap-visual:disabled { cursor:not-allowed; }
+    .evap-visual canvas { display:block; width:100%; height:100%; }
+    .evap-visual-wrap {min-width:0;}
+    .evap-click-cue {display:block;padding-top:5px;color:#536b5c;font-size:.72rem;line-height:1.5;text-align:center;pointer-events:none;transition:opacity .2s ease;}
+    .evap-stage[data-playing="true"] .evap-click-cue {opacity:0;}
+    .evap-visual:disabled+.evap-click-cue {visibility:hidden;}
+    .evap-observation { align-self:stretch; display:flex; flex-direction:column; justify-content:center; padding:16px; border:1px solid #e2ddcc; border-radius:14px; background:#fffdf8e8; box-shadow:0 5px 16px #243a3508; }
+    .evap-observation strong { margin-bottom:8px; color:#8b6b32; font-size:.82rem; letter-spacing:.04em; }
+    .evap-observation p { margin:0; color:#4c5d55; font-size:.94rem; line-height:1.7; }
+    .evap-observation .live-note { min-height:0; }
+    select { width:100%; padding:8px; border:1px solid #bdc8bf; border-radius:8px; background:#fff; }
+    .next-hint { margin:14px 0 0; padding-top:12px; border-top:1px solid var(--line); color:#587365; font-size:.86rem; }
+    footer { padding:16px 0 28px; color:#718078; font-size:.82rem; }
+    @media(max-width:850px) { .lesson-layout { grid-template-columns:1fr; gap:12px; } .route { position:relative; top:auto; max-height:none; } .route-inner { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:850px) { .filter-steps { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:760px) { .evap-stage { grid-template-columns:1fr; gap:10px; padding:38px 12px 13px; } .evap-visual { max-width:560px; } .evap-observation { min-height:104px; } .evap-observation strong { margin-bottom:3px; } }
+    @media(max-width:560px) { .evap-stepper { grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr) 14px minmax(0,1fr) 14px minmax(0,1fr); gap:5px; } .evap-step { min-height:49px; padding:6px 3px; font-size:.75rem; line-height:1.35; } .evap-arrow { font-size:.95rem; } }
+    @media(max-width:680px) { .shell { width:min(100% - 24px,1160px); } .hero { grid-template-columns:1fr; gap:16px; padding-top:20px; } .section-top { display:block; } .progress-copy { display:block; } .filter-steps li { padding:10px; } .filter-steps span { font-size:.76rem; } .goal-choice { min-width:100%; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition-duration:.01ms!important; animation-duration:.01ms!important; } }
+  </style>
+  <link rel="stylesheet" href="assets/chromatography.css?v=state-guidance-1">
+  <link rel="stylesheet" href="assets/concentration.css?v=formula-cards-1">
+  <link rel="stylesheet" href="assets/ppm-scale.css?v=water-mass-units-1">
+  <link rel="stylesheet" href="assets/investigation.css?v=no-bottle-hand-1">
+<link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
+<body>
+  <header class="shell masthead">
+    <div class="brand-row"><a class="brand" href="../../index.html">← 物質、分離與水溶液</a><span class="crumb">國二上・自然科學</span></div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">學習內容 2.2｜混合物分離與溶液濃度｜從分離成分到表示含量</div>
+        <h1>混在一起的東西，怎麼分開？</h1>
+        <p class="hero-copy">雨後，小葵從院子裡的水桶取了一杯混濁的水，帶到阿公的工作桌。她看著水裡的泥沙，想著：這些泥沙能從水裡分離出來嗎？如果混進水裡的是其他東西，又能不能分開呢？</p>
+      </div>
+      <figure class="hero-cover"><img src="assets/unit-opening-cover.png" alt="阿公和小葵在工作桌前觀察泥沙水；桌上有過濾器材、不同份量的液體樣本、色帶分離的濾紙和一盤晶體。"></figure>
+    </div>
+  </header>
+  <main class="shell lesson-layout">
+    <nav class="route" aria-label="學習路徑">
+      <p class="route-label">本單元的探索路線</p>
+      <p class="route-progress" id="route-progress" aria-live="polite">目前位置：第 01／05 個學習區塊</p>
+      <div class="route-inner">
+        <a href="#s1" aria-current="step"><b>01</b><span>泥沙混在水裡，要怎麼分離出來？</span></a>
+        <a href="#s2"><b>02</b><span>鹽溶在水裡，要怎麼分離出來？</span></a>
+        <a href="#s3"><b>03</b><span>綠色墨水裡，還藏著其他顏色嗎？</span></a>
+        <a href="#s5"><b>04</b><span>加一勺糖後，糖水會變多濃？</span></a>
+        <a href="#s6"><b>05</b><span>一整池水，只加這一點，是多少 ppm？</span></a>
+        <a href="#unit-quiz" class="quiz-nav"><b aria-hidden="true">✦</b><span>單元小測</span></a>
+      </div>
+    </nav>
+    <div class="cards">
+      <div class="section-top"><h2>從分離混合物到認識溶液濃度</h2></div>
+
+      <section class="lesson-card" id="s1" aria-labelledby="s1-title">
+        <header class="lesson-head">
+          <span class="lesson-number">01</span>
+          <div><h2 id="s1-title">泥沙混在水裡，要怎麼分離出來？</h2><p>過濾：分離不溶於水的固體</p></div>
+        </header>
+        <div class="card-main lesson-body">
+          <p>泥沙不溶於水，仍以固體顆粒的形式混在水中，因此可以利用過濾這種物理方法，將泥沙和水分開。</p>
+          <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>泥沙顆粒這麼小，混在水裡很難用手一一挑出來，還有什麼方法能把它們分開呢？</p></div>
+          <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>我們可以用濾紙試試看，觀察泥沙和水各自去了哪裡。</p></div>
+          <div class="filter-animation" id="filter-animation" role="group" aria-label="泥沙水經過濾紙的連續動畫；點擊畫面開始，完成後可點濾紙或濾液放大觀察">
+            <button class="filter-play" id="filter-play" type="button" aria-label="播放過濾動畫" aria-describedby="filter-status" disabled><canvas id="filter-canvas" width="1672" height="941" role="img" aria-label="桌上的泥沙水杯、乾淨濾紙與空接液杯；點擊開始過濾。"></canvas></button>
+            <span class="filter-hotspot sample" data-filter-label="sample">樣本</span>
+            <button class="filter-hotspot filter" data-filter-label="filter" type="button" aria-label="放大觀察濾紙上的泥沙" aria-haspopup="dialog" aria-controls="filter-observation" disabled>濾紙</button>
+            <button class="filter-hotspot result" data-filter-label="result" type="button" aria-label="放大觀察濾液" aria-haspopup="dialog" aria-controls="filter-observation" disabled>接液杯</button>
+            <button class="filter-reset" id="filter-reset" type="button" aria-label="恢復過濾初始狀態" title="恢復初始狀態" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></svg></button>
+          </div>
+          <span id="filter-status" role="status" hidden><svg viewBox="0 0 24 28" aria-hidden="true"><path d="M4 3v18l5-5 4 9 4-2-4-9h7Z"/></svg><span id="filter-instruction"></span></span>
+          <dialog class="filter-observation" id="filter-observation" aria-labelledby="filter-observation-title" aria-describedby="filter-observation-copy">
+            <header><h3 id="filter-observation-title">放大觀察</h3><button class="filter-observation-close" id="filter-observation-close" type="button" aria-label="關閉觀察" autofocus>×</button></header>
+            <canvas id="filter-observation-canvas" width="760" height="560" role="img"></canvas>
+            <p id="filter-observation-copy"></p>
+          </dialog>
+          <ol class="filter-steps" aria-label="過濾的四個步驟">
+            <li><b>① 架好器材</b><span>將濾紙放入漏斗，並在漏斗下方放好接液杯。</span></li>
+            <li><b>② 倒入泥沙水</b><span>將樣本慢慢倒進濾紙中，避免液體溢出。</span></li>
+            <li><b>③ 讓混合物分開</b><span>水穿過濾紙，泥沙顆粒留在濾紙上。</span></li>
+            <li><b>④ 觀察結果</b><span>濾紙上留下固體；下方接液杯收集流下的液體。</span></li>
+          </ol>
+          <div class="dialogue" id="filtration-explanation"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>泥沙不溶於水，泥沙顆粒會被濾紙攔住，水則穿過濾紙流進接液杯。留在濾紙上的固體叫「<strong>濾渣</strong>」，收集到的液體叫「<strong>濾液</strong>」。</p></div>
+        </div>
+      </section>
+
+      <section class="lesson-card" id="s2" aria-labelledby="s2-title">
+        <header class="lesson-head">
+          <span class="lesson-number">02</span>
+          <div><h2 id="s2-title">鹽溶在水裡，要怎麼分離出來？</h2><p>蒸發結晶：分離溶在水中的鹽</p></div>
+        </header>
+        <div class="card-main lesson-body">
+          <p>鹽能均勻溶於水，會隨水穿過濾紙，因此無法用過濾分離。讓水蒸發後，溶在水中的鹽會形成晶體，留在容器裡。</p>
+          <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>如果鹽已經溶在水裡，還能用濾紙把它分離出來嗎？</p></div>
+          <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>溶在水裡的鹽會隨水穿過濾紙，沒辦法用過濾把它分開。我們可以讓水慢慢蒸發，再觀察容器裡最後留下什麼。</p></div>
+          <ol class="evap-stepper" aria-label="鹽水蒸發與結晶的四個步驟">
+            <li><button class="evap-step" type="button" data-evap-step="1" aria-pressed="true" disabled>① 觀察鹽水</button></li><span class="evap-arrow" aria-hidden="true">→</span>
+            <li><button class="evap-step" type="button" data-evap-step="2" aria-pressed="false" disabled>② 水分蒸發</button></li><span class="evap-arrow" aria-hidden="true">→</span>
+            <li><button class="evap-step" type="button" data-evap-step="3" aria-pressed="false" disabled>③ 晶體析出</button></li><span class="evap-arrow" aria-hidden="true">→</span>
+            <li><button class="evap-step" type="button" data-evap-step="4" aria-pressed="false" disabled>④ 留下鹽晶體</button></li>
+          </ol>
+          <div class="scene evap-stage" id="evap-stage" data-step="1" aria-label="鹽水蒸發與鹽晶體留下的示意">
+            <div class="evap-visual-wrap"><button class="evap-visual" id="evap-visual" type="button" aria-label="從「① 觀察鹽水」播放至結束" aria-describedby="evap-caption" disabled></button><span class="evap-click-cue" aria-hidden="true">點圖片任意處觀察</span></div>
+            <aside class="evap-observation"><strong id="evap-phase">受熱升溫</strong><p id="evap-caption" class="live-note" aria-live="polite">鹽水正在受熱，水面仍較平靜；水在還沒沸騰時也會蒸發。</p></aside>
+          </div>
+          <div class="dialogue dialogue--xiaokui" id="evap-observation-dialogue"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>水越來越少，最後只剩下白白的晶體了！</p></div>
+          <div class="dialogue" id="evap-separation-explanation"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>水變成水蒸氣離開了，留下的晶體就是原本溶在水裡的鹽。</p></div>
+        </div>
+      </section>
+
+      <section class="lesson-card" id="s3" aria-labelledby="s3-title">
+        <header class="lesson-head">
+          <span class="lesson-number">03</span>
+          <div><h2 id="s3-title">綠色墨水裡，還藏著其他顏色嗎？</h2><p>濾紙層析：觀察墨水中的色素</p></div>
+        </header>
+        <div class="card-main lesson-body">
+          <p>綠色墨水看起來顏色均勻，單看外觀不容易判斷裡面是否有不同色素。利用濾紙層析，可以觀察墨水中的色素是否分開。</p>
+          <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>剛才鹽水看起來清清的，裡面卻有鹽。那綠色筆的墨水裡，會不會也藏著別的東西？</p></div>
+          <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>我們可以用濾紙層析試試看，觀察墨水會不會分出不同的色帶。</p></div>
+          <div class="chrom-lab" id="chrom-lab" data-mode="ready" data-ink="green" aria-label="濾紙層析互動實驗">
+            <canvas id="chrom-canvas" width="1536" height="1024" aria-hidden="true"></canvas>
+            <button class="chrom-source chrom-source--green ink-choice" type="button" data-ink="green" aria-label="選擇已點好綠色筆墨點的濾紙，掛上夾具觀察" aria-pressed="false" disabled></button>
+            <button class="chrom-source-label chrom-source-label--green" data-chrom-source-label="green" type="button" aria-label="選擇已點好綠色筆墨點的濾紙，掛上夾具觀察" disabled>綠色筆</button>
+            <button class="chrom-source chrom-source--dark ink-choice" type="button" data-ink="dark" aria-label="選擇已點好深色筆墨點的濾紙，掛上夾具觀察" aria-pressed="false" disabled></button>
+            <button class="chrom-source-label chrom-source-label--dark" data-chrom-source-label="dark" type="button" aria-label="選擇已點好深色筆墨點的濾紙，掛上夾具觀察" disabled>深色筆</button>
+            <button class="chrom-drop" id="chrom-drop" type="button" aria-label="暫停或繼續層析實驗" disabled></button>
+            <button class="chrom-paper" id="chrom-paper" type="button" aria-label="暫停層析實驗" hidden disabled></button>
+            <button class="chrom-clip" id="chrom-clip" type="button" aria-label="鬆開夾具，重新選擇已點墨的濾紙" disabled></button>
+            <button class="chrom-reset" id="chrom-reset" type="button" aria-label="重新實驗" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></svg></button>
+          </div>
+          <p class="chrom-status is-visible" id="chrom-status" role="status" aria-live="polite">點選紙張或名稱，觀察色帶分離。</p>
+          <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>看起來是一種顏色的墨水，也可能含有不同色素。溶劑沿著濾紙上升時，會帶動墨水中的色素；不同色素移動的速度不同，就會逐漸分成不同色帶。</p></div>
+          <div class="dialogue dialogue--xiaokui" id="chrom-observation-dialogue" hidden><span class="speaker"><span class="visually-hidden">小葵</span></span><p id="chrom-observation-text"></p></div>
+          <div class="note-box">不同墨水的分離結果可能不同；本例的色帶顏色、數量與位置為特定樣本的示意。</div>
+        </div>
+      </section>
+
+<section class="lesson-card" id="s5" aria-labelledby="s5-title">
+        <header class="lesson-head">
+          <span class="lesson-number">04</span>
+          <div><h2 id="s5-title">加一勺糖後，糖水會變多濃？</h2><p>重量百分濃度：溶質占溶液的質量百分比</p></div>
+        </header>
+        <div class="card-main lesson-body"><p>重量百分濃度表示溶質質量占溶液總質量的百分比。在糖水中，糖是溶質，糖水是溶液。改變糖或水的質量，溶質在溶液中所占的比例也會改變。</p>
+<div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>剛才我們觀察了溶在水裡的鹽。糖也能溶在水裡，如果兩杯糖水喝起來都很甜，要怎麼用數字比較哪一杯比較甜呢？</p></div><div class="dialogue "><span class="speaker"><span class="visually-hidden">阿公</span></span><p>我們可以在配製時量出糖和水的質量，算出糖占整杯糖水質量的百分比。用同一種糖配的糖水，糖所占的比例越高，通常喝起來越甜。</p></div>
+<div class="mix-scene" id="mix-lab" data-ready="loading" aria-label="分別稱量溶質與溶劑的實驗桌"><canvas id="mix-canvas" width="1536" height="1024" aria-hidden="true"></canvas><button class="mix-tool" id="mix-pitcher" type="button" aria-label="點水壺倒入1克水；按住持續倒水" disabled><span class="scene-action">＋ 水</span></button><button class="mix-target scene-control sugar-source" id="mix-sugar-source" type="button" data-mass-kind="sugar" data-mass-delta="1" aria-label="點糖罐舀入1克糖" disabled><span class="scene-action">＋ 糖</span></button><button class="mix-target scene-control sugar-pan" id="mix-sugar-pan" type="button" data-mass-kind="sugar" data-mass-delta="-1" aria-label="點秤上的糖舀出1克糖" disabled><span class="scene-action">− 糖</span></button><button class="mix-target scene-control water-cup" id="mix-water-cup" type="button" data-mass-kind="water" data-mass-delta="-1" aria-label="點秤上的量杯倒出1克水" disabled><span class="scene-action">− 水</span></button><span class="role-tag sugar">溶質｜糖</span><span class="role-tag water">溶劑｜水</span><button class="lcd sugar" id="mix-sugar-input" type="button" aria-label="輸入糖的克數" disabled><span data-mix="sugar-read">5.0 g</span><svg viewBox="0 0 20 20"><path d="m5 12 8-8 3 3-8 8-4 1zM11 6l3 3"/></svg></button><button class="lcd water" id="mix-water-input" type="button" aria-label="輸入水的克數" disabled><span data-mix="water-read">95.0 g</span><svg viewBox="0 0 20 20"><path d="m5 12 8-8 3 3-8 8-4 1zM11 6l3 3"/></svg></button><span class="tare">兩台秤皆已扣除容器質量</span><button class="restart" id="mix-reset" type="button" aria-label="重新配製" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></svg></button></div>
+<p class="mix-status" id="mix-status" role="status" aria-live="polite"></p>
+<div class="formula-reference" id="mass-percent-formula">
+  <p class="formula-caption">計算公式</p>
+  <div class="formula-steps">
+    <div class="formula-equation" role="math" aria-label="糖水的重量百分濃度等於溶質質量除以溶液總質量，再乘以百分之百"><span class="formula-label">糖水的重量百分濃度</span><span class="formula-equals">＝</span><span class="formula-ratio"><span class="fraction"><span class="num"><span data-formula-part="solute">溶質質量</span></span><span class="den"><span data-formula-part="solution">溶液總質量</span></span></span><span>× 100%</span></span></div>
+    <div class="formula-equation" role="math" aria-label="等於溶質質量除以溶質質量加溶劑質量，再乘以百分之百"><span class="formula-label" aria-hidden="true"></span><span class="formula-equals">＝</span><span class="formula-ratio"><span class="fraction"><span class="num"><span data-formula-part="solute">溶質質量</span></span><span class="den"><span data-formula-part="solution"><span data-formula-part="solute">溶質質量</span> ＋ <span data-formula-part="solvent">溶劑質量</span></span></span></span><span>× 100%</span></span></div>
+    <div class="formula-equation formula-card-equation" role="group" aria-label="以本次配方代入：糖的質量除以糖和水的總質量，再乘以百分之百"><span class="formula-label" aria-hidden="true"></span><span class="formula-equals">＝</span><span class="formula-ratio"><span class="fraction"><span class="num"><span class="formula-card solute" data-formula-part="solute"><span>溶質</span><b data-mix="sugar">糖 5 克</b></span></span><span class="den"><span class="formula-card-sum" data-formula-part="solution"><span class="formula-card solute" data-formula-part="solute"><span>溶質</span><b data-mix="sugar">糖 5 克</b></span><span>＋</span><span class="formula-card solvent" data-formula-part="solvent"><span>溶劑</span><b data-mix="water">水 95 克</b></span></span></span></span><span>× 100%</span></span></div>
+  </div>
+</div>
+<div class="live-result"><strong>糖完全溶入水中後</strong><div class="mass-equation"><button type="button" class="item solute" data-mass-role="solute" aria-pressed="false">溶質<b data-mix="sugar">糖 5 克</b></button><span class="op">＋</span><button type="button" class="item solvent" data-mass-role="solvent" aria-pressed="false">溶劑<b data-mix="water">水 95 克</b></button><span class="op">＝</span><button type="button" class="item" data-mass-role="solution" aria-pressed="false">溶液<b data-mix="total">糖水 100 克</b></button></div><p class="formula-caption substitution-caption">代入這次配方</p><div class="concentration"><span>重量百分濃度</span><span>＝</span><span class="fraction"><span class="num" data-mix="formula-sugar">5 克</span><span class="den" data-mix="formula-total">100 克</span></span><span>× 100%</span><span data-mix="percent-sign" aria-label="等於">＝</span><span class="value" data-mix="percent">5%</span></div><div class="mass-bar" role="img" id="mix-bar" aria-label="糖占質量5%，水占95%"><i id="mix-bar-fill"></i></div><div class="mass-legend"><span data-mix="sugar-share">糖占 5%</span><span data-mix="water-share">水占 95%</span></div></div>
+<div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>我加糖的時候，糖的質量增加了，糖水的總質量也增加了。如果我改成加水，糖水的總質量會增加，但糖的質量不會變。</p></div>
+<div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>沒錯！水不變時，加糖會讓糖占糖水的比例變大，糖水就變濃；糖不變時，加水會讓這個比例變小，糖水就變淡。</p></div>
+</div></section>
+
+<section class="lesson-card" id="s6" aria-labelledby="s6-title">
+        <header class="lesson-head">
+          <span class="lesson-number">05</span>
+          <div><h2 id="s6-title">一整池水，只加這一點，是多少 ppm？</h2><p>ppm：表示溶質占溶液的百萬分比</p></div>
+        </header>
+        <div class="card-main lesson-body">
+<p>當溶質占溶液的比例很小時，可以用 ppm 表示。以質量計算時，1 ppm 表示每 100 萬克溶液中含有 1 克溶質。</p>
+<div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>阿公，除了百分濃度，還有其他表示濃度的方法嗎？</p></div>
+<div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>有啊！這次我們不把糖加進小燒杯，而是想像把少量的糖加進一整座泳池裡，看看濃度怎麼用 ppm 表示。</p></div>
+<div class="ppm-observation" id="ppm-lab" data-ready="loading" aria-label="整池水與微量溶質的ppm計算">
+<figure class="pool-volume-figure">
+<div class="pool-volume-scene pool-geometry-scene">
+<canvas id="pool-geometry-canvas" width="1280" height="800" role="img" tabindex="0" aria-describedby="pool-model-hint" aria-label="可旋轉、縮放的泳池與100克糖3D比例模型。方向鍵旋轉，加減鍵縮放，Home鍵回到全景。泳池長10公尺、寬5公尺、水深2公尺，共100000公升。"></canvas>
+<div class="pool-water-quantity"><span>池水容積模型</span><strong>100,000 <small>公升</small></strong></div>
+<svg class="pool-quantity-guide" aria-hidden="true"><defs><marker id="pool-dimension-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#456c6b"/></marker></defs><line data-dimension-line="length"/><line data-dimension-line="width"/><line data-dimension-line="depth"/><line data-salt-leader/></svg>
+<span class="pool-dimension-label" data-dimension-label="length">10 公尺</span><span class="pool-dimension-label" data-dimension-label="width">5 公尺</span><span class="pool-dimension-label" data-dimension-label="depth">水深 2 公尺</span>
+<button type="button" class="pool-salt-source" data-pool-camera="salt" aria-label="靠近糖，觀察100克糖" hidden disabled><span class="pool-salt-source-label" data-salt-mass-label>糖 100 克</span></button>
+<span class="pool-salt-close-label" data-salt-mass-label hidden>糖 100 克</span>
+<button type="button" class="pool-camera-toggle" data-pool-camera="salt" disabled><svg data-pool-toggle-icon="salt" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><svg data-pool-toggle-icon="pool" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="m9 5-6 6 6 6M3 11h11a6 6 0 0 1 6 6v3"/></svg><span data-pool-toggle-label>靠近糖</span></button>
+</div>
+<p class="visually-hidden" id="pool-model-hint">拖曳旋轉・點選模型後滾輪縮放</p>
+</figure>
+<div class="pool-mass-comparison"><div class="pool-water-mass"><span>池水質量</span><strong class="pool-water-units"><span>100,000,000 <small>克</small></span><span>＝ 100,000 <small>公斤</small></span><span>＝ 100 <small>公噸</small></span></strong><small>100,000 公升 ≈ 100,000 公斤</small></div><span class="pool-mass-plus" aria-hidden="true">＋</span><div class="pool-added-mass"><span>溶質｜糖</span><strong data-pool="solute">100 克</strong><small>與池水使用相同單位</small></div></div>
+<p class="pool-total-line">溶液總質量 ＝ 池水 ＋ 溶質 ＝ <strong data-pool="total">100,000,100 克</strong></p>
+<p class="pool-volume-note">水的密度以 1 公斤／公升估算；本例假設溶質完全溶解、沒有損失。</p>
+<section class="ppm-explanation pool-calculation" id="ppm-percent-bridge" aria-labelledby="ppm-bridge-title">
+<header class="pool-calculation-head">
+<h3 id="ppm-bridge-title">這一池水的濃度是多少？</h3>
+<p>100,000 公升池水，加入 100 克糖。</p>
+</header>
+<div class="ppm-shared pool-calculation-section">
+<h4 class="pool-section-title"><span aria-hidden="true">01</span>計算公式</h4>
+<div class="pool-ppm-formula" role="math" aria-label="ppm等於溶質質量除以溶液總質量，再乘以一百萬"><span>ppm ＝</span><span class="fraction"><span class="num">溶質質量</span><span class="den">溶液總質量</span></span><span>× 1,000,000</span></div>
+<p class="pool-formula-unit">分子、分母使用相同的質量單位。</p>
+</div>
+<div class="ppm-example pool-calculation-section">
+<h4 class="pool-section-title"><span aria-hidden="true">02</span>代入這個例子</h4>
+<p class="pool-example-masses"><span>池水 100,000,000 克</span><span aria-hidden="true">＋</span><span>糖 <span data-pool="solute">100 克</span></span><span aria-hidden="true">＝</span><span>溶液 <span data-pool="total">100,000,100 克</span></span></p>
+<div class="pool-worked-formula" role="math" id="pool-worked-formula" aria-label="100克除以100000100克，再乘以一百萬，約為1ppm"><span>ppm ＝</span><span class="fraction"><span class="num" data-ppm="numerator">100 克</span><span class="den" data-ppm="denominator">100,000,100 克</span></span><span>× 1,000,000</span></div>
+<div class="pool-result-arrow" aria-hidden="true"><svg viewBox="0 0 24 28"><path d="M12 2v23M4 17l8 8 8-8"/></svg></div>
+<strong class="pool-ppm-result" data-ppm="ppm">≈ 1 ppm</strong>
+<p class="pool-million-meaning" data-pool="meaning">每 100 萬克這樣的糖水中，約含有 <strong data-pool="meaning-part">1 克</strong>糖。</p>
+</div>
+<div class="pool-calculation-section pool-percentage-bridge" id="ppm-percentage-bridge">
+<h4 class="pool-section-title"><span aria-hidden="true">03</span>接回百分濃度</h4>
+<div class="pool-percent-conversion" role="math" aria-label="重量百分濃度的數值乘以一萬，等於ppm的數值"><span>重量百分濃度的數值</span><strong>× 10,000</strong><span>＝ ppm 的數值</span></div>
+<div class="pool-notation-comparison" aria-label="同一濃度的重量百分濃度與ppm對照"><div><span>重量百分濃度</span><strong data-ppm="percent">≈ 0.0001%</strong></div><span class="pool-comparison-arrow" aria-hidden="true">→</span><div><span>ppm</span><strong data-pool="ppm-short">≈ 1 ppm</strong></div></div>
+<p class="pool-calculation-note">本例水的密度取 1 公斤／公升，計算結果已四捨五入。</p>
+</div>
+</section>
+<div class="dialogue pool-ppm-closing"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>重量百分濃度和 ppm 是表示同一個濃度的兩種方式。含量很少時，用 ppm 寫起來更簡潔，也容易閱讀。</p></div>
+<p id="ppm-status" class="ppm-status" role="status" aria-live="polite"></p>
+</div>
+</div></section>
+      <section class="unit-quiz investigation-card" id="unit-quiz" aria-labelledby="invest-title">
+        <header class="quiz-head quiz-head--standard"><div class="quiz-mark" aria-hidden="true">?</div><div><p class="quiz-kicker">單元小測</p><h2 id="invest-title">把晶體分出來，濃度是多少？</h2><p>你的任務：從未知樣本 X 分離出乾燥晶體，計算原本濾液的重量百分濃度。</p></div></header>
+        <div class="card-main quiz-body">
+          <div class="invest-intro"><div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>桌上有一瓶未知樣本 X，你能用剛才學到的方法，分離出晶體，再算出濾液的重量百分濃度嗎？</p></div><div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>我來試試看！先取一份樣本，再想想要用哪些器材。</p></div></div>
+          <div class="invest-lab" id="invest-lab" data-ready="loading" data-busy="false">
+            <div class="invest-stage">
+              <div class="invest-picture" id="invest-picture">
+                <canvas id="invest-canvas" width="1536" height="1024" role="img" aria-label="未知樣本 X 樣本瓶、空燒杯與收好的器材盤；點瓶身取樣"></canvas>
+                <button type="button" class="invest-reset" id="invest-reset" aria-label="重新開始未知樣本調查" disabled>↻ <span>重新開始</span></button>
+                <button type="button" class="invest-bottle" id="invest-bottle" data-invest-tool="sample" aria-label="未知樣本 X：點瓶身取一份到燒杯，也可拖到燒杯" disabled></button>
+                <button type="button" class="invest-take" id="invest-take" data-invest-tool="sample" disabled>取一份</button>
+                <span class="invest-loading" id="invest-loading" role="status">準備實驗桌……</span>
+              </div>
+              <p class="invest-tools-hint" id="invest-tools-hint">下一步：點選要使用的器材</p>
+              <div class="invest-tools" aria-label="自由選用的器材盤" aria-describedby="invest-tools-hint">
+                <button type="button" data-invest-tool="filter" class="invest-tool" aria-label="使用漏斗與濾紙測試目前取樣；也可拖到燒杯" disabled><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 5h26L18 18v10l-4-2v-8z"/></svg><span>過濾器材</span></button>
+                <button type="button" data-invest-tool="heat" class="invest-tool" aria-label="使用蒸發皿與電熱板測試目前取樣；也可拖到燒杯" disabled><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 11h24c0 9-4 12-12 12S4 20 4 11zM5 27h22M10 3v4M16 2v5M22 3v4"/></svg><span>加熱器材</span></button>
+                <button type="button" data-invest-tool="weigh" class="invest-tool" aria-label="用電子秤稱量目前取樣；也可拖到燒杯" disabled><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 5h20v7H6zM5 16h22l2 12H3zM11 21h10v4H11z"/></svg><span>電子秤</span></button>
+              </div>
+            </div>
+            <div class="invest-current" id="invest-current" hidden><strong id="invest-current-label"></strong><button type="button" id="invest-settle">靜置觀察</button></div>
+            <p class="invest-status" id="invest-status" role="status" aria-live="polite">點未知樣本 X 取樣，再自由選用器材測試。</p>
+            <p class="invest-hint" id="invest-hint" role="status" hidden></p>
+            <button type="button" class="invest-retry" id="invest-retry" hidden>重新載入器材</button>
+          </div>
+          <section class="invest-calculation-notebook" id="invest-notebook" aria-labelledby="invest-answer-title">
+            <header class="invest-notebook-heading"><span class="invest-notebook-symbol" aria-hidden="true">▤</span><div><h3 id="invest-answer-title">濃度實驗紀錄本</h3><p>電子秤已扣除容器質量，請自行讀值填寫。</p></div></header>
+            <form class="invest-mission-result invest-notebook-page" id="invest-report" aria-labelledby="invest-answer-title" novalidate>
+              <div class="invest-notebook-entry" id="invest-raw-measurement"><span class="invest-entry-number" aria-hidden="true">01</span><div class="invest-entry-label">記下過濾前的取樣淨質量<small>泥沙也在這份取樣裡，總共多重？</small></div><span class="invest-entry-value"><input id="invest-raw-mass" disabled type="number" min="0" step="any" inputmode="decimal" placeholder="填重量" aria-label="紀錄過濾前的取樣淨質量（克）"><span aria-hidden="true">克</span></span></div>
+              <div class="invest-notebook-entry" id="invest-liquid-measurement"><span class="invest-entry-number" aria-hidden="true">02</span><div class="invest-entry-label">記下蒸發前的濾液淨質量<small id="invest-solution-note">這筆重量需要包含泥沙嗎？</small></div><span class="invest-entry-value"><input id="invest-solution-mass" disabled type="number" min="0" step="any" inputmode="decimal" placeholder="填重量" aria-label="紀錄蒸發前的濾液淨質量（克）"><span aria-hidden="true">克</span></span></div>
+              <div class="invest-notebook-entry" id="invest-solid-measurement"><span class="invest-entry-number" aria-hidden="true">03</span><div class="invest-entry-label">記下蒸乾後的晶體淨質量<small id="invest-solute-note">稱到的是乾燥晶體，還是混著泥沙的固體？</small></div><span class="invest-entry-value"><input id="invest-solute-mass" disabled type="number" min="0" step="any" inputmode="decimal" placeholder="填重量" aria-label="紀錄蒸乾後的晶體淨質量（克）"><span aria-hidden="true">克</span></span></div>
+              <div class="invest-notebook-calculation"><h4><span class="invest-entry-number" aria-hidden="true">04</span>把重量代入，算出濃度</h4><div class="invest-worked-calculation"><span class="invest-equation-name">重量百分濃度 ＝</span><span class="invest-calculation-fraction"><span><small>晶體淨質量</small><span class="invest-mass-input"><input id="invest-calculation-numerator" disabled type="number" min="0" step="any" inputmode="decimal" placeholder="填重量" aria-label="代入計算的晶體淨質量"><span aria-hidden="true">克</span></span></span><span><small>濾液淨質量</small><span class="invest-mass-input"><input id="invest-calculation-denominator" disabled type="number" min="0" step="any" inputmode="decimal" placeholder="填重量" aria-label="代入計算的濾液淨質量"><span aria-hidden="true">克</span></span></span></span><span class="invest-equation-factor">× 100% ＝</span><div class="invest-notebook-answer"><input id="invest-concentration-value" disabled type="number" min="0" max="100" step="any" inputmode="decimal" placeholder="填答案" aria-label="重量百分濃度計算結果" aria-describedby="invest-answer-title"><span aria-hidden="true">%</span></div></div></div>
+              <div class="invest-notebook-actions"><button type="submit" id="invest-check" disabled>核對我的計算</button></div>
+              <div class="invest-feedback" id="invest-feedback" role="status" aria-live="polite" tabindex="-1" hidden></div>
+              <p class="invest-note-foot">再取一份會保留本冊所有紀錄；重新開始會清除本次調查。</p>
+            </form>
+          </section>
+          <noscript><p>請啟用 JavaScript，才能取樣、操作器材與填寫計算紀錄。</p></noscript>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="shell">國二上・自然科學</footer>
+  <dialog class="mass-dialog" id="mass-dialog" aria-labelledby="mass-dialog-title"><form id="mass-form" novalidate><h3 id="mass-dialog-title">設定質量</h3><div class="mass-input-row"><input id="mass-input" type="number" inputmode="decimal" step="0.1" required aria-describedby="mass-range mass-error"><span>克</span></div><p class="mass-range" id="mass-range"></p><p class="mass-error" id="mass-error" role="alert"></p><div class="mass-actions"><button type="button" id="mass-cancel">取消</button><button type="submit">套用</button></div></form></dialog>
+  <dialog id="invest-reset-dialog" class="invest-reset-dialog" aria-labelledby="invest-reset-title"><form method="dialog"><h3 id="invest-reset-title">重新開始調查？</h3><p>這會清除取樣、稱量紀錄與計算答案。</p><div><button value="cancel" autofocus>保留實驗</button><button value="reset">重新開始</button></div></form></dialog>
+  <script>
+    const routeLinks=[...document.querySelectorAll('.route-inner a')];
+    const cards=routeLinks.map(link=>document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    const learningCards=cards.filter(card=>card.id!=='unit-quiz');
+    const routeProgress=document.getElementById('route-progress');
+    function setCurrentCard(card){const index=cards.indexOf(card);if(index<0)return;routeLinks.forEach((link,i)=>{if(i===index)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});routeProgress.textContent=card.id==='unit-quiz'?'目前位置：單元小測':`目前位置：第 ${String(learningCards.indexOf(card)+1).padStart(2,'0')}／${String(learningCards.length).padStart(2,'0')} 個學習區塊`;}
+    setCurrentCard(cards.find(card=>location.hash===`#${card.id}`)||cards[0]);
+    if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{const visible=entries.filter(entry=>entry.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(visible[0])setCurrentCard(visible[0].target);},{rootMargin:'-15% 0px -65% 0px'});cards.forEach(card=>observer.observe(card));}
+
+  </script>
+  <script type="importmap">{"imports":{"three":"../../../4/parts/4.1/assets/vendor/three/build/three.module.js"}}</script>
+  <script type="module" src="assets/filtration.js?v=reset-state-1"></script>
+  <script type="module" src="assets/evaporation-animation.js?v=full-replay-1"></script>
+  <script type="module" src="assets/chromatography.js?v=observation-dialogue-1"></script>
+  <script type="module" src="assets/concentration.js?v=outside-clear-1"></script>
+  <script type="module" src="assets/ppm-pool.js?v=sugar-pool-1"></script>
+  <script type="module" src="assets/investigation.js?v=fresh-sample-1"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+.correction-lab .eye-tools [data-correction-rays] { background:#f8e4ad; border-color:#ddc47f; color:#493d20; font-weight:750; }
+.correction-lab .eye-tools [data-correction-point][aria-pressed=true] { background:#d9e8c6; border-color:#9cba86; }
+.correction-lab .eye-tools [data-correction-reset] { margin-left:auto; }
+.correction-lab[data-eye-render="3d"] [data-correction-anatomy] { visibility:hidden; }
+.correction-lab[data-eye-render=fallback] [data-correction-model] { display:none; }
+.correction-condition { font-size:.8rem; font-weight:700; margin:12px 14px 0; color:#31543d; }
+.correction-explanation { margin:0 12px 12px; padding:10px 12px; border-radius:10px; background:#f5f7e9; font-size:.8rem; line-height:1.7; text-align:center; }
+.correction-dock { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.eye-roles.correction-comparison { border:0; border-radius:0; padding:0; background:transparent; }
+.correction-comparison table { width:100%; border-collapse:separate; border-spacing:0; font-size:.9rem; border:1px solid #b6c8a9; border-radius:10px; overflow:hidden; table-layout:fixed; }
+.correction-comparison thead { background:#235a42; color:#fffef3; }
+.correction-comparison th,.correction-comparison td { padding:14px 10px; text-align:center; line-height:1.6; overflow-wrap:anywhere; }
+.correction-comparison tbody th { font-weight:650; }
+.correction-comparison tbody tr+tr>* { border-top:1px solid #c6d4b9; }
+.correction-comparison tr[data-active=true]>* { background:#e2edce; }
+.correction-comparison .eye-insight { text-align:center; }
+.correction-model-tag { float:right; border-radius:15px; padding:0 9px; color:#5d7550; background:#e5edd9; font-size:.7rem; font-weight:500; }
+.eye-scene .correction-focus-label { font-size:17px; font-weight:500; }
+.correction-lab .eye-status { min-height:32px; }
+@container (max-width:640px) {
+ .correction-dock { grid-template-columns:1fr; }
+ .correction-lab .eye-distance button { padding-inline:7px; }
+ .correction-comparison { padding:14px 10px; }
+ .correction-comparison table { font-size:.75rem; }
+ .correction-comparison th,.correction-comparison td { padding:12px 4px; }
+ .correction-condition { margin:9px 10px 0; font-size:.73rem; }
+ .correction-explanation { font-size:.75rem; }
+ .correction-lab .eye-scene .eye-label { font-size:24px; }
+ .correction-lab .eye-scene .eye-caption { font-size:20px; }
+ .eye-scene .correction-focus-label { font-size:18px; }
+}
+@container (max-width:350px) {
+ .correction-lab .eye-tools [data-correction-reset] { flex-basis:100%; margin:0; min-height:30px; text-align:right; padding-block:3px; background:transparent; border-color:transparent; box-shadow:none; }
+ .correction-lab .eye-distance button { font-size:.85rem; }
+ .correction-comparison table { font-size:.7rem; }
+ .correction-model-tag { float:none; display:inline-block; margin-left:8px; }
+}
+
+.correction-lab .eye-image-copy { white-space:pre-line; }
+
+.eye-scene .correction-source-title { font-size:19px; font-weight:650; }
+.eye-scene .correction-source-point { font-size:17px; font-weight:500; }
+.eye-scene .correction-incoming-label { font-size:17px; font-weight:500; fill:#506d52; }
+
+.correction-comparison>h3 { margin-bottom:10px; }
+.correction-table-help { margin:0 0 14px; color:#526b4c; font-size:.82rem; line-height:1.7; }
+.correction-comparison tbody tr { cursor:pointer; }
+.correction-comparison tbody th,.correction-comparison tbody td { padding:6px; }
+.correction-comparison tbody tr:hover>* { background:#edf3e3; }
+.correction-comparison tbody tr[data-active=true]>* { background:#e2edce; }
+.correction-comparison button { display:block; width:100%; min-height:44px; padding:8px 5px; border:0; border-radius:0; background:transparent; color:#31543d; box-shadow:none; font:inherit; font-weight:650; line-height:1.5; overflow-wrap:anywhere; text-decoration:none; }
+.correction-comparison button:hover { background:transparent; text-decoration:none; }
+.correction-comparison button[aria-pressed=true] { background:transparent; color:#274d36; box-shadow:none; font-weight:750; text-decoration:none; }
+.correction-comparison button:focus-visible { outline:3px solid #c78e31; outline-offset:2px; }
+@container (max-width:640px) {
+ .correction-table-help { font-size:.75rem; }
+ .correction-comparison tbody th,.correction-comparison tbody td { padding:6px 3px; }
+ .correction-comparison button { padding:6px 1px; }
+ .correction-comparison button span { display:block; white-space:nowrap; }
+ .correction-comparison button:focus-visible { outline-offset:0; }
+}
+
+/* 同一個操作區：整體眼睛狀態在上，鏡片托盤留在眼球圖下方。 */
+.correction-experiment { border:1px solid #91a587; border-radius:17px; overflow:hidden; background:#f0f4e8; }
+.correction-experiment .eye-workspace { border:0; border-radius:0; }
+.correction-model-control { padding:14px 16px; background:#fafbf3; border-bottom:1px solid #c0cfae; }
+.correction-model-control h3 { margin-bottom:8px; }
+.correction-lens-control { padding:12px 14px 14px; border-top:1px solid #c0cfae; }
+.correction-lens-control h3 { margin-bottom:4px; }
+.correction-lens-control>p:not(.sr-only) { margin:0 0 8px; color:#526b4c; font-size:.76rem; line-height:1.5; }
+.correction-lens-control [data-correction-lens=concave],.correction-lens-control [data-correction-lens=convex] { touch-action:none; cursor:grab; }
+.correction-lens-control [data-correction-lens]:active { cursor:grabbing; }
+.correction-drop-target { position:absolute; left:23.5%; top:52.4%; width:12%; min-width:48px; height:48%; transform:translate(-50%,-50%); border:2px dashed #779c63; border-radius:12px; background:#e9f3d64a; z-index:4; pointer-events:none; visibility:hidden; }
+.correction-drop-target span { position:absolute; left:50%; top:-25px; transform:translateX(-50%); white-space:nowrap; padding:2px 7px; border-radius:7px; background:#f8faef; color:#31543c; font-size:.7rem; font-weight:700; }
+.correction-lab[data-dragging-lens=true] .correction-drop-target { visibility:visible; }
+.correction-lab[data-drag-over=true] .correction-drop-target { background:#cde3aa99; border-color:#326c42; }
+.correction-drag-ghost { position:fixed; z-index:10000; pointer-events:none; transform:translate(-50%,-50%); padding:8px 13px; border:1px solid #7c9d70; border-radius:9px; background:#f8faefed; color:#27553a; font-size:.85rem; font-weight:700; box-shadow:0 3px 12px #283b2a40; }
+@container (max-width:640px) {
+ .correction-model-control { padding:12px; }
+ .correction-lens-control { padding:12px; }
+}
+
+/* 眼睛模型與鏡片選擇依操作順序排列。 */
+.correction-model-control { display:flex; align-items:center; gap:16px; }
+.correction-model-control h3 { flex:none; margin:0; white-space:nowrap; }
+.correction-model-control .eye-distance { flex:1; min-width:0; }
+.correction-step { display:inline-grid; place-items:center; width:24px; height:24px; margin-right:4px; border-radius:50%; background:#f4dfa3; color:#604a21; }
+.correction-trace-options { position:relative; }
+.correction-trace-options summary { cursor:pointer; padding:9px; border:1px solid #bdcbb0; border-radius:10px; background:#fffdf1; font-size:.8rem; white-space:nowrap; }
+.correction-trace-options .eye-trace { position:absolute; top:calc(100% + 4px); left:0; z-index:6; padding:5px; border:1px solid #bdcbb0; border-radius:10px; background:#fffdf1; box-shadow:0 3px 10px #294d3b33; }
+.correction-lens-control { margin:0 12px 12px; border:1px solid #c0cfae; border-radius:12px; background:#f4f8ed; }
+.correction-lab .correction-explanation { margin:0; background:#fff4d9; text-align:left; }
+@container (max-width:640px) { .correction-model-control { display:block; } .correction-model-control h3 { margin-bottom:8px; } .correction-lab .correction-explanation { grid-column:1 / -1; } }
+
+/* 平衡眼睛模型與成像結果兩欄。 */
+#lab8 .eye-workspace { grid-template-columns:minmax(0,1.62fr) minmax(240px,1fr); }
+#lab8 .eye-preview { max-height:none; }
+#lab8 .correction-explanation { margin-top:auto; }
+@container (max-width:640px) {
+ #lab8 .eye-workspace { grid-template-columns:minmax(0,1fr); }
+ #lab8 .correction-explanation { margin-top:5px; }
+}

@@ -1,0 +1,212 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { spawn } = require('node:child_process');
+const path = require('node:path');
+const { chromium } = require('playwright');
+
+test('2.2 ruler can be plucked directly', { timeout: 30000 }, async t => {
+  const server = spawn('python3', ['-u', '-m', 'http.server', '0', '--bind', '127.0.0.1'], {
+    cwd: path.resolve(__dirname, '..'), stdio: ['ignore', 'pipe', 'pipe']
+  });
+  t.after(() => server.kill());
+  const port = await new Promise((resolve, reject) => {
+    let output = '';
+    const timer = setTimeout(() => reject(new Error('Server did not start')), 5000);
+    server.stdout.on('data', chunk => {
+      output += chunk;
+      const match = output.match(/port (\d+)/);
+      if (match) { clearTimeout(timer); resolve(match[1]); }
+    });
+    server.once('error', error => { clearTimeout(timer); reject(error); });
+  });
+  const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  t.after(() => browser.close());
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const failures = [];
+  page.on('pageerror', error => failures.push(error.message));
+  // Native media preload can cancel after enough data arrives; HTTP errors and
+  // failed fetch/decode/playback are still checked independently.
+  page.on('requestfailed', request => {
+    if (request.resourceType() === 'media' && request.failure()?.errorText === 'net::ERR_ABORTED') return;
+    failures.push({url:request.url(),type:request.resourceType(),reason:request.failure()?.errorText});
+  });
+  page.on('response', response => { if (response.status() >= 400) failures.push(response.url()); });
+  await page.clock.install();
+  await page.goto(`http://127.0.0.1:${port}/units/3/parts/3.2/`, { waitUntil: 'networkidle' });
+  const hit = page.locator('#ruler-pluck');
+  const shape = () => hit.getAttribute('d');
+  const rest = await shape();
+  const waitForSound = () => page.waitForFunction(() => {
+    const audio = document.querySelector('#ruler-audio');
+    return !audio.paused && audio.readyState >= 3 && document.querySelector('#ruler-status').textContent.startsWith('鋼尺正在振動');
+  });
+  // Convert a point on the photographed ruler to viewport pixels: this checks
+  // actual hit testing, rather than dispatching synthetic events to a selector.
+  const pointOnRuler = () => hit.evaluate(node => {
+    const bounds = node.getBBox();
+    const p = new DOMPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    const point = p.matrixTransform(node.getScreenCTM());
+    return { x: point.x, y: point.y };
+  });
+  const pluck = async () => {
+    const { x, y } = await pointOnRuler();
+    assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.id, { x, y }), 'ruler-pluck');
+    await page.mouse.click(x, y);
+    await waitForSound();
+    await page.clock.runFor(40);
+  };
+  const stop = () => page.locator('#ruler-stop').click();
+
+  await t.test('recording is audible without clipping at full volume with no volume slider', async () => {
+    const signal = await page.evaluate(async () => {
+      const audio = document.querySelector('#ruler-audio');
+      const bytes = await (await fetch(audio.currentSrc || audio.src)).arrayBuffer();
+      const context = new OfflineAudioContext(2, 128, 48000);
+      const buffer = await context.decodeAudioData(bytes);
+      let energy = 0, peak = 0, count = 0;
+      for (let c = 0; c < buffer.numberOfChannels; c++) for (const sample of buffer.getChannelData(c)) {
+        energy += sample * sample; peak = Math.max(peak, Math.abs(sample)); count++;
+      }
+      return { rms: Math.sqrt(energy / count), peak, duration: buffer.duration, volume: audio.volume, paused: audio.paused };
+    });
+    assert.ok(signal.rms > .08, 'recording should not be near-silent');
+    assert.ok(signal.peak > .5 && signal.peak < .95, 'recording should be strong with headroom below clipping');
+    assert.ok(signal.duration > 2 && signal.duration < 3);
+    assert.equal(signal.volume, 1); assert.equal(signal.paused, true);
+    assert.equal(await page.locator('#card-01 input[type="range"]').count(), 0);
+  });
+
+  await t.test('ruler long edges are parallel with no rest deformation at the clamp', async () => {
+    const framing = await page.evaluate(() => {
+      const box = selector => { const r = document.querySelector(selector).getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
+      const matrix = document.querySelector('.ruler-model').getScreenCTM();
+      return { stage: box('#ruler-demo'), photo: box('.ruler-photo-background'), model: box('.ruler-model'), scaleX: matrix.a, scaleY: matrix.d };
+    });
+    assert.ok(framing.model.width > framing.stage.width && framing.model.height > framing.stage.height, 'the enlarged scene extends beyond its cropped viewport');
+    assert.ok(Math.abs(framing.scaleX - framing.scaleY) < 1e-6, 'the scene is enlarged uniformly');
+    for (const key of ['x', 'y', 'width', 'height']) assert.ok(Math.abs(framing.photo[key] - framing.model[key]) < .1, 'background and interactive ruler remain aligned: ' + key);
+    const clampBounds = await page.locator('#ruler-table-clamp').evaluate(async node => {
+      const image = new Image(); image.src = node.getAttribute('href'); await image.decode();
+      const canvas = document.createElement('canvas'); canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+      const context = canvas.getContext('2d'); context.drawImage(image, 0, 0);
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      let left = canvas.width, top = canvas.height, right = 0, bottom = 0;
+      for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) if (pixels[(y * canvas.width + x) * 4 + 3] > 180) {
+        left = Math.min(left, x); top = Math.min(top, y); right = Math.max(right, x); bottom = Math.max(bottom, y);
+      }
+      const point = (x, y) => new DOMPoint(node.x.baseVal.value + x / canvas.width * node.width.baseVal.value,
+        node.y.baseVal.value + y / canvas.height * node.height.baseVal.value).matrixTransform(node.getScreenCTM());
+      const a = point(left, top), b = point(right, bottom);
+      return { left: a.x, top: a.y, right: b.x, bottom: b.y };
+    });
+    assert.ok(clampBounds.left >= framing.stage.x && clampBounds.right <= framing.stage.x + framing.stage.width);
+    assert.ok(clampBounds.top >= framing.stage.y && clampBounds.bottom <= framing.stage.y + framing.stage.height, 'the complete clamp, including its knob, stays in frame');
+    await page.locator('#ruler-table-clamp').click({ position: { x: 85, y: 45 } });
+    assert.equal(await page.locator('#ruler-audio').evaluate(audio => audio.paused), true, 'the fixed clamp is not a pluck target');
+    await hit.scrollIntoViewIfNeeded();
+    const nearClamp = await hit.evaluate(node => {
+      const b = node.getBBox(); const p = new DOMPoint(b.x + b.width * .08, b.y + b.height / 2).matrixTransform(node.getScreenCTM());
+      return { x: p.x, y: p.y };
+    });
+    assert.equal(await page.evaluate(p => document.elementFromPoint(p.x, p.y)?.id, nearClamp), 'ruler-pluck', 'transparent clamp margins do not block the adjacent ruler');
+    const edges = await page.evaluate(async () => {
+      const image = new Image();
+      image.src = document.querySelector('#ruler-photo').getAttribute('href');
+      await image.decode();
+      const canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+      const ctx = canvas.getContext('2d'); ctx.drawImage(image, 0, 0);
+      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      return [.45, .55, .65, .75, .85].map(fraction => {
+        const x = Math.round(canvas.width * fraction), ys = [];
+        for (let y = 0; y < canvas.height; y++) if (pixels[(y * canvas.width + x) * 4 + 3] > 220) ys.push(y);
+        return [ys[0], ys.at(-1)];
+      });
+    });
+    assert.ok(edges.every(([top, bottom]) => Number.isFinite(top) && bottom > top));
+    for (const index of [0, 1]) {
+      const ys = edges.map(edge => edge[index]);
+      assert.ok(Math.max(...ys) - Math.min(...ys) <= 6, 'photographed long edges should be parallel to the front table edge');
+    }
+    assert.equal(await page.locator('#ruler-assembly').evaluate(node => {
+      const m = node.transform.baseVal.consolidate().matrix;
+      return Math.abs(m.a - m.d) < 1e-9 && Math.abs(m.b + m.c) < 1e-9;
+    }), true, 'position, uniformly scale and rotate the entire assembly without skewing it');
+    const screenSlopes = await page.locator('#ruler-face').evaluate(node => {
+      const matrix = node.getScreenCTM();
+      return [190, 250].map(y => {
+        const a = new DOMPoint(450, y).matrixTransform(matrix);
+        const b = new DOMPoint(850, y).matrixTransform(matrix);
+        return (b.y - a.y) / (b.x - a.x);
+      });
+    });
+    assert.ok(screenSlopes.every(slope => Math.abs(slope + Math.tan(Math.PI / 180)) < 1e-6));
+    assert.ok(Math.abs(screenSlopes[0] - screenSlopes[1]) < 1e-9, 'both long edges follow the same front table edge direction');
+    assert.equal(await page.locator('#ruler-moving-blade > g').evaluateAll(nodes => nodes.every(node => { const m = node.transform.baseVal.consolidate().matrix; return m.a === 1 && m.b === 0 && m.c === 0 && m.d === 1 && m.e === 0 && m.f === 0; })), true);
+  });
+
+  await t.test('pointer pluck bends only the free segment and can be stopped', async () => {
+    await hit.scrollIntoViewIfNeeded();
+    const fixed = await page.locator('[clip-path="url(#ruler-fixed-region)"]').innerHTML();
+    await pluck();
+    assert.notEqual(await shape(), rest);
+    assert.equal(await page.locator('#ruler-stop').isDisabled(), false);
+    const soundTime = await page.locator('#ruler-audio').evaluate(audio => audio.currentTime);
+    await new Promise(resolve => setTimeout(resolve, 100));
+    assert.ok(await page.locator('#ruler-audio').evaluate(audio => audio.currentTime) > soundTime, 'recording playback should advance');
+    assert.equal(await page.locator('#ruler-audio').evaluate(audio => audio.volume === 1 && !audio.paused), true);
+    assert.equal(await hit.evaluate(node => getComputedStyle(node).outlineStyle), 'none');
+    assert.equal(await hit.evaluate(node => getComputedStyle(node).webkitTapHighlightColor), 'rgba(0, 0, 0, 0)');
+    assert.equal(await page.locator('[clip-path="url(#ruler-fixed-region)"]').innerHTML(), fixed);
+    const transforms = await page.locator('#ruler-moving-blade > g').evaluateAll(nodes => nodes.map(n => {
+      const matrix = n.transform.baseVal.consolidate().matrix;
+      return [matrix.b, matrix.f];
+    }));
+    assert.notDeepEqual(transforms[0], transforms.at(-1));
+    await stop();
+    assert.equal(await page.locator('#ruler-audio').evaluate(audio => audio.paused && audio.currentTime === 0), true);
+    assert.equal(await shape(), rest);
+    assert.equal(await page.locator('#ruler-moving-blade > g').evaluateAll(nodes => nodes.every(node => { const m = node.transform.baseVal.consolidate().matrix; return m.a === 1 && m.b === 0 && m.c === 0 && m.d === 1 && m.e === 0 && m.f === 0; })), true);
+    assert.equal(await hit.evaluate(node => getComputedStyle(node).outlineStyle), 'none');
+    await page.clock.runFor(1500);
+    assert.equal(await shape(), rest);
+  });
+
+  await t.test('repeated plucks, keyboard, fallback button and natural decay', async () => {
+    await pluck(); await pluck();
+    await page.clock.runFor(1400);
+    await page.waitForFunction(() => document.querySelector('#ruler-audio').ended, null, { timeout: 5000, polling: 50 });
+    assert.equal(await shape(), rest);
+    assert.equal(await page.locator('#ruler-start').isDisabled(), false);
+    for (const key of ['Enter', 'Space']) {
+      await hit.focus(); await page.keyboard.press(key); await waitForSound(); await page.clock.runFor(40);
+      assert.notEqual(await shape(), rest);
+      assert.equal(await hit.evaluate(node => getComputedStyle(node).outlineStyle), 'none');
+      await stop();
+    }
+    await page.locator('#ruler-start').click(); await waitForSound(); await page.clock.runFor(40);
+    assert.notEqual(await shape(), rest); await stop();
+  });
+
+  await t.test('touch pluck on a narrow screen and inactive background', async () => {
+    const touch = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const mobile = await touch.newPage();
+    await mobile.goto(page.url(), { waitUntil: 'networkidle' });
+    const target = mobile.locator('#ruler-pluck'); await target.scrollIntoViewIfNeeded();
+    const p = await target.evaluate(node => {
+      const bounds = node.getBBox();
+      const point = new DOMPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2).matrixTransform(node.getScreenCTM());
+      return { x: point.x, y: point.y };
+    });
+    await mobile.touchscreen.tap(p.x, p.y);
+    await mobile.waitForFunction(() => !document.querySelector('#ruler-audio').paused);
+    assert.equal(await target.evaluate(node => getComputedStyle(node).outlineStyle), 'none');
+    assert.equal(await target.evaluate(node => getComputedStyle(node).webkitTapHighlightColor), 'rgba(0, 0, 0, 0)');
+    await mobile.locator('#ruler-stop').click();
+    await mobile.locator('#ruler-demo').click({ position: { x: 10, y: 10 } });
+    assert.equal(await mobile.locator('#ruler-stop').isDisabled(), true);
+    assert.equal(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await touch.close();
+  });
+  assert.deepEqual(failures, []);
+});

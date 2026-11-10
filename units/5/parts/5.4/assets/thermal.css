@@ -1,0 +1,518 @@
+*{box-sizing:border-box}body{margin:0}a{color:var(--green)}button{cursor:pointer}button:disabled{cursor:default;opacity:.5}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #bd6b30;outline-offset:4px}button,input,select{font:inherit}button{min-height:44px;padding:9px 17px;border:1px solid #aabeb3;border-radius:9px;background:#fffefa;color:#235642;font-weight:700}.action{background:#176b53;border-color:#176b53;color:#fff}.action:hover{background:#115640}.secondary:hover{background:#eef4ec}[aria-pressed=true]:not(.action){border-color:#176b53;background:#e6f1e5;box-shadow:inset 0 0 0 1px #176b53}[hidden]{display:none!important}.brand-row,.section-top{display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{text-decoration:none}.crumb,.progress-copy{color:var(--muted)}.hero-art{margin:0;overflow:hidden}.hero-art img{display:block;width:100%;height:auto}.hero-caption{padding:9px 14px;color:var(--muted)}.section-top{flex-wrap:wrap}.section-top h2{margin:0}.route a{text-decoration:none}.lesson-card{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--card);box-shadow:var(--shadow);scroll-margin-top:20px}.lesson-head{display:flex;align-items:flex-start;gap:16px;padding:25px 28px 21px;background:linear-gradient(110deg,#f8fbf5,#fffefa);border-bottom:1px solid var(--line)}.card-number{color:var(--green);font-size:.85rem;font-weight:850;letter-spacing:.08em;padding-top:6px}.card-heading{min-width:0}.card-heading h2{margin:0;font-size:clamp(1.22rem,2vw,1.65rem);line-height:1.4}.card-intro{margin:7px 0 0;color:var(--muted)}.card-main{padding:23px 28px 28px;min-width:0}.dialogue{display:flex;align-items:center;gap:10px;margin:0 0 19px;padding:11px 15px;border-left:4px solid #8cae91;border-radius:0 13px 13px 0;background:#eef5e9}.dialogue p{margin:0}.speaker{flex:none;width:48px;height:48px;border:2px solid #8cae91;border-radius:50%;background:url('../../../../../shared-assets/characters/dialogue-character-avatars.png') 100% 50%/200% 100%;box-shadow:0 2px 6px #172f2118}.dialogue--xiaokui{background:#fff4e8;border-color:#d39765}.dialogue--xiaokui .speaker{border-color:#d39765;background-position:0 50%}.lab{overflow:hidden;border:1px solid #c9d8cd;border-radius:14px;background:#f5f8f3;margin:18px 0}.lab-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:13px 17px;background:#edf3e9;border-bottom:1px solid #d4dfd3}.lab-top p{margin:0;font-size:.9rem}.lab-tag{font-size:.78rem;letter-spacing:.08em;font-weight:800;color:#45654f}.scene{position:relative;background:linear-gradient(#f6f8f2,#f0f4ed);min-width:0}.scene svg{display:block;width:100%;height:auto}.scene svg text{font-family:inherit;fill:#31473b}.scene-grid{display:grid;grid-template-columns:1fr 1fr;min-width:0}.scene-grid>.scene+*{border-left:1px solid #d5dfd1}.chart{padding:18px 15px;background:#fffef9;min-width:0}.chart h3{font-size:1rem;margin:0 0 8px}.chart svg{width:100%;display:block}.chart svg text{font:13px system-ui,sans-serif;fill:#4f6457}.readings{display:flex;gap:16px;flex-wrap:wrap;padding:12px 17px;border-top:1px solid #d5dfd1;background:#fffefa}.reading{flex:1;min-width:110px}.reading small{display:block;color:#5b7062;font-size:.82rem}.reading strong{font-size:1.28rem;font-variant-numeric:tabular-nums;font-weight:700}.controls{padding:14px 17px;display:flex;gap:9px;align-items:center;flex-wrap:wrap;border-top:1px solid #d5dfd1;background:#f8faf5}.range{padding:7px 17px 15px;display:flex;align-items:center;gap:13px;background:#f8faf5}.range label{font-size:.9rem;flex:none}.range input{min-width:0;flex:1;accent-color:#176b53;min-height:32px}.hint,.model-note{font-size:.86rem;color:#586d5c;margin:10px 17px;line-height:1.65}.hint{margin-top:12px}.observation{padding:13px 17px;background:#e8f1e2;color:#31523a;border-top:1px solid #cbdac5;margin:0;min-height:52px}.takeaway{padding:14px 17px;background:#eef4e9;border-left:3px solid #5e8c60;color:#2e5136;margin:18px 0 0}.takeaway p{margin:0}details{margin-top:17px;border-top:1px solid #d9e2d4;padding-top:13px}summary{cursor:pointer;color:#42654b;font-weight:700}details p,details ul{color:#526457;font-size:.92rem}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid #d9e2d4}th{font-weight:700;color:#365a40}.table-scroll{overflow:auto}.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 17px;background:#edf3e9;border-bottom:1px solid #d4dfd3}.tabs button{font-size:.9rem}.evidence{padding:15px 18px;background:#fffef9}.evidence h3{font-size:1rem;margin:0 0 7px}.evidence p{margin:0 0 9px}.reaction-flow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:18px;text-align:center;background:#fffef9}.reaction-flow span{padding:10px;background:#edf3ea;border-radius:9px;font-size:.93rem}.reaction-flow b{color:#aa6136}.bar-row{display:grid;grid-template-columns:1fr;gap:5px;padding:8px 0}.bar-track{height:25px;border-radius:4px;background:#e8eee4;overflow:hidden}.bar-track span{display:block;height:100%;background:#5c9cba;transition:width .2s}.bar-row:nth-child(2) .bar-track span{background:#9b987e}.bar-row:nth-child(3) .bar-track span{background:#3e7b58}.bar-row label{font-size:.88rem}.bar-row output{font-variant-numeric:tabular-nums;font-weight:750}.quiz{border:1px solid #ddceb0;background:#fffefa;border-radius:20px;overflow:hidden;scroll-margin-top:20px;box-shadow:var(--shadow)}.quiz-head{display:flex;gap:17px;padding:25px 28px 21px;border-bottom:1px solid #e7ddca;background:linear-gradient(110deg,#faf3e4,#fffdf7)}.quiz-mark{display:grid;place-items:center;width:48px;height:48px;flex:none;border-radius:14px;background:#f0e3be;color:#8d6925;font-size:1.3rem}.quiz-kicker{color:#8d6925;font-size:.8rem;margin:0 0 4px}.quiz-head h2{margin:0;font-size:1.55rem}.quiz-head p:last-child{margin:7px 0 0;color:#64705e}.quiz-body{padding:23px 28px 28px}.quiz-progress{color:#816733;font-size:.88rem;margin:0 0 15px}.quiz-evidence{padding:20px;border:1px solid #d6ddcc;border-radius:12px;background:#f4f7ef}.quiz-evidence h3{font-size:1.2rem;margin:0 0 10px}.quiz-evidence p{margin:0}.quiz-options{border:0;padding:0;margin:16px 0;min-width:0}.quiz-options legend{font-weight:700;margin-bottom:8px}.quiz-option{display:flex;gap:10px;padding:13px 15px;border:1px solid #d6dfd0;border-radius:10px;background:#fff;margin-bottom:9px;cursor:pointer}.quiz-option:has(input:checked){background:#eaf3e4;border-color:#578467}.quiz-option input{accent-color:#176b53;margin-top:6px;width:17px;height:17px;flex:none}.quiz-actions{display:flex;gap:9px;flex-wrap:wrap}.quiz-actions .action{margin-left:auto;min-width:145px}.quiz-feedback{margin:14px 0;padding:12px 15px;background:#f7efd9;border-radius:9px}.quiz-review{padding-left:20px}.quiz-review li{margin:15px 0}.quiz-review strong{display:block}.quiz-review p{margin:4px 0;color:#526457}.sources{padding:24px 0;color:#526457}.sources h2{font-size:1.1rem}.sources a{overflow-wrap:anywhere}.foot{border-top:1px solid #d7e1dd;padding:22px 0 38px;color:#59696b;font-size:.88rem}.route-inner a.quiz-nav b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#f3e9cc;color:#997334}.route-inner a.quiz-nav[aria-current=step]{border-left-color:#b08a37;background:#faf3e4;color:#795b25}.no-js{padding:15px;background:#fff2d7;border:1px solid #d6bf8a}.stage-chip{display:inline-block;padding:4px 10px;border-radius:6px;background:#e3ebdd;color:#47634e;font-size:.85rem}
+@media(max-width:1100px){.scene-grid{grid-template-columns:1fr}.scene-grid>.scene+*{border-left:0;border-top:1px solid #d5dfd1}.chart svg{max-height:230px}.reaction-flow{gap:7px;padding:13px}.reaction-flow span{font-size:.86rem}}
+@media(max-width:760px){.lesson-layout .route{position:relative;max-height:none;top:auto;overflow:visible}.route .route-inner{display:grid;grid-template-columns:1fr 1fr}.route-inner a{font-size:.8rem}.route-inner a.quiz-nav{margin:0;padding-top:10px}.card-main,.quiz-body{padding:20px 17px}.lesson-head,.quiz-head{padding:20px 18px}.progress-copy{font-size:.85rem}.scene-grid{grid-template-columns:1fr}.controls button{flex:1;padding:8px 10px;white-space:nowrap}.readings{gap:8px}.reading{min-width:90px}.reading strong{font-size:1.13rem}.reaction-flow{grid-template-columns:1fr}.reaction-flow b{transform:rotate(90deg);line-height:1}.range{flex-wrap:wrap}.range input{flex-basis:60%}.quiz-actions button{flex:1}.quiz-actions .action{margin-left:0}.hero-caption{font-size:.8rem}.tabs button{flex:1}.quiz-head h2{font-size:1.3rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+/* Local typography remains 16px; shared format owns the lesson shell and headers. */
+.route-inner{font-size:16px}.cards{gap:24px}.quiz-feedback[hidden]{display:none}.scene:empty{min-height:220px}.model-note{margin-left:0;margin-right:0}.bar-track span{max-width:100%}
+@media(max-width:760px){.route .route-inner{width:100%;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:0;overflow:visible}.route-inner a,.route-inner a span{min-width:0;white-space:normal!important}.route-inner a{display:grid;grid-template-columns:24px minmax(0,1fr)}}
+#bar-water{background:#5c9cba}#bar-glass{background:#9b987e}#bar-extra{background:#3e7b58}
+/* First observation: one connected apparatus and record, with paced checkpoints. */
+#heat-lab{background:#fffefa}
+#heat-lab .lab-tag{font-size:1.05rem;letter-spacing:0}
+.heat-steps{display:flex;align-items:stretch;list-style:none;margin:0;padding:16px 15px;gap:10px;background:#fffefa}
+.heat-steps li{display:flex;align-items:center;gap:9px;flex:1;min-width:0;padding:9px 10px;border-radius:12px;color:#778077;background:#f0f1eb;line-height:1.4;font-size:.91rem}
+.heat-step-number{display:grid;place-items:center;border:1px solid currentColor;width:26px;height:26px;flex:none;border-radius:50%;font-size:.85rem}
+.heat-steps small{display:block;font-size:.75rem;font-weight:400;margin-top:3px}
+.heat-steps li[aria-current]{background:#315f3f;color:#fff;font-weight:750}
+.heat-steps li[data-done=true]{background:#edf3e6;color:#3e6745}
+.heat-visuals{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:12px;padding:0 14px 14px}
+.heat-apparatus-panel{min-width:0;background:#ede9df;border:1px solid #d6d9c9;border-radius:13px;overflow:hidden;display:flex;flex-direction:column}
+.heat-apparatus{position:relative;flex:1;min-height:300px;aspect-ratio:1/1.05;overflow:hidden}
+.heat-canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
+.heat-fallback{position:absolute;inset:0;display:grid;place-items:center}.heat-fallback svg{width:100%;height:auto}
+.heat-apparatus.has-3d .heat-fallback{visibility:hidden}
+.heat-accessible-reading{position:absolute;left:12px;top:12px;padding:5px 9px;border:1px solid #ced6c5;background:#fffef8e8;border-radius:7px;line-height:1.3;color:#31563c;z-index:1}
+.heat-accessible-reading span{font-size:.72rem;display:block}.heat-accessible-reading strong{font-size:1.1rem;font-variant-numeric:tabular-nums}
+.heat-caption{position:relative;margin:0;padding:10px 8px;text-align:center;font-size:.88rem;color:#31543b;background:#edf2e4;border-top:1px solid #d6dccd;line-height:1.5;min-height:43px}
+.heat-plot{border:1px solid #cbd8c7;border-radius:13px;padding:15px 11px 9px;align-self:stretch}
+.heat-plot h3{font-size:1.18rem;margin:0 0 6px 6px}.heat-plot svg{max-height:none;width:100%}.heat-plot svg text{font:16px var(--unit-font);fill:#344e3b}.heat-plot svg .chart-caption{font-size:15px;fill:#4d674f}.heat-plot svg .chart-now{font-size:14px;fill:#a75b25;font-weight:700}
+.heat-axis-note{font-size:.75rem;color:#697566;line-height:1.5;margin:3px 6px 0}
+.heat-controls p{flex:1;margin:0 0 0 5px;font-size:.85rem;color:#66725f;min-width:180px}
+.heat-controls button{min-width:115px;font-size:.95rem}.heat-controls button>span[aria-hidden]{margin-right:4px}
+#heat-lab .observation{margin:0 15px;border:0;border-radius:10px;font-size:.92rem;min-height:52px}
+.heat-model-note{margin:9px 17px 13px;font-size:.78rem}
+#heat-discovery{font-size:.93rem}
+@media(min-width:761px) and (max-width:1100px){.heat-visuals{grid-template-columns:minmax(0,1.04fr) minmax(0,1fr)}.heat-plot svg text{font-size:17px}.heat-steps{gap:6px;padding-inline:12px}.heat-steps li{font-size:.85rem;gap:6px;padding:8px 6px}}
+@media(max-width:760px){.heat-visuals{grid-template-columns:1fr;padding:0 10px 12px;gap:10px}.heat-apparatus{aspect-ratio:1.15;min-height:275px}.heat-steps{padding:12px 10px;gap:5px}.heat-steps li{flex-direction:column;align-items:center;text-align:center;padding:9px 4px;font-size:.8rem;gap:5px}.heat-steps small{font-size:.7rem}.heat-plot svg{max-height:none}.heat-controls p{flex-basis:100%;margin:4px 0 0}.heat-controls button{min-width:0}.heat-plot{padding:14px 10px 8px}.heat-plot svg text{font-size:18px}.heat-plot h3{font-size:1.1rem}}
+
+/* Readability refinement: keep the 3D instrument as the visible temperature source. */
+.heat-apparatus.has-3d .heat-accessible-reading{width:1px;height:1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.heat-reference{position:absolute;left:10px;bottom:9px;z-index:2;margin:0;padding:3px 7px;border-radius:5px;background:#fffef6ed;color:#775129;font-size:.73rem;line-height:1.5}
+.heat-reference span{font-size:1.05rem;font-weight:800;vertical-align:-1px}
+.heat-plot svg .heat-phase-label{font-size:14px;font-weight:700;fill:#285c3c;stroke:#fffefa;stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+
+/* Second observation: finite baths, evidence first and an optional explanation. */
+.comparison-lab>.lab-top .lab-tag{font-size:1.05rem;letter-spacing:0}
+.comparison-condition{margin:0;padding:12px 16px;font-size:.88rem;color:#516251;background:#fffefa}
+.comparison-panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;padding:0 14px 14px;background:#fffefa}
+.comparison-panel{min-width:0;border:1px solid #c5d5c4;border-radius:13px;overflow:hidden;background:#fffefa}
+.comparison-panel>header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 13px;background:#edf3e7;border-bottom:1px solid #d4dfcc}
+.comparison-panel h3{margin:0;font-size:1.1rem;color:#31593d}.comparison-panel>header>span{font-size:.75rem;color:#586d58}
+.phase-apparatus{position:relative;aspect-ratio:1.13;min-width:0;background:#eeece3;overflow:hidden}
+.phase-canvas{display:block;position:absolute;inset:0;width:100%;height:100%}
+.phase-fallback{position:absolute;inset:0;display:grid;place-items:center}.phase-fallback svg{display:block;width:100%;height:auto}
+.has-phase-3d .phase-fallback{visibility:hidden}
+.comparison-readings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:9px 12px;border-top:1px solid #d3dfd0;background:#f9fbf6;line-height:1.4}
+.comparison-readings span{display:block;font-size:.77rem;color:#596c59}.comparison-readings strong{display:block;font-size:1.2rem;color:#264b34;font-variant-numeric:tabular-nums}.comparison-readings small{display:block;font-size:.71rem;color:#687568}
+.comparison-ice{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:8px;row-gap:2px;padding:8px 12px;font-size:.75rem;color:#586957}
+.comparison-ice-track{position:relative;height:10px;background:#e5ebe1;border-radius:4px}.comparison-ice-track i{display:block;height:100%;background:#83adb9;border-radius:4px}.comparison-ice-track b{position:absolute;top:-3px;bottom:-3px;width:2px;left:50%;background:#6d756d}.comparison-ice small{grid-column:2;font-size:.69rem}
+.comparison-caption{margin:0;padding:7px 10px;background:#edf4e7;color:#31553a;text-align:center;font-size:.86rem;border-top:1px solid #d3dfcb}
+.comparison-direction{margin:0;padding:10px;text-align:center;background:#fff4e5;color:#815028;font-weight:700;border-top:1px solid #ddceb6}
+.comparison-arrow{position:absolute;top:57%;width:27%;z-index:2;pointer-events:none;color:#fff;text-align:center}
+.comparison-arrow--warm{left:8%}.comparison-arrow--cold{left:37%}
+.comparison-arrow>span{display:inline-block;border:1px solid #fff4df;border-radius:5px;padding:2px 6px;background:#b7652c;font-size:.83rem;white-space:nowrap}
+.comparison-arrow>svg{display:block;width:100%;height:auto}
+.phase-apparatus:not(.has-phase-3d) .comparison-arrow{display:none}
+.comparison-controls{gap:8px}.comparison-controls button{font-size:.9rem}.comparison-controls button:first-child{min-width:120px}
+.comparison-explanation p+p{margin-top:9px}.comparison-model p{font-size:.87rem}
+@media(max-width:760px){.comparison-panels{grid-template-columns:1fr;padding-inline:10px;gap:13px}.comparison-controls button{flex:1}.comparison-controls button:last-child{flex-basis:100%}.phase-apparatus{aspect-ratio:1.15}.comparison-condition{padding:11px 13px}.comparison-readings strong{font-size:1.18rem}}
+
+/* World-projected heat arrows connect the two liquids across the sample wall. */
+.comparison-arrow{inset:0;width:100%;height:100%}.comparison-arrow>svg{position:absolute;inset:0;width:100%;height:100%}
+
+.phase-apparatus:not(.has-phase-3d) .phase-canvas{display:none}
+
+/* First-section visibility: larger apparatus and useful space beside the curve. */
+#heat-lab .heat-apparatus{aspect-ratio:1.2;min-height:270px}
+#heat-lab .heat-steps{padding-block:12px}
+#heat-lab .heat-plot{padding:12px 10px 10px}
+#heat-lab .heat-plot svg text{font-size:17px}
+#heat-lab .heat-plot svg .heat-phase-label{font-size:17px}
+#heat-lab .heat-plot svg .chart-now{font-size:15px}
+#heat-lab .heat-plot svg .chart-axis-title{font-size:17px}
+.heat-energy-reading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:9px 5px 0;padding:9px 10px;border:1px solid #d0dcc9;border-radius:9px;background:#f0f5e9;line-height:1.4}
+.heat-energy-reading span{font-size:.85rem;color:#405c43}.heat-energy-reading output{font-size:1.2rem;font-weight:750;color:#31563d;font-variant-numeric:tabular-nums;white-space:nowrap}
+.heat-chart-note{font-size:.76rem;line-height:1.5;color:#5f705d;margin:8px 5px 0}
+.heat-transfer{position:absolute;inset:0;z-index:2;pointer-events:none}.heat-transfer svg{display:block;width:100%;height:100%}
+.heat-apparatus:not(.has-3d) .heat-transfer,.heat-apparatus:not(.has-3d) .heat-canvas{display:none}
+@media(max-width:760px){#heat-lab .heat-apparatus{aspect-ratio:1.15;min-height:270px}.heat-energy-reading{padding:9px 11px}.heat-energy-reading span{font-size:.9rem}}
+
+/* 5.3 visual reference: warm photographic bench, paired record and cream console. */
+#heat-lab,#comparison-lab{background:#f7f9f3;border-color:#cddccf}
+#heat-lab .lab-top,#comparison-lab>.lab-top{background:#f7f9f3;border-bottom:0;padding-bottom:8px}
+#heat-lab .heat-steps{background:transparent;padding-top:5px;padding-bottom:12px;gap:8px}
+#heat-lab .heat-steps li{padding:6px 9px;border:1px solid #d5dfce;border-radius:10px;background:#fffdf6;font-size:.86rem}
+#heat-lab .heat-steps li[aria-current]{background:#e8f1e0;color:#315f3f;border-color:#9bb88c}
+#heat-lab .heat-steps li[data-done=true]{background:#edf3e6;color:#3e6745}
+#heat-lab .heat-visuals{align-items:start;background:transparent;padding-bottom:10px}
+#heat-lab .heat-apparatus-panel{border-color:#cbbba2;background:#f2e8d7}
+#heat-lab .heat-apparatus.has-photo{aspect-ratio:1048/941;min-height:0;flex:none}
+.photo-apparatus-view{position:absolute;inset:0;visibility:hidden}
+.photo-apparatus-view>svg{display:block;width:100%;height:100%}
+.has-photo .photo-apparatus-view{visibility:visible}
+.has-photo .heat-fallback,.has-photo .phase-fallback{visibility:hidden}
+.heat-apparatus.has-photo .heat-transfer,.phase-apparatus.has-photo .comparison-arrow{display:block}
+#heat-lab .heat-caption{background:#fff8e9;color:#51634e;border-color:#e3d5bc;font-size:.83rem;padding-block:7px;min-height:36px}
+#heat-lab .heat-plot{border:0;border-radius:0;background:transparent;padding-top:0}
+#heat-lab .heat-plot h3{margin:0 0 5px 6px;font-size:1rem;color:#254b36}
+#heat-lab .heat-chart-note{margin-bottom:0}
+.heat-summary{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:10px 17px;background:#f7f1e5;border-top:1px solid #ded4be}
+#heat-lab .heat-summary .heat-accessible-reading,#heat-lab .heat-summary .heat-energy-reading{position:static;display:flex;align-items:center;gap:12px;border:0;background:transparent;padding:0;margin:0;width:auto;height:auto;overflow:visible;clip-path:none;border-radius:0;line-height:1.5;white-space:normal}
+#heat-lab .heat-summary span{font-size:.9rem;color:#465c49}
+#heat-lab .heat-summary strong,#heat-lab .heat-summary output{font-size:1.12rem;font-weight:750;color:#ac5d27}
+#heat-lab .heat-controls,#comparison-lab .comparison-controls{background:#f7f1e5;border-color:#ded4be}
+#heat-lab .heat-controls{border-top:0;padding-top:0}
+#heat-lab>.observation,#comparison-lab>.observation{background:transparent;border:0;color:#526b54;font-size:.92rem}
+#heat-lab>.observation{margin-inline:0;padding-top:0}
+#comparison-lab .comparison-condition,#comparison-lab .comparison-panels{background:transparent}
+#comparison-lab .comparison-panel{border-color:#d5dcca;background:#fffefa}
+#comparison-lab .comparison-panel>header{background:#f3f6ec}
+#comparison-lab .phase-apparatus.has-photo{aspect-ratio:1048/941;background:#f2e8d7}
+#comparison-lab .comparison-readings{background:#fffaf0;border-color:#e3d8c2}
+#comparison-lab .comparison-readings strong{color:#a65a27}
+#comparison-lab .comparison-caption{background:#fff8e9;border-color:#e3d8c2;color:#51634e}
+#comparison-lab .comparison-ice{background:#fffefa}
+@media(max-width:760px){#heat-lab .heat-steps li{font-size:.8rem;padding:7px 4px}.heat-summary{padding:10px 13px;gap:5px 15px}#heat-lab .heat-summary strong,#heat-lab .heat-summary output{font-size:1.05rem}.heat-summary>div{flex:1;justify-content:space-between}}
+
+/* Approved observation layout: close-up, matched references and linked evidence. */
+#heat-lab .heat-visuals{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:13px}
+#heat-lab .heat-apparatus.has-photo,#heat-lab .heat-apparatus{aspect-ratio:540/370;min-height:0;flex:none}
+#heat-lab .heat-apparatus-panel{background:#fffaf0}
+.heat-now-label{position:absolute;left:10px;top:10px;z-index:3;padding:4px 10px;border-radius:7px;color:#fff;background:#28563d;font-size:.9rem;font-weight:700}
+.heat-compare-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 8px 0}
+.heat-compare-pair figure{margin:0;min-width:0;background:#f3ecdc;border-radius:8px;overflow:hidden}
+.heat-compare-view{position:relative;aspect-ratio:275/135;overflow:hidden;background:#ece5d3}
+.heat-compare-view>span{position:absolute;top:5px;left:5px;z-index:1;background:#315b40;color:#fff;border-radius:4px;padding:1px 6px;font-size:.8rem}
+.heat-compare-photo{display:none;width:100%;height:100%}
+.has-reference-photo .heat-compare-photo{display:block}
+.has-reference-photo .heat-compare-fallback{display:none}
+.heat-compare-fallback{position:absolute;inset:0}.heat-compare-fallback svg{width:100%;height:100%;display:block}
+.heat-compare-pair figcaption{padding:5px 3px;text-align:center;font-size:.83rem;color:#315b40;line-height:1.4}
+.heat-compare-tip{margin:7px 8px 8px;padding:4px 5px;text-align:center;font-size:.8rem;background:#e9f0df;border-radius:5px;color:#3c5940}
+#heat-lab .heat-caption{font-size:.8rem;min-height:0;padding-block:4px}
+#heat-lab .heat-plot{border:1px solid #cbd8c7;border-radius:12px;background:#fafbf5;padding:12px 8px;align-self:stretch}
+#heat-lab .heat-plot h3{font-size:1.05rem;margin:0 0 10px;line-height:1.5;color:#2c5339}
+#heat-lab .heat-plot svg .zoom-tick{font-size:14px}
+#heat-lab .heat-plot svg .zoom-current{font-size:19px;font-weight:700;fill:#ac5d27}
+#heat-chart-toggle{display:block;width:100%;font-size:.87rem;margin-top:12px;padding:8px 5px}
+#heat-lab .heat-chart-note{font-size:.8rem;margin:9px 3px 0;line-height:1.6}
+#heat-lab .heat-summary{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.9fr) minmax(0,1fr);gap:13px;padding:14px 16px;align-items:center}
+#heat-lab .heat-summary .heat-accessible-reading,#heat-lab .heat-summary .heat-energy-reading{display:flex;flex-direction:column;gap:3px;align-items:flex-start;border-left:1px solid #c9d1b9;padding-left:12px}
+#heat-lab .heat-summary span{font-size:.85rem}
+#heat-lab .heat-summary strong,#heat-lab .heat-summary output{font-size:clamp(1.2rem,2.25vw,1.8rem);line-height:1.2;white-space:nowrap}
+#heat-lab .heat-summary #heat-temp{color:#2f653e;font-size:clamp(1.7rem,3vw,2.3rem)}
+.heat-accessible-reading small{font-size:.8rem;color:#5b7059}
+.heat-ice-reading h3{font-size:.95rem;color:#31583c;margin:0 0 5px}
+.heat-ice-reading>div{display:grid;grid-template-columns:75px minmax(0,1fr);gap:6px;align-items:center;margin-top:4px}
+#heat-lab .heat-ice-reading span{font-size:.72rem;white-space:nowrap}
+.heat-ice-track{height:14px;background:#e1e5da;display:block;border-radius:4px;overflow:hidden}
+.heat-ice-track b{display:block;height:100%;background:#3e7448;width:100%}.heat-ice-track .heat-ice-initial{background:#aeb1a8}
+@media(max-width:760px){#heat-lab .heat-visuals{grid-template-columns:1fr}#heat-lab .heat-summary{grid-template-columns:1fr 1fr;padding:12px;gap:12px}.heat-ice-reading{grid-column:1/-1}.heat-ice-reading>div{grid-template-columns:90px minmax(0,1fr)}#heat-lab .heat-ice-reading span{font-size:.85rem}#heat-lab .heat-summary .heat-accessible-reading{border-left:0;padding-left:0}#heat-lab .heat-summary strong,#heat-lab .heat-summary output{font-size:1.25rem}}
+/* Desktop: keep the complete experiment visible within one viewport. */
+@media(min-width:761px){
+ #heat-lab .lab-top{padding:8px 14px 5px}
+ #heat-lab .heat-steps{padding:3px 14px 7px;gap:6px}
+ #heat-lab .heat-steps li{padding:4px 8px}
+ #heat-lab .heat-visuals{height:clamp(260px,calc(100vh - 355px),470px);padding:0 14px 7px;align-items:stretch}
+ #heat-lab .heat-apparatus-panel{height:100%;min-height:0}
+ #heat-lab .heat-apparatus.has-photo,#heat-lab .heat-apparatus{aspect-ratio:auto;flex:1;min-height:0}
+ #heat-lab .heat-compare-view{aspect-ratio:auto;height:clamp(38px,8vh,65px)}
+ #heat-lab .heat-compare-pair{padding-top:5px}
+ #heat-lab .heat-compare-pair figcaption{padding:2px;font-size:.78rem}
+ #heat-lab .heat-compare-tip{margin:4px 8px;padding:2px;font-size:.76rem}
+ #heat-lab .heat-caption{padding:2px;font-size:.75rem}
+ #heat-lab .heat-plot{height:100%;min-height:0;display:flex;flex-direction:column;padding:7px 8px}
+ #heat-lab .heat-plot h3{margin:0;font-size:1rem}
+ #heat-chart{flex:1;min-height:0}
+ #heat-lab .heat-plot svg{height:100%;width:100%}
+ #heat-chart-toggle{margin-top:4px;min-height:40px;padding:5px}
+ #heat-lab .heat-chart-note{margin:3px;font-size:.72rem}
+ #heat-lab .heat-summary{padding:7px 14px;gap:10px}
+ #heat-lab .heat-summary #heat-temp{font-size:1.65rem}
+ #heat-lab .heat-summary strong,#heat-lab .heat-summary output{font-size:1.3rem}
+ #heat-lab .heat-controls{padding:4px 14px 7px}
+ #heat-lab>.observation{min-height:0;padding:4px 14px;font-size:.85rem}
+ #heat-lab .heat-model-note{margin:4px 14px 7px;font-size:.72rem}
+}
+@media(min-width:761px){
+ #heat-lab .heat-plot svg text{font-size:22px}
+ #heat-lab .heat-plot svg .zoom-tick{font-size:16px}
+ #heat-lab .heat-plot svg .chart-axis-title{font-size:22px}
+ #heat-lab .heat-plot svg .zoom-current{font-size:22px}
+}
+/* Keep the initial reference beside the current main view; use the mass bars for comparison. */
+#heat-lab .heat-apparatus.has-photo,#heat-lab .heat-apparatus{aspect-ratio:1048/800}
+#heat-lab .heat-compare-pair{grid-template-columns:1fr}
+#heat-lab .heat-compare-pair figure:last-child{display:none}
+#heat-lab .heat-compare-pair figure:first-child{width:min(100%,230px);margin-inline:auto}
+#heat-lab .heat-plot svg .zoom-current{font-size:17px;fill:#9e5529;paint-order:stroke;stroke:#fafbf5;stroke-width:4px;stroke-linejoin:round}
+
+/* Put live readings above the experiment and heating controls next to the apparatus. */
+#heat-lab .heat-summary{border-top:0;border-bottom:1px solid #ded4be}
+#heat-lab .heat-apparatus-panel .heat-controls{display:flex;gap:8px;flex-wrap:wrap;padding:6px 8px;background:#fff8e9;border:0}
+#heat-lab .heat-apparatus-panel .heat-controls button{min-width:0;flex:1;padding:7px 8px;white-space:nowrap}
+@media(min-width:761px){#heat-lab .heat-apparatus-panel .heat-controls{padding:4px 8px;gap:6px}#heat-lab .heat-apparatus-panel .heat-controls button{min-height:36px;padding:5px 6px}}
+
+/* Visited stages can be selected to replay them from the start. */
+#heat-lab .heat-steps li{padding:0}
+#heat-lab .heat-steps li>button{display:flex;align-items:center;gap:9px;width:100%;height:100%;padding:4px 8px;border:0;border-radius:inherit;background:transparent;color:inherit;font:inherit;text-align:left}
+#heat-lab .heat-steps li>button:not(:disabled){cursor:pointer}
+#heat-lab .heat-steps li>button:not(:disabled):hover{background:#dcebd5}
+#heat-lab .heat-steps li>button:focus-visible{outline:3px solid #206b4f;outline-offset:2px}
+#heat-lab .heat-steps li>button:disabled{opacity:1;cursor:default}
+@media(max-width:760px){#heat-lab .heat-steps li>button{flex-direction:column;text-align:center;padding:7px 4px;gap:5px}}
+
+/* Highlight the measured change beside the apparatus. */
+#comparison-lab .comparison-bath-change{display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 6px}
+#comparison-lab .comparison-bath-change span{display:inline;font-size:.9rem;color:#596c59;font-variant-numeric:tabular-nums}
+#comparison-lab .comparison-bath-change strong{display:inline;font-size:1.15rem}
+#comparison-lab .comparison-ice small{font-size:.75rem;line-height:1.45}
+#comparison-lab .comparison-ice small strong{color:#245a46;font-weight:700}
+
+/* Optional bath observation and an always-visible comparison. */
+.bath-tabs{display:flex;gap:8px;padding:0 14px 12px}
+.bath-tabs button{border:1px solid #a8c4a5;background:#fffefa;color:#31583c;border-radius:999px;padding:8px 20px;font:inherit;font-weight:700;cursor:pointer}
+.bath-tabs button[aria-pressed=true]{background:#315f3f;border-color:#315f3f;color:#fff}
+.bath-tabs button:focus-visible{outline:3px solid #af6b30;outline-offset:2px}
+.bath-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;padding:0 14px}
+.bath-scenes{align-self:start;min-width:0;border:1px solid #d4dfcf;border-radius:12px;overflow:hidden;background:#f2e8d7}
+.bath-scenes [hidden]{display:none}
+#comparison-lab .phase-apparatus.has-photo,#comparison-lab .phase-apparatus{aspect-ratio:1048/800;min-height:0}
+.bath-observation{min-width:0;border:1px solid #d4dfcf;border-radius:12px;background:#fffefa;padding:12px}
+.bath-observation h3{margin:0;font-size:1.1rem;color:#31593d}
+.bath-chart svg{display:block;width:100%;max-height:240px}
+.bath-chart svg text{font:15px var(--unit-font);fill:#425c46}
+.bath-legend{display:flex;gap:8px 18px;flex-wrap:wrap;font-size:.88rem;color:#46634c}
+.bath-legend>span::before{content:'';display:inline-block;width:16px;height:4px;vertical-align:middle;margin-right:5px;background:#b75b22}
+.bath-legend .bath-legend-sample::before{background:#397447}
+#comparison-lab[data-mode=cold] .bath-legend-outer::before{background:#28718b}
+.bath-ice{margin:10px 0 0;padding:8px 10px;border-radius:8px;background:#eaf1e3;color:#31583c;font-weight:700;display:flex;gap:6px 15px;flex-wrap:wrap}
+.bath-model-note{margin:8px 0 0;color:#657563;font-size:.75rem;line-height:1.5}
+#comparison-lab .comparison-controls{padding:10px 14px 6px;background:transparent;border:0}
+#comparison-lab>.observation{min-height:0;margin:0;padding:4px 14px 10px}
+.bath-summary{margin:16px 0;padding:16px;border:1px solid #cbdcc8;border-radius:14px;background:#f7f9f3}
+.bath-summary h3{margin:0 0 12px;color:#2f593e;font-size:1.1rem}
+.bath-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bath-summary article{border:1px solid #e8cfaa;border-radius:10px;background:#fffaf0;overflow:hidden}
+.bath-summary article.bath-summary-cold{border-color:#c1dce4;background:#f3f9fa}
+.bath-summary h4{margin:0;padding:9px 12px;background:#f5e3c6;color:#76501f;font-size:1rem}
+.bath-summary-cold h4{background:#dcecf1;color:#275c70}
+.bath-summary dl{margin:0;padding:7px 12px}
+.bath-summary dl div{display:grid;grid-template-columns:5em 1fr;gap:8px;padding:4px 0}
+.bath-summary dt{color:#60705d}.bath-summary dd{margin:0;font-weight:700;color:#31593d}
+.bath-summary article>p{margin:0;padding:8px 12px;font-weight:700;color:#76501f;background:#faf0df}
+.bath-summary article.bath-summary-cold>p{color:#275c70;background:#e6f1f3}
+.bath-summary-note{margin:12px 0 0;padding:8px 12px;border-radius:8px;background:#e8f0df;color:#31583c;font-weight:700}
+@media(max-width:760px){.bath-workspace,.bath-summary-grid{grid-template-columns:1fr}.bath-tabs button{flex:1;padding-inline:8px}.bath-summary{padding:12px}.bath-chart svg{max-height:none}}
+
+/* Keep liquid water distinct from ice and display its modelled mass. */
+#heat-lab .heat-summary{grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr) minmax(0,.8fr) minmax(0,.9fr)}
+#heat-lab .heat-water-reading{display:flex;flex-direction:column;align-items:flex-start;gap:3px;border-left:1px solid #c9d1b9;padding-left:12px;min-width:0;line-height:1.5}
+#heat-lab .heat-water-reading strong{color:#346679}
+#heat-lab .heat-water-reading small{font-size:.8rem;color:#5b7059}
+@media(max-width:760px){#heat-lab .heat-summary{grid-template-columns:1fr 1fr}#heat-lab .heat-water-reading{border-left:0;padding-left:0}#heat-lab .heat-summary .heat-accessible-reading{border-left:1px solid #c9d1b9;padding-left:12px}#heat-lab .heat-summary .heat-energy-reading{border-left:0;padding-left:0}}
+/* Three separately draggable copper balls on the experimental workbench. */
+.solid-instruction{margin:0;padding:9px 14px;color:#49634d;font-size:.9rem}
+.solid-stage{position:relative;margin:0 14px;aspect-ratio:1672/941;background:#e9ddca url('solid-workbench.webp') center / 100% 100% no-repeat;border:1px solid #d5c8b5;border-radius:12px;overflow:hidden;touch-action:none}
+.solid-target{position:absolute;z-index:1;background:#fffdf2eF;border:1px solid #d3d8c5;border-radius:7px;padding:3px 7px;font-size:clamp(.65rem,1.2vw,.9rem);line-height:1.35;text-align:center;color:#355741;pointer-events:none;transform:translateX(-50%)}
+.solid-cool-label{left:20%;top:78%}.solid-hot-label{left:48.5%;top:78%}.solid-ring-label{left:77.5%;top:75%}
+.solid-ball{position:absolute;z-index:2;transform:translate(-50%,-50%);width:7%;aspect-ratio:1;border:0;padding:0;background:transparent;cursor:grab;touch-action:none;overflow:visible}
+.solid-ball:focus-visible{outline:3px solid #145f44;outline-offset:5px;border-radius:50%}.solid-ball.is-dragging{z-index:4;cursor:grabbing}.solid-ball[aria-pressed=true] .solid-ball-shape{box-shadow:0 0 0 3px #f5e9c5,0 0 0 5px #38704d,2px 5px 6px #38201677}
+.solid-ball-shape{display:block;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 33% 25%,#fff4ce 0%,#e5a56e 13%,#be6b36 40%,#7f3d22 70%,#3e2014 100%);border:1px solid #8f532e;box-shadow:2px 5px 6px #38201677}
+.solid-ball-label{position:absolute;left:50%;bottom:105%;transform:translateX(-50%);padding:2px 5px;border-radius:5px;background:#fffdf3ed;border:1px solid #d7d9c8;color:#264b36;font-weight:700;font-size:clamp(.62rem,1.15vw,.85rem);white-space:nowrap;pointer-events:none}
+.solid-readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:10px 14px;background:#f7f1e5}
+.solid-readout div{min-width:0;padding:0 8px;border-left:1px solid #d9d6c5}.solid-readout div:first-child{border:0;padding-left:0}
+.solid-readout span,.solid-readout strong{display:block}.solid-readout span{font-size:.8rem;color:#536752}.solid-readout strong{font-size:1rem;font-variant-numeric:tabular-nums;white-space:nowrap;color:#315f3f}
+.solid-result{margin:0;padding:9px 14px;background:#eef5e9;color:#315b40;min-height:2.7em}.solid-footer{display:flex;align-items:center;gap:12px;padding:8px 14px}.solid-footer p{flex:1;margin:0;font-size:.78rem;color:#657364}.solid-footer button{white-space:nowrap}.solid-key-help{margin:0;padding:0 14px 12px;font-size:.78rem;color:#647365}
+@media(max-width:760px){.solid-stage{margin:0 10px}.solid-readout{grid-template-columns:1fr 1fr}.solid-readout div:nth-child(3){border:0;padding-left:0}.solid-ball{width:9%}.solid-footer{flex-wrap:wrap}}
+
+.solid-ball-shape{background:transparent url("solid-copper-ball.webp") center / 160% 108% no-repeat;border:0}
+
+/* The ring front edge overlays the ball and its handle for a clear test result. */
+.solid-ring-foreground{position:absolute;left:73.8%;top:49.7%;width:7.4%;height:3.2%;z-index:3;pointer-events:none;overflow:visible}
+.solid-ball::before{content:"";position:absolute;z-index:-1;left:calc(50% - 2px);bottom:78%;width:4px;height:115%;border-radius:3px;background:linear-gradient(90deg,#6d6559,#e7dfc9 45%,#797266);box-shadow:1px 0 2px #65534488;pointer-events:none}
+.solid-ball[aria-pressed=true] .solid-ball-shape{box-shadow:2px 5px 6px #38201677}
+.solid-ball-label{left:110%;bottom:auto;top:15%;transform:none;z-index:5}
+.solid-ball[aria-pressed=true] .solid-ball-label{border-color:#38704d;background:#eff7e9}
+.solid-ring-label{left:84%;top:70%}
+.solid-ball[aria-pressed=true]:not(.action){background:transparent;border:0;box-shadow:none}
+
+/* Paired observations: independently controlled water and air. */
+#expand-lab.volume-lab{background:#f7f9f3;border-color:#cddccf}
+#expand-lab .lab-top{background:transparent;border:0;padding-bottom:6px}
+.volume-intro{margin:0;padding:0 14px 12px;color:#536956;font-size:.9rem}
+.volume-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 14px 12px}
+.volume-panel{min-width:0;background:#fffefa;border:1px solid #cbdcc8;border-radius:12px;overflow:hidden}
+.volume-panel header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;background:#f0f5e9}
+.volume-panel h3{margin:0;color:#31583c;font-size:1.08rem}.volume-panel header span{color:#546b55;font-size:.77rem;text-align:right}
+.volume-scene{position:relative;aspect-ratio:1448/1086;background-color:#ede4d4;background-position:center;background-size:cover;overflow:hidden}
+.volume-water-scene{background-image:url('volume-water-rig.webp')}.volume-gas-scene{background-image:url('volume-air-bath.webp')}
+.volume-scene>div,.volume-scene svg{display:block;position:absolute;inset:0;width:100%;height:100%}
+.volume-bath-label{position:absolute;right:8px;top:8px;padding:4px 8px;border-radius:7px;border:1px solid #c6d5bf;background:#fffdf4ed;color:#2d5b3c;font-size:.8rem}
+.volume-data{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px;background:#fff8ec;color:#596c58;font-size:.78rem}.volume-data strong{display:block;color:#2d6240;font-size:1rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.volume-baseline{padding:5px 12px;color:#657462;font-size:.76rem}.volume-buttons{display:flex;gap:7px;padding:4px 12px}.volume-buttons button{flex:1;padding:6px;min-height:40px;font-size:.9rem}.volume-buttons button[aria-pressed=true]{background:#315f3f;color:#fff;border-color:#315f3f}
+.volume-caption{min-height:2.5em;margin:0;padding:5px 12px 9px;color:#516952;font-size:.8rem;line-height:1.5}.volume-model-note{margin:0;padding:0 14px 12px;color:#647360;font-size:.76rem;line-height:1.5}
+.volume-takeaway{margin:14px 0;padding:13px 16px;border:1px solid #d0dfc8;border-radius:12px;background:#edf4e6;color:#31583c}.volume-takeaway strong{display:block;margin-bottom:6px}.volume-takeaway p{margin:3px 0}
+.volume-exception h4{margin:14px 0 7px;color:#31583c}.volume-exception-table{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.volume-exception-table div{padding:9px;background:#eff5e9;border:1px solid #d7e4d0;border-radius:8px}.volume-exception-table span,.volume-exception-table strong{display:block}.volume-exception-table span{font-size:.8rem}.volume-exception-table strong{font-variant-numeric:tabular-nums;color:#315f3f}
+@media(max-width:760px){.volume-panels{grid-template-columns:1fr}.volume-scene{aspect-ratio:1448/1086}.volume-exception-table{grid-template-columns:1fr}}
+
+/* Fourth block: readable experiment labels and reference markers. */
+#expand-lab .lab-top .lab-tag{font-size:1.08rem}
+#expand-lab .volume-intro{font-size:1rem;line-height:1.55}
+#expand-lab .volume-panel header{flex-wrap:wrap}
+#expand-lab .volume-panel h3{font-size:1.15rem}
+#expand-lab .volume-panel header span{font-size:1rem;line-height:1.45}
+#expand-lab .volume-data{font-size:1rem;line-height:1.5}
+#expand-lab .volume-data strong{font-size:1.12rem}
+#expand-lab .volume-baseline,#expand-lab .volume-caption{font-size:1rem;line-height:1.5}
+#expand-lab .volume-buttons button{font-size:1rem}
+#expand-lab .volume-model-note{font-size:.95rem;line-height:1.55}
+.volume-exception-table span{font-size:1rem}
+.volume-reference,.volume-bath-readable{position:absolute;z-index:2;padding:3px 7px;border-radius:6px;background:#fffdf4ed;color:#5e452d;border:1px solid #d6c8af;font-size:.9rem;font-weight:700;line-height:1.35;white-space:nowrap;pointer-events:none}
+.volume-water-reference{left:36%;top:calc(23.95% - 12px)}
+.volume-gas-reference{left:55%;top:calc(41.2% - 32px)}
+.volume-bath-readable{top:8px;right:8px;color:#2d5b3c;border-color:#c6d5bf;font-size:1rem}
+/* Keep the water-bath label clear of the gas thermometer. */
+.volume-gas-scene .volume-bath-readable{left:8px;right:auto}
+
+/* Fifth block: one apparatus and a synchronised wall cutaway. */
+#thermo-lab.thermo-lab{background:#f7f9f3;border-color:#cddccf}
+#thermo-lab .lab-top{background:transparent;border:0;padding-bottom:7px}
+#thermo-lab .thermo-controls{gap:8px;padding:6px 14px 12px;background:transparent;border:0}
+#thermo-lab .thermo-controls button{min-width:130px}
+.thermo-workspace{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:stretch;gap:12px;padding:0 14px 12px}
+.thermo-main{min-width:0;margin:0;border:1px solid #d6d7c9;border-radius:12px;overflow:hidden;background:#fff8e9}
+.thermo-main-scene{position:relative;aspect-ratio:1448/1086;background:#e8d9c4 url('volume-water-rig.webp') center / 100% 100% no-repeat;overflow:hidden}
+.thermo-main-scene>div,.thermo-main-scene svg{position:absolute;inset:0;width:100%;height:100%}
+.thermo-main figcaption{padding:7px 10px;color:#566c55;font-size:.88rem;line-height:1.5}
+.thermo-photo-initial-label,.thermo-photo-current-label,.thermo-photo-tag{position:absolute;z-index:2;padding:3px 7px;border:1px solid #d5d8c8;border-radius:6px;background:#fffdf3ee;color:#345943;font-size:.9rem;font-weight:700;line-height:1.35;white-space:nowrap;pointer-events:none}
+.thermo-photo-initial-label{left:35.8%;top:calc(23.94% + 5px)}
+.thermo-photo-current-label{left:35.8%;top:calc(var(--thermo-level,23.94%) - 37px);background:#edf7e9}
+.thermo-photo-tag{top:8px;right:8px;background:#2d685b;color:#fff;border-color:#fff9}
+.thermo-locus{position:absolute;left:43%;top:74%;width:11px;height:11px;border:2px solid #fff;border-radius:50%;background:#427c56;box-shadow:0 0 0 1px #427c56;transform:translate(-50%,-50%);pointer-events:none}
+.thermo-wall{min-width:0;padding:12px;border:1px solid #cbdcc8;border-radius:12px;background:#fffefa;display:flex;flex-direction:column;justify-content:center}
+.thermo-wall h3{margin:0;color:#31583c;font-size:1.05rem;line-height:1.45}.thermo-wall-explain{margin:4px 0 8px;color:#586d58;font-size:.9rem}
+.thermo-wall-diagram{display:block;width:100%;height:auto;background:#fffdf7;border:1px solid #e3e9dc;border-radius:8px}
+.thermo-wall-diagram text{fill:#32543d;font:17px var(--unit-font);font-weight:700}.thermo-wall-diagram .thermo-wall-extra{font-size:13px}
+.thermo-wall-chart{position:relative}.wall-region,.wall-boundary{position:absolute;color:#32543d;font-size:1rem;font-weight:700;line-height:1.2;white-space:nowrap;pointer-events:none}.wall-region{top:44%}.wall-bottle{left:4%}.wall-glass{left:47%}.wall-outside{right:3%}.wall-boundary{top:82%;transform:translateX(-50%)}.wall-inner{left:38%}.wall-outer{left:72%}.thermo-wall-capacity{margin:6px 0 0;color:#31583c;font-size:1rem;text-align:center}
+.thermo-wall-legend{display:flex;align-items:center;justify-content:center;gap:8px 14px;flex-wrap:wrap;margin-top:8px;font-size:1rem;color:#435c47}.thermo-wall-legend>span{display:inline-flex;align-items:center;gap:4px}.thermo-wall-legend i{display:inline-block;width:20px;border-top:3px solid #317145}.thermo-wall-legend .thermo-key-start{border-top-style:dashed;border-color:#858e87}
+.thermo-wall-note{margin:6px 0 0;font-size:.95rem;color:#5b6c58;text-align:center}
+.thermo-equation{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin:0 14px;padding:10px 12px;border-radius:10px;background:#edf4e6;color:#31583c}
+.thermo-equation div{min-width:0}.thermo-equation span,.thermo-equation output{display:block}.thermo-equation span{font-size:.9rem}.thermo-equation output{font-size:1.06rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}.thermo-equation>b{font-size:1.3rem}
+.thermo-live-note{margin:0;padding:9px 14px;color:#31563e;font-size:.95rem;line-height:1.5}
+.thermo-model-note{margin:0;padding:0 14px 13px;color:#647360;font-size:.85rem;line-height:1.55}
+@media(max-width:760px){.thermo-workspace{grid-template-columns:1fr;padding-inline:10px}.thermo-wall{padding:10px}.thermo-wall-diagram{max-height:220px}.thermo-equation{margin-inline:10px;grid-template-columns:1fr;gap:4px}.thermo-equation div{display:flex;justify-content:space-between;gap:8px}.thermo-equation>b{text-align:center;line-height:1}.thermo-photo-initial-label,.thermo-photo-current-label,.thermo-photo-tag{font-size:.9rem}.thermo-photo-current-label{left:4px;top:4px}.thermo-photo-initial-label{left:4px;top:calc(23.94% + 5px)}.thermo-photo-tag{display:none}}
+
+/* Sixth block: evidence-first comparison of two copper sulfate reactions. */
+.chem-intro{margin:0 0 14px;color:#536956;font-size:.96rem;line-height:1.55}
+.chem-reactions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}
+.chem-reaction-card{min-width:0;padding:12px;border:1px solid #d8e1d4;border-radius:15px;background:#fffefa;box-shadow:0 2px 7px #243a2a0a;transition:border-color .2s,box-shadow .2s,background-color .2s}
+.chem-reaction-card[data-active="true"]{border-color:#6d9a76;box-shadow:0 0 0 2px #dcebd9,0 5px 16px #243a2a12;background:#fffef9}
+.chem-reaction-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
+.chem-select{min-width:0;min-height:38px;padding:6px 10px;border-color:transparent;background:transparent;font-size:.98rem;text-align:left}
+.chem-select span{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:6px;border-radius:50%;background:#e8eee3;color:#45694d;font-size:.78rem}
+.chem-reaction-card[data-active="true"] .chem-select{background:#edf4e9;color:#2e5d3b}
+.chem-energy{display:inline-flex;align-items:center;gap:5px;flex:none;padding:5px 8px;border-radius:7px;font-size:.82rem;font-weight:800;white-space:nowrap}
+.chem-energy--in{background:#f8ecde;color:#9b5c32}.chem-energy--out{background:#e7f0e5;color:#3e704c}
+.chem-energy-arrow{font-size:1.05rem;line-height:1}
+.chem-art{position:relative;aspect-ratio:1.22;min-width:0;margin:0 0 10px;overflow:hidden;border-radius:10px;background:#e9e4da}
+.chem-art img{position:absolute;top:50%;width:200%;max-width:none;height:auto;display:block;transform:translateY(-50%)}
+.chem-art--dehydrate img{left:0}.chem-art--hydrate img{left:-100%}
+.chem-substance-flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:7px;padding:10px 4px 11px;border-bottom:1px solid #e5e9df}
+.chem-substance-flow>div{min-width:0}.chem-substance-flow small{display:block;margin-bottom:3px;color:#728073;font-size:.72rem}.chem-substance-flow strong{display:block;color:#344d39;font-size:.86rem;line-height:1.4;overflow-wrap:anywhere}
+.chem-substance-flow>b{color:#aa673c;font-size:1.25rem}
+.chem-evidence{margin:10px 0 8px;padding:9px 10px;border-radius:9px;background:#f3f6ef;color:#526553}
+.chem-evidence strong{display:block;margin-bottom:3px;color:#405b43;font-size:.8rem}.chem-evidence p{margin:0;font-size:.8rem;line-height:1.45}
+.chem-energy-note{margin:0;padding:7px 2px 1px;color:#5c6759;font-size:.8rem;line-height:1.45}
+.chem-observation-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 16px;margin-top:14px;padding:12px 14px;border:1px solid #d9e2d4;border-radius:12px;background:#f6f8f2}
+.chem-progress-row{min-width:0}.chem-progress-row>span{display:block;margin-bottom:6px;color:#556957;font-size:.82rem;font-weight:650}
+.chem-progress{height:7px;overflow:hidden;border-radius:99px;background:#e2e9df}.chem-progress>span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#a8c9a3,#417c57);transition:width .12s linear}
+.chem-controls{display:flex;gap:7px;padding:0}.chem-controls button{min-height:38px;padding:6px 12px;font-size:.85rem;white-space:nowrap}
+#chem-note{grid-column:1/-1;margin:0;padding:8px 10px;border-radius:8px;background:#eaf2e5;color:#345c3d;font-size:.86rem;line-height:1.45}
+.chem-safety-note{margin:10px 0 0;color:#667366;font-size:.78rem;line-height:1.45}
+.chem-takeaway{margin-top:15px}
+.chem-substance-flow>div,.chem-evidence,.chem-energy-note{transition:background-color .25s,box-shadow .25s,color .25s}
+.chem-lab[data-stage="0"] .chem-reaction-card[data-active="true"] [data-observation-step="0"],.chem-lab[data-stage="1"] .chem-reaction-card[data-active="true"] [data-observation-step="1"],.chem-lab[data-stage="2"] .chem-reaction-card[data-active="true"] [data-observation-step="2"],.chem-lab[data-stage="3"] .chem-reaction-card[data-active="true"] [data-observation-step="3"]{border-radius:8px;background:#edf4e8;box-shadow:0 0 0 3px #edf4e8;color:#315b3c}
+@media(max-width:900px){.chem-reactions{gap:10px}.chem-reaction-card{padding:10px}.chem-reaction-head{align-items:flex-start;flex-direction:column;gap:3px}.chem-energy{margin-left:4px}}
+@media(max-width:760px){.chem-reactions{grid-template-columns:1fr;gap:12px}.chem-reaction-card{padding:12px}.chem-reaction-head{flex-direction:row;align-items:center}.chem-art{aspect-ratio:1.15}.chem-substance-flow{gap:10px}.chem-substance-flow strong{font-size:.92rem}.chem-evidence p,.chem-energy-note{font-size:.88rem}.chem-observation-controls{grid-template-columns:1fr;padding:11px}.chem-controls{grid-row:2}.chem-controls button{flex:1}.chem-controls button:first-child{flex:1.3}#chem-note{grid-column:1}.chem-safety-note{font-size:.83rem}}
+@media(max-width:400px){.chem-reaction-head{align-items:flex-start;flex-direction:column}.chem-select{padding-left:4px}.chem-energy{margin-left:4px}.chem-substance-flow{grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);gap:4px}.chem-substance-flow strong{font-size:.84rem}.chem-controls button{padding:6px 8px}}
+
+/* 第五區依核可示意圖排列；各位置隨同一溫度模型更新。 */
+#thermo-lab.thermo-lab{background:#faf8ef;border:0;overflow:visible}
+#thermo-lab .lab-top{justify-content:flex-end;padding:8px 14px 0}
+#thermo-lab .lab-tag{display:none}
+#thermo-lab .thermo-controls{padding:6px 14px 12px}
+#thermo-lab .thermo-controls button{border:1px solid #2d7040;border-radius:12px;background:#fffdf7;color:#175028}
+#thermo-lab .thermo-controls button[aria-pressed=true]{background:#226a2c;color:white;box-shadow:none}
+.thermo-workspace{position:relative;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:12px;align-items:center}
+.thermo-main{border:0;background:transparent}
+.thermo-main-scene{aspect-ratio:3/2;background:#d2c8bc url('thermo-reference-scene.webp') center / cover no-repeat;border-radius:12px}
+.thermo-photo-initial-label,.thermo-photo-current-label{left:64%;border:1px solid #22602e;background:#fffdf4;color:#174b28;font-size:clamp(.75rem,1.1vw,1rem);padding:4px 7px}
+.thermo-photo-initial-label{top:calc(30.27% + 5px)}
+.thermo-photo-current-label{top:calc(var(--thermo-level,30.27%) - 31px)}
+.thermo-photo-tag{top:5%;left:4%;right:auto;border:1px solid #fff;background:#214f2d;color:#fff;font-size:clamp(.85rem,1.3vw,1.15rem)}
+.thermo-photo-target{position:absolute;z-index:2;top:calc(5% + 32px);left:4%;padding:3px 8px;border-radius:0 0 7px 7px;background:#fffdf3;color:#214f2d;font-size:.85rem;font-weight:700}
+.thermo-locus{left:65.3%;top:72%;width:12px;height:12px}
+.thermo-connector{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;overflow:visible}
+.thermo-connector path{fill:none;stroke:#247039;stroke-width:2;vector-effect:non-scaling-stroke}
+.thermo-wall{padding:8px;border:2px solid #398044;background:#fffdf7;justify-content:space-between}
+.thermo-wall h3{text-align:center;background:#dcecc9;border-radius:8px;padding:8px;font-size:clamp(.95rem,1.35vw,1.25rem)}
+.thermo-wall-diagram{border:0;border-radius:0}
+.thermo-wall-chart .wall-region{font-size:clamp(.75rem,1.2vw,1rem)}
+.thermo-wall-legend{font-size:clamp(.75rem,1vw,.9rem);gap:5px 9px}
+.thermo-wall-note{font-size:.8rem}
+.thermo-equation{border:1px solid #4a8749;background:#eff5df;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center}
+.thermo-equation div{display:flex;align-items:baseline;gap:5px;justify-content:center}
+.thermo-equation span{font-size:.9rem;font-weight:700}.thermo-equation output{font-size:1.06rem}
+.thermo-live-note,.thermo-model-note{text-align:center}
+@media(max-width:760px){.thermo-workspace{grid-template-columns:1fr}.thermo-connector{display:none}.thermo-wall-diagram{max-height:none}.thermo-equation{display:grid;grid-template-columns:1fr;gap:4px}.thermo-equation div{justify-content:space-between}.thermo-photo-initial-label,.thermo-photo-current-label{font-size:.8rem}.thermo-photo-target{top:calc(5% + 29px)}}
+
+.thermo-photo-current-label:before{content:"";position:absolute;right:100%;top:50%;width:clamp(14px,3vw,32px);border-top:2px solid #174b28}
+@media(max-width:760px){.thermo-photo-tag{display:block}.thermo-photo-current-label{left:64%;top:calc(var(--thermo-level,30.27%) - 31px)}.thermo-photo-initial-label{left:64%;top:calc(30.27% + 5px)}}
+@media(max-width:420px){.thermo-photo-current-label,.thermo-photo-initial-label{left:auto;right:3px;font-size:.7rem}.thermo-photo-current-label{top:max(3px,calc(var(--thermo-level,30.27%) - 31px))}.thermo-photo-tag{font-size:.7rem}.thermo-photo-target{top:calc(5% + 24px);font-size:.7rem}}
+
+/* 玻璃壁以線型區分起初與目前位置。 */
+.thermo-capacity-label{position:absolute;left:2%;top:5%;max-width:32%;padding:2px 4px;border:1px solid #658668;border-radius:5px;background:#fffdf7;color:#31583c;font-size:clamp(.68rem,1vw,.85rem);font-weight:700;line-height:1.3;pointer-events:none}
+.thermo-photo-current-label:before{content:none}
+.thermo-photo-current-label{top:calc(var(--thermo-level,30.27%) - 14px)}
+.thermo-photo-initial-label{top:calc(30.27% - 14px)}
+.levels-near .thermo-photo-initial-label{top:calc(39.06% - 14px)}
+@media(max-width:760px){.thermo-photo-current-label{top:calc(var(--thermo-level,30.27%) - 14px)}.thermo-photo-initial-label{top:calc(30.27% - 14px)}.levels-near .thermo-photo-initial-label{top:calc(39.06% - 14px)}}
+@media(max-width:420px){.thermo-photo-current-label{top:max(2px,calc(var(--thermo-level,30.27%) - 12px))}.thermo-photo-initial-label{top:calc(30.27% - 12px)}.levels-near .thermo-photo-initial-label{top:calc(39.06% - 12px)}}
+
+.thermo-photo-initial-label{top:calc(36.13% - 14px)}
+.levels-near .thermo-photo-initial-label{top:calc(41.99% - 14px)}
+@media(max-width:760px){.thermo-photo-initial-label{top:calc(36.13% - 14px)}.levels-near .thermo-photo-initial-label{top:calc(41.99% - 14px)}}
+@media(max-width:420px){.thermo-photo-initial-label{top:calc(36.13% - 12px)}.levels-near .thermo-photo-initial-label{top:calc(41.99% - 12px)}}
+
+.thermo-photo-initial-label{top:calc(41.99% - 14px)}
+@media(max-width:760px){.thermo-photo-initial-label{top:calc(41.99% - 14px)}}
+@media(max-width:420px){.thermo-photo-initial-label{top:calc(41.99% - 12px)}}
+
+/* 第五區：瓶內水域延伸至當前內壁，並固定起初液面引線。 */
+.thermo-photo-initial-label{top:calc(30.27% - 14px)}
+.thermo-photo-current-label{top:calc(var(--thermo-level,15.63%) - 14px)}
+.thermo-capacity-label{top:0;left:2%;max-width:33%;border:0;background:#fffdf7}
+.thermo-wall-chart .wall-bottle{left:3%;font-size:clamp(.75rem,1.1vw,.95rem)}
+.thermo-boundary-label{position:absolute;top:81%;transform:translateX(-50%);font-size:clamp(.7rem,1vw,.85rem);font-weight:700;color:#31583c;white-space:nowrap}
+@media(max-width:760px){.thermo-photo-initial-label{top:calc(30.27% - 14px)}.thermo-photo-current-label{top:calc(var(--thermo-level,15.63%) - 14px)}}
+@media(max-width:420px){.thermo-photo-initial-label{top:calc(30.27% - 12px)}.thermo-photo-current-label{top:max(2px,calc(var(--thermo-level,15.63%) - 12px))}}
+
+/* 自由調溫：玻璃壁放大窗屬於同一個實驗場景。 */
+#thermo-lab .thermo-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:18px 14px 13px;background:transparent;border:0}
+.thermo-controls label{font-weight:750;color:#245737;white-space:nowrap}
+#thermo-lab .thermo-controls button{min-width:42px;width:42px;min-height:42px;padding:3px;font-size:1.35rem}
+.thermo-slider{position:relative;flex:1 1 230px;min-width:150px;padding-top:17px;display:flex;align-items:center}
+.thermo-slider input{width:100%;min-width:0;accent-color:#246d3a;cursor:pointer}
+.thermo-reference-mark{position:absolute;left:20%;top:0;transform:translateX(-50%);font-size:.76rem;font-weight:700;color:#526856;white-space:nowrap;pointer-events:none}
+.thermo-endpoint{color:#405d47;font-size:.9rem;white-space:nowrap}
+#thermo-control-value{min-width:75px;text-align:center;color:#fff;background:#285d35;border-radius:8px;padding:7px;font-weight:800;font-size:1.04rem;white-space:nowrap}
+.thermo-workspace{display:block;position:relative;padding:0 14px 12px}
+.thermo-main-scene{aspect-ratio:3/2}
+.thermo-photo-current-label,.thermo-photo-initial-label{left:auto;right:54%;font-size:clamp(.75rem,1.05vw,.95rem)}
+.thermo-photo-current-label{top:max(2px,calc(var(--thermo-level,15.63%) - 14px))}
+.thermo-photo-initial-label{top:calc(30.27% - 14px)}
+.thermo-wall{position:absolute;z-index:3;top:2.5%;right:3%;width:38%;min-width:0;padding:7px;background:#fffdf7ed;box-shadow:0 2px 12px #102d1c30}
+.thermo-wall h3{font-size:clamp(.85rem,1.15vw,1.1rem);padding:6px}
+.thermo-wall-legend{font-size:clamp(.72rem,.9vw,.85rem);gap:3px 8px}
+.thermo-wall-note{font-size:.78rem;margin:3px 0 0}
+.thermo-capacity-label{font-size:clamp(.67rem,.9vw,.8rem)}
+.thermo-wall-chart .wall-region{font-size:clamp(.72rem,.95vw,.9rem)}
+.thermo-boundary-label{font-size:clamp(.67rem,.9vw,.8rem)}
+.thermo-connector{z-index:4;pointer-events:none}
+@media(max-width:760px){.thermo-controls label{flex-basis:100%}.thermo-slider{flex-basis:120px;min-width:100px}.thermo-workspace{padding-inline:10px}.thermo-wall{position:relative;top:auto;right:auto;width:calc(100% - 16px);margin:-12px auto 12px;box-shadow:0 2px 12px #102d1c25}.thermo-connector{display:none}.thermo-photo-tag{top:auto;bottom:3%;left:3%;font-size:.75rem}.thermo-photo-current-label,.thermo-photo-initial-label{left:auto;right:54%;font-size:.75rem}.thermo-photo-current-label{top:max(2px,calc(var(--thermo-level,15.63%) - 12px))}.thermo-photo-initial-label{top:calc(30.27% - 12px)}.thermo-wall h3{font-size:1rem}.thermo-wall-chart .wall-region{font-size:.9rem}.thermo-wall-legend{font-size:.85rem}.thermo-boundary-label{font-size:.8rem}}
+@media(max-width:420px){#thermo-lab .thermo-controls{gap:6px}#thermo-lab .thermo-controls button{min-width:36px;width:36px;min-height:38px}.thermo-slider{flex-basis:90px;min-width:80px}.thermo-endpoint{font-size:.75rem}#thermo-control-value{min-width:65px;font-size:.9rem}.thermo-photo-current-label,.thermo-photo-initial-label{font-size:.68rem;padding:2px 4px}}
+
+.thermo-wall-chart .wall-region{top:52%;transform:translateX(-50%);right:auto}
+
+/* 調整場景構圖，讓瓶身與放大窗各自完整可見。 */
+.thermo-main-scene{background-image:url('thermo-scene-left.webp')}
+.thermo-photo-current-label,.thermo-photo-initial-label{left:35%;right:auto}
+.thermo-locus{left:40.2%;top:71.3%}
+.thermo-reference-mark{left:calc(20% + 4.8px)}
+.thermo-reference-mark::after{content:"";position:absolute;top:100%;left:50%;height:13px;border-left:1px dashed #416848}
+.thermo-guide{margin:0;padding:0 14px 10px;color:#405e48;font-size:.9rem}
+.thermo-overlap-label{color:#435d48}
+@media(max-width:760px){.thermo-photo-current-label,.thermo-photo-initial-label{left:35%;right:auto}}
+
+/* 第五區薄玻璃放大圖：以柔和材質襯托同尺度的參照輪廓。 */
+.thermo-wall-diagram{background:#fffdf7;border-radius:7px}
+.thermo-wall-chart .wall-region{top:52%;font-size:.85rem}
+.thermo-capacity-label{left:50%;top:0;transform:translateX(-50%);max-width:75%;white-space:nowrap;font-size:.82rem;background:#fffdf7;color:#31583c}
+.wall-glass-callout{position:absolute;top:81%;font-size:.82rem;font-weight:700;color:#31583c;white-space:nowrap;pointer-events:none}
+@media(max-width:760px){.thermo-wall-chart .wall-region{font-size:.9rem}.thermo-capacity-label,.wall-glass-callout{font-size:.82rem}}
+
+@media(min-width:761px){.thermo-wall{width:44%}}
+
+/* 保留開場概覽圖完整構圖。 */
+@media(max-width:760px){.masthead .hero-art img{max-height:none;object-fit:contain}}
+
+/* 放大玻璃壁的觀察區，延伸弧形剖面並減少邊緣留白。 */
+.thermo-wall{justify-content:flex-start}
+.thermo-wall-chart .wall-region{top:51%;font-size:clamp(.85rem,1.2vw,1.08rem)}
+.thermo-wall-chart .wall-glass-callout{top:25%;transform:translateX(-50%);font-size:clamp(.76rem,1vw,.95rem);text-shadow:0 1px 3px white}
+.thermo-capacity-label{top:0;font-size:clamp(.8rem,1vw,.98rem)}
+.thermo-wall-legend{font-size:clamp(.8rem,1vw,.95rem);margin-top:4px}
+.thermo-wall-note{font-size:.85rem}
+@media(max-width:760px){.thermo-wall-chart .wall-region{font-size:1rem}.thermo-wall-chart .wall-glass-callout{font-size:.9rem}}
+
+/* 同一場景中的玻璃壁放大，窄版保留易讀尺寸。 */
+.thermo-wall-diagram{background:#f5f5eb}
+@media(max-width:760px){.thermo-workspace{background:linear-gradient(135deg,#aeaaa3,#777a75);border-radius:14px;padding-top:10px}.thermo-photo-tag{top:3%;bottom:auto;left:3%}.thermo-wall{margin-top:-4px}}
+
+/* 圖中水域取自主場景，並以高對比底色維持標籤可讀。 */
+.thermo-wall-chart .wall-bottle{padding:3px 6px;border-radius:5px;background:#f8fcf1e6;text-shadow:none}
+
+/* 薄壁只保留細緻的反光邊，避免視覺厚度蓋過實驗瓶比例。 */
+.thermo-wall-diagram .thermo-inner-current,.thermo-wall-diagram .thermo-outer-current{stroke-width:1.8}
+.thermo-wall-diagram .thermo-glass-band{opacity:.82}

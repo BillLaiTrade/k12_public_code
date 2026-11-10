@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="從回聲理解聲波反射、往返測距與聲納，再比較室內反射與吸音處理。"><link rel="canonical" href="https://billlaitrade.github.io/k12-learning-demos/units/3/parts/3.4/"><meta property="og:type" content="website"><meta property="og:locale" content="zh_TW"><meta property="og:url" content="https://billlaitrade.github.io/k12-learning-demos/units/3/parts/3.4/"><meta property="og:title" content="聲音反射後，可以告訴我們什麼？｜3.4 聲波反射與回聲"><meta property="og:description" content="從回聲理解聲波反射、往返測距與聲納，再比較室內反射與吸音處理。"><meta property="og:image" content="https://billlaitrade.github.io/k12-learning-demos/units/3/parts/3.4/assets/echo-story-share.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1672"><meta property="og:image:height" content="941"><meta property="og:image:alt" content="小葵和阿公在實驗桌旁探索聲音，桌上有喇叭、接收器與反射板，旁邊的船模及吸音材料呼應後續學習。"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="聲音反射後，可以告訴我們什麼？｜3.4 聲波反射與回聲"><meta name="twitter:description" content="從回聲理解聲波反射、往返測距與聲納，再比較室內反射與吸音處理。"><meta name="twitter:image" content="https://billlaitrade.github.io/k12-learning-demos/units/3/parts/3.4/assets/echo-story-share.jpg"><meta name="twitter:image:alt" content="小葵和阿公在實驗桌旁探索聲音，桌上有喇叭、接收器與反射板，旁邊的船模及吸音材料呼應後續學習。"><title>聲音反射後，可以告訴我們什麼？｜3.4 聲波反射與回聲</title><link rel="stylesheet" href="assets/lesson-base.css?v=20261103-dialogue-33"><link rel="stylesheet" href="assets/echo.css?v=20261103-inline-speed"><link rel="stylesheet" href="assets/calculation.css?v=20261103-dialogue-33"><link rel="stylesheet" href="assets/sonar.css?v=20261103-toolbar-hint"><script type="module" src="assets/echo.mjs?v=20261103-silent-cancel"></script><link rel="stylesheet" href="assets/room-wave.css?v=20261103-auditorium-small"><link rel="stylesheet" href="assets/well-quiz.css?v=20261103-header-33"><link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
+<body><header class="shell masthead"><div class="brand-row"><a class="brand" href="../../index.html">← 波動與聲音</a><span class="crumb">國二上・理化</span></div><div class="hero"><div><div class="eyebrow">學習內容 3.4｜波動與聲音｜聲波反射與回聲</div><h1>聲音反射後，<br>可以告訴我們什麼？</h1><p>小葵和阿公在實驗桌旁準備好喇叭與反射板。聲音發出後，為什麼會再傳回來？聲音返回的時間能告訴我們什麼資訊？從反射板、海底到房間裡，一起追蹤聲音反射留下的線索。</p></div><figure class="hero-art"><img src="assets/echo-story-opening.webp" width="1672" height="941" fetchpriority="high" alt="小葵與阿公在實驗桌旁聆聽聲音；桌上有喇叭、接收器、計時器、捲尺與反射板，旁邊的水槽船模及吸音材料呼應後續探索。"><figcaption class="hero-caption">從反射板、測距器材到水槽船模，展開聲音的探索。</figcaption></figure></div></header><main class="shell lesson"><div class="lesson-layout"><nav class="route" aria-label="學習路線"><p class="route-label">探索路線</p><div class="route-inner"><a href="#s1"><b>01</b><span>聲音碰到反射板，會怎麼走？</span></a><a href="#s2"><b>02</b><span>改變牆的位置，聲音返回的時間會怎麼變？</span></a><a href="#s3"><b>03</b><span>聲音回來的時間，能告訴我們牆有多遠嗎？</span></a><a href="#s4"><b>04</b><span>海底看不見，怎麼知道有多深？</span></a><a href="#s5"><b>05</b><span>找找生活中聲音反射的蹤影</span></a><a class="quiz-nav" href="#quiz"><b>✓</b><span>單元小測</span></a></div></nav><div class="cards"><section class="lesson-card" id="s1" aria-labelledby="title-1">
+
+  <header class="lesson-head"><div class="lesson-number">01</div><div><h2 id="title-1">聲音碰到反射板，會怎麼走？</h2><p>聲波反射：觀察一次發聲的返回</p></div></header>
+  <div class="lesson-body"><div class="card-main">
+
+    <p>讓喇叭發聲一次，觀察聲音遇到反射板後的變化。</p>
+    <div class="dialogue dialogue--xiaokui"><span class="speaker" aria-label="小葵"></span><p>阿公，為什麼有時候只喊一聲，卻又聽到自己的聲音？</p></div>
+    <div class="dialogue"><span class="speaker" aria-label="阿公"></span><p>我們可以用喇叭和一塊板子，來說明聲音為什麼會再傳回來。</p></div>
+    <div class="reflection-lab" id="reflection" data-phase="ready" data-progress="0" data-stage="ready" data-emissions="0">
+      <div class="reflection-scene" id="reflection-scene">
+        <img class="reflection-apparatus" src="assets/reflection-apparatus.webp" width="1672" height="941" alt="實驗桌左側的喇叭與接收器朝向右側木製反射板，中間留有聲音傳播的空間。" draggable="false">
+        <svg id="reflection-view" class="reflection-overlay" viewBox="0 0 1000 562.8" aria-hidden="true"><defs><filter id="reflection-glow"><feGaussianBlur stdDeviation="3"/></filter></defs><g id="reflection-cone"></g><g id="reflection-waves"></g><g id="reflection-receiver-light"></g></svg>
+        <span class="apparatus-label speaker-label" aria-hidden="true">喇叭</span><span class="apparatus-label receiver-label" aria-hidden="true">接收器</span><span class="apparatus-label board-label" aria-hidden="true">反射板</span>
+        <span id="reflection-direction" class="reflection-direction" aria-hidden="true"></span>
+        <button type="button" class="speaker-hotspot" id="reflection-speaker" aria-label="點喇叭，發出一次短音" title="點喇叭，發出一次短音"><span class="sr-only">點喇叭，發出一次短音</span></button>
+      </div>
+      <p class="reflection-reading" id="reflection-reading" role="status">點喇叭，觀察一次發聲如何返回。</p>
+      <ol class="reflection-stages" aria-label="聲音傳播的三個階段"><li data-reflection-step="1"><span>1</span>發出短音</li><li data-reflection-step="2"><span>2</span>到達板面</li><li data-reflection-step="3"><span>3</span>反射傳回</li></ol>
+      <div class="reflection-controls"><button class="action" type="button" data-play="reflection"><span aria-hidden="true">▶</span> 發出一次短音</button></div>
+      <p class="reflection-error" id="reflection-error" role="alert" hidden></p>
+      <p id="reflection-status" class="sr-only" role="status">準備好，點喇叭或按鈕開始。</p>
+      <div class="dialogue dialogue--xiaokui"><span class="speaker" aria-label="小葵"></span><p>喇叭只發聲一次，後來卻又聽到一聲！</p></div>
+      <div class="dialogue"><span class="speaker" aria-label="阿公"></span><p>聲音碰到板子後，有一部分反射回來了。妳有時候會再聽到自己的喊聲，也是因為聲音碰到物體後，又反射回到耳邊。</p></div>
+    </div>
+  </div>
+</div></section><section class="lesson-card" id="s2" aria-labelledby="title-2">
+
+  <header class="lesson-head"><div class="lesson-number">02</div><div><h2 id="title-2">改變牆的位置，聲音返回的時間會怎麼變？</h2><p>路程與時間：比較遠近與返回時間</p></div></header>
+  <div class="lesson-body"><div class="card-main">
+
+    <p>同樣的聲速，一起發聲，比較哪一組先收到。</p>
+    <div class="dialogue dialogue--xiaokui"><span class="speaker" aria-label="小葵"></span><p>那牆離得更遠，聲音回來的時間會不會不一樣？</p></div>
+    <div class="dialogue"><span class="speaker" aria-label="阿公"></span><p>我們讓兩組喇叭同時發聲，比較看看，哪個接收器先收到返回的聲音。</p></div>
+    <div class="distance-lab" id="distance" data-selection="both" data-phase="ready" data-progress="0" data-elapsed="0" data-emissions="0">
+      <header class="distance-lab-heading"><h3>虛擬聲波實驗室</h3><p class="distance-conditions" title="兩組共同條件；題給近似值，兩組都把相鄰的發射與接收裝置視為同位置。"><span class="distance-sr-only">共同條件：</span>空氣聲速 <strong>340 m/s</strong></p><p>器材放大示意，距離依設定值計算。</p></header>
+      <div class="distance-experiment">
+        <figure class="distance-lane" id="distance-near-lane">
+          <figcaption class="distance-lane-header"><span class="distance-lane-title">固定參照</span><span class="distance-state" id="distance-near-state">等待發聲</span></figcaption>
+          <div class="distance-scene" id="distance-near-scene">
+            <img class="distance-background" src="assets/distance-virtual-lab.webp" width="2042" height="770" alt="虛擬實驗空間，放大的喇叭與相鄰接收器固定在左側。" draggable="false">
+            <img class="distance-wall-image distance-fixed-wall" src="assets/distance-wall.webp" width="887" height="1774" alt="固定在340公尺的反射牆面" draggable="false">
+            <svg class="distance-overlay" id="distance-near" viewBox="0 0 1000 220" aria-hidden="true"><g id="distance-near-route"></g><g id="distance-near-waves"></g><g id="distance-near-received"></g><g class="distance-dimension" id="distance-near-dimension"></g></svg>
+            <span class="distance-device-label distance-source-label" aria-hidden="true">發射</span><span class="distance-device-label distance-receiver-label" aria-hidden="true">接收</span><span class="distance-device-label distance-board-label" aria-hidden="true">反射板</span>
+            <button class="distance-speaker" type="button" data-distance-speaker="near" aria-label="點上方喇叭，上方發出一次短音" title="上方發出短音"></button>
+          </div>
+        </figure>
+        <figure class="distance-lane" id="distance-far-lane">
+          <figcaption class="distance-lane-header"><span class="distance-lane-title" id="distance-far-title">調整距離</span><span class="distance-state" id="distance-far-state">等待發聲</span></figcaption>
+          <div class="distance-scene" id="distance-far-scene">
+            <img class="distance-background" src="assets/distance-virtual-lab.webp" width="2042" height="770" alt="相同虛擬空間與器材位置，下方反射板可調整距離。" draggable="false">
+            <button class="distance-wall" id="distance-wall" type="button" role="slider" aria-label="拖動下方反射板調整距離" aria-valuemin="340" aria-valuemax="1020" aria-valuenow="680" aria-valuetext="680 公尺" aria-controls="distance-far distance-far-record" title="左右拖動反射板調整距離"><img src="assets/distance-wall.webp" width="887" height="1774" alt="" draggable="false"><span class="distance-drag-handle" aria-hidden="true">↔</span></button>
+            <svg class="distance-overlay" id="distance-far" viewBox="0 0 1000 220" aria-hidden="true"><g id="distance-far-route"></g><g id="distance-far-waves"></g><g id="distance-far-received"></g><g class="distance-dimension" id="distance-far-dimension"></g></svg>
+            <span class="distance-device-label distance-source-label" aria-hidden="true">發射</span><span class="distance-device-label distance-receiver-label" aria-hidden="true">接收</span><span class="distance-device-label distance-board-label" aria-hidden="true">反射板</span>
+            <button class="distance-speaker" type="button" data-distance-speaker="far" aria-label="點下方喇叭，下方發出一次短音" title="下方發出短音"></button>
+          </div>
+        </figure>
+        <div class="distance-range">
+          <label class="distance-number-label" for="wall-distance-number">下方反射板距離 <span class="distance-number-entry"><input id="wall-distance-number" type="number" min="340" max="1020" step="1" value="680" inputmode="numeric" aria-controls="distance-far distance-far-record"><span>公尺</span></span></label>
+          <span class="distance-range-control"><span>340</span><input id="wall-distance" type="range" min="340" max="1020" step="1" value="680" aria-label="下方反射板距離" aria-controls="distance-far distance-far-record"><span>1020 公尺</span></span>
+        </div>
+      </div>
+      <section class="distance-records" aria-labelledby="distance-records-title">
+        <div class="distance-records-heading">
+          <h3 id="distance-records-title">接收時間紀錄 <span>聲音傳播時間（秒）</span></h3>
+        </div>
+        <div class="distance-time-axis" aria-hidden="true"><span></span><div><span>0</span><span>2</span><span>4</span><span>6</span></div></div>
+        <div class="distance-record-row" id="distance-near-record"><span class="distance-record-label">近牆（340 公尺）</span><div class="distance-track"><span class="distance-trace"></span><span class="distance-zero" aria-hidden="true"></span><span class="distance-arrival" hidden></span><span class="distance-pending" hidden>等待返回</span></div></div>
+        <div class="distance-record-row" id="distance-far-record"><span class="distance-record-label" id="distance-far-record-label">遠牆（680 公尺）</span><div class="distance-track"><span class="distance-trace"></span><span class="distance-zero" aria-hidden="true"></span><span class="distance-arrival" hidden></span><span class="distance-pending" hidden>等待返回</span></div></div>
+        <div class="distance-actions"><button class="action" type="button" data-play="distance"><span aria-hidden="true">▶</span> 一起發出短音</button></div>
+      </section>
+
+      <p id="distance-error" class="distance-error" role="alert" hidden></p>
+      <p id="distance-reading" class="distance-sr-only" role="status"></p><p id="distance-status" class="distance-sr-only" role="status">準備好，兩組可一起發聲。</p>
+    </div>
+    <div class="dialogue dialogue--xiaokui distance-conclusion"><span class="speaker" aria-label="小葵"></span><p>距離比較遠的那一組，聲音回來得比較晚！</p></div>
+    <div class="dialogue distance-conclusion"><span class="speaker" aria-label="阿公"></span><p>聲速相同，牆越遠，聲音往返的路程就越長，花的時間也越久。所以，返回的時間可以成為判斷距離的線索。</p></div>
+  </div>
+</div></section><section class="lesson-card" id="s3" aria-labelledby="title-3">
+  <header class="lesson-head"><div class="lesson-number">03</div><div><h2 id="title-3">聲音回來的時間，能告訴我們牆有多遠嗎？</h2><p>往返測距：從聲音走過的路程推算距離。</p></div></header>
+  <div class="lesson-body"><div class="card-main">
+    <p>利用聲音的往返時間，試著推算反射板的距離。</p>
+    <div class="dialogue dialogue--xiaokui"><span class="speaker" aria-label="小葵"></span><p>反射板越遠，聲音回來就越晚。那反過來，知道聲音回來花了多久，是不是就能算出反射板有多遠？</p></div>
+    <div class="dialogue"><span class="speaker" aria-label="阿公"></span><p>可以，還要用到聲速。我們先算出聲音在這段時間總共走了多遠，再想想這個路程和反射板的距離有什麼關係。</p></div>
+    <div class="calculation-lab" id="calculation" data-phase="ready" data-progress="0" data-time="4" data-elapsed="0" data-emissions="0">
+      <div class="calculation-known">
+        <label for="echo-time" class="calculation-time-entry"><span>已知往返時間</span><span class="calculation-number"><input id="echo-time" type="number" min="0.1" max="60" step="any" value="4" inputmode="decimal" aria-controls="calculation-steps" aria-describedby="calculation-input-error"><span>秒</span></span></label>
+        <div class="calculation-speed"><span>空氣中的聲速</span><strong>約 340 m/s</strong></div>
+      </div>
+      <p id="calculation-input-error" class="calculation-error" role="alert" hidden></p>
+      <ol class="calculation-steps" id="calculation-steps">
+        <li class="calculation-step">
+          <h3><span class="calculation-step-number" aria-hidden="true">1</span><span>去程和回程，總共走了 <span data-calculation-time>4</span> 秒。</span></h3>
+          <figure class="calculation-figure">
+            <figcaption>器材與路徑為示意，距離依設定值計算。</figcaption>
+            <div class="calculation-scene" id="calculation-scene" data-stage="ready">
+              <img class="calculation-background" src="assets/distance-virtual-lab.webp" width="2042" height="770" alt="虛擬聲波實驗室，左側喇叭與相鄰接收器面向右側反射板。" draggable="false">
+              <img class="calculation-wall" src="assets/distance-wall.webp" width="887" height="1774" alt="固定的反射板" draggable="false">
+              <svg class="calculation-overlay" id="calculation-view" viewBox="0 0 1000 250" aria-hidden="true">
+                <path id="calculation-outbound-route" d="M260 125H895m-13-8 13 8-13 8" fill="none" stroke="#19835c" stroke-width="3" stroke-dasharray="8 6"/>
+                <path id="calculation-return-route" d="M895 155H260m13-8-13 8 13 8" fill="none" stroke="#e78624" stroke-width="3" stroke-dasharray="8 6"/>
+                <g id="calculation-waves"></g><g id="calculation-received"></g>
+                <path d="M240 213v18m0-9H900m0-9v18" fill="none" stroke="white" stroke-width="3"/>
+              </svg>
+              <span class="calculation-device calculation-source-label" aria-hidden="true">喇叭</span><span class="calculation-device calculation-receiver-label" aria-hidden="true">接收器</span><span class="calculation-device calculation-wall-label" aria-hidden="true">反射板</span>
+              <span class="calculation-route-label calculation-outbound-label" aria-hidden="true">去程</span><span class="calculation-route-label calculation-return-label" aria-hidden="true">回程</span>
+              <span class="calculation-dimension" aria-hidden="true">要求的反射板距離</span>
+              <button type="button" class="calculation-speaker" id="calculation-speaker" aria-label="點喇叭，發出一次短音" title="發出一次短音"></button>
+            </div>
+          </figure>
+      <div class="calculation-actions"><button class="action" type="button" data-play="calculation"><span aria-hidden="true">▶</span> 發出一次短音</button></div>
+      <p id="calculation-error" class="calculation-error" role="alert" hidden></p>
+        </li>
+        <li class="calculation-step">
+          <h3><span class="calculation-step-number" aria-hidden="true">2</span><span>聲速 × 往返時間，算總路程</span></h3>
+          <div class="calculation-total calculation-result"><strong class="calculation-equation" id="total-distance"><span>340 × <span data-calculation-time>4</span></span><span>＝<span data-calculation-total>1,360</span> 公尺</span></strong></div>
+        </li>
+        <li class="calculation-step">
+          <h3><span class="calculation-step-number" aria-hidden="true">3</span><span>去程＝回程，總路程分成兩半</span></h3>
+
+          <div class="calculation-lengths" role="img" aria-label="去程與回程等長，合計總路程1,360公尺。" id="calculation-lengths">
+            <div class="calculation-length-bar"><span class="calculation-leg calculation-go">去程</span><span class="calculation-leg calculation-back">回程</span></div>
+            <div class="calculation-total-bracket"><span>總路程 <strong data-calculation-total>1,360</strong> 公尺</span></div>
+          </div>
+        </li>
+        <li class="calculation-step">
+          <h3><span class="calculation-step-number" aria-hidden="true">4</span><span>總路程 ÷ 2，得到單程距離</span></h3>
+
+          <div class="calculation-half calculation-result"><strong class="calculation-equation" id="one-distance"><span><span data-calculation-total>1,360</span> <em>÷ 2</em></span><span>＝<span data-calculation-leg>680</span> 公尺</span></strong><div class="calculation-answer"><p>所以，裝置到反射板的距離是 <strong data-calculation-leg>680</strong> 公尺。</p></div></div>
+        </li>
+      </ol>
+      <p class="calculation-formula">距離＝聲速 × 往返時間 ÷ 2</p>
+      <p id="calculation-reading" class="calculation-sr-only" role="status"></p><p id="calculation-status" class="calculation-sr-only" role="status">準備好，可點喇叭或按鈕觀察。</p>
+    </div>
+    <p class="model-note">這是虛擬模型，假設聲音在空氣中傳播，發出與接收的位置很接近。</p>
+  </div></div>
+</section><section class="lesson-card" id="s4" aria-labelledby="title-4">
+  <header class="lesson-head"><div class="lesson-number">04</div><div><h2 id="title-4">海底看不見，怎麼知道有多深？</h2><p>主動聲納：從回波時間描出海底的起伏</p></div></header>
+  <div class="lesson-body"><div class="card-main">
+    <div class="sonar-intro">
+    <div class="dialogue dialogue--xiaokui"><span class="speaker" aria-label="小葵"></span><p>阿公，那用聲音回來的時間算距離，可以拿來做什麼呢？</p></div>
+    <div class="dialogue"><span class="speaker" aria-label="阿公"></span><p>像船隻就可以用聲納測海底有多深。許多測深聲納會發出超聲波，再利用海底回波的往返時間判斷深度。</p></div>
+    </div>
+    <p class="model-note">超聲波：頻率高於 20,000 Hz 的聲音，人耳一般聽不到。</p>
+    <div class="sonar-lab" id="sonar" data-phase="ready" data-progress="0" data-emissions="0">
+      <div class="sonar-toolbar">
+        <div class="sonar-actions"><div class="sonar-reception"><span class="sr-only">接收狀態</span><strong id="sonar-state" role="status">等待發聲</strong></div><div class="sonar-controls"><button type="button" class="action" data-play="sonar">發出一次聲波</button></div></div>
+        <p class="sonar-toolbar-hint">左右拖船移動，點船發出聲波。</p>
+        <div class="sonar-instruments"><div><span>水中聲速</span><strong>1,500 <small>m/s</small></strong></div><div><span>往返時間</span><strong><span id="sonar-time">0.00</span> <small>秒</small></strong></div></div>
+      </div>
+      <div class="sonar-layout">
+        <div class="sonar-scene">
+          <div class="sonar-ocean">
+            <svg id="sonar-view" viewBox="0 0 1000 500" role="img" aria-label="海洋剖面與起伏海底；聲波由可移動的調查船向下發出，再沿同一路線返回。"></svg>
+            <button type="button" class="sonar-steer sonar-steer--left" id="sonar-left" aria-label="向左移船" title="向左移船">←</button>
+            <button type="button" class="sonar-steer sonar-steer--right" id="sonar-right" aria-label="向右移船" title="向右移船">→</button>
+            <button type="button" id="sonar-ship" role="slider" aria-label="調查船；點擊發聲，左右拖動或使用方向鍵移船，Enter或空白鍵發聲" aria-valuemin="100" aria-valuemax="900" aria-valuenow="500" aria-valuetext="航線中央" aria-controls="sonar-view" title="點船發聲；按住左右拖動移船"><span aria-hidden="true">↔</span><span class="sr-only">點船發聲，拖曳移船</span></button>
+          </div>
+          <section class="sonar-chart" aria-labelledby="sonar-chart-title">
+            <div class="sonar-chart-heading"><h3 id="sonar-chart-title">船上看到的海底輪廓</h3><span>深度（公尺）</span></div>
+            <div class="sonar-chart-plot"><svg id="sonar-chart" role="img" aria-label="船上的測深圖，僅顯示收到回波的測點與點間估計連線。"><g class="sonar-chart-grid" aria-hidden="true"></g><g class="sonar-chart-axis" aria-hidden="true"></g><g id="sonar-profile-layer"></g></svg><p id="sonar-chart-empty" class="sonar-chart-empty">探測後，這裡會留下測點。</p></div>
+            <p class="sonar-chart-note">僅連接已測點；點間為直線估計。</p>
+          </section>
+        </div>
+        <div class="sonar-results">
+          <section class="sonar-calculation" aria-labelledby="sonar-calculation-title"><div class="sonar-calculation-heading"><h3 id="sonar-calculation-title">本次測深</h3><span id="sonar-current-point" class="sonar-current-point" hidden></span></div><p class="sonar-depth-label">探頭到海底的距離</p><p class="sonar-depth"><strong id="sonar-depth">—</strong><span id="sonar-depth-unit" hidden>公尺</span></p><p id="sonar-answer" aria-live="polite">選好船位，發聲後查看測深結果。</p></section>
+          <section class="sonar-records" aria-labelledby="sonar-record-title"><div class="sonar-record-heading"><h3 id="sonar-record-title">累積探測紀錄</h3><button type="button" class="secondary" id="sonar-clear">清除紀錄</button></div><div class="sonar-table-wrap"><table><thead><tr><th scope="col">測點</th><th scope="col">往返時間</th><th scope="col">深度</th></tr></thead><tbody id="sonar-records"></tbody></table><p id="sonar-empty">尚無探測點。</p></div><nav class="sonar-pagination" aria-label="累積探測紀錄換頁"><button type="button" class="secondary" id="sonar-prev" disabled>上一頁</button><span id="sonar-page" aria-live="polite">1／1</span><button type="button" class="secondary" id="sonar-next" disabled>下一頁</button></nav></section>
+        </div>
+      </div>
+      <p class="sonar-hint">探測中船位固定。</p>
+      <p id="sonar-error" class="sonar-error" role="alert" hidden></p><p id="sonar-status" class="sr-only" role="status"></p>
+    </div>
+    <details class="sonar-explanation"><summary>模型說明</summary>
+    <p class="model-note">這是多種海底地形的組合示意，並非特定海域；船與探頭放大、橫向距離壓縮。深度約150–2,250公尺，往返約0.2–3秒；垂直深度與時間使用同一比例。深海實際沒有陽光，剖面以可視化方式呈現。固定地形、垂直聲路，距離從船底探頭起算。1,500 m/s 是題給近似值；本區不播放提示音，透過畫面呈現發射、反射與接收過程。</p>
+    </details>
+  </div></div></section><section class="lesson-card" id="s5" aria-labelledby="title-5">
+<header class="lesson-head"><div class="lesson-number">05</div><div><h2 id="title-5">找找生活中聲音反射的蹤影</h2><p>室內反射與吸音：比較加入材料前後的變化</p></div></header>
+<div class="lesson-body"><div class="card-main">
+<div class="dialogue dialogue--xiaokui"><span class="speaker" aria-label="小葵"></span><p>阿公，那我們平常待的房間裡，聲音碰到四周的牆，也會反射回來嗎？</p></div>
+<div class="dialogue"><span class="speaker" aria-label="阿公"></span><p>會，聲音可能從不同的牆面反射回來。我們可以加入吸音材料，讓部分反射回來的聲音減弱。</p></div>
+<div class="room-wave-lab room-wave-lab--compact" id="room" role="group" aria-label="先發聲觀察，再試著改變房間" data-phase="ready" data-treated="false" data-emissions="0">
+<div class="room-toolbar"><div class="room-wave-controls"><button type="button" class="action" data-room-source="clap" aria-pressed="false">拍一下手</button><button type="button" class="secondary" data-room-source="speech" aria-pressed="false">說一句話</button><button type="button" class="secondary" id="room-pause" disabled>暫停</button><button type="button" class="secondary room-material" id="room-material" aria-pressed="false" aria-controls="room-view">＋ 加入吸音材料</button></div><span id="room-condition" class="room-condition">尚未加入吸音材料</span></div>
+<p id="room-observation" class="room-wave-question">觀察從四周牆面反射回來的波，哪一面牆的反射波先回到小葵身旁？</p>
+<p id="room-error" class="room-wave-error" role="alert" hidden></p>
+<div class="room-wave-scene"><svg id="room-view" viewBox="0 0 1000 640" role="img" aria-label="空教室的俯視聲波剖面；小葵自己發聲與聆聽，圓形波前向四周擴散，再從不同距離的牆面反射返回。"></svg><span id="room-material-label" class="room-surface-label" hidden>吸音材料</span><p class="room-scene-note">俯視聲波示意動畫・非實際傳播速度</p></div>
+<div class="room-reading"><div class="room-wave-legend" aria-label="聲波圖例"><span><i aria-hidden="true"></i>發出的波</span><span class="reflected"><i aria-hidden="true"></i>反射回來的波</span></div><p id="room-status" class="room-wave-status" role="status">先發聲觀察，再加入材料重新比較。</p><p class="room-legend-note">波線的深淺與粗細表示相對強弱。</p></div>
+</div>
+<p class="room-wave-hint">先發聲觀察，再暫停並切換吸音材料，比較同一時刻的反射波：哪些牆面的反射變弱了？</p>
+<figure class="room-life-example"><img src="assets/auditorium-absorption.webp" width="1672" height="941" loading="lazy" alt="禮堂吸音設計情境：左側牆面設有灰綠色布面吸音板，天花板懸吊多片吸音構件，前方為講台與觀眾席。"><figcaption>禮堂可在牆面與天花板設置吸音材料，減弱反射聲，讓演講更清楚。<small>圖片為 AI 生成的生活情境示意。</small></figcaption></figure>
+<details class="room-wave-note"><summary>模型與音效說明</summary><p>空教室為簡化模型；波前以示意動畫呈現水平切片，非實際傳播速度。語音僅取代表波前，音效不與動畫逐波同步。播放結束後回到沒有波線的房間畫面；播放中可暫停、切換材料比較同一時刻。音效以三維房間模型合成，包含地板、天花板和多次反射，並非現場錄音或個人聽覺量測。材料反射強弱為定性示意；比較時保留相同發聲、位置與直接聲強度。吸音減少部分反射，與阻擋聲音穿過牆壁的隔音作用不同。</p></details>
+</div></div></section><section class="quiz unit-quiz well-quiz" id="quiz" aria-labelledby="quiz-title">
+<header class="quiz-head quiz-head--standard"><span class="quiz-mark" aria-hidden="true">?</span><div><p class="quiz-kicker">單元小測</p><h2 id="quiz-title">這口井有多深？</h2><p class="quiz-intro">朝井底喊一聲，利用回聲計算井深。</p></div></header>
+<div id="well" class="quiz-body" data-phase="ready" data-observed="false" data-emissions="0">
+<div class="well-layout"><div class="well-picture">
+<figure class="well-scene"><svg viewBox="0 0 1000 750" preserveAspectRatio="xMinYMid slice" role="img" aria-label="小葵在井口朝乾井內喊話；石砌井壁往下變暗，作答前看不到井底。"><image href="assets/well-scene.webp?v=20261101-well" width="1000" height="750" preserveAspectRatio="xMidYMid slice"/><g id="well-waves" aria-hidden="true"></g></svg><button type="button" id="well-person" class="well-person" aria-label="點小葵，朝井底喊一聲"></button><span class="well-bubble" id="well-bubble" aria-hidden="true" hidden>喂！</span><figcaption class="well-tag">乾井示意・反射面為井底</figcaption></figure>
+<div class="well-legend" aria-label="聲音圖例"><span><i aria-hidden="true"></i>喊聲</span><span class="echo"><i aria-hidden="true"></i>井底回聲</span></div>
+<div class="well-controls"><button type="button" class="action" id="well-call">朝井底喊一聲</button><button type="button" class="secondary" id="well-new">換一口井</button></div>
+<p id="well-status" class="well-status" role="status">點小葵或按鈕，朝井底喊一聲。</p><p id="well-error" class="well-error" role="alert" hidden></p>
+</div><div class="well-side">
+<section class="well-panel" aria-labelledby="well-record-title"><h3 id="well-record-title">回聲紀錄</h3><div class="well-timeline"><div class="well-event"><span>喊聲開始</span><i aria-hidden="true"></i><strong id="well-start">—</strong></div><div class="well-event"><span>回聲開始</span><i aria-hidden="true"></i><strong id="well-end">—</strong></div></div><div class="well-time"><span>往返時間</span><strong><span id="well-time">—</span><small>秒</small></strong></div></section>
+<section class="well-panel" aria-labelledby="well-conditions-title"><h3 id="well-conditions-title">題目條件</h3><span>空氣聲速</span><strong class="well-speed">340 公尺／秒</strong><p>聲音從井口到井底，再返回井口。</p></section>
+<form id="well-form" class="well-panel" novalidate><h3>你的計算</h3><label for="well-depth">這口井的深度為</label><div class="well-answer"><input id="well-depth" name="depth" type="number" inputmode="numeric" min="1" step="1" autocomplete="off" aria-describedby="well-instruction well-feedback"><span>公尺</span></div><button class="action well-check" id="well-check" type="submit">核對井深</button><p id="well-instruction">依題給條件計算，請填整數公尺。</p></form>
+</div></div>
+<p id="well-feedback" class="quiz-result well-feedback" data-result="ready" role="status" aria-live="polite"></p>
+<details class="well-notes"><summary>情境與聲音說明</summary><p>本題是乾井的簡化模型，只取井底的主要回聲，未呈現側壁的其他反射。發聲與接收近似位於井口；題給空氣聲速340公尺／秒，忽略溫度隨深度變化。小葵喊聲為合成配音；同一喊聲降低音量後，依題目往返時間返回。這是教學示意，並非真實井的量測。若井內有水，水面反射測得的是井口到水面的距離。</p></details>
+<noscript><p class="well-noscript">請啟用 JavaScript，才能讓小葵喊話、取得回聲紀錄與核對井深。</p></noscript>
+</div></section><details class="sources"><summary>資料依據與模型說明</summary><p>依教育部自然科學領綱Ka-Ⅳ-4及說明4-1；參考康軒115課程計畫、翰林公開回聲應用資料及校本課程計畫。時間、波前及室內反射是教學示意。</p><ul><li><a href="https://edu.law.moe.gov.tw/LawContent.aspx?id=GL001823">教育部自然科學領綱</a></li><li><a href="https://doi.org/10.1186/s13636-021-00229-0">dEchorate：同一房間不同吸音條件的量測研究</a></li><li><a href="https://www.gov.uk/government/publications/bb93-acoustic-design-of-schools-performance-standards">英國教育部：學校聲學設計參考</a></li><li><a href="https://oceanservice.noaa.gov/facts/sonar.html">NOAA：主動與被動聲納</a></li><li><a href="https://ocean.si.edu/ecosystems/deep-sea/deep-sea">史密森尼：海底地形與深海環境</a></li><li><a href="https://oceanexplorer.noaa.gov/ocean-fact/seamounts/">NOAA：海山</a></li><li><a href="https://www.ehanlin.com.tw/app/keyword/國中/理化/回聲應用.html">翰林：回聲應用</a></li></ul></details></div></div></main><footer class="shell foot">國二上理化・波動與聲音</footer></body></html>

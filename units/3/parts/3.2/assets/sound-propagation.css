@@ -1,0 +1,32 @@
+/* 第二學習區塊：聲音傳播示範。 */
+/* 區塊外框、側欄、標題與重點沿用第一區塊的共用版型。 */
+#card-02 .card-main{container-type:inline-size}
+.sound-visual{padding:8px 8px 0;background:linear-gradient(115deg,#f6f9ef,#fffefa 60%);border-color:#acbfa8}
+.sound-visual svg{overflow:visible}
+.sound-visual text{font-size:22px;fill:#174a37;font-weight:650}
+.sound-visual .sound-small{font-size:18px;fill:#8b948b;font-weight:400}
+.sound-visual .sound-orange{fill:#c66313}
+.sound-visual .particle-dot{fill:url(#sound-dot-shade);stroke:none}
+.sound-visual .particle-dot.focus{fill:#f3971c;stroke:#fff2cb;stroke-width:3}
+.sound-visual .sound-reference{stroke:#e18b3f;stroke-dasharray:7 7;stroke-width:2;opacity:.65}
+.sound-bell-hit{pointer-events:all;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.sound-bell-hit:focus-visible{stroke:#b27823;stroke-width:3}
+.sound-focus-ring{fill:transparent;stroke:transparent}
+.sound-note{margin:8px 0 0!important;font-size:.8rem;color:var(--muted)}
+.sound-mobile-zoom,.sound-mobile-labels{display:none}
+@media(max-width:640px){
+ .sound-visual{padding:5px}
+ .sound-scene .sound-scene-words{display:none}
+ .sound-mobile-labels{display:flex;justify-content:space-between;gap:8px;margin:-5px 7px 14px;color:#174a37;font-size:.8rem;font-weight:700}
+ .sound-mobile-zoom{display:block;border-top:1px solid #d7e1dd;padding:12px 2px 0}
+ .sound-mobile-zoom>p{margin:0;color:var(--muted);font-size:.8rem}
+ .sound-mobile-zoom svg{margin-top:4px}
+}
+
+@container(max-width:550px){
+ .sound-scene .sound-scene-words{display:none}
+ .sound-mobile-labels{display:flex;justify-content:space-between;gap:8px;margin:-5px 7px 14px;color:#174a37;font-size:.8rem;font-weight:700}
+ .sound-mobile-zoom{display:block;border-top:1px solid #d7e1dd;padding:12px 2px 0}
+ .sound-mobile-zoom>p{margin:0;color:var(--muted);font-size:.8rem}
+ .sound-mobile-zoom svg{margin-top:4px}
+}

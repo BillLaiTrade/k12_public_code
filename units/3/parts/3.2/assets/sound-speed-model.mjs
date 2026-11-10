@@ -1,0 +1,75 @@
+// 所有組別使用同一個便於觀察的往返訊號；傳播延遲依真實聲速計算。
+// 往返節奏與振幅是微觀放大示意，不用來模擬可聽聲音的音高。
+export const DISTANCE = 5000;
+export const START_X = 110;
+export const END_X = 410;
+export const FREQUENCY = .6;
+export const PULSE_DURATION = 4;
+export const AMPLITUDE = 4;
+export const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+// 與煙火小測採用相同的空氣聲速近似公式；T 為攝氏溫度，v 為公尺／秒。
+export const airSpeed = temperature => 331 + .6 * temperature;
+export const arrivalTime = speed => DISTANCE / speed;
+export const reachedDistance = (speed, time) => clamp(speed * time, 0, DISTANCE);
+
+export function displacement(localTime) {
+  if (localTime <= 0 || localTime >= PULSE_DURATION) return 0;
+  return AMPLITUDE * Math.sin(2 * Math.PI * FREQUENCY * localTime)
+    * Math.sin(Math.PI / 2 * clamp(localTime / .04, 0, 1)) ** 2
+    * Math.sin(Math.PI / 2 * clamp((PULSE_DURATION - localTime) / .25, 0, 1)) ** 2;
+}
+
+export function conditions(mode) {
+  if (mode === 'temperature') return [
+    { id: 'cold', kind: 'air', name: '0°C 低溫組', description: '溫度固定', speed: airSpeed(0), temperature: 0 },
+    { id: 'hot', kind: 'air', name: '80°C 高溫組', description: '溫度固定', speed: airSpeed(80), temperature: 80 }
+  ];
+  return [
+    { id: 'air', kind: 'air', name: '空氣', description: '氣體・分子分散', speed: 343 },
+    { id: 'water', kind: 'water', name: '水', description: '液體・水分子密集', speed: 1480 },
+    { id: 'steel', kind: 'steel', name: '鋼', description: '固體・原子彈性連結', speed: 5900 }
+  ];
+}
+
+export const appearance = {
+  air: { columns: 22, rows: 3 },
+  water: { columns: 16, rows: 5 },
+  steel: { columns: 20, rows: 4 }
+};
+
+export function positions(kind) {
+  const { columns, rows } = appearance[kind];
+  const points = [];
+  for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
+    const seed = Math.sin((column + 1) * 127.1 + (row + 1) * 311.7) * 43758.5453;
+    const noise = kind === 'steel' ? 0 : 2 * (seed - Math.floor(seed)) - 1;
+    const fraction = column / (columns - 1);
+    const stagger = kind === 'water' ? Math.sin(Math.PI * fraction) * (row % 2 ? 6 : -6) : 0;
+    const x = START_X + fraction * (END_X - START_X)
+      + (column === 0 || column === columns - 1 ? 0 : noise * 1.1 + stagger);
+    points.push({
+      x, y: (kind === 'water' ? 45 : 41) + row / (rows - 1) * (kind === 'water' ? 54 : 60) + noise * (kind === 'air' ? 7 : 1.8),
+      distance: (x - START_X) / (END_X - START_X) * DISTANCE,
+      row, column
+    });
+  }
+  return points;
+}
+
+export function sample(point, speed, time) {
+  const localTime = time - point.distance / speed;
+  return {
+    x: point.x + displacement(localTime), y: point.y,
+    reached: time > 0 && localTime >= 0,
+    moving: localTime > 0 && localTime < PULSE_DURATION
+  };
+}
+
+export function runEnd(groups) {
+  return Math.max(...groups.map(group => arrivalTime(group.speed))) + PULSE_DURATION + .01;
+}
+
+export function winners(groups) {
+  const first = Math.min(...groups.map(group => arrivalTime(group.speed)));
+  return groups.filter(group => Math.abs(arrivalTime(group.speed) - first) < 1e-10).map(group => group.id);
+}

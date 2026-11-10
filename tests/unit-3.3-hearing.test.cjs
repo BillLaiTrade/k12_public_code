@@ -1,0 +1,147 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),{spawn}=require('node:child_process'),path=require('node:path'),fs=require('node:fs/promises'),{chromium}=require('playwright');
+test('hearing exploration: continuous sine, frequency ribbon and manual records',{timeout:180000},async t=>{
+ const server=spawn('python3',['-u','-m','http.server','0','--bind','127.0.0.1'],{cwd:path.resolve(__dirname,'..'),stdio:['ignore','pipe','ignore']});t.after(()=>server.kill());
+ const port=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('server timeout')),5000);server.stdout.on('data',d=>{const m=String(d).match(/port (\d+)/);if(m){clearTimeout(timer);resolve(m[1]);}});server.once('error',reject);});
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',...(process.env.SOUND33_BASE_URL?{proxy:{server:process.env.HTTPS_PROXY}}:{})});t.after(()=>browser.close());
+ const context=await browser.newContext({viewport:{width:1440,height:1200},reducedMotion:'reduce'});t.after(()=>context.close());
+ await context.addInitScript(()=>{
+  window.hearingRuns=[];const create=AudioContext.prototype.createOscillator;
+  AudioContext.prototype.createOscillator=function(){const node=create.call(this),start=node.start.bind(node),stop=node.stop.bind(node),context=this;let run;
+   node.start=(...args)=>{run={node,context,stopped:false};window.hearingRuns.push(run);return start(...args);};node.stop=(...args)=>{if(run)run.stopped=true;return stop(...args);};return node;};
+ });
+ const page=await context.newPage(),errors=[],capture=process.env.HEARING_CAPTURE_DIR||'/tmp/unit33-hearing-review';await fs.mkdir(capture,{recursive:true});
+ page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
+ const url=process.env.SOUND33_BASE_URL||`http://127.0.0.1:${port}/units/3/parts/3.3/`;
+ await page.goto(url+'#card-06',{waitUntil:'networkidle'});
+ const root=page.locator('#card-06'),band=root.locator('[data-hearing-band]'),toggle=root.locator('[data-hearing-toggle]'),reset=async()=>root.locator('[data-hearing-reset]').click();
+ const select=async frequency=>{const b=await band.boundingBox(),fraction=Math.log(frequency/20)/Math.log(1000);await page.mouse.click(b.x+b.width*fraction,b.y+b.height*.75);return Number(await band.getAttribute('aria-valuenow'));};
+ const play=async()=>{await toggle.click();await page.waitForFunction(()=>document.querySelector('#card-06').dataset.playing==='true');};
+ const audition=async()=>{await play();await toggle.click();};
+ const recordsEnabled=async enabled=>{assert.equal(await root.getAttribute('data-record-ready'),String(enabled));assert.equal(await root.locator('[data-hearing-record]').evaluateAll((ns,value)=>ns.every(n=>n.disabled===!value),enabled),true);};
+ await t.test('approved composition has no autoplay, a logarithmic ribbon and empty manual endpoints',async()=>{
+  assert.equal(await root.locator('h2').innerText(),'你聽得到哪些頻率的聲音？');assert.equal(await root.locator('#hearing-frequency').innerText(),'1,000 Hz');
+  assert.equal(await page.evaluate(()=>window.hearingRuns.length),0);assert.equal(await root.locator('[data-hearing-record]').count(),2);assert.equal(await root.getAttribute('data-low'),'');assert.equal(await root.getAttribute('data-high'),'');
+  assert.ok(await band.evaluate(n=>getComputedStyle(n.querySelector('.hearing-ribbon')).backgroundImage.includes('gradient')));
+  assert.ok(Math.abs(await band.evaluate(n=>parseFloat(n.style.getPropertyValue('--frequency-position')))-56.633)<.01);
+  assert.equal(await root.locator('.hearing-animals').getAttribute('open'),null);assert.equal(await root.locator('form').count(),0);
+  await recordsEnabled(false);assert.match(await root.locator('.hearing-record-note').innerText(),/先播放目前頻率/);
+ });
+ await t.test('records require successful playback of the current selection, stay available after pause and reset on a frequency change',async()=>{
+  await reset();await recordsEnabled(false);
+  await root.locator('[data-hearing-record=high]').evaluate(n=>{n.disabled=false;n.click();});assert.equal(await root.getAttribute('data-high'),'');
+  await band.focus();await page.keyboard.press('End');await recordsEnabled(false);await play();await recordsEnabled(true);await toggle.click();await recordsEnabled(true);
+  await root.locator('[data-hearing-record=high]').click();assert.equal(await root.getAttribute('data-high'),'20000');
+  await band.focus();await page.keyboard.press('End');await recordsEnabled(true);
+  await page.keyboard.press('Home');await recordsEnabled(false);await page.keyboard.press('End');await recordsEnabled(false);assert.equal(await root.getAttribute('data-high'),'20000');
+  await band.focus();await page.keyboard.press('Home');await audition();await recordsEnabled(true);
+  await root.locator('[data-hearing-record=low]').focus();await page.keyboard.press('Enter');assert.equal(await root.getAttribute('data-low'),'20');
+  await page.setViewportSize({width:1366,height:768});await root.locator('.hearing-records').screenshot({path:path.join(capture,'record-eligible-1366.png')});
+  await band.focus();await page.keyboard.press('End');await recordsEnabled(false);await root.locator('.hearing-records').screenshot({path:path.join(capture,'record-needs-listening-1366.png')});
+  await page.setViewportSize({width:1440,height:1200});await reset();await recordsEnabled(false);
+ });
+ await t.test('actual rendered tones have the chosen frequency, fixed low gain and smooth start/stop',async()=>{
+  const results=await page.evaluate(async()=>{
+   const {createHearingVoice}=await import(new URL('assets/hearing-audio.mjs?v=1',location.href));const results=[];
+   for(const hz of [20,80,1000,8000,16000,20000]){
+    const c=new OfflineAudioContext(1,24000,48000),voice=createHearingVoice(c,hz);voice.start();voice.stop(.4);const buffer=await c.startRendering(),a=buffer.getChannelData(0);let crossings=0,sum=0,peak=0;
+    for(let i=4800;i<14400;i++){sum+=a[i]**2;if(a[i-1]<=0&&a[i]>0)crossings++;}for(const v of a)peak=Math.max(peak,Math.abs(v));
+    results.push({hz,measured:crossings/.2,rms:Math.sqrt(sum/9600),peak,first:a[0],afterStop:Math.max(...a.slice(21000).map(Math.abs))});
+   }
+   const c=new OfflineAudioContext(1,24000,48000),v=createHearingVoice(c,1000);v.start();v.setFrequency(2000,.15);v.stop(.4);const a=(await c.startRendering()).getChannelData(0);let count=0;for(let i=12000;i<16800;i++)if(a[i-1]<=0&&a[i]>0)count++;
+   results.push({retuned:count/.1});return results;
+  });
+  for(const r of results.slice(0,-1)){assert.ok(Math.abs(r.measured-r.hz)<=5,`${r.hz}Hz rendered ${r.measured}`);assert.ok(r.rms>.03&&r.rms<.044,`${r.hz}Hz RMS ${r.rms}`);if(r.hz<=16000)assert.ok(Math.abs(r.rms-.06/Math.sqrt(2))<.0001);assert.ok(r.peak<=.060001);assert.equal(r.first,0);assert.equal(r.afterStop,0);}
+  assert.ok(Math.abs(results.at(-1).retuned-2000)<=10);
+  const early=await page.evaluate(async()=>{const {createHearingVoice}=await import(new URL('assets/hearing-audio.mjs?v=1',location.href)),c=new OfflineAudioContext(1,4800,48000),v=createHearingVoice(c,1000);v.start();v.stop(.01);const a=(await c.startRendering()).getChannelData(0);return{peak:Math.max(...a.map(Math.abs)),after:Math.max(...a.slice(2400).map(Math.abs))};});assert.ok(early.peak>0&&early.peak<.016);assert.equal(early.after,0);
+ });
+ await t.test('play is continuous and retunes the existing real oscillator without restarting or boosting volume',async()=>{
+  await reset();await play();await page.waitForTimeout(1300);assert.equal(await root.getAttribute('data-playing'),'true');
+  const n=await page.evaluate(()=>window.hearingRuns.length),chosen=await select(8000);await page.waitForTimeout(80);
+  const actual=await page.evaluate(()=>{const r=window.hearingRuns.at(-1);return{hz:r.node.frequency.value,type:r.node.type,stopped:r.stopped};});
+  assert.equal(await page.evaluate(()=>window.hearingRuns.length),n);assert.equal(actual.type,'sine');assert.ok(Math.abs(actual.hz-chosen)<.1);assert.equal(actual.stopped,false);
+  await recordsEnabled(true);await root.locator('[data-hearing-record=high]').click();assert.equal(await root.getAttribute('data-high'),String(chosen));
+  await toggle.click();assert.equal(await root.getAttribute('data-playing'),'false');assert.equal(await page.evaluate(()=>window.hearingRuns.at(-1).stopped),true);
+  await play();await page.waitForTimeout(60);assert.ok(Math.abs(await page.evaluate(()=>window.hearingRuns.at(-1).node.frequency.value)-chosen)<.1);await toggle.click();
+ });
+ await t.test('real dragging clamps both ends and keyboard works while paused without starting audio',async()=>{
+  await reset();const n=await page.evaluate(()=>window.hearingRuns.length),b=await band.boundingBox();await page.mouse.move(b.x+b.width*.3,b.y+b.height*.7);await page.mouse.down();await page.mouse.move(b.x+b.width*1.15,b.y+b.height*.7,{steps:12});await page.mouse.up();assert.equal(await band.getAttribute('aria-valuenow'),'20000');
+  await page.mouse.move(b.x+b.width*.7,b.y+b.height*.7);await page.mouse.down();await page.mouse.move(b.x-30,b.y+b.height*.7,{steps:12});await page.mouse.up();assert.equal(await band.getAttribute('aria-valuenow'),'20');
+  await band.focus();await page.keyboard.press('ArrowRight');assert.ok(Number(await band.getAttribute('aria-valuenow'))>20);await page.keyboard.press('End');assert.equal(await band.getAttribute('aria-valuenow'),'20000');await page.keyboard.press('Home');assert.equal(await band.getAttribute('aria-valuenow'),'20');
+  assert.equal(await page.evaluate(()=>window.hearingRuns.length),n);await reset();
+ });
+ await t.test('manual endpoints can be recorded and overwritten, reject reversed bounds and survive pause/navigation',async()=>{
+  const low=await select(80);await audition();await root.locator('[data-hearing-record=low]').click();const high=await select(8000);await audition();await root.locator('[data-hearing-record=high]').click();assert.equal(await root.getAttribute('data-low'),String(low));assert.equal(await root.getAttribute('data-high'),String(high));
+  await play();await root.locator('[data-hearing-record=high]').click();assert.equal(await root.getAttribute('data-playing'),'true');await toggle.click();
+  await select(16000);await audition();await root.locator('[data-hearing-record=low]').click();assert.equal(await root.getAttribute('data-low'),String(low));assert.match(await root.locator('.hearing-feedback').innerText(),/不能高於/);
+  await select(20);await audition();await root.locator('[data-hearing-record=high]').click();assert.equal(await root.getAttribute('data-high'),String(high));assert.match(await root.locator('.hearing-feedback').innerText(),/不能低於/);
+  const replaced=await select(100);await audition();await root.locator('[data-hearing-record=low]').click();assert.equal(await root.getAttribute('data-low'),String(replaced));
+  await page.locator('.route a[href="#card-07"]').click();await page.locator('.route a[href="#card-06"]').click();assert.equal(await root.getAttribute('data-low'),String(replaced));assert.equal(await root.getAttribute('data-playing'),'false');
+  await reset();assert.equal(await root.getAttribute('data-low'),'');assert.equal(await root.getAttribute('data-high'),'');assert.equal(await band.getAttribute('aria-valuenow'),'1000');
+ });
+ await t.test('either endpoint can be cancelled independently without changing frequency, playback or the other record',async()=>{
+  await reset();const clear=side=>root.locator(`[data-hearing-clear=${side}]`);
+  assert.equal(await clear('low').isDisabled(),true);assert.equal(await clear('high').isDisabled(),true);
+  const low=await select(80);await audition();await root.locator('[data-hearing-record=low]').click();const high=await select(8000);await audition();await root.locator('[data-hearing-record=high]').click();await play();const n=await page.evaluate(()=>window.hearingRuns.length);
+  await clear('low').click();assert.equal(await root.getAttribute('data-low'),'');assert.equal(await root.getAttribute('data-high'),String(high));assert.equal(await root.locator('#hearing-low').innerText(),'尚未記錄');assert.equal(await clear('low').isDisabled(),true);assert.equal(await root.getAttribute('data-playing'),'true');assert.equal(await band.getAttribute('aria-valuenow'),String(high));assert.equal(await page.evaluate(()=>window.hearingRuns.length),n);
+  await select(low);await root.locator('[data-hearing-record=low]').click();assert.equal(await clear('low').isEnabled(),true);await clear('high').focus();await page.keyboard.press('Enter');assert.equal(await root.getAttribute('data-high'),'');assert.equal(await root.getAttribute('data-low'),String(low));assert.equal(await root.getAttribute('data-playing'),'true');
+  await clear('low').click();assert.equal(await root.getAttribute('data-low'),'');assert.equal(await clear('high').isDisabled(),true);await reset();
+ });
+ await t.test('speaker click toggles, other blocks replace sound and hiding/leaving/reset stop without autoplay',async()=>{
+  await root.locator('.hearing-speaker-button').click();await page.waitForFunction(()=>document.querySelector('#card-06').dataset.playing==='true');await root.locator('.hearing-speaker-button').click();assert.equal(await root.getAttribute('data-playing'),'false');
+  for(const action of [async()=>page.locator('[data-play=tone-pure]').click(),async()=>page.locator('.route a[href="#card-07"]').click(),async()=>page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));delete document.hidden;}),async()=>page.locator('#unit-quiz').evaluate(n=>n.scrollIntoView()),reset]){
+   await play();await action();await page.waitForFunction(()=>document.querySelector('#card-06').dataset.playing==='false');assert.equal(await page.evaluate(()=>window.hearingRuns.at(-1).stopped),true);
+  }
+  await page.locator('[data-play=tone-string]').click();await page.waitForFunction(()=>document.querySelector('#card-05').dataset.playing==='true');await play();assert.equal(await page.locator('#card-05').getAttribute('data-playing'),'false');await toggle.click();
+ });
+ await t.test('pending resume can be cancelled and playback errors can retry',async()=>{
+  await reset();await page.evaluate(()=>{window.savedHearingResume=AudioContext.prototype.resume;AudioContext.prototype.resume=function(){return new Promise(r=>window.releaseHearing=r);};});await toggle.click();assert.equal(await root.getAttribute('data-preparing'),'true');await recordsEnabled(false);await select(8000);await recordsEnabled(false);const n=await page.evaluate(()=>window.hearingRuns.length);await toggle.click();await page.evaluate(()=>window.releaseHearing());await page.waitForTimeout(70);assert.equal(await page.evaluate(()=>window.hearingRuns.length),n);await recordsEnabled(false);
+  await toggle.click();await reset();await page.evaluate(()=>window.releaseHearing());await page.waitForTimeout(60);assert.equal(await page.evaluate(()=>window.hearingRuns.length),n);
+  await recordsEnabled(false);await page.evaluate(()=>AudioContext.prototype.resume=()=>Promise.reject(Error('test')));await toggle.click();await page.waitForFunction(()=>!document.querySelector('.hearing-feedback').hidden);assert.match(await root.locator('.hearing-feedback').innerText(),/無法播放/);await recordsEnabled(false);await page.evaluate(()=>AudioContext.prototype.resume=window.savedHearingResume);await play();await recordsEnabled(true);await toggle.click();
+ });
+ await t.test('unsupported startup and live retuning do not qualify the new frequency for recording',async()=>{
+  const c=await browser.newContext();await c.addInitScript(()=>{const Native=window.AudioContext;window.AudioContext=class extends Native{constructor(){super({sampleRate:32000});}};});const p=await c.newPage();
+  try{
+   await p.goto(url+'#card-06',{waitUntil:'networkidle'});const card=p.locator('#card-06'),ribbon=card.locator('[data-hearing-band]'),button=card.locator('[data-hearing-toggle]');
+   await ribbon.focus();await p.keyboard.press('End');await button.click();await p.waitForFunction(()=>!document.querySelector('#card-06 .hearing-feedback').hidden);assert.equal(await card.getAttribute('data-record-ready'),'false');assert.equal(await card.getAttribute('data-playing'),'false');
+   await ribbon.focus();await p.keyboard.press('Home');await button.click();await p.waitForFunction(()=>document.querySelector('#card-06').dataset.recordReady==='true');await card.locator('[data-hearing-record=low]').click();assert.equal(await card.getAttribute('data-low'),'20');
+   await ribbon.focus();await p.keyboard.press('End');await p.waitForFunction(()=>document.querySelector('#card-06').dataset.playing==='false');assert.equal(await card.getAttribute('data-record-ready'),'false');assert.equal(await card.locator('[data-hearing-record=high]').isDisabled(),true);assert.equal(await card.getAttribute('data-low'),'20');
+  }finally{await c.close();}
+ });
+ await t.test('knowledge retains hearing range, animal upper bounds and device/colour limitations',async()=>{
+  assert.equal(await root.locator('.hearing-animals').getAttribute('open'),null);
+  const main=root.getByRole('complementary',{name:'聽不到，就沒有聲波嗎？'});
+  assert.equal(await main.isVisible(),true);assert.match(await main.innerText(),/人耳概略可聽範圍約為 20～20,000 Hz/);assert.match(await main.innerText(),/高於 20,000 Hz 的聲音稱為超聲波/);assert.match(await main.innerText(),/聽不到，不代表沒有聲波/);
+  assert.equal(await main.locator('.speaker,.dialogue').count(),0);
+  const prompt=root.locator('.dialogue').filter({hasText:'你聽不到的聲音，其他動物也聽不到嗎？'});assert.equal(await prompt.isVisible(),true);assert.equal(await prompt.locator('.speaker').count(),1);
+  for(const [width,height]of [[1440,900],[1366,768]]){
+   await page.setViewportSize({width,height});await main.scrollIntoViewIfNeeded();assert.equal(await main.evaluate(n=>n.scrollWidth>n.clientWidth+1),false);await main.screenshot({path:path.join(capture,`main-concepts-${width}.png`)});await root.locator('.hearing-animals').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(capture,`knowledge-context-${width}.png`)});
+  }
+  await root.locator('.hearing-animals summary').click();const text=await root.locator('.hearing-animals').innerText();assert.match(text,/次聲波/);assert.doesNotMatch(text,/稱為超聲波|聽不到不代表沒有聲波/);assert.match(text,/30,000[\s\S]*100,000/);assert.match(text,/顏色/);
+  assert.equal(await root.locator('.hearing-animal-card svg image').count(),3);
+  const image=await page.evaluate(async()=>{const image=new Image();image.src=new URL('assets/hearing-animal-illustrations.png',location.href);await image.decode();return{width:image.naturalWidth,height:image.naturalHeight};});assert.deepEqual(image,{width:2172,height:724});
+  for(const width of [1440,1024,820,390,320]){
+   await page.setViewportSize({width,height:1700});const clipped=await root.locator('.hearing-animal-card').evaluateAll(cards=>cards.filter(card=>{const r=card.getBoundingClientRect(),s=card.querySelector('svg').getBoundingClientRect();return s.width<=0||s.height<80||s.left<r.left||s.right>r.right+1||card.scrollWidth>card.clientWidth+1;}).length);assert.equal(clipped,0,`${width}px animal illustrations fit their cards`);
+   if([1440,390].includes(width))await root.locator('.hearing-animals').screenshot({path:path.join(capture,`hearing-animals-${width}.png`)});
+  }
+  await root.locator('.hearing-animals summary').click();await page.setViewportSize({width:1440,height:1200});
+ });
+ await t.test('approved desktop hierarchy and mobile controls remain inside their panels at eight widths',async()=>{
+  await select(80);await audition();await root.locator('[data-hearing-record=low]').click();await select(8000);await audition();await root.locator('[data-hearing-record=high]').click();
+  for(const width of [1920,1440,1280,1024,820,760,390,320]){
+   await page.setViewportSize({width,height:1200});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+   const issues=await root.evaluate(n=>{const box=n.getBoundingClientRect();return[...n.querySelectorAll('button,[role=slider],output,.dialogue')].flatMap(el=>{const b=el.getBoundingClientRect();return b.width&&(b.left<box.left||b.right>box.right+1||el.scrollWidth>el.clientWidth+2)?[el.className||el.id]:[];});});assert.deepEqual(issues,[],`${width}px layout`);
+   const geometry=await root.evaluate(n=>{const b=s=>n.querySelector(s).getBoundingClientRect();const image=b('.hearing-speaker-stage'),readout=b('.hearing-readout'),ribbon=b('.hearing-ribbon'),records=b('.hearing-records');return {image:{left:image.left,right:image.right,top:image.top,bottom:image.bottom},readout:{left:readout.left,bottom:readout.bottom},ribbon:{left:ribbon.left,top:ribbon.top},records:{top:records.top}};});
+   assert.ok(geometry.image.right<=geometry.readout.left+1);assert.ok(geometry.readout.bottom<=geometry.ribbon.top);assert.ok(geometry.records.top>geometry.ribbon.top);
+   if([1440,1024,390].includes(width)){if(width===390)await page.setViewportSize({width,height:1700});await root.screenshot({path:path.join(capture,`hearing-${width}.png`)});}
+  }
+  await page.setViewportSize({width:1440,height:1200});await play();await root.screenshot({path:path.join(capture,'hearing-playing.png')});await toggle.click();
+ });
+ await t.test('real mobile touch drags while the same tone plays and taps toggle once',async()=>{
+  const c=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),p=await c.newPage();await p.addInitScript(()=>{window.starts=0;const create=AudioContext.prototype.createOscillator;AudioContext.prototype.createOscillator=function(){const o=create.call(this),start=o.start.bind(o);o.start=(...args)=>{window.starts++;return start(...args);};return o;};});await p.goto(url+'#card-06',{waitUntil:'networkidle'});
+  const button=p.locator('[data-hearing-toggle]');await button.tap();await p.waitForFunction(()=>document.querySelector('#card-06').dataset.playing==='true');const ribbon=p.locator('[data-hearing-band]');await ribbon.scrollIntoViewIfNeeded();const b=await ribbon.boundingBox(),cdp=await c.newCDPSession(p);
+  const x=b.x+b.width*.3,y=b.y+b.height*.7;await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:b.x+b.width*.8,y}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});assert.ok(Number(await ribbon.getAttribute('aria-valuenow'))>4500);assert.equal(await p.evaluate(()=>window.starts),1);assert.equal(await p.locator('#card-06').getAttribute('data-playing'),'true');await button.tap();await p.waitForTimeout(70);assert.equal(await p.locator('#card-06').getAttribute('data-playing'),'false');assert.equal(await p.evaluate(()=>window.starts),1);
+  await button.tap();await p.waitForFunction(()=>window.starts===2);const selected=await ribbon.getAttribute('aria-valuenow');await p.locator('[data-hearing-record=low]').tap();assert.equal(await p.locator('#card-06').getAttribute('data-low'),selected);assert.equal(await p.locator('#card-06').getAttribute('data-playing'),'true');await p.locator('[data-hearing-clear=low]').tap();await p.waitForTimeout(70);assert.equal(await p.locator('#card-06').getAttribute('data-low'),'');assert.equal(await p.locator('#card-06').getAttribute('data-playing'),'true');await p.locator('[data-hearing-reset]').tap();assert.equal(await p.locator('#card-06').getAttribute('data-low'),'');assert.equal(await p.locator('#card-06').getAttribute('data-playing'),'false');
+  await p.locator('.hearing-speaker-button').tap();await p.waitForFunction(()=>window.starts===3);await p.locator('.hearing-speaker-button').tap();await p.waitForTimeout(70);assert.equal(await p.evaluate(()=>window.starts),3);assert.equal(await p.locator('#card-06').getAttribute('data-playing'),'false');await c.close();
+ });
+ assert.deepEqual(errors,[]);
+});

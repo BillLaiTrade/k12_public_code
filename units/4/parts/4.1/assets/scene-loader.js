@@ -1,0 +1,120 @@
+const failureMessage = '立體畫面未能載入，請重新整理頁面後再試。';
+
+const scenes = [
+  {
+    canvas: '#aperture-3d-scene',
+    root: '#card-03 .aperture-lab',
+    notice: '#aperture-load-failure',
+    load: () => import('./aperture-3d.js?v=no-view-reset-20261105'),
+    showUnavailable(root) {
+      root.querySelector('#aperture-result').textContent = failureMessage;
+      root.querySelector('#aperture-xiaokui-observation').textContent = '請重新整理頁面後再試。';
+      const operationHint = root.querySelector('#aperture-operation-hint');
+      if (operationHint) operationHint.textContent = '立體畫面暫時無法操作，請重新整理頁面後再試。';
+      const heightOutput = root.querySelector('#aperture-offset-output');
+      heightOutput.textContent = '無法操作';
+      heightOutput.classList.remove('is-standard');
+      root.querySelectorAll('[data-plate]').forEach((button) => {
+        button.classList.remove('is-transmitting');
+        button.setAttribute('aria-pressed', 'false');
+      });
+    }
+  },
+  {
+    canvas: '#shadow-3d-scene',
+    root: '#card-04 .lesson-body',
+    notice: '#shadow-load-failure',
+    load: () => import('./shadow-3d.js?v=no-view-reset-20261105'),
+    showUnavailable(root) {
+      root.querySelector('#shadow-scene-status').textContent = failureMessage;
+      root.querySelector('#shadow-toggle-label').textContent = '無法操作';
+      root.querySelector('#shadow-block-toggle').setAttribute('aria-label', '遮擋物暫時無法操作');
+      root.querySelector('#shadow-view-hint').textContent = '立體畫面暫時無法操作，請重新整理頁面後再試。';
+      root.querySelector('#shadow-xiaokui-observation').textContent = '目前無法顯示立體畫面，暫時無法觀察影子。';
+      root.querySelector('#shadow-grandpa-explanation').textContent = '請重新整理頁面後再試。';
+    }
+  },
+  {
+    canvas: '#shadow-size-3d-scene',
+    root: '#card-05 .visual',
+    notice: '#shadow-size-load-failure',
+    load: () => import('./shadow-size-3d.js?v=no-view-reset-20261105'),
+    showUnavailable(root) {
+      root.querySelector('#shadow-size-scene-status').textContent = failureMessage;
+      root.querySelector('#shadow-size-feedback').textContent = '立體畫面暫時無法操作，請重新整理頁面後再試。';
+      root.querySelector('#shadow-size-xiaokui-observation').textContent = '目前無法顯示立體畫面，暫時無法比較影子大小。';
+    }
+  },
+  {
+    canvas: '#shadow-theatre-scene',
+    root: '#unit-booklet',
+    notice: '#shadow-theatre-load-failure',
+    load: () => import('./shadow-theatre.js?v=reset-light-20261105'),
+    showUnavailable(root) {
+      root.querySelector('#shadow-theatre-status').textContent = '舞台暫時無法操作';
+      root.querySelector('#booklet-target-status').textContent = '舞台暫時無法操作';
+      const viewHint = root.querySelector('#shadow-theatre-view-hint');
+      if (viewHint) viewHint.textContent = '立體畫面暫時無法操作，請重新整理頁面後再試。';
+      const finishNote = root.querySelector('#shadow-theatre-finish-note');
+      finishNote.textContent = failureMessage;
+      finishNote.dataset.done = 'false';
+    }
+  }
+];
+
+// Load each scene independently so one failure cannot prevent the other activity.
+for (const scene of scenes) {
+  const canvas = document.querySelector(scene.canvas);
+  const root = document.querySelector(scene.root);
+  const notice = document.querySelector(scene.notice);
+  if (!canvas || !root || !notice) continue;
+  const loading = root.querySelector('[data-scene-loading]');
+
+  let failed = false;
+  const showFailure = (error) => {
+    if (failed) return;
+    failed = true;
+    const hadFocus = root.contains(document.activeElement);
+    root.dataset.sceneFailed = 'true';
+    root.dataset.sceneState = 'failed';
+    root.setAttribute('aria-busy', 'false');
+    if (loading) loading.hidden = true;
+    notice.textContent = failureMessage;
+    notice.hidden = false;
+    canvas.setAttribute('aria-disabled', 'true');
+    canvas.setAttribute('aria-describedby', notice.id);
+    canvas.tabIndex = -1;
+    root.querySelectorAll('button, input').forEach((control) => { control.disabled = true; });
+    scene.showUnavailable(root);
+    if (hadFocus) notice.focus({ preventScroll: true });
+    console.error('立體場景無法載入：', scene.canvas, error);
+  };
+
+  // Block handlers before initialization and after a graphics failure.
+  const stopFailedInteraction = (event) => {
+    if (root.dataset.sceneState === 'ready' || !(event.target instanceof Element)) return;
+    if (event.target !== canvas && !event.target.closest('button, input')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  };
+  for (const type of ['click', 'input', 'change', 'pointerdown', 'pointermove', 'pointerup', 'keydown', 'wheel']) {
+    root.addEventListener(type, stopFailedInteraction, { capture: true, passive: false });
+  }
+  canvas.addEventListener('webglcontextlost', () => showFailure('WebGL context lost'));
+  // Dynamic import catches dependency download errors and initialization errors.
+  scene.load().then(() => {
+    if (failed) return;
+    root.dataset.sceneState = 'ready';
+    root.setAttribute('aria-busy', 'false');
+    canvas.removeAttribute('aria-disabled');
+    if (canvas.dataset.sceneTabindex !== undefined) {
+      canvas.setAttribute('tabindex', canvas.dataset.sceneTabindex);
+      delete canvas.dataset.sceneTabindex;
+    } else canvas.removeAttribute('tabindex');
+    root.querySelectorAll('[data-scene-pending-control]').forEach((control) => {
+      control.disabled = false;
+      control.removeAttribute('data-scene-pending-control');
+    });
+    if (loading) loading.hidden = true;
+  }).catch(showFailure);
+}

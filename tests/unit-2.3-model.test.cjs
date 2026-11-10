@@ -1,0 +1,214 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const load = () => import('../units/2/parts/2.3/assets/air-model.mjs');
+
+test('2.3: reaction volume, water levels and calibrated geometry agree', async () => {
+  const { gasGeometry } = await load();
+  let previous = 101;
+  for (let p = 0; p <= 1.001; p += .05) {
+    const g = gasGeometry(p);
+    assert.ok(g.volume <= previous + 1e-8); previous = g.volume;
+    assert.ok(g.mouth < 0);
+    assert.ok(Math.abs((1 - g.water / 1033) * g.volume - g.reference) < 1e-8);
+    assert.ok(Math.abs(5 * (g.top - g.water) - 2 - g.volume) < 1e-8);
+  }
+  assert.ok(Math.abs(gasGeometry(0).volume - 100) < 1e-8);
+  assert.equal(gasGeometry(1).volume.toFixed(1), '79.3');
+  assert.equal(gasGeometry(1).water.toFixed(2), '4.14');
+  for (const a of [0, .25, .5, .75, 1]) {
+    const g = gasGeometry(1, a);
+    assert.ok(g.mouth < 0 && g.mouth > -9);
+    assert.ok(Math.abs((1 - g.water / 1033) * g.volume - 79) < 1e-8);
+  }
+  assert.equal(gasGeometry(1, 1).volume.toFixed(1), '79.0');
+  assert.ok(gasGeometry(1, 1).water < 1e-8);
+  assert.equal(gasGeometry(1, 1).top.toFixed(1), '16.2');
+  assert.equal(gasGeometry(1, 1, true).volume.toFixed(1), '100.0');
+});
+
+test('2.3: recording is gated by baseline, waiting, and equalisation', async () => {
+  const { freshExperiment, act, advance } = await load();
+  let s = freshExperiment();
+  assert.deepEqual(act(s, 'start'), s);
+  assert.equal(act(s, 'after').after, null);
+  s = act(s, 'before'); s = act(s, 'start');
+  s = advance(s, 6); assert.equal(s.progress, .5);
+  s = act(s, 'pause'); assert.equal(advance(s, 6).progress, .5);
+  s = act(s, 'pause'); s = advance(s, 6);
+  assert.equal(s.phase, 'settled');
+  assert.equal(act(s, 'after').after, null);
+  assert.equal(act(s, 'align').phase, 'settled');
+  s = act(s, 'wait'); s = advance(s, 3); assert.equal(s.phase, 'stable');
+  s = act(s, 'align'); assert.equal(act(s, 'after').after, null);
+  s = advance(s, 1.2); assert.equal(s.phase, 'aligned');
+  s = act(s, 'after'); assert.equal(s.before, 100); assert.equal(s.after, 79);
+  s = act(s, 'scrub', 0); assert.equal(s.preview, 0); assert.equal(s.after, 79);
+  assert.equal(act(s, 'after').after, 79);
+  s = act(s, 'live'); assert.equal(s.preview, null);
+  assert.deepEqual(act(s, 'reset'), freshExperiment());
+});
+
+test('2.3: dry/humid proportions use one total and do not add CO2 twice', async () => {
+  const { airComposition } = await load();
+  for (const water of [0, 1, 2, 3, 4]) {
+    const c = airComposition(water);
+    assert.ok(Math.abs(Object.values(c).reduce((a, b) => a + b, 0) - 100) < 1e-8);
+  }
+  assert.deepEqual(airComposition(2), { nitrogen: 76.44, oxygen: 20.58, other: .98, water: 2 });
+  assert.deepEqual(airComposition(2, true), airComposition(0));
+});
+
+test('2.3: fully immersed cup keeps paper dry and respects the tank', async () => {
+  const { cupGeometry } = await load();
+  const g = cupGeometry(12, 0);
+  assert.equal(g.submerged, true); assert.equal(g.paperBelowOutside, true);
+  assert.equal(g.withinTank, true); assert.equal(g.paperTouchesWater, false);
+  assert.ok(g.water < 12 && g.water > 11.8); assert.equal(g.vent, 0);
+  assert.ok(Math.abs((1 + g.water / 1033) * g.airArea - 72) < 1e-7);
+  for (const depth of [11.5, 12, 13, 14]) for (let angle = -125; angle <= 125; angle += 5) {
+    const p = cupGeometry(depth, angle);
+    assert.equal(p.submerged, true); assert.equal(p.withinTank, true);
+    assert.ok(p.water <= p.outlet.y + 1e-7);
+    if (p.vent < .999999) assert.ok(Math.abs((1 + p.water / 1033) * p.airArea - 72 * (1 - p.vent)) < 1e-7);
+  }
+});
+
+test('2.3: escaping air and wet paper persist when cup is straightened', async () => {
+  const { freshCup, moveCup, advanceCup, cupGeometry } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  let s = moveCup(freshCup(), 12, 0), previous = 0;
+  for (const angle of [20, 40, 60, 80, 95, 125]) {
+    s = moveCup(s, 12, angle); assert.ok(s.escaped >= previous); previous = s.escaped;
+    if (s.wet) assert.equal(cupGeometry(s.depth, s.angle, s.escaped).paperTouchesWater, true);
+  }
+  assert.equal(s.wet, true); assert.equal(s.escaped, 1);
+  s = moveCup(s, 12, 0); assert.equal(s.wet, true); assert.equal(s.escaped, 1);
+  s = moveCup(s, -1, 0); assert.equal(s.waterArea, 72); assert.equal(s.wet, true);
+  s = advanceCup(s, 3); assert.equal(s.escaped, 0); assert.equal(s.wet, true);
+  assert.equal(freshCup().wet, false);
+});
+
+test('2.3: cup model clamps depth and angle without forcing an orientation', async () => {
+  const { freshCup, moveCup } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  for (const depth of [-1, 0, 6, 10]) assert.equal(moveCup(freshCup(), depth, 125).angle, 125);
+  assert.equal(moveCup(freshCup(), 12, 125).angle, 125);
+  assert.equal(moveCup(freshCup(), 99, 999).depth, 13.5);
+  assert.equal(moveCup(freshCup(), 99, 999).angle, 125);
+  assert.equal(moveCup(freshCup(), -99, -999).depth, -1);
+  assert.equal(moveCup(freshCup(), -99, -999).angle, -125);
+});
+
+test('2.3: lifting a tilted cup preserves its angle across the old depth threshold', async () => {
+  const { freshCup, moveCup } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  for (const angle of [-125, -45, 45, 125]) {
+    let state = moveCup(freshCup(), 12, 0);
+    state = moveCup(state, 12, angle);
+    const wet = state.wet;
+    for (const depth of [11.6, 11.5, 11.49, 10, 6, 0, -1, 6, 12]) {
+      state = moveCup(state, depth, state.angle);
+      assert.equal(state.angle, angle);
+      assert.equal(state.wet, wet);
+      assert.ok(Number.isFinite(state.escaped) && state.escaped >= 0 && state.escaped <= 1);
+    }
+  }
+});
+
+test('2.3: an exposed rim drains to the outside level after a visible transition', async () => {
+  const { freshCup, moveCup, advanceCup, cupGeometry } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  for (const angle of [-125, -45, 45, 125]) {
+    let state = moveCup(moveCup(freshCup(), 12, 125), 4, angle);
+    assert.equal(state.waterArea, 72);
+    state = advanceCup(state, 3);
+    const g = cupGeometry(state.depth, state.angle, state.escaped, state.waterArea);
+    assert.ok(g.outlet.y < 0);
+    assert.ok(Math.abs(g.water - Math.min(0, g.drainPoint.y)) < 1e-8);
+    assert.equal(state.wet, true);
+    assert.ok(g.vent >= 0 && g.vent <= 1);
+  }
+});
+
+test('2.3: a filled inverted cup retains water above the tank while its mouth is submerged', async () => {
+  const { freshCup, moveCup, advanceCup, cupGeometry } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  let state = moveCup(moveCup(freshCup(), 12, 125), 12, 0);
+  for (const depth of [8, 4, 1, .1]) {
+    state = moveCup(state, depth, 0);
+    const g = cupGeometry(state.depth, state.angle, state.escaped, state.waterArea);
+    assert.equal(g.mouthExposed, false);
+    assert.equal(g.waterArea, 72);
+    assert.ok(g.water < g.minY && g.minY < 0);
+    assert.equal(g.paperTouchesWater, true);
+    assert.equal(g.draining, false);
+    assert.equal(advanceCup(state, 3).waterArea, 72);
+  }
+});
+
+test('2.3: exposure starts gradual drainage and wet paper cannot become dry', async () => {
+  const { freshCup, moveCup, advanceCup, cupGeometry } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  let state = moveCup(moveCup(freshCup(), 12, 125), -.9, 15);
+  assert.equal(state.waterArea, 72);
+  assert.equal(cupGeometry(state.depth, state.angle, state.escaped, state.waterArea).draining, true);
+  let previous = state.waterArea;
+  for (let step = 0; step < 12; step++) {
+    state = advanceCup(state, .2);
+    assert.ok(state.waterArea <= previous && state.waterArea >= 0);
+    if (step === 0) assert.ok(state.waterArea > 60 && state.waterArea < 72);
+    assert.equal(state.wet, true);
+    assert.equal(state.angle, 15);
+    previous = state.waterArea;
+  }
+  assert.ok(state.waterArea < 1e-6);
+  assert.equal(cupGeometry(state.depth, state.angle, state.escaped, state.waterArea).draining, false);
+  assert.equal(freshCup().waterArea, 0);
+});
+
+test('2.3: a raised cup tilted mouth-up retains water below its lower lip', async () => {
+  const { freshCup, moveCup, advanceCup, cupGeometry } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  for (const angle of [-125, 125]) {
+    let state = moveCup(moveCup(freshCup(), 12, angle), -1, angle);
+    state = advanceCup(state, 3);
+    const g = cupGeometry(state.depth, state.angle, state.escaped, state.waterArea);
+    assert.ok(g.waterArea > 0 && g.waterArea < 72);
+    assert.ok(Math.abs(g.water - g.drainPoint.y) < 1e-8);
+    assert.equal(g.draining, false);
+    assert.equal(state.wet, true);
+    state = moveCup(state, 12, angle);
+    assert.equal(state.angle, angle);
+    assert.equal(state.wet, true);
+  }
+});
+
+test('2.3: enlarged paper fits inside the cup and left/right rotation is symmetric', async () => {
+  const { CUP, cupGeometry, moveCup, freshCup } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  assert.ok(CUP.paperRadius > 1.5);
+  assert.ok(CUP.paperCenter - CUP.paperRadius > -CUP.height / 2);
+  for (const angle of [0, 20, 45, 80, 125]) {
+    const a = cupGeometry(12, angle), b = cupGeometry(12, -angle);
+    assert.ok(Math.abs(a.vent - b.vent) < 1e-8);
+    assert.ok(Math.abs(a.water - b.water) < 1e-8);
+    assert.equal(a.paperTouchesWater, b.paperTouchesWater);
+  }
+  assert.equal(moveCup(freshCup(), 12, -125).angle, -125);
+});
+
+test('2.3: integrated report checks evidence instead of reusing main experiment', async () => {
+  const { checkReport } = await load();
+  const correct = { loss: '30.0', percent: '20.0', composition: 'mixture', fuel: 'wood' };
+  assert.equal(checkReport({}).result, 'incomplete');
+  assert.equal(checkReport(correct).result, 'correct');
+  for (const change of [{ percent: '21' }, { percent: '25' }, { loss: '21' }, { composition: 'pure' }, { fuel: 'oxygen' }, { loss: 'NaN' }]) {
+    assert.equal(checkReport({ ...correct, ...change }).result, 'revise');
+  }
+});
+
+test('2.3: upright immersion admits a small increasing water amount by compressing trapped air', async () => {
+  const { freshCup, moveCup, cupGeometry } = await import('../units/2/parts/2.3/assets/cup-lab-model.mjs');
+  let previousWater = 0, previousEntry = 0;
+  for (const depth of [2, 6, 10, 12, 13.5]) {
+    const state = moveCup(freshCup(), depth, 0), g = cupGeometry(depth, 0, state.escaped, state.waterArea);
+    const entry = depth - g.water;
+    assert.ok(g.waterArea > previousWater && g.waterArea < 72 * .02);
+    assert.ok(entry > previousEntry && entry < .2, 'shallow basin ingress stays below 2 mm');
+    assert.ok(Math.abs(g.airArea * (1 + g.water / 1033) - 72) < 1e-7);
+    assert.equal(state.escaped, 0); assert.equal(state.wet, false);
+    previousWater = g.waterArea; previousEntry = entry;
+  }
+});

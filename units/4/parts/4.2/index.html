@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f1">
+  <meta name="description" content="跟著小葵和阿公觀察光的反射、平面鏡成像，以及曲面鏡如何改變反射方向。">
+  <link rel="icon" href="data:,">
+  <title>光遇到表面會怎樣？｜4.2 光的反射與面鏡</title>
+  <link rel="canonical" href="https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.2/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="光遇到表面會怎樣？｜4.2 光的反射與面鏡">
+  <meta property="og:description" content="跟著小葵和阿公觀察光的反射、平面鏡成像，以及曲面鏡如何改變反射方向。">
+  <meta property="og:url" content="https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.2/">
+  <meta property="og:image" content="https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.2/assets/optics-lab-opening-teddy.png">
+  <meta property="og:image:width" content="1671">
+  <meta property="og:image:height" content="941">
+  <meta property="og:image:alt" content="小葵與阿公觀察紅蝴蝶結小熊的鏡中像，桌旁備有面鏡、雷射發射器、量角器與潛望鏡。">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="光遇到表面會怎樣？｜4.2 光的反射與面鏡">
+  <meta name="twitter:description" content="跟著小葵和阿公觀察光的反射、平面鏡成像，以及曲面鏡如何改變反射方向。">
+  <meta name="twitter:image" content="https://billlaitrade.github.io/k12-learning-demos/units/4/parts/4.2/assets/optics-lab-opening-teddy.png">
+  <meta name="twitter:image:alt" content="小葵與阿公觀察紅蝴蝶結小熊的鏡中像，桌旁備有面鏡、雷射發射器、量角器與潛望鏡。">
+  <style>
+    :root{color-scheme:light;--ink:#243a35;--muted:#64736d;--line:#d9d3c4;--paper:#f4f1e8;--card:#fffdf8;--green:#176b53;--green-pale:#e5f2e9;--orange:#bc612b;--orange-pale:#fff0e3;--shadow:0 7px 20px #243a3508;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);line-height:1.7}button,input{font:inherit}button{cursor:pointer}.shell{width:min(1160px,calc(100% - 40px));margin-inline:auto}.masthead{padding:22px 0 20px}.brand-row,.section-top,.card-head{display:flex;align-items:center;justify-content:space-between;gap:16px}.brand-row{font-size:.9rem;font-weight:750}.back-link{color:var(--green);text-decoration:none}.crumb{color:var(--muted);font-weight:500}.hero{display:grid;grid-template-columns:minmax(280px,.84fr) minmax(0,1.16fr);gap:34px;align-items:center;padding:28px 0 24px}.eyebrow{color:var(--green);font-size:.82rem;font-weight:800;letter-spacing:.1em}.hero h1{margin:8px 0 12px;font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.2;letter-spacing:-.04em}.hero-copy p{margin:0;color:var(--muted);font-size:1.05rem}.hero-figure{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#182436;box-shadow:var(--shadow)}.hero-figure img{display:block;width:100%;height:auto;aspect-ratio:1671/941;object-fit:cover}.hero-figure figcaption{padding:8px 12px;background:#fffdf8;color:var(--muted);font-size:.8rem}
+    main{padding:0 0 76px}.section-top{align-items:end;margin:0 0 18px}.section-top h2{margin:0;font-size:1.32rem}progress{display:block;width:100%;height:8px;margin:12px 0 0;border:0;border-radius:99px;overflow:hidden}progress::-webkit-progress-bar{background:#dfe7df}progress::-webkit-progress-value{background:var(--green);border-radius:99px}progress::-moz-progress-bar{background:var(--green);border-radius:99px}
+    .lesson-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start}.route{position:sticky;top:18px;max-height:calc(100svh - 36px);overflow-y:auto;padding:8px 10px 12px 0;scrollbar-width:thin}.route-label{margin:0 0 8px;color:var(--muted);font-size:.76rem;letter-spacing:.08em}.route-inner{display:grid;gap:4px}.route a{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:8px;padding:10px 11px;border:1px solid transparent;border-left:3px solid transparent;border-radius:0 10px 10px 0;color:var(--muted);font-size:.88rem;line-height:1.45;text-decoration:none}.route a:hover,.route a:focus-visible{border-color:var(--line);outline:2px solid transparent}.route a[aria-current=step]{border-left-color:var(--green);background:#e7eee0;color:#315a46;font-weight:800}.route-number{font-size:.75rem;font-weight:850;font-variant-numeric:tabular-nums}.lesson-list{display:grid;gap:22px}.lesson-card{position:relative;scroll-margin-top:22px;display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding:26px;border:1px solid var(--line);border-radius:24px;background:var(--card);box-shadow:var(--shadow)}.lesson-list,.lesson-card,.card-main{min-width:0}.card-heading{display:flex;align-items:flex-start;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--line)}.card-heading-copy{min-width:0}.card-heading h2{margin:0;font-size:clamp(1.3rem,2.6vw,1.75rem);line-height:1.38;overflow-wrap:anywhere}.card-number{display:grid;place-items:center;flex:0 0 38px;min-height:38px;border:1px solid #bfd8c8;border-radius:12px;background:var(--green-pale);color:var(--green);font-size:.82rem;font-weight:850;letter-spacing:.04em}.card-subtitle{margin:6px 0 0;color:var(--muted);font-size:.83rem}.card-main>p{margin:0 0 16px;color:var(--muted)}.prompt{margin:14px 0 8px;font-weight:750}.visual{margin:20px 0;padding:20px;border:1px solid var(--line);border-radius:20px;background:#f6f8f3}.visual svg{display:block;width:100%;height:auto}.visual-caption{margin:8px 2px 0;color:var(--muted);font-size:.84rem}.dialogue{display:flex;align-items:center;gap:10px;margin:14px 0;padding:11px 15px;border-left:4px solid #8cae91;border-radius:0 13px 13px 0;background:#f0f5eb}.dialogue p{margin:0}.dialogue .speaker{display:inline-flex;flex:0 0 auto;align-items:center;gap:0;color:#315a46;font-weight:800}.dialogue .speaker:before{content:"";display:block;width:44px;height:44px;border:2px solid #8cae91;border-radius:50%;background-image:url("../../../../shared-assets/characters/dialogue-character-avatars.png?v=clean-shaven-grandpa");background-repeat:no-repeat;background-position:100% 50%;background-size:200% 100%;box-shadow:0 2px 6px #152f261f}.dialogue--xiaokui{border-left-color:#d39765;background:#fff4e8}.dialogue--xiaokui .speaker{color:#945523}.dialogue--xiaokui .speaker:before{border-color:#d39765;background-position:0 50%}
+    .controls,.toggle-row,.choices{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.control-button,.choice{min-height:44px;border:1px solid var(--line);border-radius:13px;padding:9px 13px;background:#fff;color:var(--ink);text-align:left}.control-button:hover,.choice:hover,.control-button:focus-visible,.choice:focus-visible{border-color:var(--green);outline:2px solid #176b531f}.control-button[aria-pressed=true],.choice[aria-pressed=true]{border-color:var(--green);background:var(--green-pale);box-shadow:inset 0 0 0 1px var(--green)}.range-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;margin-top:15px}.range-row input{width:100%;accent-color:var(--green)}output,.strong-readout{color:var(--green);font-weight:850;white-space:nowrap}.readout-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.readout{flex:1 1 150px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff}.readout small,.readout strong{display:block}.readout small{color:var(--muted)}.readout strong{color:var(--green);font-size:1.05rem}.fact,.feedback{margin-top:13px;padding:13px 15px;border-radius:13px;background:#f0f5eb;color:#405851}.fact p{margin:0}.feedback{min-height:50px;border-left:4px solid #b8cda9;border-radius:0 12px 12px 0}.feedback[data-state=good]{border-left-color:var(--green)}.feedback[data-state=try]{border-left-color:var(--orange);background:var(--orange-pale);color:#6b4028}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{padding:9px 12px;border-bottom:1px solid #e8e8df;text-align:center}th{background:#eaf1e8;color:#315a46}tbody tr:last-child td{border-bottom:0}.end-card{border-color:#bfd1be;background:#f4f8ef}.check-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}.action,.secondary{min-height:44px;border-radius:13px;padding:9px 16px;font-weight:750}.action{border:0;background:var(--green);color:#fff}.action:hover{background:#105640}.secondary{border:1px solid var(--line);background:#fff;color:var(--ink)}.choice.correct[aria-pressed=true]{border-color:var(--green);background:var(--green-pale)}.choice.incorrect[aria-pressed=true]{border-color:var(--orange);background:var(--orange-pale)}footer{padding:22px 0 36px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}
+    .reflection-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 10px}.reflection-fire{display:grid;align-content:center;gap:2px;width:100%;min-height:52px;padding:8px 7px;border:0;border-radius:13px;background:var(--green);color:#fff;font-weight:800;line-height:1.25;box-shadow:0 3px 8px #176b5326}.reflection-fire small{font-size:.76rem;font-weight:650;opacity:.92}.reflection-fire:hover{background:#105640}.reflection-fire:focus-visible{outline:3px solid #176b5340;outline-offset:2px}.reflection-hint{grid-column:1/-1;margin:0;color:var(--muted);font-size:.9rem}.reflection-stage{position:relative;overflow:hidden;margin:12px 0 0;border:1px solid #455852;border-radius:18px;background:#202b2a;box-shadow:inset 0 0 40px #0c171640}.reflection-stage canvas{display:block;width:100%;height:clamp(330px,42vw,480px);cursor:grab;touch-action:none}.reflection-stage canvas.is-pointing-source{cursor:pointer}.reflection-stage canvas.is-dragging{cursor:grabbing}.reflection-stage canvas:focus-visible{outline:3px solid #a5cdbc;outline-offset:-5px}.reflection-stage-labels{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;background:#fffdf8}.reflection-stage-labels span{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:.84rem;font-weight:750}.reflection-stage-labels i{width:10px;height:10px;border-radius:50%;background:#c9d6d0}.reflection-stage-labels .reflection-dot-smooth{background:#f1d886}.reflection-stage-labels .reflection-dot-rough{background:#9ca89e}.reflection-stage .reflection-controls{margin:0;padding:8px 14px 4px;background:#fffdf8}.reflection-stage .visual-caption{margin:0;padding:8px 14px;background:#fffdf8;color:var(--muted)}.reflection-status{min-height:28px;margin:8px 2px 0;color:var(--green);font-size:.9rem;font-weight:700}.reflection-note{margin:4px 2px 0;color:var(--muted);font-size:.82rem}.reflection-fallback{margin:0;padding:38px 20px;background:#263432;color:#fff;text-align:center}.reflection-fallback[hidden]{display:none}
+    .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:760px){.shell{width:min(100% - 24px,680px)}.hero{grid-template-columns:1fr;gap:16px;padding:24px 0 20px}.hero-figure{order:-1}.lesson-layout{grid-template-columns:minmax(0,1fr);gap:8px;min-width:0}.route{z-index:5;top:0;width:100%;min-width:0;max-width:100%;max-height:none;margin:0 -12px;padding:6px 12px 10px;overflow-x:auto;overflow-y:hidden;background:var(--paper)}.route-label{margin:0 0 6px}.route-inner{display:flex;width:max-content;gap:6px}.route a{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);white-space:nowrap}.route a[aria-current=step]{border-color:var(--green)}.lesson-card{gap:16px;padding:19px;border-radius:19px}.card-heading{gap:10px;padding-bottom:14px}.laser-lesson{min-width:0;max-width:100%}}
+    @media(max-width:460px){.shell{width:calc(100% - 20px)}.route{margin-inline:-10px}.brand-row,.section-top{align-items:flex-start}.section-top h2{font-size:1.15rem}.visual{padding:9px}.range-row{grid-template-columns:1fr;gap:4px}.range-row output{text-align:right}.dialogue{align-items:flex-start;padding:10px}.dialogue .speaker:before{width:38px;height:38px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
+  <style>
+    .laser-lesson{width:100%;margin-top:20px;border:1px solid #d8dfdf;border-radius:18px;overflow:hidden;background:#fff}
+    .laser-lab{overflow:hidden;border:1px solid #d8dfdf;border-radius:16px;background:#b8895f}
+    #laser-reflection-scene{display:block;width:100%;height:clamp(320px,38vw,430px);touch-action:pan-y;cursor:default}
+    #laser-reflection-scene:focus-visible{outline:3px solid #176b53;outline-offset:-4px}
+    .laser-scene{position:relative;isolation:isolate;overflow:hidden}
+    .angle-callouts{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+    .angle-callout path{fill:none;stroke-width:1.5}.angle-callout text{font:700 18px system-ui,sans-serif;paint-order:stroke;stroke:#fffdf4;stroke-width:2px;stroke-linejoin:round}.angle-callout[data-kind=incident] path{stroke:#165fc2}.angle-callout[data-kind=incident] text{fill:#165fc2}.angle-callout[data-kind=reflected] path{stroke:#24783a}.angle-callout[data-kind=reflected] text{fill:#24783a}.angle-callout[data-kind=both] path{stroke:#244a40}.angle-callout[data-kind=both] text{fill:#244a40}@media(max-width:760px){.angle-callout text{font-size:14px;stroke-width:1.5px}}
+    .laser-lab-ui{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:12px 16px;padding:12px 18px;background:#fffdf8}
+    .laser-view-current{margin:0;color:#47645a;font-size:.82rem;font-weight:800}
+    .laser-observation{margin:0;padding:13px 18px;background:#f0f5eb;color:#315a46;font-weight:750}
+    @media(max-width:960px){.laser-lab-ui{grid-template-columns:minmax(0,1fr);gap:12px}}
+    @media(max-width:780px){.laser-lesson{width:auto;margin-left:0}}
+    @media(max-width:760px){#laser-reflection-scene{height:clamp(140px,70vw,280px)}.laser-lab-ui{grid-template-columns:1fr;padding:14px}}
+  </style>
+  <style>
+    #card-04 .mirror-views,#card-05 .mirror-views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+    .mirror-view{min-width:0;margin:0;overflow:hidden;border:1px solid var(--line);border-radius:13px;background:#fff}
+    .mirror-view h3{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:9px 12px;background:#e8f3f8;color:#23465a;font-size:.95rem;line-height:1.35}
+    .mirror-view h3 small{flex:0 0 auto;padding:3px 8px;border-radius:999px;background:#fff;color:#176b53;font-size:.74rem;font-weight:800}
+    .mirror-view svg{display:block;width:100%;height:auto;background:linear-gradient(#fbfcfa,#f3f5ef)}
+    .mirror-controls{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:12px 0}
+    .mirror-controls .mirror-primary{border-color:#176b53;background:#176b53;color:#fff;font-weight:800}
+    .mirror-controls .mirror-secondary{border-color:#8cb4c5;background:#f1f8fb;color:#23465a;font-weight:800}
+    .mirror-btn:disabled{cursor:default;opacity:.55}
+    .mirror-live{min-height:1.5em;margin:7px 0 0;color:var(--green);font-size:.88rem;font-weight:700}
+    .ruler-line{stroke:#516b65;stroke-width:1.5}.ruler-tick{stroke:#516b65;stroke-width:1}.ruler-label{fill:#405851;font-size:17px;text-anchor:middle}.measure-line{stroke:#286ac2;stroke-width:2;stroke-dasharray:4 3}.measure-text{font-size:17px;font-weight:800;text-anchor:middle}
+    .drag-object{cursor:grab;touch-action:none;filter:drop-shadow(0 2px 2px #243a3530)}.drag-object:active{cursor:grabbing}.drag-object:focus-visible{outline:3px solid #176b5380}
+    #distance-side-view{touch-action:pan-y}
+    #distance-side-object image,#distance-side-object rect{touch-action:none}
+    #distance-side-object[data-input="pointer"]:focus-visible{outline:none}
+    #distance-side-view .ruler-active-band{fill:#e1eee3;fill-opacity:.8}
+    @media(max-width:1050px){#card-04 .mirror-views,#card-05 .mirror-views{grid-template-columns:minmax(0,1fr)}}
+
+
+  </style>
+  <link rel="stylesheet" href="assets/mirror-image.css?v=mirror-dialogue-20261106">
+  <link rel="stylesheet" href="assets/mirror-distance.css?v=readouts-below-20261106">
+  <link rel="stylesheet" href="assets/curved-mirrors.css?v=applications-heading-20261106">
+  <link rel="stylesheet" href="assets/reversible-light.css?v=near-arc-20261106">
+  <link rel="stylesheet" href="assets/periscope.css?v=success-feedback-20261106">
+  <style>
+    .route a.quiz-nav{margin-top:12px;border-top:1px solid var(--line);padding-top:17px;color:#8a6726;font-size:.86rem;font-weight:750}
+    .route a.quiz-nav .route-number{color:#946f2d;font-size:.76rem;font-weight:650}
+    .route a.quiz-nav[aria-current=step]{border-left-color:#d9a74f;background:#faf3e4;color:#795b25;box-shadow:inset 3px 0 #d9a74f}
+    @media(max-width:760px){.route a.quiz-nav{margin:0 0 0 4px;border-top:1px solid var(--line);padding:7px 10px}.route a.quiz-nav[aria-current=step]{border-color:#d9a74f}}
+  </style>
+  <link rel="stylesheet" href="assets/lesson-layout.css?v=align-4.1-20261105">
+  <link rel="stylesheet" href="assets/reflection-stage.css?v=flashlight-controls-20261106">
+  <link rel="stylesheet" href="assets/laser-concept.css?v=compact-20261106">
+<link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
+<body>
+  <header class="shell masthead">
+    <div class="brand-row"><a class="back-link" href="../../index.html">← 返回光學單元</a><span class="crumb">國二上・理化</span></div>
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">學習內容 4.2｜一起走進光學實驗室</div>
+        <h1>光遇到表面會怎樣？</h1>
+        <p>光學實驗室裡，阿公在桌上擺好幾面不同形狀的鏡子。小葵把小熊放到鏡前，移近、移遠，又換一面鏡子比較，發現鏡中的景象並不相同。這些鏡子究竟怎麼反射光，讓她看見不同的模樣？</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="assets/optics-lab-opening-teddy.png" alt="小葵與阿公觀察紅蝴蝶結小熊的鏡中像，桌旁備有面鏡、雷射發射器、量角器與潛望鏡。" width="1671" height="941" fetchpriority="high">
+              <figcaption>小葵和阿公從鏡前觀察出發，準備探索光的反射與成像。</figcaption>
+      </figure>
+    </div>
+  </header>
+  <main class="shell">
+    <div class="section-top">
+      <div><h2>沿著探索路線，一步步認識光的反射</h2><progress id="lesson-progress" max="7" value="1" aria-label="學習路線閱讀進度"></progress></div>
+    </div>
+    <div class="lesson-layout">
+      <nav class="route" aria-label="探索路線">
+        <p class="route-label">本段探索路線</p>
+        <div class="route-inner">
+          <a href="#card-01" aria-current="step"><span class="route-number">01</span><span>同一束光照到不同表面，反射方向一樣嗎？</span></a>
+          <a href="#card-02"><span class="route-number">02</span><span>光的反射，有什麼規律？</span></a>
+          <a href="#card-03"><span class="route-number">03</span><span>光照出去之後，還能照著原路回來嗎？</span></a>
+          <a href="#card-04"><span class="route-number">04</span><span>為什麼鏡前的熊，看起來在鏡後？</span></a>
+          <a href="#card-05"><span class="route-number">05</span><span>小熊往鏡子靠近，鏡中的牠會怎麼動？</span></a>
+          <a href="#card-06"><span class="route-number">06</span><span>鏡面形狀不同，反射光和像會怎麼變？</span></a>
+          <a class="quiz-nav" href="#unit-quiz"><span class="route-number" aria-hidden="true">✦</span><span>單元小測</span></a>
+        </div>
+      </nav>
+      <div class="lesson-list">
+        <section class="lesson-card" id="card-01">
+          <header class="card-heading"><span class="card-number">01</span><div class="card-heading-copy"><h2>同一束光照到不同表面，反射方向一樣嗎？</h2><p class="card-subtitle">鏡面反射與漫反射：比較反射光的分布</p></div></header>
+          <div class="card-main">
+            <p>保持兩側照射條件相同，改變觀看位置，觀察光滑表面與粗糙表面的反光差異。</p>
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>阿公，這兩種表面都會反射光，為什麼反光看起來不一樣？</p></div>
+            <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>因為它們表面的平滑程度不同。光滑表面的反射方向比較集中；粗糙表面有細小凹凸，反射方向就比較分散。</p></div>
+            <p class="prompt">分別開啟左右手電筒，自由拖曳畫面，比較不同位置看到的反光。</p>
+            <figure class="reflection-stage" aria-labelledby="reflection-experiment-title">
+              <div class="reflection-comparison">
+                <div class="reflection-main-panel">
+                  <div class="reflection-main-heading"><div><h3 id="reflection-experiment-title">自由觀察實驗器材</h3><div class="reflection-view-meta"><span id="reflection-view-status" aria-live="polite">目前觀看位置：正面</span><span class="reflection-drag-hint">可上下、左右自由拖曳</span></div></div><button id="reflection-reset-view" class="reflection-reset-button" type="button" aria-controls="reflection-3d-scene" disabled>回到正面</button></div>
+                  <div class="reflection-scene-wrap">
+                    <canvas id="reflection-3d-scene" role="img" tabindex="0" aria-label="可自由觀看的 3D 反光實驗：左邊是光滑表面，右邊是粗糙表面。拖曳可上下、左右調整觀看角度。" aria-describedby="reflection-status reflection-view-status" data-ready="loading"></canvas>
+                  </div>
+                </div>
+              </div>
+              <p class="reflection-fallback" id="reflection-fallback" hidden>這個 3D 實驗場景無法在目前裝置顯示；你仍可閱讀並播放下方的反射方向圖解。</p>
+              <div class="reflection-controls">
+                <button class="reflection-fire" id="reflection-fire-mirror" type="button" aria-pressed="false" aria-label="開啟照向光滑表面的手電筒" disabled><svg class="flashlight-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 21l8 5 7-12-8-5-7 12zm8-12 4-5 9 5-3 6-3-1"/><path d="M10 20l2 1"/></svg><span class="reflection-fire-copy"><strong>左側手電筒</strong><small><span data-light-state>已關閉</span><span class="reflection-fire-separator" aria-hidden="true">・</span><span data-light-action>點擊開啟</span></small></span><svg class="flashlight-power" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9M7.1 5.8a8 8 0 1 0 9.8 0"/></svg></button>
+                <button class="reflection-fire" id="reflection-fire-paper" type="button" aria-pressed="false" aria-label="開啟照向粗糙表面的手電筒" disabled><svg class="flashlight-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 21l8 5 7-12-8-5-7 12zm8-12 4-5 9 5-3 6-3-1"/><path d="M10 20l2 1"/></svg><span class="reflection-fire-copy"><strong>右側手電筒</strong><small><span data-light-state>已關閉</span><span class="reflection-fire-separator" aria-hidden="true">・</span><span data-light-action>點擊開啟</span></small></span><svg class="flashlight-power" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9M7.1 5.8a8 8 0 1 0 9.8 0"/></svg></button>
+              </div>
+            </figure>
+            <p class="reflection-status visually-hidden" id="reflection-status" aria-live="polite">左右手電筒目前都已關閉。</p>
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>換個位置看，兩種表面的反光果然不一樣！</p></div>
+            <section class="surface-explanation" id="surface-explanation" aria-labelledby="surface-explanation-title" data-playing="false">
+              <header class="surface-explanation-heading"><div class="surface-heading-copy"><h3 id="surface-explanation-title">為什麼反光會不一樣？</h3><p id="surface-play-status" role="status" aria-live="polite">點選播放，追蹤亮光如何在表面轉向。</p></div><button id="surface-play" type="button" aria-controls="surface-diagrams" disabled><span class="surface-play-icon" aria-hidden="true">▶</span> <span class="surface-play-label">播放光路</span></button></header>
+              <div class="surface-playback-bar"><div class="surface-legend" aria-hidden="true"><span><i class="surface-incident-key"></i>入射光</span><span><i class="surface-reflected-key"></i>反射光</span></div></div>
+              <div class="surface-diagrams" id="surface-diagrams">
+                <article class="surface-panel" data-surface="smooth"><div class="surface-panel-heading"><h4>光滑表面</h4></div><svg viewBox="0 0 640 250" role="img" aria-labelledby="surface-smooth-title surface-smooth-desc"><title id="surface-smooth-title">光滑表面的反射方向示意</title><desc id="surface-smooth-desc">三條同方向入射光，分別照到表面三處。平滑表面反射後的方向相同。</desc><defs><linearGradient id="surface-smooth-fill" x2="0" y2="1"><stop stop-color="#d9e8eb"/><stop offset=".2" stop-color="#f0f7f6"/><stop offset="1" stop-color="#91aeb3"/></linearGradient><linearGradient id="surface-smooth-light" x2="1" y2="0"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".65"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><marker id="surface-smooth-in" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0L6 3L0 6L1.4 3Z" fill="#b98218"/></marker><marker id="surface-smooth-out" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0L6 3L0 6L1.4 3Z" fill="#16826c"/></marker><clipPath id="surface-smooth-clip"><path d="M44 180L160 180L220 180L288 180L352 180L420 180L480 180L596 180L596 218L44 218Z"/></clipPath></defs><path class="surface-underedge" d="M44 213H596V224H44Z"/><path class="surface-profile" d="M44 180L160 180L220 180L288 180L352 180L420 180L480 180L596 180L596 218L44 218Z"/><g class="surface-material-detail" clip-path="url(#surface-smooth-clip)"><path d="M50 184H590" stroke="#fff" stroke-width="3" stroke-opacity=".8"/><path d="M48 205H592" stroke="url(#surface-smooth-light)" stroke-width="9"/></g><path class="surface-edge" d="M44 180L160 180L220 180L288 180L352 180L420 180L480 180L596 180"/><g data-surface-ray="0"><path class="surface-incoming" data-start="91,48" data-hit="190,180" d="M91 48L190 180" marker-end="url(#surface-smooth-in)"/><path class="surface-outgoing" data-end="289,48" d="M190 180L289 48" marker-end="url(#surface-smooth-out)"/><circle class="surface-contact" cx="190" cy="180" r="4"/></g><g data-surface-ray="1"><path class="surface-incoming" data-start="221,48" data-hit="320,180" d="M221 48L320 180" marker-end="url(#surface-smooth-in)"/><path class="surface-outgoing" data-end="419,48" d="M320 180L419 48" marker-end="url(#surface-smooth-out)"/><circle class="surface-contact" cx="320" cy="180" r="4"/></g><g data-surface-ray="2"><path class="surface-incoming" data-start="351,48" data-hit="450,180" d="M351 48L450 180" marker-end="url(#surface-smooth-in)"/><path class="surface-outgoing" data-end="549,48" d="M450 180L549 48" marker-end="url(#surface-smooth-out)"/><circle class="surface-contact" cx="450" cy="180" r="4"/></g></svg><p class="surface-result"><strong>鏡面反射</strong><span>方向較集中</span></p></article>
+                <article class="surface-panel" data-surface="rough"><div class="surface-panel-heading"><h4>粗糙表面</h4></div><svg viewBox="0 0 640 250" role="img" aria-labelledby="surface-rough-title surface-rough-desc"><title id="surface-rough-title">粗糙表面的反射方向示意</title><desc id="surface-rough-desc">三條同方向入射光，分別照到表面三處。表面起伏經放大，各處傾斜不同，反射後的方向不同。</desc><defs><linearGradient id="surface-rough-fill" x2="0" y2="1"><stop stop-color="#e7e3d3"/><stop offset=".2" stop-color="#d8d6c5"/><stop offset="1" stop-color="#b5baa7"/></linearGradient><linearGradient id="surface-rough-light" x2="1" y2="0"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".65"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><marker id="surface-rough-in" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0L6 3L0 6L1.4 3Z" fill="#b98218"/></marker><marker id="surface-rough-out" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0L6 3L0 6L1.4 3Z" fill="#16826c"/></marker><clipPath id="surface-rough-clip"><path d="M44 185L118 175L160 189L220 171L260 186L288 180L352 180L390 190L420 171L480 189L596 178L596 218L44 218Z"/></clipPath></defs><path class="surface-underedge" d="M44 213H596V224H44Z"/><path class="surface-profile" d="M44 185L118 175L160 189L220 171L260 186L288 180L352 180L390 190L420 171L480 189L596 178L596 218L44 218Z"/><g class="surface-material-detail" clip-path="url(#surface-rough-clip)"><path d="M54 200L108 192L152 205L214 189L259 203L313 197L365 203L415 190L475 204L584 194M61 214L127 208L176 214L236 203L280 211L335 207L380 215L435 203L492 213L575 205" fill="none" stroke="#8b987f" stroke-opacity=".23" stroke-width="1.5"/></g><path class="surface-edge" d="M44 185L118 175L160 189L220 171L260 186L288 180L352 180L390 190L420 171L480 189L596 178"/><g data-surface-ray="0"><path class="surface-incoming" data-start="91,48" data-hit="190,180" d="M91 48L190 180" marker-end="url(#surface-rough-in)"/><path class="surface-outgoing" data-end="199.99082568807336,15.302752293577925" d="M190 180L199.990826 15.302752" marker-end="url(#surface-rough-out)"/><circle class="surface-contact" cx="190" cy="180" r="4"/></g><g data-surface-ray="1"><path class="surface-incoming" data-start="221,48" data-hit="320,180" d="M221 48L320 180" marker-end="url(#surface-rough-in)"/><path class="surface-outgoing" data-end="419,48" d="M320 180L419 48" marker-end="url(#surface-rough-out)"/><circle class="surface-contact" cx="320" cy="180" r="4"/></g><g data-surface-ray="2"><path class="surface-incoming" data-start="351,48" data-hit="450,180" d="M351 48L450 180" marker-end="url(#surface-rough-in)"/><path class="surface-outgoing" data-end="605.3119266055046,124.29357798165134" d="M450 180L605.311927 124.293578" marker-end="url(#surface-rough-out)"/><circle class="surface-contact" cx="450" cy="180" r="4"/></g></svg><p class="surface-result"><strong>漫反射</strong><span>方向較分散</span></p></article>
+              </div>
+              <p class="surface-explanation-copy">表面各處的朝向不同，光反射後的方向也會不同。</p>
+            </section>
+          </div>
+        </section>
+        <section class="lesson-card" id="card-02">
+          <header class="card-heading"><span class="card-number">02</span><div class="card-heading-copy"><h2>光的反射，有什麼規律？</h2><p class="card-subtitle">反射定律：比較入射角與反射角</p></div></header>
+          <div class="card-main">
+            <p>入射角和反射角都從法線量起。改變入射光的方向，觀察兩個角度是否始終相等。</p>
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>阿公，如果我換個方向照鏡子，反射的光也會跟著改變嗎？</p></div>
+            <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>會呀！照過來的方向改變，反射出去的方向也會跟著變。從垂直鏡面的方向來看，光照進來和反射出去的角度會一樣。</p></div>
+            <div class="laser-lesson" aria-label="平面鏡反射定律說明與雷射實驗">
+              <section class="laser-concept" id="reflection-law" aria-labelledby="laser-concept-title">
+                <div class="laser-concept-copy">
+                  <h3 id="laser-concept-title">平面鏡的反射定律</h3>
+                  <p class="laser-law">入射角 ＝ 反射角</p>
+                  <p class="laser-rule">角度從法線量起。</p>
+                </div>
+                <svg class="laser-diagram" viewBox="0 0 600 350" role="img" aria-labelledby="law-title law-desc">
+                  <title id="law-title">鏡面朝上的平面鏡反射定律</title><desc id="law-desc">琥珀色入射光從右上方照向入射點，深綠色反射光向左上方離開。兩側角度都從垂直鏡面的法線量起，並隨下方實驗同步更新。</desc>
+                  <defs>
+                    <linearGradient id="law-silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#edf4f3"/><stop offset=".2" stop-color="#b3c9cd"/><stop offset=".65" stop-color="#c6d5d5"/><stop offset="1" stop-color="#8ba2a7"/></linearGradient>
+                    <linearGradient id="law-highlight"><stop stop-color="#fff" stop-opacity=".15"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity=".15"/></linearGradient>
+                    <marker id="law-arrow-in" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6L1.3 3Z" fill="#b88636"/></marker>
+                    <marker id="law-arrow-out" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6L1.3 3Z" fill="#24766c"/></marker>
+                  </defs>
+                  <rect x="74" y="308" width="452" height="3" rx="1.5" fill="#566d66" opacity=".08"/>
+                  <rect x="74" y="292" width="452" height="15" fill="url(#law-silver)" stroke="#93aaad" stroke-width=".8"/>
+                  <path d="M75 293H525" stroke="#f7fcfa" stroke-width="1.5"/><path d="M75 301H525" stroke="url(#law-highlight)" stroke-width="1"/><path d="M74 307H526" stroke="#7f979b" stroke-width=".8"/>
+                  <path id="law-normal" d="M300 35V292" fill="none" stroke="#92988e" stroke-width="1.4" stroke-dasharray="6 6"/>
+                  <g class="law-normal-label"><path id="law-normal-leader" d="M306 47L316 35" fill="none" stroke="#92988e" stroke-width="1"/><text id="law-normal-name" x="322" y="40">法線</text></g>
+                  <path id="law-wedge-incident" d="M300 292L300 150A142 142 0 0 1 371 169.024Z" fill="#b88636" fill-opacity=".045"/>
+                  <path id="law-wedge-reflected" d="M300 292L300 150A142 142 0 0 0 229 169.024Z" fill="#24766c" fill-opacity=".045"/>
+                  <path id="law-incident" d="M411.5 98.876L300 292" stroke="#b88636" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                  <path id="law-incident-direction" d="M315 266.019L307.5 279.01" stroke="#b88636" stroke-width="2.4" fill="none" marker-end="url(#law-arrow-in)"/>
+                  <path id="law-reflected" d="M300 292L188.5 98.876" stroke="#24766c" stroke-width="2.4" stroke-linecap="round" fill="none" marker-end="url(#law-arrow-out)"/>
+                  <path id="law-arc-incident" d="M300 188A104 104 0 0 1 352 201.933" fill="none" stroke="#b88636" stroke-width="2"/>
+                  <path id="law-arc-reflected" d="M300 188A104 104 0 0 0 248 201.933" fill="none" stroke="#24766c" stroke-width="2"/>
+                  <text id="law-angle-name-in" x="345.293" y="126.963" text-anchor="middle">入射角</text>
+                  <text id="law-angle-name-out" x="254.707" y="126.963" text-anchor="middle">反射角</text>
+                  <text id="law-angle-in" x="333.129" y="173.162" text-anchor="middle">30°</text>
+                  <text id="law-angle-out" x="266.871" y="173.162" text-anchor="middle">30°</text>
+                  <g id="law-line-name-in" transform="translate(436.5 82.876)"><text text-anchor="middle">入射線</text></g>
+                  <g id="law-line-name-out" transform="translate(163.5 82.876)"><text text-anchor="middle">反射線</text></g>
+                  <path d="M310 288L338 268" fill="none" stroke="#89918a" stroke-width="1"/><text class="law-hit-label" x="344" y="274">入射點</text>
+                  <circle cx="300" cy="292" r="7" fill="#fffefa"/><circle cx="300" cy="292" r="4.5" fill="#24766c"/>
+                  <text class="law-mirror-caption" x="300" y="333" text-anchor="middle">平面鏡（反射面朝上）</text>
+                </svg>
+              </section>
+              <section class="laser-lab" aria-label="可調整入射角的雷射反射實驗">
+                <div class="laser-scene"><canvas id="laser-reflection-scene" tabindex="0" role="slider" aria-label="調整入射角。使用方向鍵每次調整一度，Home 和 End 可快速調整至 20 度或 90 度。" aria-valuemin="20" aria-valuemax="90" aria-valuenow="30" aria-valuetext="入射角 30 度，反射角 30 度" aria-describedby="laser-drag-instruction"></canvas></div>
+                <div class="laser-lab-ui" aria-label="雷射角度操作說明">
+                  <p class="laser-view-current" id="laser-drag-instruction">拖動雷射調整角度；也可聚焦畫面後用方向鍵微調。</p>
+                </div>
+              </section>
+              <p class="laser-observation" id="angle-observation" aria-live="polite">入射角和反射角一樣大。</p>
+            </div>
+          </div>
+        </section>
+        <section class="lesson-card" id="card-03" data-light-a="off" data-light-b="off">
+          <header class="card-heading"><span class="card-number">03</span><div class="card-heading-copy"><h2>光照出去之後，還能照著原路回來嗎？</h2><p class="card-subtitle">光路可逆：比較正反方向的路徑</p></div></header>
+          <div class="card-main">
+            <p>點擊 A、B 發射器，分別開關紅光與藍光，比較兩個方向的反射路徑。</p>
+            <div class="reverse-workspace">
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>剛才光照到鏡子後轉了方向。那如果從反射光的方向照回去，光會沿著原來的路走嗎？</p></div>
+            <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>我們從兩個方向照照看，比較光走的路。</p></div>
+            <div class="reverse-switches" role="group" aria-label="獨立開關兩支發射器">
+              <button type="button" class="reverse-switch reverse-switch-b" id="reverse-toggle-b" aria-pressed="false">開啟 B 藍光</button>
+              <button type="button" class="reverse-switch reverse-switch-a" id="reverse-toggle-a" aria-pressed="false">開啟 A 紅光</button>
+            </div>
+            <div class="reverse-lab">
+              <div class="reverse-stage">
+                <canvas id="reverse-scene" role="slider" tabindex="0" aria-label="點擊 A 或 B 發射器開關紅光與藍光；拖動 A 或用方向鍵調角，A 與 B 鍵可開關對應光源" aria-valuemin="20" aria-valuemax="60" aria-valuenow="30" aria-describedby="reverse-lock-note"></canvas>
+                <div class="reverse-device-label" id="reverse-label-a"><strong>A 紅光發射器</strong><small id="reverse-status-a">已關閉</small></div>
+                <div class="reverse-device-label" id="reverse-label-b"><strong>B 藍光發射器</strong><small id="reverse-status-b">已關閉</small></div>
+                <div class="reverse-device-label reverse-m-label" id="reverse-label-m"><strong>M 反射點</strong></div>
+                <div class="reverse-overlap" id="reverse-overlap" hidden>紅藍光路重合</div>
+                <div class="reverse-fallback" id="reverse-fallback" hidden><p id="reverse-fallback-message"></p><svg id="reverse-fallback-svg" viewBox="0 0 400 325" role="img" aria-label="光路可逆的替代俯視圖"></svg></div>
+              </div>
+              <div class="reverse-lab-footer"><span id="reverse-lock-note">點擊器材開關光源；拖動 A 可調整方向。</span></div>
+            </div>
+            <div class="reverse-paths"><div><small>A 紅光路徑</small><strong>A → M → B</strong><span id="reverse-path-a-status">已關閉</span></div><div><small>B 藍光路徑</small><strong>B → M → A</strong><span id="reverse-path-b-status">已關閉</span></div></div>
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>真的耶！從另一頭照過來，光會沿著原來的路走回去！</p></div>
+            </div>
+            <noscript><p>請啟用 JavaScript 點選 A、B 發射器。紅光沿 A→M→B，藍光沿 B→M→A，各自遵守反射定律。</p></noscript>
+          </div>
+        </section>
+        <section class="lesson-card" id="card-04" data-presentation="simultaneous">
+          <header class="card-heading"><span class="card-number">04</span><div class="card-heading-copy"><h2>為什麼鏡前的熊，看起來在鏡後？</h2><p class="card-subtitle">反射與直視對照</p></div></header>
+          <div class="card-main">
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>既然光可以沿著原路走回去，那我也能沿著進入眼睛的光往回找，找到光從哪裡來嗎？</p></div>
+            <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>可以呀！比如妳在鏡子裡看到小熊，就可以從眼睛沿著光路往回追：先追到鏡面，再從鏡面追到小熊，找到小熊反射的光是怎麼進入妳眼睛的。</p></div>
+            <p class="comparison-distance-hint">點選圖中的距離，對照下方的計算。</p>
+            <div class="comparison-column-headings" aria-hidden="true"><span>光怎麼進入眼睛</span><span>小葵看到的熊</span></div>
+            <div class="mirror-comparison-grid" aria-label="上排有鏡子，下排撤鏡並放入真熊；兩個情境同時比較"><article class="comparison-state" id="comparison-reference" data-mode="mirror" aria-labelledby="reference-heading">
+ <figure class="comparison-diagram"><h3 class="comparison-row-title" id="reference-heading">鏡前的熊，經反射看見</h3><svg class="comparison-side" id="reference-side" viewBox="0 0 900 650" role="img" aria-labelledby="reference-side-title reference-side-desc">
+<title id="reference-side-title">小熊的光經鏡面反射進入眼睛，鏡後以虛線標示像的位置</title><desc id="reference-side-desc">固定眼位，比較整隻熊玩偶。有鏡子時，實線代表實際反射光、鏡後虛線為反向延長；下排撤鏡後，另放入同位置、同大小與對應朝向的真熊。2與3公尺沿中央代表光路量取。</desc>
+<defs>
+ <linearGradient id="reference-room" x2="0" y2="1"><stop stop-color="#fbfaf5"/><stop offset="1" stop-color="#eee9df"/></linearGradient>
+ <linearGradient id="reference-wood" x2="0" y2="1"><stop stop-color="#d5b38c"/><stop offset="1" stop-color="#b98e64"/></linearGradient>
+ <linearGradient id="reference-silver" x2="1" y2="0"><stop stop-color="#91afb3"/><stop offset=".5" stop-color="#f3faf9"/><stop offset="1" stop-color="#a1bdc0"/></linearGradient>
+ <pattern id="reference-backing" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 10L10 0" stroke="#a7b2ad" stroke-width="1.2"/></pattern>
+ <marker id="reference-blue-arrow" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#236f9f"/></marker>
+ <image id="reference-bear-sprite" href="assets/mirror/teddy-side.webp" x="199.4" y="374.2" width="203" height="203"/>
+</defs>
+<rect width="900" height="570" fill="url(#reference-room)"/>
+<rect data-side="virtual-region" x="550" y="68" width="350" height="502" fill="#e6f1f4"/>
+<rect y="570" width="900" height="80" fill="url(#reference-wood)"/>
+<g data-side="observer"><image data-side="profile" href="assets/mirror/xiaokui-profile.webp" x="136.2272727" y="106.5454545" width="160" height="160"/></g>
+<g data-side="near"><use data-side="near-shape" href="#reference-bear-sprite" opacity="1"/></g>
+<g data-side="mirror"><rect x="540" y="68" width="9" height="502" rx="3" fill="url(#reference-silver)" stroke="#607e7f" stroke-width="2"/><rect x="552" y="70" width="12" height="498" fill="url(#reference-backing)"/><rect x="522" y="565" width="46" height="7" rx="3" fill="#81948b"/></g>
+<g data-side="mirror-tick" style="display:none"><path d="M540 565V589" stroke="#829694" stroke-width="6"/></g>
+<g data-side="far"><use data-side="far-shape" href="#reference-bear-sprite" transform="translate(1080 0) scale(-1 1)" opacity=".48"/><rect x="720" y="592" width="110" height="48" rx="14" fill="#fffdf8"/><text data-side="far-label" x="775" y="626" text-anchor="middle" font-size="34" font-weight="700" fill="#286580">虛像</text></g>
+<g data-side="extensions" fill="none" stroke="#397d9f" stroke-dasharray="8 6" stroke-width="2"></g>
+<g data-side="rays" fill="none" stroke="#236f9f" stroke-linejoin="round"></g>
+<g data-side="hits" fill="#dceff8" stroke="#236f9f" stroke-width="1.8"></g>
+
+<g data-side="distance-incoming" aria-label="實物熊到鏡面反射點的光路為2公尺"></g><g data-side="distance-three" aria-label="眼睛到反射點的光路為3公尺"></g><g data-side="distance-two" aria-label="反射點到虛像位置的延長線為2公尺"></g></svg></figure>
+ <figure class="comparison-observation"><svg class="comparison-eye" id="reference-eye" viewBox="175 0 550 550" role="img" aria-labelledby="reference-eye-title reference-eye-desc">
+<title id="reference-eye-title">小葵同時看見鏡前實體熊的背面與遠處鏡中像</title><desc id="reference-eye-desc">上下兩個觀察窗使用同一眼位與較寬取景。下方前景是面向鏡子的原熊背面，上方遠處是鏡中像或撤鏡後放入的真熊；兩排遠處熊的位置、視大小相同，原熊都保留在鏡前位置。</desc>
+<defs><linearGradient id="reference-eye-wall" x2="1" y2="1"><stop stop-color="#f5f0e5"/><stop offset="1" stop-color="#dfd5c5"/></linearGradient><linearGradient id="reference-eye-wood" x2="0" y2="1"><stop stop-color="#d5b38b"/><stop offset="1" stop-color="#ad8054"/></linearGradient><linearGradient id="reference-glass" x2="1" y2="1"><stop stop-color="#e5f3f3"/><stop offset="1" stop-color="#cfe3e5"/></linearGradient><clipPath id="reference-eye-clip"><path data-view="clip"/></clipPath></defs>
+<rect width="900" height="550" fill="url(#reference-eye-wall)"/>
+<path data-view="table" fill="url(#reference-eye-wood)"/><path data-view="grain" fill="none" stroke="#95643c" stroke-width="1" opacity=".24"/>
+<g data-view="mirror"><path data-view="frame" fill="#647f7a" stroke="#526d68" stroke-width="2"/><path data-view="glass" fill="url(#reference-glass)"/><g clip-path="url(#reference-eye-clip)"><path data-view="reflected-table" fill="url(#reference-eye-wood)"/><path data-view="reflected-grain" fill="none" stroke="#95643c" stroke-width="1" opacity=".2"/></g></g>
+<g data-view="far" clip-path="url(#reference-eye-clip)"><path data-view="far-shadow" fill="#493725" opacity=".16"/><foreignObject width="900" height="550"><canvas xmlns="http://www.w3.org/1999/xhtml" data-view="front" width="900" height="550" style="width:900px;height:550px" aria-hidden="true"></canvas></foreignObject></g>
+<g data-view="near"><path data-view="near-shadow" fill="#493725" opacity=".2"/><foreignObject width="900" height="550"><canvas xmlns="http://www.w3.org/1999/xhtml" data-view="rear" width="900" height="550" style="width:900px;height:550px" aria-hidden="true"></canvas></foreignObject></g>
+</svg></figure>
+<div class="comparison-path-summary" aria-label="反射光從熊到鏡面走2公尺，反射後到眼睛走3公尺，總共5公尺">
+ <p class="comparison-path-caption">熊到鏡面，再反射到眼睛</p>
+ <p class="comparison-path-equation"><button type="button" class="comparison-path-term" data-distance="2" aria-pressed="false"><span>反射前</span><strong>2公尺</strong></button><span class="comparison-path-operator">＋</span><button type="button" class="comparison-path-term" data-distance="3" aria-pressed="false"><span>反射後</span><strong>3公尺</strong></button><span class="comparison-path-operator">＝</span><button type="button" class="comparison-path-total" aria-pressed="false" aria-label="顯示熊經鏡面反射到眼睛的5公尺光路">5公尺</button></p>
+</div>
+</article>
+<div class="comparison-backtrace dialogue-sequence"><div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>阿公，小熊明明在鏡子前面，為什麼看起來卻在鏡子後面？</p></div><div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>小熊的光先走 2 公尺到鏡面，再反射走 3 公尺進入妳的眼睛。妳會覺得光沿直線傳來，所以小熊看起來像在鏡後 2 公尺的地方。</p></div></div>
+<p class="comparison-transition"><span class="comparison-transition-arrow" aria-hidden="true">↓</span><span>驗證這個位置：撤掉鏡子，在<strong>虛線指向的位置</strong>放一隻同樣大小的真熊。</span></p>
+<article class="comparison-state" id="comparison-trial" data-mode="direct" aria-labelledby="trial-heading">
+ <figure class="comparison-diagram"><h3 class="comparison-row-title" id="trial-heading">對照的熊，直接看見</h3><svg class="comparison-side" id="trial-side" viewBox="0 0 900 650" role="img" aria-labelledby="trial-side-title trial-side-desc">
+<title id="trial-side-title">撤鏡並在原虛像位置另放真熊，光沿直線進入同一眼位</title><desc id="trial-side-desc">固定眼位，比較整隻熊玩偶。有鏡子時，實線代表實際反射光、鏡後虛線為反向延長；下排撤鏡後，另放入同位置、同大小與對應朝向的真熊。2與3公尺沿中央代表光路量取。</desc>
+<defs>
+ <linearGradient id="trial-room" x2="0" y2="1"><stop stop-color="#fbfaf5"/><stop offset="1" stop-color="#eee9df"/></linearGradient>
+ <linearGradient id="trial-wood" x2="0" y2="1"><stop stop-color="#d5b38c"/><stop offset="1" stop-color="#b98e64"/></linearGradient>
+ <linearGradient id="trial-silver" x2="1" y2="0"><stop stop-color="#91afb3"/><stop offset=".5" stop-color="#f3faf9"/><stop offset="1" stop-color="#a1bdc0"/></linearGradient>
+ <pattern id="trial-backing" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 10L10 0" stroke="#a7b2ad" stroke-width="1.2"/></pattern>
+ <marker id="trial-blue-arrow" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#236f9f"/></marker>
+ <image id="trial-bear-sprite" href="assets/mirror/teddy-side.webp" x="199.4" y="374.2" width="203" height="203"/>
+</defs>
+<rect width="900" height="570" fill="url(#trial-room)"/>
+<rect style="display:none" data-side="virtual-region" x="550" y="68" width="350" height="502" fill="#e6f1f4"/>
+<rect y="570" width="900" height="80" fill="url(#trial-wood)"/>
+<g data-side="observer"><image data-side="profile" href="assets/mirror/xiaokui-profile.webp" x="136.2272727" y="106.5454545" width="160" height="160"/></g>
+<g data-side="near"><use data-side="near-shape" href="#trial-bear-sprite" opacity="1"/></g>
+<g data-side="mirror" style="display:none"><rect x="540" y="68" width="9" height="502" rx="3" fill="url(#trial-silver)" stroke="#607e7f" stroke-width="2"/><rect x="552" y="70" width="12" height="498" fill="url(#trial-backing)"/><rect x="522" y="565" width="46" height="7" rx="3" fill="#81948b"/></g>
+<g data-side="mirror-tick"><path d="M540 565V589" stroke="#829694" stroke-width="6"/></g>
+<g data-side="far"><use data-side="far-shape" href="#trial-bear-sprite" transform="translate(1080 0) scale(-1 1)" opacity="1"/><rect x="720" y="592" width="110" height="48" rx="14" fill="#fffdf8"/><text data-side="far-label" x="775" y="626" text-anchor="middle" font-size="34" font-weight="700" fill="#286580">真熊</text></g>
+<g data-side="extensions" fill="none" stroke="#397d9f" stroke-dasharray="8 6" stroke-width="2"></g>
+<g data-side="rays" fill="none" stroke="#236f9f" stroke-linejoin="round"></g>
+<g data-side="hits" fill="#dceff8" stroke="#236f9f" stroke-width="1.8"></g>
+
+<g data-side="distance-three" aria-label="眼睛到反射點的光路為3公尺"></g><g data-side="distance-two" aria-label="反射點到對照位置的光路為2公尺"></g></svg></figure>
+ <figure class="comparison-observation"><svg class="comparison-eye" id="trial-eye" viewBox="175 0 550 550" role="img" aria-labelledby="trial-eye-title trial-eye-desc">
+<title id="trial-eye-title">小葵同時看見近處原熊的背面與遠處對照真熊</title><desc id="trial-eye-desc">上下兩個觀察窗使用同一眼位與較寬取景。下方前景是面向鏡子的原熊背面，上方遠處是鏡中像或撤鏡後放入的真熊；兩排遠處熊的位置、視大小相同，原熊都保留在鏡前位置。</desc>
+<defs><linearGradient id="trial-eye-wall" x2="1" y2="1"><stop stop-color="#f5f0e5"/><stop offset="1" stop-color="#dfd5c5"/></linearGradient><linearGradient id="trial-eye-wood" x2="0" y2="1"><stop stop-color="#d5b38b"/><stop offset="1" stop-color="#ad8054"/></linearGradient><linearGradient id="trial-glass" x2="1" y2="1"><stop stop-color="#e5f3f3"/><stop offset="1" stop-color="#cfe3e5"/></linearGradient><clipPath id="trial-eye-clip"><path data-view="clip"/></clipPath></defs>
+<rect width="900" height="550" fill="url(#trial-eye-wall)"/>
+<path data-view="table" fill="url(#trial-eye-wood)"/><path data-view="grain" fill="none" stroke="#95643c" stroke-width="1" opacity=".24"/>
+<g data-view="mirror" style="display:none"><path data-view="frame" fill="#647f7a" stroke="#526d68" stroke-width="2"/><path data-view="glass" fill="url(#trial-glass)"/><g clip-path="url(#trial-eye-clip)"><path data-view="reflected-table" fill="url(#trial-eye-wood)"/><path data-view="reflected-grain" fill="none" stroke="#95643c" stroke-width="1" opacity=".2"/></g></g>
+<g data-view="far" clip-path="none"><path data-view="far-shadow" fill="#493725" opacity=".16"/><foreignObject width="900" height="550"><canvas xmlns="http://www.w3.org/1999/xhtml" data-view="front" width="900" height="550" style="width:900px;height:550px" aria-hidden="true"></canvas></foreignObject></g>
+<g data-view="near"><path data-view="near-shadow" fill="#493725" opacity=".2"/><foreignObject width="900" height="550"><canvas xmlns="http://www.w3.org/1999/xhtml" data-view="rear" width="900" height="550" style="width:900px;height:550px" aria-hidden="true"></canvas></foreignObject></g>
+</svg></figure>
+<div class="comparison-path-summary" aria-label="真熊的光直接傳來，到原鏡面位置走2公尺，再到眼睛走3公尺，總共5公尺">
+ <p class="comparison-path-caption">真熊的光直接傳到眼睛</p>
+ <p class="comparison-path-equation"><button type="button" class="comparison-path-term" data-distance="2" aria-pressed="false"><span>到原鏡面位置</span><strong>2公尺</strong></button><span class="comparison-path-operator">＋</span><button type="button" class="comparison-path-term" data-distance="3" aria-pressed="false"><span>再到眼睛</span><strong>3公尺</strong></button><span class="comparison-path-operator">＝</span><button type="button" class="comparison-path-total" aria-pressed="false" aria-label="顯示真熊直接到眼睛的5公尺光路">5公尺</button></p>
+</div>
+</article></div>
+            <div class="comparison-result"><p class="comparison-takeaway">上排是<strong>轉過彎的5公尺</strong>，下排是<strong>直達的5公尺</strong>。</p><p class="comparison-view-result">兩組光以對應的方向進入眼睛，遠處的熊看起來位置、大小相同。</p></div>
+            <div class="mirror-explanation">
+              <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>原來鏡子裡的小熊，和後來放在那個位置的真熊，看起來一樣遠！</p></div>
+              <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>對呀！把進入眼睛的反射光往鏡後延長，就會指向小熊的虛像，剛好是後來放真熊的位置。</p></div>
+              <p class="comparison-clarification">本例距離沿圖示光路量取；虛線是輔助線，不代表光真的通過鏡後。</p>
+            </div>
+          </div>
+        </section>
+        <section class="lesson-card" id="card-05">
+          <header class="card-heading"><span class="card-number">05</span><div class="card-heading-copy"><h2>小熊往鏡子靠近，鏡中的牠會怎麼動？</h2><p class="card-subtitle">物距與像距：觀察平面鏡的等距關係</p></div></header>
+          <div class="card-main">
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>我把小熊往鏡子移，鏡後的虛像會留在原地嗎？</p></div>
+            <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>不會喔。小熊靠近鏡面時，鏡後的虛像也會靠近鏡面，而且小熊和虛像離鏡面的距離始終相等。</p></div>
+            <p class="distance-instruction">拖動小熊，觀察物體與像如何移動。</p>
+            <div class="mirror-views" aria-label="調整物體距離並同步查看成像">
+              <figure class="mirror-view">
+                <h3>側面｜物距與像距 <small>拖動小熊</small></h3>
+                <svg id="distance-side-view" viewBox="0 0 620 370" role="group" aria-labelledby="distance-side-title distance-side-desc">
+                  <title id="distance-side-title">側面觀察物距和像距</title><desc id="distance-side-desc">拖動物體改變物距，鏡後虛像位於鏡面另一側相同距離；刻度尺以鏡面為零點。</desc>
+                  <defs><marker id="dim-arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0 0L6 3L0 6Z" fill="#668b97"/></marker></defs>
+                  <defs><linearGradient id="measure-wall" x2="0" y2="1"><stop stop-color="#fcfbf6"/><stop offset="1" stop-color="#f2f0e6"/></linearGradient><linearGradient id="measure-wood" x2="0" y2="1"><stop stop-color="#d7b993"/><stop offset=".18" stop-color="#e0c6a5"/><stop offset="1" stop-color="#b5906a"/></linearGradient><linearGradient id="measure-mirror" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#8ca9a3"/><stop offset=".45" stop-color="#f4faf6"/><stop offset="1" stop-color="#9bb6b0"/></linearGradient><filter id="distance-contact-shadow" x="-.5" y="-2" width="2" height="5"><feGaussianBlur stdDeviation="2.2"/></filter><pattern id="measure-woodgrain" width="180" height="12" patternUnits="userSpaceOnUse"><path d="M0 3Q40 0 90 3T180 3M0 9Q60 6 120 10T200 9" fill="none" stroke="#93724f" stroke-width=".6" opacity=".22"/></pattern></defs>
+                  <rect x="0" y="0" width="620" height="222" fill="url(#measure-wall)"/><rect x="0" y="222" width="620" height="20" fill="url(#measure-wood)"/><rect x="0" y="224" width="620" height="18" fill="url(#measure-woodgrain)"/><path d="M0 223H620" stroke="#efddc4" stroke-width="2"/>
+                  <rect x="296" y="215" width="28" height="8" rx="3" fill="#8b9f92"/><rect x="306" y="35" width="8" height="188" rx="2.5" fill="#7b9890"/><rect x="307" y="38" width="6" height="181" rx="1.5" fill="url(#measure-mirror)"/><path d="M309 40V215" stroke="#fff" stroke-opacity=".7" stroke-width="1.3"/><text x="310" y="32" text-anchor="middle" class="distance-mirror-name" fill="#526e60" font-size="12.5" font-weight="600">平面鏡</text>
+                  <g id="distance-side-object" class="drag-object" transform="translate(-32 0)" tabindex="0" role="slider" aria-label="拖動面向鏡子的小熊調整物距" aria-orientation="horizontal" aria-describedby="distance-drag-instructions" aria-valuemin="10" aria-valuemax="60" aria-valuenow="40">
+                    <rect x="126" y="124" width="112" height="112" fill="transparent"/>
+                    <ellipse cx="182" cy="221.5" rx="27" ry="3.8" fill="#705b43" opacity=".19" filter="url(#distance-contact-shadow)"/>
+                    <image href="assets/mirror/teddy-side.webp" x="146" y="135.6" width="72" height="90" preserveAspectRatio="xMidYMax meet"/><g data-distance-tag="object" data-tag-y="70"><rect x="124" y="52" width="116" height="36" rx="7" fill="#fff8e9" stroke="#e3d5ba"/><text id="distance-side-object-label" class="distance-side-tag" x="182" y="75" text-anchor="middle" fill="#977145">鏡前實物</text></g>
+                  </g>
+                  <g id="distance-side-image" transform="translate(32 0)"><g opacity=".46"><ellipse cx="438" cy="221.5" rx="27" ry="3.8" fill="#687a70" opacity=".2" filter="url(#distance-contact-shadow)"/><image href="assets/mirror/teddy-side.webp" x="402" y="135.6" width="72" height="90" preserveAspectRatio="xMidYMax meet" transform="translate(876 0) scale(-1 1)"/></g><g data-distance-tag="image" data-tag-y="70"><rect x="380" y="52" width="116" height="36" rx="7" fill="#eff5f5" stroke="#cfdddd"/><text id="distance-side-image-label" class="distance-side-tag" x="438" y="75" text-anchor="middle" fill="#5d7e87">鏡後虛像</text></g></g>
+                  <path id="distance-object-measure" d="M150 116H310" class="measure-line" marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)"/><path id="distance-image-measure" d="M310 116H470" class="measure-line" marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)"/>
+
+                  <line x1="70" y1="260" x2="550" y2="260" class="ruler-line"/><g id="distance-ruler-ticks"></g><rect x="292" y="284" width="36" height="36" rx="7" fill="#e2ede5"/><g id="distance-ruler-values"></g><text class="distance-ruler-caption" x="310" y="355" text-anchor="middle" fill="#7a8b7f" font-size="11.5">鏡面為 0（畫面參考刻度）</text>
+                  <line id="distance-ruler-object-marker" x1="150" y1="239" x2="150" y2="275"/><line id="distance-ruler-image-marker" x1="470" y1="239" x2="470" y2="275"/>
+                </svg>
+              </figure>
+              <figure class="mirror-view">
+                <h3>鏡前｜觀察成像 <small>同步變化</small></h3>
+                <svg id="distance-front-view" viewBox="0 0 620 380" role="img" aria-labelledby="distance-front-title distance-front-desc">
+                  <title id="distance-front-title">正面看物體移動後的鏡中像</title><desc id="distance-front-desc">小熊與鏡中虛像的實際大小相同；從固定視角觀看時，遠近會影響畫面大小，小熊也可能遮住部分像。</desc>
+                  <defs><linearGradient id="distance-front-glass" x2="1" y2="1"><stop stop-color="#e2eeed"/><stop offset=".5" stop-color="#f6fbf7"/><stop offset="1" stop-color="#cbded8"/></linearGradient><linearGradient id="distance-front-frame" x2="1" y2="1"><stop stop-color="#94b0a7"/><stop offset=".4" stop-color="#6c8a80"/><stop offset="1" stop-color="#435f55"/></linearGradient><linearGradient id="distance-front-wood" x2="0" y2="1"><stop stop-color="#dfc6a7"/><stop offset="1" stop-color="#c8a27e"/></linearGradient><filter id="distance-mirror-shadow" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="7" stdDeviation="6" flood-color="#304a3c" flood-opacity=".17"/></filter><filter id="distance-front-contact" x="-.5" y="-2" width="2" height="5"><feGaussianBlur stdDeviation="3"/></filter><clipPath id="distance-front-clip"><rect x="179" y="47" width="262" height="202" rx="2"/></clipPath></defs>
+                  <image href="assets/mirror/mirror-room-bg.webp" x="0" y="0" width="620" height="380" preserveAspectRatio="xMidYMid slice"/>
+                  <ellipse cx="310" cy="260" rx="146" ry="7" fill="#4d5040" opacity=".15" filter="url(#distance-front-contact)"/>
+                  <rect x="170" y="38" width="280" height="220" rx="10" fill="url(#distance-front-frame)" stroke="#8ca59a" stroke-width="1.2" filter="url(#distance-mirror-shadow)"/><rect x="176" y="44" width="268" height="208" rx="4" fill="#536e63"/><rect x="179" y="47" width="262" height="202" rx="2" fill="url(#distance-front-glass)"/>
+                  <g clip-path="url(#distance-front-clip)"><rect x="179" y="98" width="262" height="151" fill="url(#distance-front-wood)" opacity=".82"/><path d="M179 130H441M179 165H441M179 200H441M179 235H441" stroke="#a47e57" stroke-width=".7" opacity=".15"/>
+                    <g id="distance-front-reflection"><ellipse cx="310" cy="222.316" rx="28.648" ry="3.979" fill="#69705a" opacity=".17" filter="url(#distance-front-contact)"/><image href="assets/mirror/teddy-front.webp" x="270.211" y="144.737" width="79.579" height="79.579" preserveAspectRatio="xMidYMax meet"/></g>
+                    <path d="M189 48H215L187 248H179V174Z" fill="#fff" fill-opacity=".18"/><path d="M182 51H438" stroke="#fff" stroke-opacity=".6" stroke-width="1"/>
+                  </g>
+                  <g id="distance-front-object"><ellipse cx="310" cy="314.182" rx="49.484" ry="6.873" fill="#5c4c38" opacity=".19" filter="url(#distance-front-contact)"/><ellipse cx="310" cy="314.182" rx="34.364" ry="3.849" fill="#5c4c38" opacity=".15"/><image href="assets/mirror/teddy-rear.webp" x="241.273" y="178.727" width="137.455" height="137.455" preserveAspectRatio="xMidYMax meet"/></g>
+                  <g data-distance-tag="reflection" data-tag-y="181.343"><path class="distance-leader" d="M346.606 181.343L451.8 181.343" stroke="#75968b"/><rect x="456.8" y="163.743" width="86.4" height="35.2" rx="6.4" fill="#fffffa" fill-opacity=".94" stroke="#d8e2d9"/><text class="distance-front-tag" x="500" y="189.183" text-anchor="middle" fill="#527369">鏡中像</text></g><g data-distance-tag="front-object" data-tag-y="241.956"><path class="distance-leader" d="M373.229 241.956L440.6 241.956" stroke="#ad865d"/><rect x="445.6" y="224.356" width="108.8" height="35.2" rx="6.4" fill="#fff9ee" fill-opacity=".94" stroke="#e3d6c1"/><text class="distance-front-tag" x="500" y="249.796" text-anchor="middle" fill="#977145">鏡前實物</text></g>
+                </svg>
+              </figure>
+            </div>
+            <div class="distance-readouts" aria-label="物體與像到鏡面的距離"><output id="distance-object-measure-label" class="measure-text">物距 40 cm</output><span class="distance-equals" aria-hidden="true">＝</span><output id="distance-image-measure-label" class="measure-text">像距 40 cm</output><span id="distance-front-status" class="visually-hidden">物體離鏡面 40 cm｜虛像在鏡後 40 cm</span></div>
+            <p class="visually-hidden" id="distance-drag-instructions">拖動小熊向鏡面靠近或遠離。聚焦小熊後，可用左右方向鍵每次移動1公分，按住Shift每次移動10公分；Home移到最靠近鏡面，End移到最遠。</p>
+          </div>
+        </section>
+        <section class="lesson-card" id="card-06" data-normals="true" data-concave-position="near">
+          <header class="card-heading"><span class="card-number">06</span><div class="card-heading-copy"><h2>鏡面形狀不同，反射光和像會怎麼變？</h2><p class="card-subtitle">平面鏡與曲面鏡：比較光路與成像</p></div></header>
+          <div class="card-main">
+            <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p>阿公，剛才用的鏡子都是平的。如果鏡面是彎的，照出來也會一樣嗎？</p></div>
+            <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p>我們換成向內凹和向外凸的鏡子，看看照出來的樣子有什麼不同。</p></div>
+            <section class="mirror-step" aria-labelledby="mirror-step-1">
+              <header class="mirror-step-head"><h3 id="mirror-step-1"><span>1</span>先看差異</h3><p>同樣的平行光，反射後往哪裡走？</p></header>
+              <div class="mirror-columns mirror-overviews">
+                <figure class="mirror-column mirror-plane"><figcaption class="mirror-column-title">平面鏡</figcaption><svg data-overview="plane" viewBox="0 0 320 220" role="img" aria-label="平面鏡：平行入射光反射後仍然平行"></svg><p class="mirror-result">仍然平行</p></figure>
+                <figure class="mirror-column mirror-concave"><figcaption class="mirror-column-title">凹面鏡</figcaption><svg data-overview="concave" viewBox="0 0 320 220" role="img" aria-label="凹面鏡：平行入射光反射後向內會聚"></svg><p class="mirror-result">向內會聚</p></figure>
+                <figure class="mirror-column mirror-convex"><figcaption class="mirror-column-title">凸面鏡</figcaption><svg data-overview="convex" viewBox="0 0 320 220" role="img" aria-label="凸面鏡：平行入射光反射後向外發散"></svg><p class="mirror-result">向外發散</p></figure>
+              </div>
+            </section>
+            <section class="mirror-step" aria-labelledby="mirror-step-2">
+              <header class="mirror-step-head"><h3 id="mirror-step-2"><span>2</span>再看原因</h3><button type="button" id="mirror-normal-toggle" class="mirror-normal-toggle" aria-pressed="true" aria-controls="mirror-normal-comparison">顯示法線<span aria-hidden="true">✓</span></button></header>
+              <div class="mirror-columns mirror-reasons" id="mirror-normal-comparison">
+                <figure class="mirror-column mirror-plane"><figcaption class="mirror-column-title">平面鏡</figcaption><svg data-reason="plane" viewBox="0 0 320 220" role="img" aria-label="平面鏡上方反射點的入射光、反射光與法線"></svg></figure>
+                <figure class="mirror-column mirror-concave"><figcaption class="mirror-column-title">凹面鏡</figcaption><svg data-reason="concave" viewBox="0 0 320 220" role="img" aria-label="凹面鏡上方反射點的入射光、反射光與法線"></svg></figure>
+                <figure class="mirror-column mirror-convex"><figcaption class="mirror-column-title">凸面鏡</figcaption><svg data-reason="convex" viewBox="0 0 320 220" role="img" aria-label="凸面鏡上方反射點的入射光、反射光與法線"></svg></figure>
+              </div>
+              <p class="visually-hidden" id="mirror-normal-status" role="status">已顯示三種鏡面的法線。</p>
+              <div class="mirror-cause-chain" aria-label="鏡面形狀不同，造成法線方向不同，反射方向也不同"><strong>鏡面形狀不同</strong><span aria-hidden="true">→</span><strong>法線方向不同</strong><span aria-hidden="true">→</span><strong>反射方向不同</strong></div>
+              <p class="mirror-law">每一道光，都遵守入射角＝反射角。</p>
+            </section>
+            <section class="mirror-step" aria-labelledby="mirror-step-3">
+              <header class="mirror-step-head"><h3 id="mirror-step-3"><span>3</span>最後看成像</h3><p>同一隻小熊，照起來有什麼不同？</p></header>
+              <div class="mirror-columns mirror-portraits">
+                <article class="mirror-column mirror-plane"><h4 class="mirror-column-title">平面鏡</h4><p class="mirror-portrait-condition" aria-hidden="true"></p><svg id="mirror-plane-appearance" data-appearance="plane" viewBox="0 0 340 300" role="img" aria-label="平面鏡的實物與鏡中像外觀比較"></svg><p class="mirror-result">正立・同大</p><div class="mirror-portrait-controls"></div></article>
+                <article class="mirror-column mirror-concave"><h4 class="mirror-column-title">凹面鏡</h4><p class="mirror-portrait-condition" id="mirror-concave-condition">小熊靠近鏡面</p><svg id="mirror-concave-appearance" data-appearance="concave" viewBox="0 0 340 300" role="img" aria-label="凹面鏡的實物與鏡中像外觀比較"></svg><p class="mirror-result" id="mirror-concave-result" role="status">正立・放大</p><div class="mirror-portrait-controls"><button type="button" class="mirror-bear-toggle" id="mirror-bear-toggle" aria-controls="mirror-concave-appearance mirror-concave-condition mirror-concave-result">把小熊移遠 →</button></div></article>
+                <article class="mirror-column mirror-convex"><h4 class="mirror-column-title">凸面鏡</h4><p class="mirror-portrait-condition" aria-hidden="true"></p><svg id="mirror-convex-appearance" data-appearance="convex" viewBox="0 0 340 300" role="img" aria-label="凸面鏡的實物與鏡中像外觀比較"></svg><p class="mirror-result">正立・縮小</p><div class="mirror-portrait-controls"></div></article>
+              </div>
+              <section class="mirror-life-examples" aria-labelledby="mirror-applications-title">
+                <h4 id="mirror-applications-title">生活中，哪些地方會用到這些鏡子？</h4>
+                <div class="mirror-columns mirror-applications">
+                  <figure class="mirror-application"><img src="assets/mirror/applications/dressing-mirror.webp" width="384" height="576" loading="lazy" decoding="async" alt="木框立式穿衣鏡的寫實圖片"><figcaption><strong>穿衣鏡</strong><small>看清穿著</small></figcaption></figure>
+                  <figure class="mirror-application"><img src="assets/mirror/applications/makeup-mirror.webp" width="384" height="576" loading="lazy" decoding="async" alt="金屬桌上型放大化妝鏡的寫實圖片"><figcaption><strong>近距離化妝鏡</strong><small>放大臉部細節</small></figcaption></figure>
+                  <figure class="mirror-application"><img src="assets/mirror/applications/traffic-mirror.webp" width="384" height="576" loading="lazy" decoding="async" alt="橘框路口凸面鏡，鏡中可見街道與來車的寫實圖片"><figcaption><strong>路口鏡</strong><small>觀察轉角來車</small></figcaption></figure>
+                </div>
+              </section>
+              <p id="mirror-concave-status" class="visually-hidden" role="status">凹面鏡：小熊靠近鏡面，在這個位置的像正立、放大。</p>
+            </section>
+            <details class="mirror-model-notes"><summary>凹面鏡的像會隨距離改變</summary>
+              <p>本活動中，小熊在靠近鏡面的位置時，看到的像正立、放大；移到較遠的示範位置後，像倒立、縮小。</p>
+              <p>凹面鏡形成的像，大小與正倒立會隨物體與鏡面的距離改變。倒立的像也可能放大或與物體同大，並非都縮小。</p>
+            </details>
+            <noscript><p>請啟用 JavaScript 查看光路與小熊。平面鏡使平行光反射後仍平行，凹面鏡使近軸平行光會聚，凸面鏡使其發散；每一道光都遵守反射定律。</p></noscript>
+          </div>
+        </section>
+        <section class="lesson-card" id="unit-quiz" aria-labelledby="periscope-title">
+          <span id="card-07" aria-hidden="true"></span>
+          <header class="periscope-heading periscope-heading--standard"><span class="quiz-icon" aria-hidden="true">?</span><div><small>單元小測</small><h2 id="periscope-title">幫小葵完成潛望鏡</h2><p>讓海面上的光，經過兩面鏡子進入眼睛。</p></div></header>
+          <div class="periscope-body">
+            <div id="periscope-panel">
+              <div class="periscope-talks">
+                <div class="dialogue dialogue--xiaokui"><span class="speaker"><span class="visually-hidden">小葵</span></span><p id="periscope-student">我在潛水艇裡，怎麼看見海上的船？</p></div>
+                <div class="dialogue"><span class="speaker"><span class="visually-hidden">阿公</span></span><p id="periscope-grandpa">先轉動鏡片，再從觀察窗找找船在哪裡。</p></div>
+              </div>
+              <div class="periscope-task"><div><strong id="periscope-task-title">拖曳鏡片端點，讓船出現在觀察窗中央。</strong></div></div>
+              <div class="periscope-workspace">
+                <div class="periscope-cutaway">
+                  <svg id="periscope-scene" viewBox="0 0 900 760" role="group" aria-label="潛望鏡剖面與可旋轉平面鏡" aria-describedby="periscope-scene-desc">
+                    <desc id="periscope-scene-desc">上方入口在海面之上，密封管內與潛水艇艙內都是空氣。拖曳鏡面一或鏡面二的端點旋轉，觀察右側景象。鏡片也可用方向鍵微調。</desc>
+                    <defs>
+                      <linearGradient id="scope-steel" x1="0" x2="1"><stop stop-color="#374a50"/><stop offset=".16" stop-color="#a8b7b5"/><stop offset=".48" stop-color="#596d70"/><stop offset=".8" stop-color="#c0cac4"/><stop offset="1" stop-color="#30454c"/></linearGradient>
+                      <linearGradient id="scope-air" x1="0" x2="1"><stop stop-color="#1f333b"/><stop offset=".24" stop-color="#738783"/><stop offset=".5" stop-color="#bdc6ad"/><stop offset=".8" stop-color="#8b9c8d"/><stop offset="1" stop-color="#263c41"/></linearGradient>
+                      <linearGradient id="scope-mirror" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".3" stop-color="#d8f1f3"/><stop offset=".75" stop-color="#91b3b7"/><stop offset="1" stop-color="#4e717c"/></linearGradient>
+                      <filter id="scope-glow"><feGaussianBlur stdDeviation="4"/></filter>
+                      <filter id="scope-shadow" x="-30%" y="-20%" width="160%" height="140%"><feDropShadow dx="3" dy="5" stdDeviation="5" flood-opacity=".3"/></filter>
+                    </defs>
+                    <image href="assets/periscope/submarine-scene.webp?v=2" width="900" height="760" preserveAspectRatio="none"/>
+                    <g filter="url(#scope-shadow)">
+                      <path d="M491 113H639V539H767V641H639V668H491Z" fill="url(#scope-steel)" stroke="#263d43" stroke-width="5"/>
+                      <path d="M508 128H622V555H765V625H622V652H508Z" fill="url(#scope-air)" stroke="#334a50" stroke-width="3"/>
+                      <path d="M491 155H509V225H491" fill="#a5c9d4" fill-opacity=".28" stroke="#d6f7fb" stroke-width="3"/>
+                      <path d="M491 128V150M491 230V650M639 130V535M639 648V658" stroke="#d6dfcd" stroke-opacity=".5" stroke-width="3"/>
+                      <rect x="739" y="553" width="26" height="74" rx="9" fill="#26373f" stroke="#61767c" stroke-width="3"/><rect x="755" y="564" width="12" height="52" rx="5" fill="#17262e"/>
+                      <g fill="#334b50" stroke="#becbc3" stroke-width="2"><circle cx="502" cy="126" r="4"/><circle cx="628" cy="126" r="4"/><circle cx="502" cy="655" r="4"/><circle cx="628" cy="655" r="4"/><circle cx="628" cy="335" r="4"/><circle cx="502" cy="335" r="4"/></g>
+                    </g>
+                    <g id="periscope-light" class="periscope-path"></g>
+                    <g id="periscope-mirror-0" class="mirror-drag" role="slider" tabindex="0" aria-label="鏡面一，拖曳端點旋轉，或使用方向鍵" aria-valuemin="30" aria-valuemax="65" aria-valuenow="38" aria-orientation="horizontal"><circle class="scope-mirror-focus" cx="565" cy="190" r="79"/><line class="scope-mirror-hit"/><line class="mirror-back" stroke="#354f58" stroke-width="15" stroke-linecap="round"/><line class="mirror-glass" stroke="url(#scope-mirror)" stroke-width="9" stroke-linecap="round"/><line class="mirror-highlight" stroke="#f0ffff" stroke-width="2"/><circle class="scope-mirror-handle" r="11"/><circle class="scope-mirror-handle" r="11"/></g>
+                    <g id="periscope-mirror-1" class="mirror-drag" role="slider" tabindex="0" aria-label="鏡面二，拖曳端點旋轉，或使用方向鍵" aria-valuemin="30" aria-valuemax="65" aria-valuenow="51" aria-orientation="horizontal"><circle class="scope-mirror-focus" cx="565" cy="590" r="79"/><line class="scope-mirror-hit"/><line class="mirror-back" stroke="#354f58" stroke-width="15" stroke-linecap="round"/><line class="mirror-glass" stroke="url(#scope-mirror)" stroke-width="9" stroke-linecap="round"/><line class="mirror-highlight" stroke="#f0ffff" stroke-width="2"/><circle class="scope-mirror-handle" r="11"/><circle class="scope-mirror-handle" r="11"/></g>
+                    <g class="scene-label"><rect x="650" y="153" width="92" height="36" rx="8"/><text x="696" y="178" text-anchor="middle">鏡面一</text><rect x="648" y="637" width="92" height="36" rx="8"/><text x="694" y="662" text-anchor="middle">鏡面二</text></g>
+                  </svg>
+                </div>
+                <aside class="periscope-view" aria-label="從潛望鏡看到的景象"><h3>小葵的觀察窗</h3><div class="periscope-lens-frame"><canvas id="periscope-view" width="240" height="240" role="img" aria-label="觀察窗載入中"></canvas></div><div id="periscope-view-state" class="periscope-view-state" role="status">正在準備觀察窗…</div><p id="periscope-view-copy">景象隨鏡片轉動；管壁擋住的區域會變暗。</p><div class="periscope-trace-action" id="periscope-trace-action">
+                    <button type="button" id="periscope-pulse" class="periscope-pulse-button" aria-describedby="periscope-pulse-note"><span class="periscope-pulse-label">追蹤目前視線</span><span class="periscope-pulse-invite" aria-hidden="true">點一下，看看光走到哪裡</span></button>
+                    <p class="periscope-pulse-note" id="periscope-pulse-note" role="status">光線短暫亮起後會自動消失。</p>
+                    <div class="periscope-design-action" id="periscope-design-action"><button type="button" id="periscope-check" class="action">檢查我的設計</button></div>
+                  </div><div class="periscope-view-meter">轉錯時，可能看見天空、海面，或被管壁遮住。</div></aside>
+              </div>
+              <p class="periscope-model-note">黃色輔助線從小葵的眼睛位置反向追蹤視線。實際看見物體時，是外界的光進入眼睛；剖面與景物為示意比例。</p>
+              <div id="periscope-feedback" class="periscope-feedback" role="status">調整完成後，按「檢查我的設計」。</div>
+            </div>
+            <noscript><p>這個小測需要 JavaScript。船反射的光經上方、下方兩片平面鏡進入眼睛；鏡片偏轉可能讓視線改向天空、海面或被管壁遮擋。</p></noscript>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="shell"><a href="../../index.html">回到光學單元學習路線</a></footer>
+  <script>
+    const cards = [...document.querySelectorAll('.lesson-card')];
+    const routeLinks = [...document.querySelectorAll('.route a')];
+    const progress = document.querySelector('#lesson-progress');
+    const syncReadingPosition = () => {
+      // Observer entries describe changes, not every currently visible card.
+      // Read current geometry so rapid jumps cannot select an earlier card.
+      const readingLine = window.innerHeight * .15;
+      let index = cards.findIndex(card => card.getBoundingClientRect().bottom > readingLine);
+      if (index < 0) index = cards.length - 1;
+      routeLinks.forEach((link, i) => {
+        if (i === index) link.setAttribute('aria-current', 'step');
+        else link.removeAttribute('aria-current');
+      });
+      progress.value = index + 1;
+    };
+    syncReadingPosition();
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(syncReadingPosition, { rootMargin: '-15% 0px -65% 0px', threshold: [0, .2, .5] });
+      cards.forEach(card => observer.observe(card));
+    }
+  </script>
+  <script type="module" src="assets/mirror-distance.js?v=readouts-below-20261106"></script>
+  <script type="module" src="assets/curved-mirrors.js?v=realistic-applications-20261106"></script>
+  <script type="module" src="assets/mirror-image.js?v=distance-segment-light-20261106"></script>
+  <script type="module" src="assets/reflection-3d.js?v=flashlight-controls-20261106"></script>
+  <script type="module" src="assets/surface-directions.js?v=surface-flow-20261105"></script>
+  <script type="module" src="assets/laser-reflection.js?v=near-arc-20261106"></script>
+  <script type="module" src="assets/reversible-light.js?v=near-arc-20261106"></script>
+  <script type="module" src="assets/periscope.js?v=one-activity-20261106"></script>
+</body>
+</html>

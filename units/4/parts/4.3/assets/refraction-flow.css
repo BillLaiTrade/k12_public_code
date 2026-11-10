@@ -1,0 +1,88 @@
+/* Material choices remain visible together, on the lower frame of each apparatus. */
+.lab-medium-toggle{position:absolute;z-index:5;left:50%;bottom:2px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:3px;max-width:calc(100% - 12px);padding:2px 4px;border:1px solid #e1d6bac9;border-radius:10px;background:#fffdf1ed;color:#31543e;box-shadow:0 2px 8px #47331d24;white-space:nowrap;backdrop-filter:blur(5px)}
+.lab-medium-toggle button{min-width:52px;min-height:40px;padding:5px 10px;border:0;border-radius:7px;background:transparent;color:#58624f;font-size:.87rem;font-weight:700}
+.lab-medium-toggle button[aria-pressed=true]{background:#e1edd6;color:#24533c;box-shadow:inset 0 0 0 1px #a8bf93}
+.lab-medium-toggle button[aria-pressed=false]:hover{background:#f0efdf}
+.lab-medium-toggle button:focus-visible{outline:2px solid #356f50;outline-offset:-2px}
+.medium-toggle-caption{padding:0 3px;font-size:.71rem;color:#65745d}
+.medium-toggle-icon{padding:0 2px;font-size:1.15rem;line-height:1;color:#637c52}
+.oblique-console{display:flex;justify-content:flex-start;gap:8px;margin-top:5px;padding-top:7px}
+.oblique-experiment>.oblique-status{margin-top:6px}
+.oblique-rule-head strong{font-size:1rem;line-height:1.5}
+.oblique-rule-caption{gap:0 4px;margin-top:5px}
+#oblique-zoom-note{flex-basis:auto;margin:0}
+.oblique-settings{margin-top:5px}
+.return-controls{grid-template-columns:minmax(0,1fr) auto}
+#return-reset{justify-self:end}
+.return-finding strong{font-size:1rem}
+
+.refraction-concept{margin-top:20px;padding:22px 24px;border:1px solid #b8cdb5;border-top:4px solid #4e8060;border-radius:13px;background:linear-gradient(130deg,#f3f8eb,#fbfcf7);color:#294b39}
+.refraction-concept .concept-eyebrow{margin:0 0 6px;color:#627a4d;font-size:.77rem;font-weight:750;letter-spacing:.07em}
+.refraction-concept h3{margin:0 0 15px;font-size:1.28rem;line-height:1.5;color:#254e3a}
+.concept-flow{display:flex;align-items:center;justify-content:center;gap:24px;padding:14px 18px;border:1px solid #d5e1ca;border-radius:10px;background:#fffef9;text-align:center}
+.concept-flow>span{min-width:68px;font-size:1.07rem;font-weight:750}
+.concept-flow>b{color:#80906b;font-size:1.3rem}
+.concept-discussion{display:block;margin-top:12px}
+.refraction-concept h4{margin:0 0 7px;font-size:1rem;color:#31583f}
+.concept-discussion p{margin:0 0 10px;font-size:.93rem;line-height:1.85}
+.concept-result{padding:15px 17px;border:1px solid #d7e3cc;border-radius:9px;background:#ffffffa6}
+.concept-result .finding,.concept-result .oblique-finding{margin:0;padding:0;border:0;background:none}
+.concept-result .concept-live{margin:14px 0 3px;font-size:.96rem;font-weight:650}
+.concept-live output{white-space:nowrap;font-variant-numeric:tabular-nums}
+.concept-live [data-concept-in]{color:#165fc2}.concept-live [data-concept-out]{color:#24783a}
+.concept-result .concept-measure{margin:0;color:#697664;font-size:.79rem}
+.refraction-concept .concept-exception{margin:8px 0 0;padding-top:13px;border-top:1px solid #d6e1cc;font-size:.86rem;line-height:1.8;color:#5d6e56}
+.concept-exception strong{color:#3f5b3d}
+.reciprocity-comparison{margin-top:14px;border:1px solid #dce6db;border-radius:12px;background:#fafcf6}
+.reciprocity-comparison>summary{padding:13px 15px;color:#315c47;font-size:.9rem;font-weight:650;cursor:pointer}
+.reciprocity-comparison>.lab{margin:0 12px 12px}
+.reciprocity-comparison>.finding{margin:10px 14px 14px}
+@container (max-width:680px){
+ .concept-discussion{grid-template-columns:1fr;gap:5px}
+ .refraction-concept{padding:18px 15px}
+ .refraction-concept h3{font-size:1.12rem}
+ .oblique-actions button{padding:7px 10px}
+}
+@container (max-width:700px){
+ /* Give the choices their own lower part of the operation image on a phone. */
+ .oblique-table,.return-table{aspect-ratio:auto;height:calc(100cqw * 780 / 1254 + 52px)}
+ :is(#oblique-background,#oblique-scene,#return-background,#return-scene,#return-devices,#exit-background,#exit-scene,#exit-devices){top:0;height:auto;aspect-ratio:1;transform:translateY(-14.354067%)}
+ .lab-medium-toggle{bottom:2px}
+ .lab-medium-toggle button{min-height:44px}
+ .return-controls{gap:5px 8px;padding-top:4px}
+ .return-switches{grid-column:1;grid-row:1}
+ #return-reset{grid-column:2;grid-row:1}
+}
+
+
+/* The controls sit directly in the original rail; no separate casing or fasteners. */
+:is(#oblique-medium-toggle,#exit-medium-toggle){gap:4px;min-height:44px;padding:0 5px;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none}
+:is(#oblique-medium-toggle,#exit-medium-toggle) :is(.medium-toggle-icon,.medium-toggle-caption){color:#fff1ca;text-shadow:0 1px 2px #271b10,0 -1px #563c24}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button{position:relative;isolation:isolate;min-height:44px;padding:4px 9px;border:0;border-radius:0;background:none!important;box-shadow:none!important;color:#fff0cc;font-size:.83rem}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button::before{content:"";position:absolute;z-index:-1;inset:8px 0;border:1px solid #493826;border-radius:2px;background:linear-gradient(#3f493b,#334330);box-shadow:inset 0 2px 3px #101810a6,0 1px #ead8b570}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button[aria-pressed=true]{color:#244b32}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button[aria-pressed=true]::before{background:linear-gradient(#c6dcb7,#dce9cb);box-shadow:inset 0 2px 3px #4b65434d,0 1px #ead8b570}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button[data-lab-medium=glass][aria-pressed=true]::before{background:linear-gradient(#cbd4ce,#e7ebe4)}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button[aria-pressed=false]:hover::before{background:#4b5e42}
+:is(#oblique-medium-toggle,#exit-medium-toggle) button:focus-visible{outline:2px solid #f7e4ae;outline-offset:-3px}
+:is(#oblique-medium-toggle,#exit-medium-toggle),:is(#oblique-medium-toggle,#exit-medium-toggle) *,:is(#oblique-medium-toggle,#exit-medium-toggle) *::before{transition:none!important}
+.oblique-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;width:min(100%,360px);gap:6px}
+.oblique-actions button{min-width:0;padding:7px 9px;gap:5px;font-size:.84rem;white-space:nowrap}
+:is(#oblique-reset,#exit-reset){min-height:44px;padding:6px 9px;border-color:#ccdcca;background:#f5f9ef;color:#315c47;font-size:.8rem}
+.apparatus-dock{display:none}
+.refraction-concept{margin-top:12px;padding:12px 14px;border-top-width:3px;border-radius:10px}
+.refraction-concept h3{margin:0 0 8px;font-size:1.02rem;line-height:1.45}
+.concept-flow{gap:16px;padding:7px 12px;border-radius:7px}
+.concept-flow>span{min-width:76px;font-size:.96rem}
+.concept-flow small{display:block;color:#4f6b48;font-size:.79rem;font-weight:650;line-height:1.5}
+.concept-discussion{margin-top:8px}
+.concept-result{padding:9px 12px;border-radius:7px}
+.concept-result .oblique-finding{display:flex;align-items:baseline;justify-content:space-between;gap:3px 12px;flex-wrap:wrap}
+.concept-result .oblique-rule-head strong{font-size:.92rem}
+.concept-result .concept-live{margin:6px 0 1px;font-size:.9rem}
+.concept-result .concept-measure{font-size:.74rem}
+@container (max-width:700px){.apparatus-dock{display:block;position:absolute;z-index:2;bottom:0;left:0;width:100%;height:52px;pointer-events:none}}
+#s4 .oblique-explanation{border:1px solid #d9e4d9;border-radius:13px;background:linear-gradient(130deg,#fcfdf9,#f6f9f1)}
+#s4 .oblique-explanation summary{padding:17px 20px;font-size:1.06rem;color:#284d3d}
+#s4 .oblique-explanation>p{margin:12px 20px;color:#294b39;font-size:.94rem}
+@container (max-width:680px){#s4 .oblique-explanation summary{padding:15px 13px;font-size:.95rem}#s4 .oblique-explanation>p{margin:12px 13px}}

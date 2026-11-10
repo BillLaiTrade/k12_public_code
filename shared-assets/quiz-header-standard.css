@@ -1,0 +1,18 @@
+/* Shared visual treatment for unit-quiz headers, based on the approved warm-gold sample. */
+.quiz-head--standard,
+.field-task-head--standard,
+.booklet-heading--standard,
+.periscope-heading--standard {
+  background: #f8f1e4 !important;
+  border-left: 3px solid #b48a3c !important;
+  border-radius: 14px !important;
+}
+
+.quiz-head--standard .quiz-mark,
+.field-task-head--standard .drill-badge,
+.booklet-heading--standard .booklet-mark,
+.periscope-heading--standard .quiz-icon {
+  background-color: #f0e2be !important;
+  color: #805c17 !important;
+  border-color: transparent !important;
+}
