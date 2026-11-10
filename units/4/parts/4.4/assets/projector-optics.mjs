@@ -3,12 +3,16 @@ import {imageFor,rayAt} from './optics.mjs';
 // The convex lens is fixed; students move the transparent card and the wall.
 export const PROJECTOR=Object.freeze({f:2.4,lens:5.5,screenMin:6.4,screenMax:12,railMax:12,aperture:.76,axis:2.65,cardMin:.3,cardMax:4.6,step:.02,minGap:.9,paperWidth:4.8,paperHeight:4.6,artBounds:Object.freeze({left:-.49,right:.49,top:-.67,bottom:.59}),targetBounds:Object.freeze({left:-1.12,right:1.12,top:-1.52,bottom:1.38}),focusTolerance:.055});
 export const initialProjector=()=>({card:PROJECTOR.lens-PROJECTOR.f,screen:PROJECTOR.lens+PROJECTOR.f,kind:'concave',flipped:false,rays:false});
-export function projectorFocusMarks(state){
+export function projectorDistanceMarks(){
  const marks={};for(const side of ['left','right'])for(const multiple of [1,2]){
   const position=PROJECTOR.lens+(side==='left'?-1:1)*multiple*PROJECTOR.f;
-  marks[`${side}-${multiple}`]=state.kind==='convex'&&position>=-1e-9&&position<=PROJECTOR.railMax+1e-9?Math.max(0,Math.min(PROJECTOR.railMax,position)):null;
+  marks[`${side}-${multiple}`]=position>=-1e-9&&position<=PROJECTOR.railMax+1e-9?Math.max(0,Math.min(PROJECTOR.railMax,position)):null;
  }
  return marks;
+}
+export function projectorFocusMarks(state){
+ const marks=projectorDistanceMarks();
+ return state.kind==='convex'?marks:Object.fromEntries(Object.keys(marks).map(key=>[key,null]));
 }
 export function moveProjector(state,key,value){
  if(!['card','screen'].includes(key)||!Number.isFinite(value))return state;

@@ -1,4 +1,4 @@
-import {PROJECTOR as G,initialProjector,moveProjector,projectorState,projectorRays,projectorFocusMarks} from './projector-optics.mjs?v=20261109-projector-concave-start1';
+import {PROJECTOR as G,initialProjector,moveProjector,projectorState,projectorRays,projectorFocusMarks,projectorDistanceMarks} from './projector-optics.mjs?v=20261110-concave-distance1';
 import {paintCard,paintProjector} from './projector-art.mjs';
 const root=document.querySelector('[data-projector-lab]');
 if(root){
@@ -44,8 +44,8 @@ if(root){
   const min=selected==='screen'?G.screenMin:G.cardMin,max=selected==='screen'?G.screenMax:Math.min(G.cardMax,G.lens-G.minGap),allowed=$('[data-projector-allowed]');allowed.style.left=`${min/G.railMax*100}%`;allowed.style.width=`${(max-min)/G.railMax*100}%`;
   ruler.dataset.rangeMin='0';ruler.dataset.rangeMax=String(G.railMax);ruler.dataset.selected=selected;ruler.setAttribute('aria-label',`${name}在光軌上的位置`);ruler.setAttribute('aria-valuemin',String(min));ruler.setAttribute('aria-valuemax',String(max));ruler.setAttribute('aria-valuenow',String(state[selected]));ruler.setAttribute('aria-valuetext',selected==='card'?`圖卡距固定鏡片 ${asF(g.u)}`:`牆面距固定鏡片 ${asF(g.s)}`);
   all('[data-projector-step]').forEach(b=>{const direction=Number(b.dataset.projectorStep);b.disabled=direction<0?state[selected]<=min+.001:state[selected]>=max-.001;b.setAttribute('aria-label',`${name}向${direction<0?'光源':'遠離鏡片'}微調`);});
-  for(const [key,value] of Object.entries(projectorFocusMarks(state))){const mark=$(`[data-projector-focus=${key}]`);mark.hidden=value===null;if(!mark.hidden){const [side,multiple]=key.split('-'),label=`${side==='left'?'圖卡側':'牆面側'}${multiple==='1'?'F':'2F'}`;mark.style.left=`${value/G.railMax*100}%`;mark.dataset.position=String(value);mark.title=label;mark.setAttribute('aria-label',label);}}
-  const focalNote=$('[data-projector-focal-note]');focalNote.hidden=false;focalNote.textContent=state.kind==='convex'?'鏡片固定；F、2F 刻度也固定。':'凹透鏡的焦點為虛焦點，F、2F 刻度暫不顯示；距離仍以焦距大小為基準。';
+  for(const [key,value] of Object.entries(projectorDistanceMarks())){const mark=$(`[data-projector-focus=${key}]`);mark.hidden=value===null;if(!mark.hidden){const [side,multiple]=key.split('-'),label=`${side==='left'?'圖卡側':'牆面側'}${multiple==='1'?'F':'2F'}${state.kind==='concave'&&key==='left-1'?'（虛焦點）':''}`;mark.style.left=`${value/G.railMax*100}%`;mark.dataset.position=String(value);mark.title=label;mark.setAttribute('aria-label',label);}}
+  const focalNote=$('[data-projector-focal-note]');focalNote.hidden=false;focalNote.textContent=state.kind==='convex'?'鏡片固定；F、2F 刻度也固定。':'刻度以焦距大小為單位；圖卡側 F 是凹透鏡的虛焦點。';
   all('[data-projector-lens]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.projectorLens===state.kind)));
   const lensName=state.kind==='convex'?'凸透鏡':'凹透鏡';$('[data-projector-label=lens]').textContent=lensName;
   $('[data-projector-rotate]').setAttribute('aria-pressed',String(state.flipped));$('[data-projector-rotation]').textContent=state.flipped?'已旋轉 180°':'目前 0°';
