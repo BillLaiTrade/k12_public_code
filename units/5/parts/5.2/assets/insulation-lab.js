@@ -51,7 +51,7 @@
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
   function updateCloseup(){if(!mechanism.hidden&&!document.hidden&&!closeupFrame){closeupPrevious=null;closeupFrame=requestAnimationFrame(animateCloseup);}else if(mechanism.hidden&&closeupFrame){cancelAnimationFrame(closeupFrame);closeupFrame=0;closeupPrevious=null;}}
-  const WINDOW=14,moleculeGroups=[...root.querySelectorAll('.micro-particles')].map((group,index)=>({group,index}));
+  const WINDOW=14/3,moleculeGroups=[...root.querySelectorAll('.micro-particles')].map((group,index)=>({group,index}));
   const energyPulses=['a','b'].flatMap(role=>{const motion=$(`insulation-motion-${role}`),solid=[...motion.querySelectorAll('.insulation-solid-motion .insulation-heat-line')],radiation=$(`insulation-radiation-${role}`).querySelector('.insulation-heat-line');return [...motion.querySelectorAll('.insulation-energy-pulses [data-route]')].map(group=>{const route=group.dataset.route==='radiation'?radiation:solid[group.dataset.route==='neck'?0:1];return{group,path:route,length:route.getTotalLength(),phase:Number(group.dataset.phase||0)};});});
   const reflectionPulses=['in','back'].map(name=>({name,path:$('insulation-reflection-demo').querySelector('.insulation-ray-'+name)}));
   const setText=(id,text)=>{const n=$(id);if(n.textContent!==text)n.textContent=text;};
