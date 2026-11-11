@@ -236,10 +236,10 @@
     appearance: {
       graphite: '外觀｜深灰至黑色\n硬度｜較軟（莫氏約 1–2）',
       diamond: '外觀｜純淨時透明\n硬度｜非常堅硬（莫氏 10）',
-      graphiteImage: 'assets/graphite-sample.webp?v=224f38d66116',
-      diamondImage: 'assets/diamond-sample.webp?v=d989efa4aee5',
-      graphiteAlt: '深灰色、片層狀石墨樣品的擬真外觀示意，不表示原子排列',
-      diamondAlt: '透明、帶有天然晶面的鑽石樣品擬真外觀示意，不表示原子排列',
+      graphiteImage: 'assets/carbon-appearance-graphite.webp?v=9df9e75bf586',
+      diamondImage: 'assets/carbon-appearance-diamond.webp?v=81d8e83a0bd7',
+      graphiteAlt: '生成式石墨外觀示意：完整深灰片層樣品與石墨痕跡',
+      diamondAlt: '生成式鑽石外觀示意：完整透明晶體與細緻光澤',
       graphiteCue: '較軟・莫氏硬度 1–2',
       diamondCue: '非常堅硬・莫氏硬度 10',
       takeaway: '同為碳元素，樣品外觀與硬度仍可差很多。'
@@ -247,10 +247,10 @@
     conductivity: {
       graphite: '導電｜可以導電\n結構線索｜有可移動的電子',
       diamond: '導電｜通常不易導電\n結構線索｜電子被牢固束縛',
-      graphiteImage: 'assets/graphite-conductivity.svg?v=86be7b28d638',
-      diamondImage: 'assets/diamond-conductivity.svg?v=5685afe769d2',
-      graphiteAlt: '石墨樣品的導電測試示意：樣品接入完整電路，燈泡亮起',
-      diamondAlt: '鑽石樣品的導電測試示意：樣品接入電路，燈泡未亮',
+      graphiteImage: 'assets/carbon-conductivity-graphite.webp?v=64f1a7562fba',
+      diamondImage: 'assets/carbon-conductivity-diamond.webp?v=3d611a3375c3',
+      graphiteAlt: '生成式石墨導電示意：樣品接入簡易電路，燈泡亮起',
+      diamondAlt: '生成式鑽石導電示意：簡易電路中燈泡未亮，表示此樣品通常不易導電',
       graphiteCue: '可以導電',
       diamondCue: '通常不易導電',
       takeaway: '石墨和鑽石都是碳，但導電表現不同；不能把石墨的性質套用到所有碳樣品。'
@@ -258,10 +258,10 @@
     uses: {
       graphite: '用途｜鉛筆芯、電極\n關聯｜柔軟易磨耗、可以導電',
       diamond: '用途｜切割、研磨工具；珠寶\n關聯｜硬度高、外觀透亮',
-      graphiteImage: 'assets/graphite-uses.svg?v=68d7fa99eb1d',
-      diamondImage: 'assets/diamond-uses.svg?v=b6ebc09c6ea5',
-      graphiteAlt: '石墨樣品及鉛筆芯、導電電極用途示意',
-      diamondAlt: '鑽石樣品及切割研磨工具、珠寶用途示意',
+      graphiteImage: 'assets/carbon-uses-graphite.webp?v=b9d352fb1d3a',
+      diamondImage: 'assets/carbon-uses-diamond.webp?v=9da07756dd2e',
+      graphiteAlt: '生成式石墨用途示意：石墨樣品、鉛筆芯與電極',
+      diamondAlt: '生成式鑽石用途示意：鑽石樣品、切割研磨輪與珠寶',
       graphiteCue: '鉛筆芯、電極',
       diamondCue: '切割、研磨工具',
       takeaway: '用途取決於樣品展現的性質；一般鉛筆芯含石墨與黏土，並非純石墨。'
