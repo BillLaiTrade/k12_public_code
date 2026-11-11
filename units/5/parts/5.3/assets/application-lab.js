@@ -68,6 +68,35 @@ function selectApplication(key){
 let coastFrame=0,coastLastTime=null,coastElapsed=0;
 let coastInView=!('IntersectionObserver' in window);
 const coastCycleDuration=10000;
+// 北緯23.5°、春分附近赤緯約0°：以時角推算高度角與方位角。
+// 高度公式參考 NOAA solar equations；近滿月月出接近日落參考 NASA Moon Phases。
+// https://gml.noaa.gov/grad/solcalc/solareqns.PDF
+// https://science.nasa.gov/moon/moon-phases/
+const coastLatitude=23.5*Math.PI/180;
+const coastMaxAltitude=Math.PI/2-coastLatitude;
+function coastHorizonAt(x){
+  const points=[[0,100],[50,100],[60,94],[70,86],[80,78],[90,70],[100,60]];
+  for(let i=1;i<points.length;i++){
+    const [x1,y1]=points[i-1],[x2,y2]=points[i];
+    if(x<=x2)return y1+(y2-y1)*(x-x1)/(x2-x1);
+  }
+  return points[points.length-1][1];
+}
+function renderCoastBody(element,phase){
+  // 天體在地平線下也繼續移動，由地景遮住，不在切換時憑空顯示。
+  const hourAngle=(phase-.5)*Math.PI;
+  const altitude=Math.asin(Math.cos(coastLatitude)*Math.cos(hourAngle));
+  let azimuth=Math.atan2(-Math.sin(hourAngle),-Math.sin(coastLatitude)*Math.cos(hourAngle));
+  if(azimuth<0)azimuth+=2*Math.PI;
+  const x=12+76*(azimuth-Math.PI/2)/Math.PI;
+  // 方位角與高度角映射至面南的示意全景，局部地平線配合圖片地景。
+  const y=coastHorizonAt(x)-76*altitude/coastMaxAltitude;
+  element.style.left=`${x.toFixed(2)}%`;
+  element.style.top=`${y.toFixed(2)}%`;
+  element.dataset.altitude=(altitude*180/Math.PI).toFixed(2);
+  element.dataset.azimuth=(azimuth*180/Math.PI).toFixed(2);
+  element.style.visibility='visible';
+}
 function renderCoastCycle(){
   const t=(coastElapsed%coastCycleDuration)/coastCycleDuration;
   const change=(1-Math.cos(2*Math.PI*t))/2;
@@ -87,20 +116,8 @@ function renderCoastCycle(){
   get('coast-twilight').style.opacity=(Math.max(0,1-Math.abs(altitude)/.55)*.7).toFixed(3);
   const darknessProgress=Math.max(0,Math.min(1,(-altitude-.05)/.55));
   get('coast-night-dark').style.opacity=(darknessProgress*darknessProgress*(3-2*darknessProgress)).toFixed(3);
-  const sun=get('coast-sun');
-  const daylight=Math.min(1,t*2);
-  const travel=Math.max(0,Math.min(1,(daylight-.16)/.68));
-  const easedTravel=travel*travel*(3-2*travel);
-  sun.style.left=`${(12+76*easedTravel).toFixed(2)}%`;
-  sun.style.top=`${(125-110*Math.sin(Math.PI*daylight)).toFixed(2)}%`;
-  sun.style.visibility=day?'visible':'hidden';
-  const moon=get('coast-moon');
-  const night=Math.max(0,(t-.5)*2);
-  const moonTravel=Math.max(0,Math.min(1,(night-.16)/.68));
-  const easedMoonTravel=moonTravel*moonTravel*(3-2*moonTravel);
-  moon.style.left=`${(12+76*easedMoonTravel).toFixed(2)}%`;
-  moon.style.top=`${(125-100*Math.sin(Math.PI*night)).toFixed(2)}%`;
-  moon.style.visibility=day?'hidden':'visible';
+  renderCoastBody(get('coast-sun'),2*t);
+  renderCoastBody(get('coast-moon'),2*t+1);
   get('coast-water-level').style.height=`${(change*25).toFixed(2)}%`;
   get('coast-sand-level').style.height=`${(change*75).toFixed(2)}%`;
 }

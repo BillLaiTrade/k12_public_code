@@ -48,13 +48,15 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     const baseline=await p.locator('.coast-baseline').evaluate(e=>({y:e.getBoundingClientRect().top,bulbs:[...document.querySelectorAll('#application-coast .coast-bulb')].map(b=>{const r=b.getBoundingClientRect();return r.top+r.height/2})}));
     assert.ok(baseline.bulbs.every(y=>Math.abs(y-baseline.y)<2),`初溫線與液柱起點應對齊：${JSON.stringify(baseline)}`);
     const levels=async()=>p.evaluate(()=>['water','sand'].map(name=>parseFloat(document.getElementById('coast-'+name+'-level').style.height)));
-    const sunPosition=async()=>p.locator('#coast-sun').evaluate(e=>({left:parseFloat(e.style.left),top:parseFloat(e.style.top),visibility:getComputedStyle(e).visibility}));
+    const sunPosition=async()=>p.locator('#coast-sun').evaluate(e=>({left:parseFloat(e.style.left),top:parseFloat(e.style.top),alt:+e.dataset.altitude,visibility:getComputedStyle(e).visibility}));
     const nightOpacity=async()=>parseFloat(await p.locator('#coast-night-photo').evaluate(e=>e.style.opacity));
     const sunrise=await sunPosition();
     const dawnShade=await nightOpacity();await capture('coast-dawn');
     await p.clock.runFor(2000);const rising=await levels();
     const highSun=await sunPosition();
     assert.ok(highSun.left>sunrise.left&&highSun.top<sunrise.top,'太陽應在白天向右升起');
+    assert.ok(highSun.alt>60&&highSun.alt<67,'北緯23.5°春分附近的正午太陽高度應接近66.5°');
+    assert.match(await p.locator('.coast-sky-note').innerText(),/北緯23\.5°.*近滿月.*示意/);
     assert.ok(dawnShade>0.1&&(await nightOpacity())<dawnShade,'黎明應逐漸變亮至白天');
     assert.ok(rising[1]>rising[0]&&rising[0]>0,JSON.stringify(rising));
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
@@ -65,12 +67,19 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.ok(sunset.left>80,'太陽應落向畫面右側');
     assert.ok((await nightOpacity())>0.1&&(await nightOpacity())<0.9,'日落時應呈現過渡天色');
     await capture('coast-sunset');
-    await p.clock.runFor(500);const peak=await levels();
+    const bodies=async()=>p.evaluate(()=>['sun','moon'].map(name=>{const e=document.getElementById('coast-'+name);return{alt:+e.dataset.altitude,az:+e.dataset.azimuth,visible:getComputedStyle(e).visibility==='visible'}}));
+    await p.clock.runFor(300);const beforeHandoff=await bodies();await capture('coast-handoff-before');
+    await p.clock.runFor(66);const afterHandoff=await bodies();await capture('coast-handoff-after');
+    assert.ok(beforeHandoff.every(b=>b.visible)&&afterHandoff.every(b=>b.visible),'交替時日月都應從地平線連續進出');
+    assert.ok(beforeHandoff[0].alt>afterHandoff[0].alt&&beforeHandoff[1].alt<afterHandoff[1].alt,'日落與月出須連續銜接');
+    assert.ok(beforeHandoff[0].az<afterHandoff[0].az&&beforeHandoff[1].az<afterHandoff[1].az,'日月在地平線附近應同時改變方位與高度');
+    assert.ok(beforeHandoff[0].az>260&&beforeHandoff[1].az<100,'日落靠西、月出靠東');
+    await p.clock.runFor(134);const peak=await levels();
     await p.clock.runFor(167);const nightStart=await levels();
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'night');
-    assert.equal((await sunPosition()).visibility,'hidden','太陽落下後，夜晚不應顯示太陽');
-    const moonStart=await p.locator('#coast-moon').evaluate(e=>({left:parseFloat(e.style.left),top:parseFloat(e.style.top),visibility:getComputedStyle(e).visibility}));
-    assert.equal(moonStart.visibility,'visible','夜晚月亮應開始升起');
+    assert.ok((await sunPosition()).alt<0,'太陽落下後應在地平線下');
+    const moonStart=await p.locator('#coast-moon').evaluate(e=>({left:parseFloat(e.style.left),top:parseFloat(e.style.top),alt:+e.dataset.altitude}));
+    assert.ok(moonStart.alt>0,'夜晚月亮應開始升起');
     assert.ok(nightStart[1]>rising[1]&&Math.abs(peak[1]-nightStart[1])<5,'夜晚應接續白天溫度');
     await p.clock.runFor(2000);const falling=await levels();
     assert.ok(falling[1]<nightStart[1]&&falling[0]<nightStart[0]&&falling[1]>falling[0],JSON.stringify(falling));
@@ -79,10 +88,13 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.ok(moonHigh.left>moonStart.left&&moonHigh.top<moonStart.top,'月亮應由地平線升起');
     assert.ok(parseFloat(await p.locator('#coast-night-dark').evaluate(e=>e.style.opacity))>.95,'深夜天空應充分變暗');
     await capture('coast-night');
-    await p.clock.runFor(3000);
+    await p.clock.runFor(2600);const beforeDawn=await bodies();
+    await p.clock.runFor(66);const afterDawn=await bodies();
+    assert.ok(beforeDawn.every(b=>b.visible)&&afterDawn.every(b=>b.visible),'月落與日出應連續銜接');
+    await p.clock.runFor(334);
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
     assert.ok((await levels())[1]<5,'約十秒後循環返回共同初溫');
-    assert.equal(await p.locator('#coast-moon').evaluate(e=>getComputedStyle(e).visibility),'hidden','日出時月亮應已落下');
+    assert.ok(await p.locator('#coast-moon').evaluate(e=>+e.dataset.altitude<0),'日出時月亮應位於地平線下');
     assert.ok(Math.abs((await nightOpacity())-dawnShade)<.15,'循環接合處的天色應連續');
   });
 
@@ -207,7 +219,7 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await page.route('**/application-coast-shore-night.webp*',r=>r.abort());await page.locator('button[data-application="coast"]').click();await page.waitForFunction(()=>document.getElementById('application-coast').dataset.phase==='error');
     await page.unroute('**/application-coast-shore-night.webp*');await page.locator('#application-coast [data-life-retry]').click();await ready(page,'coast');
     assert.match(await page.locator('#coast-night-photo').getAttribute('src'),/shore-night/);
-    assert.match(await page.locator('#application-coast .life-note').textContent(),/夜晚接續白天/);await page.close();
+    assert.match(await page.locator('#application-coast .life-note').first().textContent(),/夜晚接續白天/);await page.close();
   });
 
   await t.test('切換情境時高度跟隨目前內容，隱藏情境不保留空間',async()=>{

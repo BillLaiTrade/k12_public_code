@@ -356,7 +356,7 @@
 #application-lab #application-coast .coast-night-dark{position:absolute;inset:0;opacity:0;background:linear-gradient(to bottom,#01030c 0%,#030716 68%,#0b1120 100%);pointer-events:none}
 #application-lab #application-coast .coast-twilight{position:absolute;inset:0;opacity:0;background:linear-gradient(to bottom,transparent 22%,#efac7566 62%,#f28e5fbb 100%);pointer-events:none}
 #application-lab #application-coast .coast-sun{position:absolute;left:12%;top:125%;width:clamp(28px,5vw,52px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 40% 38%,#fffef0 0 20%,#ffe49a 48%,#ffbf55 73%,#f19a36 100%);box-shadow:0 0 12px 7px #ffeb9b99,0 0 30px 18px #ffd77c55}
-#application-lab #application-coast .coast-moon{position:absolute;left:12%;top:125%;width:clamp(25px,4.5vw,46px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(135deg,#fffde7,#f1dfa5);-webkit-mask:radial-gradient(circle at 73% 28%,transparent 43%,#000 46%);mask:radial-gradient(circle at 73% 28%,transparent 43%,#000 46%);filter:drop-shadow(0 0 5px #fff2c5aa);visibility:hidden}
+#application-lab #application-coast .coast-moon{position:absolute;left:12%;top:125%;width:clamp(25px,4.5vw,46px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse at 35% 38%,#a9aaa266 0 8%,transparent 10%),radial-gradient(ellipse at 67% 59%,#9ca19855 0 10%,transparent 12%),radial-gradient(ellipse at 45% 70%,#a9aaa255 0 6%,transparent 8%),radial-gradient(circle at 35% 30%,#fffef0,#deded1 70%,#aeb4b0);box-shadow:0 0 13px 4px #eaf1eaa0,inset -3px -3px 6px #7c8c8a55;visibility:hidden}
 #application-lab #application-coast .coast-scene-label{z-index:3}
 #application-lab #application-coast .coast-thermometers{position:absolute;inset:0;z-index:2}
 #application-lab #application-coast .coast-baseline{position:absolute;left:13%;right:13%;bottom:calc(37% - 2px);height:0;border-top:2px dashed #fff;text-align:center;filter:drop-shadow(0 1px 2px #344a3e)}
@@ -375,6 +375,7 @@
 #application-lab #application-coast .coast-cycle-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px 12px;margin:10px 0 0;padding:9px 12px;border-radius:9px;background:#e8eee0;color:#315b3b;font-size:1rem;font-weight:700}
 #application-lab #application-coast .coast-cycle-footer span+span{font-weight:400;font-size:.875rem}
 #application-lab #application-coast .life-actions:has([hidden]){margin:0}
+#application-lab #application-coast .coast-sky-note{margin-top:4px}
 @media(max-width:600px){
  #application-lab #application-coast .coast-cycle-scene{aspect-ratio:4/3;min-height:230px}
  #application-lab #application-coast .coast-sky{height:37.4%}
