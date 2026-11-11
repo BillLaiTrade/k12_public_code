@@ -3,7 +3,7 @@ import {ROOM,GOAL,SPEED,createBath,advanceBath,geometry,positionBottle,useCup} f
 const root=document.getElementById('water-bath');
 if(root){
   const $=id=>document.getElementById(id),stage=$('bath-stage'),bottle=$('bath-bottle');
-  const play=$('bath-play'),check=$('bath-check'),tools=[...root.querySelectorAll('[data-bath-tool]')];
+  const check=$('bath-check'),tools=[...root.querySelectorAll('[data-bath-tool]')];
   const names={bench:'桌面',bowl:'水盆',bottle:'飲料瓶',wrap:'保溫套',mat:'隔熱墊',sleeve:'瓶套',jug:'量杯','bottle-sleeved':'已穿上瓶套的飲料瓶'};
   const assets=Object.fromEntries(Object.keys(names).map(key=>[key,{src:`assets/bath-${key}.webp?v=${key==='wrap'?'cozy-6':'bath-2'}`,status:'idle',request:0}]));
   let state=createBath(),playing=false,frame=0,previous=null,history=[[0,50,20]],lastSample=0,sampleEvery=3,events=[],drag=null,ghost=null,suppressClick={node:null,until:0};
@@ -37,8 +37,7 @@ if(root){
   function render(){
     const status=assetState(),g=geometry(state);
     Object.assign(root.dataset,{assets:status,playing:String(playing),started:String(playing||state.time>0),stage:state.goalAt!==null?'achieved':state.time>0||playing?'observing':'ready',elapsed:state.time.toFixed(3),bath:state.bath.toFixed(5),drink:state.drink.toFixed(5),cup:state.cup.toFixed(5),water:String(state.water),cupWater:String(state.cupWater),immersion:g.immersion.toFixed(5),bottleX:String(state.x),bottleBottom:String(state.bottom),wrap:String(state.wrap),mat:String(state.mat),sleeve:String(state.sleeve),goalAt:state.goalAt===null?'':state.goalAt.toFixed(3)});
-    root.setAttribute('aria-busy',String(status==='loading'));play.disabled=check.disabled=status!=='ready';tools.forEach(n=>n.disabled=status!=='ready');bottle.setAttribute('aria-disabled',String(status!=='ready'));
-    play.setAttribute('aria-pressed',String(playing));text('bath-play',playing?'暫停觀察':state.time>0?'繼續觀察':'開始觀察');
+    root.setAttribute('aria-busy',String(status==='loading'));check.disabled=status!=='ready';tools.forEach(n=>n.disabled=status!=='ready');bottle.setAttribute('aria-disabled',String(status!=='ready'));
     for(const [key,temp]of [['bath',state.bath],['drink',state.drink]]){
       const output=$(`bath-reading-${key}`),value=temp.toFixed(1);const digits=output.querySelector('span');if(digits.textContent!==value)digits.textContent=value;output.dataset.value=value;
       output.setAttribute('aria-label',`${key==='bath'?'熱水':'飲料'}攝氏${value}度`);
@@ -81,7 +80,7 @@ if(root){
     $('bath-record').open=false;clearResult();drawLog();hint('拖動瓶子，試試桌上的器材。');render();
   }
   function toggleTool(key,on){
-    if(!ready())return;clearResult();
+    if(!ready())return;start();clearResult();
     if(key==='jug'){
       presentCup();return;
     }else{
@@ -97,7 +96,7 @@ if(root){
     hint(state.cupWater?`量杯裡有${state.cupWater}mL；移回水盆或按「倒回」。`:'空量杯已拿出；移到盆內水面或按「取50mL」。');render();
   }
   function transferCup(){
-    if(!ready())return;clearResult();root.dataset.cupUsed='true';const action=useCup(state);
+    if(!ready())return;start();clearResult();root.dataset.cupUsed='true';const action=useCup(state);
     state.cupX=100;state.cupY=575;
     hint(action==='scoop'?'已取出50mL盆水，水盆裡的水量減少。':'量杯的水已倒回，水盆水位回升。');
     record(action==='scoop'?'量杯取出50mL盆水':'把量杯的水倒回水盆');sample(true);render();
@@ -107,10 +106,10 @@ if(root){
     return p.x>235&&p.x<865&&p.y>g.surface-55&&p.y<590&&clearOfBottle;
   }
   function checkResult(){
-    if(!ready())return;stop();const result=$('bath-result');result.hidden=false;
+    if(!ready())return;const result=$('bath-result');result.hidden=false;
     const success=state.goalAt!==null;result.dataset.success=String(success);
-    result.textContent=success?`這次觀察已達到35.0°C！飲料目前是${state.drink.toFixed(1)}°C。你可以繼續觀察或重來。`:state.time===0?'先開始觀察，看看飲料能不能達到35°C。':`飲料目前是${state.drink.toFixed(1)}°C，還沒達到35°C。調整位置或配件後可以繼續。`;
-    hint(success?'挑戰完成；熱水與飲料仍會繼續交換熱量。':'已暫停，可以調整配置後繼續觀察。');
+    result.textContent=success?`這次觀察已達到35.0°C！飲料目前是${state.drink.toFixed(1)}°C。你可以繼續觀察或重來。`:state.time===0&&!playing?'先移動瓶子或使用器材，看看飲料能不能達到35°C。':`飲料目前是${state.drink.toFixed(1)}°C，還沒達到35°C。調整位置或配件後可以繼續。`;
+    hint(success?'挑戰完成；熱水與飲料仍會繼續交換熱量。':'可以調整配置，繼續觀察溫度變化。');
   }
   function stagePoint(event){const p=stage.createSVGPoint();p.x=event.clientX;p.y=event.clientY;return p.matrixTransform(stage.getScreenCTM().inverse());}
   function removeGhost(){ghost?.remove();ghost=null;}
@@ -131,7 +130,7 @@ if(root){
   function bindDrag(node,kind){
     node.addEventListener('pointerdown',event=>{
       if(!ready()||event.button!==0||drag)return;
-      const p=stagePoint(event);drag={node,kind,pointer:event.pointerId,sx:event.clientX,sy:event.clientY,px:p.x,py:p.y,lastX:p.x,lastY:p.y,originalX:state.x,originalBottom:state.bottom,cupX:state.cupX,cupY:state.cupY,moved:false};
+      start();const p=stagePoint(event);drag={node,kind,pointer:event.pointerId,sx:event.clientX,sy:event.clientY,px:p.x,py:p.y,lastX:p.x,lastY:p.y,originalX:state.x,originalBottom:state.bottom,cupX:state.cupX,cupY:state.cupY,moved:false};
       node.setPointerCapture(event.pointerId);
     });
     node.addEventListener('pointermove',event=>{
@@ -180,7 +179,7 @@ if(root){
   bottle.addEventListener('click',event=>{if(blockedClick(bottle,event)||!ready())return;hint('拖到水盆中央，再上下移動瓶子。');});
   bottle.addEventListener('keydown',event=>{
     if(!ready())return;const key=event.key;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Enter',' '].includes(key))return;
-    event.preventDefault();clearResult();
+    event.preventDefault();start();clearResult();
     if(key==='Enter'||key===' ')positionBottle(state,inWater()?1010:550,600);
     else if(key==='ArrowUp'||key==='ArrowDown')positionBottle(state,state.x,state.bottom+(key==='ArrowUp'?-35:35));
     else positionBottle(state,state.x+(key==='ArrowLeft'?-220:220),state.bottom);
@@ -192,12 +191,12 @@ if(root){
   activate($('bath-cup-object'),event=>{if(!blockedClick($('bath-cup-object'),event))presentCup(true);});
   $('bath-cup-object').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();presentCup(true);$('bath-cup-action').focus({preventScroll:true});}});
   activate($('bath-cup-action'),transferCup);
-  activate(play,()=>playing?stop():start());activate(check,checkResult);activate($('bath-reset'),reset);
+  activate(check,checkResult);activate($('bath-reset'),reset);
   activate($('bath-record').querySelector('summary'),event=>{event.preventDefault();$('bath-record').open=!$('bath-record').open;plot();drawLog();});
   $('bath-record').addEventListener('toggle',()=>{plot();drawLog();});
-  const help=$('bath-help');activate($('bath-help-open'),()=>{cancelDrag();stop();help.showModal();});activate($('bath-help-close'),()=>help.close());
+  const help=$('bath-help');activate($('bath-help-open'),()=>{cancelDrag();help.showModal();});activate($('bath-help-close'),()=>help.close());
   help.addEventListener('close',()=>$('bath-help-open').focus({preventScroll:true}));
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelDrag();stop();}});addEventListener('pagehide',()=>{cancelDrag();stop();});
+  let resumeWhenVisible=false;document.addEventListener('visibilitychange',()=>{if(document.hidden){resumeWhenVisible=playing;cancelDrag();stop();}else if(resumeWhenVisible){resumeWhenVisible=false;start();}});addEventListener('pagehide',()=>{cancelDrag();stop();});
   function assignImages(){
     const mapping={bench:['bath-bench-photo'],bowl:[],bottle:['bath-bottle-photo'],wrap:[],mat:['bath-mat-photo'],sleeve:[],'bottle-sleeved':['bath-sleeve-photo'],jug:['bath-jug-photo']};
     for(const [key,ids]of Object.entries(mapping))if(assets[key].status==='ready'){
