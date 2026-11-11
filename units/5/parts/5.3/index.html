@@ -41,8 +41,8 @@
   <script type="module" src="assets/mass-curve-lab.js?v=cases-1"></script>
   <link rel="stylesheet" href="assets/material-dual-lab.css?v=dialogue-bridge-1">
   <script type="module" src="assets/material-dual-lab.js?v=select-row-1"></script>
-  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-clarity-14">
-  <script type="module" src="assets/application-lab.js?v=coolant-device-art-10"></script>
+  <link rel="stylesheet" href="assets/application-lab.css?v=coast-cycle-15">
+  <script type="module" src="assets/application-lab.js?v=coast-cycle-11"></script>
   <link rel="stylesheet" href="assets/unknown-quiz.css?v=real-materials-visual-1">
   <script type="module" src="assets/unknown-quiz.js?v=real-materials-visual-1"></script>
 <link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
@@ -275,19 +275,21 @@
 
                 <section class="life-view" id="application-coast" aria-labelledby="coast-heading" data-phase="loading" data-mode="day" hidden>
                   <h3 id="coast-heading" class="life-condition">白天與夜晚，沙灘和海水的溫度如何變化？</h3>
-                  <div class="life-workbench coast-workbench">
-                    <div><figure class="life-photo"><img id="coast-photo" class="coast-photo" src="assets/application-coast-shore-day.webp" alt="低角度觀看海岸，海水在左、沙灘在右">
-                      <svg class="coast-arrows" viewBox="0 0 1000 750" aria-hidden="true">
-                        <defs><marker id="coast-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#d58c22" stroke-width="2"/></marker></defs>
-                        <g fill="none" stroke="#fff9e6" stroke-width="13"><path data-coast-arrow d="M270 175V430"/><path data-coast-arrow d="M760 175V430"/></g>
-                        <g fill="none" stroke="#e4a02e" stroke-width="6" marker-end="url(#coast-arrowhead)"><path data-coast-arrow d="M270 175V430"/><path data-coast-arrow d="M760 175V430"/></g>
-                      </svg>
-                      <span class="coast-material coast-material-water">海水</span><span class="coast-material coast-material-sand">砂土</span>
-                      <span class="life-badge coast-scene-label">白天吸熱</span><span class="coast-heat-label" id="coast-heat-label" aria-hidden="true">熱量傳入海水與砂土</span><p class="life-loading" data-life-loading role="status">正在準備海岸場景…</p></figure><div class="life-mode" role="group" aria-label="海岸情境"><button class="choice" type="button" data-coast-mode="day" aria-pressed="true">白天吸熱</button><button class="choice" type="button" data-coast-mode="night" aria-pressed="false">夜晚放熱</button></div><div class="life-actions"><button class="secondary" type="button" data-life-retry hidden>重新載入場景</button></div></div>
-                    <div class="life-coast-model"><h3>比較溫度變化</h3><p class="coast-condition" id="coast-condition">模型：相同質量、吸收相同熱量</p><p class="coast-chart-title">從相同初溫開始（示意）</p><div class="coast-chart-labels"><span>水</span><span>砂土</span></div><svg id="coast-model" viewBox="0 0 300 115" role="img" aria-label="兩者初溫相同，吸收相同熱量後，水溫升較小、砂土溫升較大。"><line x1="18" y1="100" x2="282" y2="100" stroke="#98ad99" stroke-width="2" stroke-dasharray="5 5"/><rect id="coast-water-level" x="63" y="65" width="40" height="35" rx="5" fill="#75a99c"/><rect id="coast-sand-level" x="197" y="12" width="40" height="88" rx="5" fill="#daa454"/></svg><div class="coast-chart-captions"><span id="coast-water-caption">溫升較小</span><span id="coast-sand-caption">溫升較大</span></div><p class="coast-observation" id="coast-observation" role="status">白天，沙灘可能變得燙腳，海水的溫度變化通常較小。</p></div>
-                  </div>
-                  <p class="life-coast-conclusion" id="coast-conclusion">在這個模型中，水的比熱較大，吸收相同熱量時，溫升較小。</p>
-                  <p class="life-note">圖中長度僅示意變化大小，不代表實測溫度或固定倍數；白天與夜晚各從相同初溫比較。海岸畫面為示意，真實海陸溫差還受日照、混合、蒸發與風等因素影響。</p>
+                  <figure class="life-photo coast-cycle-scene">
+                    <img id="coast-photo" src="assets/application-coast-shore-day.webp" alt="海岸示意圖，海水在左、沙土在右，畫面自動呈現晝夜循環。">
+                    <img id="coast-night-photo" src="assets/application-coast-shore-night.webp" alt="" aria-hidden="true">
+                    <span class="life-badge coast-scene-label">白天吸熱</span>
+                    <div class="coast-thermometers" role="img" aria-label="兩份相同質量的水和砂土從共同初溫20度開始，白天吸熱、夜晚放熱；砂土的溫度變化較大，水較小，動態僅為模型示意。">
+                      <div class="coast-baseline"><span>初溫 20°C</span></div>
+                      <div class="coast-thermometer coast-water"><div class="coast-tube"><div class="coast-liquid" id="coast-water-level"></div></div><span class="coast-bulb"></span><strong>海水</strong><small>變化較小</small></div>
+                      <div class="coast-thermometer coast-sand"><div class="coast-tube"><div class="coast-liquid" id="coast-sand-level"></div></div><span class="coast-bulb"></span><strong>砂土</strong><small>變化較大</small></div>
+                    </div>
+                    <p class="life-loading" data-life-loading role="status">正在準備海岸場景…</p>
+                  </figure>
+                  <div class="coast-cycle-footer"><span id="coast-cycle-status">☀ 白天吸熱　溫度上升</span><span>白天 → 夜晚 → 白天，自動循環</span></div>
+                  <div class="life-actions"><button class="secondary" type="button" data-life-retry hidden>重新載入場景</button></div>
+                  <p class="life-coast-conclusion">水的比熱較大，吸收或放出相同熱量時，溫度變化較小。</p>
+                  <p class="life-note">簡化模型：水與砂土質量相同、初溫均為20°C；兩者各吸收及放出相同熱量，夜晚接續白天的溫度。溫度變化及畫面為示意，真實海陸溫差也受日照、混合、蒸發與風等因素影響。</p>
                 </section>
 
                 <section class="life-view" id="application-coolant" aria-labelledby="coolant-heading" data-phase="loading" hidden>

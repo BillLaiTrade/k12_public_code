@@ -18,7 +18,6 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
   await p.clock.install();await p.clock.pauseAt(new Date(Date.now()+1000));
   const ready=(page,key)=>page.waitForFunction(k=>!['loading','error'].includes(document.getElementById('application-'+k).dataset.phase),key);
   const choose=async key=>{await p.locator(`button[data-application="${key}"]`).click();await ready(p,key);};
-  const coastArrows=async(page,direction)=>page.locator('[data-coast-arrow]').evaluateAll(arrows=>arrows.slice(2).map(arrow=>arrow.getAttribute('d')));
   const capture=async name=>{if(!process.env.APPLICATION_CAPTURE_DIR)return;await fs.mkdir(process.env.APPLICATION_CAPTURE_DIR,{recursive:true});await p.locator('#card-05').screenshot({path:path.join(process.env.APPLICATION_CAPTURE_DIR,name+'.png')});};
 
   await t.test('糖炒栗子預設呈現沙子吸熱、升溫及傳熱，與其他情境可切換',async()=>{
@@ -40,25 +39,29 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await capture('chestnut-scenario');
   });
 
-  await t.test('海岸日夜畫面、箭頭方向與溫度比較同步',async()=>{
+  await t.test('海岸自動循環晝夜，砂土溫度變化大於海水，夜晚接續白天',async()=>{
     await choose('coast');
-    assert.match(await p.locator('#coast-photo').getAttribute('src'),/shore-day/);
-    assert.equal(await p.locator('#coast-photo').evaluate(n=>n.complete&&n.naturalWidth>0),true);
-    assert.deepEqual(await coastArrows(p),['M270 175V430','M760 175V430']);
-    assert.match(await p.locator('#coast-condition').textContent(),/吸收相同熱量/);
-    assert.equal(await p.locator('.coast-material-water').textContent(),'海水');
-    assert.equal(await p.locator('.coast-material-sand').textContent(),'砂土');
+    await p.locator('.coast-cycle-scene').scrollIntoViewIfNeeded();
+    await p.clock.runFor(1000);
+    assert.equal(await p.locator('[data-coast-mode]').count(),0);
+    assert.match(await p.locator('.coast-baseline').innerText(),/初溫 20°C/);
+    const baseline=await p.locator('.coast-baseline').evaluate(e=>({y:e.getBoundingClientRect().top,bulbs:[...document.querySelectorAll('#application-coast .coast-bulb')].map(b=>{const r=b.getBoundingClientRect();return r.top+r.height/2})}));
+    assert.ok(baseline.bulbs.every(y=>Math.abs(y-baseline.y)<2),`初溫線與液柱起點應對齊：${JSON.stringify(baseline)}`);
+    const levels=async()=>p.evaluate(()=>['water','sand'].map(name=>parseFloat(document.getElementById('coast-'+name+'-level').style.height)));
+    await p.clock.runFor(6000);const rising=await levels();
+    assert.ok(rising[1]>rising[0]&&rising[0]>0,JSON.stringify(rising));
+    assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
     await capture('coast-day');
-    await p.locator('[data-coast-mode=night]').click();
-    assert.match(await p.locator('#coast-photo').getAttribute('src'),/shore-night/);
-    assert.deepEqual(await coastArrows(p),['M270 430V175','M760 430V175']);
-    assert.match(await p.locator('#coast-condition').textContent(),/放出相同熱量/);
-    assert.equal(await p.locator('#coast-water-level').getAttribute('y'),'100');
-    assert.ok(Number(await p.locator('#coast-sand-level').getAttribute('height'))>Number(await p.locator('#coast-water-level').getAttribute('height')));
-    await capture('coast-night');await choose('chestnut');await choose('coast');
+    await p.clock.runFor(8500);const peak=await levels();
+    await p.clock.runFor(500);const nightStart=await levels();
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'night');
-    await p.locator('[data-coast-mode=day]').click();
-    assert.match(await p.locator('#coast-photo').getAttribute('src'),/shore-day/);
+    assert.ok(nightStart[1]>rising[1]&&Math.abs(peak[1]-nightStart[1])<5,'夜晚應接續白天溫度');
+    await p.clock.runFor(6000);const falling=await levels();
+    assert.ok(falling[1]<nightStart[1]&&falling[0]<nightStart[0]&&falling[1]>falling[0],JSON.stringify(falling));
+    await capture('coast-night');
+    await p.clock.runFor(9000);
+    assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
+    assert.ok((await levels())[1]<5,'循環結尾返回共同初溫');
   });
 
   await t.test('冷卻液循環方向、熱傳與溫差比較曲線',async()=>{
@@ -171,7 +174,7 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     }finally{await reduced.close()}
   });
 
-  await t.test('圖片失敗隔離在當情境，重試恢復不自動開始；日夜晚到回應不覆蓋新模式',async()=>{
+  await t.test('圖片載入失敗只影響當前情境，重試後恢復',async()=>{
     const page=await browser.newPage({ignoreHTTPSErrors:Boolean(remote)});await page.route('**/application-chestnut.webp*',r=>r.abort());await page.route('**/application-coolant-labeled.webp*',r=>r.abort());
     await page.goto(url,{waitUntil:'networkidle'});
     await page.waitForFunction(()=>document.getElementById('application-chestnut').dataset.phase==='error');
@@ -181,9 +184,8 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await page.unroute('**/application-chestnut.webp*');await page.locator('#application-chestnut [data-life-retry]').click();await ready(page,'chestnut');
     await page.route('**/application-coast-shore-night.webp*',r=>r.abort());await page.locator('button[data-application="coast"]').click();await page.waitForFunction(()=>document.getElementById('application-coast').dataset.phase==='error');
     await page.unroute('**/application-coast-shore-night.webp*');await page.locator('#application-coast [data-life-retry]').click();await ready(page,'coast');
-    await page.locator('[data-coast-mode="night"]').click();assert.match(await page.locator('#coast-photo').getAttribute('src'),/shore-night/);
-    await page.locator('[data-coast-mode="day"]').click();assert.match(await page.locator('#coast-photo').getAttribute('src'),/shore-day/);
-    assert.match(await page.locator('#coast-condition').textContent(),/吸收/);await page.close();
+    assert.match(await page.locator('#coast-night-photo').getAttribute('src'),/shore-night/);
+    assert.match(await page.locator('#application-coast .life-note').textContent(),/夜晚接續白天/);await page.close();
   });
 
   await t.test('切換情境時高度跟隨目前內容，隱藏情境不保留空間',async()=>{

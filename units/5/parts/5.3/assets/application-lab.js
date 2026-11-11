@@ -34,7 +34,6 @@ function renderAsset(key){
   view.querySelector('[data-life-retry]').hidden=asset.phase!=='error';
   view.setAttribute('aria-busy',String(asset.phase==='loading'));
   view.dataset.phase=asset.phase;
-  if(key==='coast')view.querySelector('.coast-arrows').style.visibility=asset.phase==='ready'?'visible':'hidden';
 }
 async function loadAsset(key,retry=false){
   const asset=assets[key],attempt=++asset.attempt;
@@ -44,10 +43,11 @@ async function loadAsset(key,retry=false){
     if(key==='coast'){
       await Promise.all(Object.values(coastSources).map(src=>{const image=new Image();image.src=new URL(`${src}${retry?`?retry=${attempt}`:''}`,import.meta.url).href;return image.decode();}));
       if(attempt!==asset.attempt)return;
-      coastPhoto.src=new URL(coastSources[mode],import.meta.url).href;
+      coastPhoto.src=new URL(coastSources.day,import.meta.url).href;
+      get('coast-night-photo').src=new URL(coastSources.night,import.meta.url).href;
     }else await images[key].decode();
     if(attempt!==asset.attempt)return;
-    asset.phase='ready';renderAsset(key);
+    asset.phase='ready';renderAsset(key);if(key==='coast')syncCoastCycle();
   }catch{
     if(attempt!==asset.attempt)return;
     asset.phase='error';renderAsset(key);
@@ -59,36 +59,46 @@ function selectApplication(key){
   if(!(key in views))return;
   current=key;root.dataset.scene=key;get('application-question').textContent=key==='coast'?coastQuestion():questions[key];
   Object.entries(views).forEach(([name,view])=>view.hidden=name!==key);
-  syncCoolantFlow();
+  syncCoolantFlow();syncCoastCycle();
   root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.application===key)));
   if(assets[key].phase!=='ready')loadAsset(key);
 }
 
-function selectCoast(next){
-  if(!['day','night'].includes(next)||next===mode)return;
-  mode=next;
-  const day=mode==='day';
-  if(current==='coast')get('application-question').textContent=coastQuestion();
-  views.coast.dataset.mode=mode;
-  root.querySelectorAll('[data-coast-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.coastMode===mode)));
-  if(assets.coast.phase==='ready')coastPhoto.src=new URL(coastSources[mode],import.meta.url).href;
-  get('coast-condition').textContent=`模型：相同質量、${day?'吸收':'放出'}相同熱量`;
-  get('coast-model').setAttribute('viewBox',day?'0 0 300 115':'0 85 300 115');
-  get('coast-observation').textContent=day?'白天，沙灘可能變得燙腳，海水的溫度變化通常較小。':'夜晚，沙灘可能明顯降溫，海水的溫度變化通常較小。';
-  root.querySelector('.coast-scene-label').textContent=day?'白天吸熱':'夜晚放熱';
-  get('coast-heat-label').textContent=day?'熱量傳入海水與砂土':'熱量從海水與砂土散出';
-  get('coast-water-caption').textContent=day?'溫升較小':'降溫較小';
-  get('coast-sand-caption').textContent=day?'溫升較大':'降溫較大';
-  for(const [name,height] of [['water',35],['sand',88]]){
-    get('coast-'+name+'-level').setAttribute('y',day?100-height:100);
-    get('coast-'+name+'-level').setAttribute('height',height);
+// 一個完整循環先升溫再降溫；夜晚從白天結束時接續，不重設溫度。
+let coastFrame=0,coastLastTime=null,coastElapsed=0;
+let coastInView=!('IntersectionObserver' in window);
+const coastCycleDuration=30000;
+function renderCoastCycle(){
+  const t=(coastElapsed%coastCycleDuration)/coastCycleDuration;
+  const change=(1-Math.cos(2*Math.PI*t))/2;
+  const day=t<.5;
+  const nextMode=day?'day':'night';
+  if(mode!==nextMode){
+    mode=nextMode;views.coast.dataset.mode=mode;
+    if(current==='coast')get('application-question').textContent=coastQuestion();
+    views.coast.querySelector('.coast-scene-label').textContent=day?'白天吸熱':'夜晚放熱';
+    get('coast-cycle-status').textContent=day?'☀ 白天吸熱　溫度上升':'☾ 夜晚放熱　溫度下降';
   }
-  const paths=day?['M270 175V430','M760 175V430']:['M270 430V175','M760 430V175'];
-  root.querySelectorAll('[data-coast-arrow]').forEach((path,i)=>path.setAttribute('d',paths[i%2]));
-  get('coast-conclusion').textContent=day?'在這個模型中，水的比熱較大，吸收相同熱量時，溫升較小。':'在這個模型中，水的比熱較大，放出相同熱量時，降溫較小。';
-  get('coast-model').setAttribute('aria-label',`兩者初溫相同，${day?'吸收':'放出'}相同熱量後，水${day?'溫升':'降溫'}較小、砂土${day?'溫升':'降溫'}較大。`);
-  if(assets.coast.phase!=='ready')loadAsset('coast');
+  const dusk=Math.max(0,Math.min(1,(t-.44)/.12));
+  const dawn=Math.max(0,Math.min(1,(t-.94)/.06));
+  get('coast-night-photo').style.opacity=String(dusk*(1-dawn));
+  get('coast-water-level').style.height=`${(change*25).toFixed(2)}%`;
+  get('coast-sand-level').style.height=`${(change*75).toFixed(2)}%`;
 }
+function coastTick(now){
+  coastFrame=0;
+  if(current!=='coast'||!coastInView||document.hidden||assets.coast.phase!=='ready'){coastLastTime=null;return;}
+  if(coastLastTime!==null)coastElapsed=(coastElapsed+Math.min(now-coastLastTime,100))%coastCycleDuration;
+  coastLastTime=now;renderCoastCycle();coastFrame=requestAnimationFrame(coastTick);
+}
+function syncCoastCycle(){
+  const running=current==='coast'&&coastInView&&!document.hidden&&assets.coast.phase==='ready';
+  if(running&&!coastFrame)coastFrame=requestAnimationFrame(coastTick);
+  if(!running){if(coastFrame)cancelAnimationFrame(coastFrame);coastFrame=0;coastLastTime=null;}
+}
+if('IntersectionObserver' in window)new IntersectionObserver(entries=>{coastInView=entries[0].isIntersecting;syncCoastCycle();},{threshold:.01}).observe(views.coast);
+document.addEventListener('visibilitychange',syncCoastCycle);
+renderCoastCycle();
 
 const coolantCircuit=get('coolant-circuit-path');
 const coolantPackets=get('coolant-flow-packets');
@@ -146,7 +156,6 @@ document.addEventListener('visibilitychange',syncCoolantFlow);
 renderCoolantFlow();
 
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
-root.querySelectorAll('[data-coast-mode]').forEach(b=>b.addEventListener('click',()=>selectCoast(b.dataset.coastMode)));
 root.querySelectorAll('[data-chestnut-mode]').forEach(b=>b.addEventListener('click',()=>selectChestnutMode(b.dataset.chestnutMode)));
 contactRetry.addEventListener('click',()=>loadContact(true));
 Object.entries(views).forEach(([key,view])=>view.querySelector('[data-life-retry]').addEventListener('click',()=>loadAsset(key,true)));
