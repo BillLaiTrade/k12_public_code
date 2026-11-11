@@ -932,5 +932,5 @@
 /* 展開時拉近瓶身與剖面卡，兩個模式保持相同位置。 */
 @media(min-width:900px){
  #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
- #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-26px) scale(.66)!important}
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-11px) scale(.66)!important}
 }
