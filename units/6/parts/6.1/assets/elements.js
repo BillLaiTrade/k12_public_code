@@ -236,16 +236,22 @@
     appearance: {
       graphite: '外觀｜深灰至黑色\n硬度｜較軟（莫氏約 1–2）',
       diamond: '外觀｜純淨時透明\n硬度｜非常堅硬（莫氏 10）',
+      graphiteCue: '較軟・莫氏硬度 1–2',
+      diamondCue: '非常堅硬・莫氏硬度 10',
       takeaway: '同為碳元素，樣品外觀與硬度仍可差很多。'
     },
     conductivity: {
       graphite: '導電｜可以導電\n結構線索｜有可移動的電子',
       diamond: '導電｜通常不易導電\n結構線索｜電子被牢固束縛',
+      graphiteCue: '可以導電',
+      diamondCue: '通常不易導電',
       takeaway: '石墨和鑽石都是碳，但導電表現不同；不能把石墨的性質套用到所有碳樣品。'
     },
     uses: {
       graphite: '用途｜鉛筆芯、電極\n關聯｜柔軟易磨耗、可以導電',
       diamond: '用途｜切割、研磨工具；珠寶\n關聯｜硬度高、外觀透亮',
+      graphiteCue: '鉛筆芯、電極',
+      diamondCue: '切割、研磨工具',
       takeaway: '用途取決於樣品展現的性質；一般鉛筆芯含石墨與黏土，並非純石墨。'
     }
   };
@@ -253,6 +259,10 @@
     $$('[data-carbon]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.carbon === key)));
     const view = carbon[key];
     $('#carbon-comparison').dataset.view = key;
+    $$('.carbon-sample').forEach(sample => { sample.dataset.view = key; });
+    $$('.carbon-sample-cue-kind').forEach(label => { label.textContent = ({ appearance: '外觀與硬度', conductivity: '導電性', uses: '用途' })[key]; });
+    $('#graphite-sample-cue').textContent = view.graphiteCue;
+    $('#diamond-sample-cue').textContent = view.diamondCue;
     $('#carbon-comparison-title').textContent = ({ appearance: '外觀與硬度', conductivity: '導電性', uses: '用途' })[key];
     $('#graphite-comparison').textContent = view.graphite;
     $('#diamond-comparison').textContent = view.diamond;

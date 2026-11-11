@@ -31,6 +31,16 @@
 .carbon-comparison[data-view="uses"] .visual-meter{height:1px;width:110px;background:transparent;overflow:visible}
 @media(max-width:760px){.carbon-comparison{padding:12px}.carbon-comparison-item{grid-template-columns:1fr;gap:7px}.carbon-comparison-item h4{grid-column:auto}.carbon-visual{justify-content:flex-start}}
 @media(max-width:420px){.carbon-comparison-grid{grid-template-columns:1fr}.carbon-comparison-item{grid-template-columns:minmax(0,1fr) 120px}.carbon-comparison-item h4{grid-column:1/-1}}
+.carbon-sample{transition:border-color .18s ease,box-shadow .18s ease}
+.carbon-sample-cue{display:grid;gap:2px;margin:10px 0 0;padding:8px 10px;border-left:4px solid #8c9b8d;border-radius:0 9px 9px 0;background:#f1f4eb;line-height:1.45;transition:background-color .18s ease,border-color .18s ease}
+.carbon-sample-cue-kind{color:var(--muted);font-weight:650}
+.carbon-sample-cue strong{color:var(--ink);font-weight:800}
+.carbon-sample[data-view="conductivity"] .carbon-sample-cue{background:#edf5f0;border-left-color:#5d9a6f}
+.carbon-sample--diamond[data-view="conductivity"] .carbon-sample-cue{background:#f0f2ef;border-left-color:#8c9b8d}
+.carbon-sample[data-view="uses"] .carbon-sample-cue{background:#fbf4e8;border-left-color:#bd9652}
+.carbon-sample--graphite[data-view="conductivity"]{border-color:#8ab895;box-shadow:0 0 0 2px #7da88944}
+.carbon-sample--diamond[data-view="conductivity"]{border-color:#bac6bd}
+.carbon-sample[data-view="uses"]{border-color:#d6bf91}
 /* Shared lesson grammar from 3.1 / 3.2: numbered headings, matching route,
    dialogue and observation body, then a visually separate unit assessment. */
 .layout{grid-template-columns:240px minmax(0,1fr);gap:28px}
