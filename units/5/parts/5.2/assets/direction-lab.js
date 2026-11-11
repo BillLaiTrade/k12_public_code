@@ -79,7 +79,7 @@
     text('direction-play',label);$('direction-play').setAttribute('aria-pressed',String(state.playing));
     const message=phase==='ready'?'準備好，按開始觀察。':phase==='complete'?'兩杯水已和環境同溫，沒有淨熱傳遞。':phase==='running'?'觀察中。':'已暫停觀察。';
     text('direction-run-state',message);
-    text('direction-observation-dialogue',!state.observed?'「原來不能只看水有多冷、多熱，還得比較它和周圍環境的溫度！」':state.finished?'「兩杯水最後都和周圍同溫了！溫度差消失，就沒有淨熱傳遞了。」':`「${scene.observation}」`);
+    text('direction-observation-dialogue',!state.observed?'原來不能只看水有多冷、多熱，還得比較它和周圍環境的溫度！':state.finished?'兩杯水最後都和周圍同溫了！溫度差消失，就沒有淨熱傳遞了。':scene.observation);
   }
   function stop(){cancelAnimationFrame(frame);frame=0;last=null;}
   function tick(now){
