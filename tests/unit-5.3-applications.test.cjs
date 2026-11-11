@@ -40,8 +40,9 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await p.locator('[data-chestnut-mode=contact]').press('Enter');
     assert.equal(await p.locator('#chestnut-contact').isVisible(),true);
     assert.equal(await p.locator('[data-chestnut-mode=contact]').getAttribute('aria-pressed'),'true');
-    assert.equal(await p.locator('.chestnut-flow li').count(),3);
-    assert.match(await p.locator('.chestnut-flow').innerText(),/沙子從鍋子吸熱[\s\S]*比熱較小[\s\S]*將熱傳給栗子/);
+    const process=p.locator('#chestnut-process');
+    assert.equal(await process.evaluate(n=>n.complete&&n.naturalWidth===1157&&n.naturalHeight===1360),true);
+    assert.match(await process.getAttribute('alt'),/沙子從鍋子吸熱[\s\S]*比熱較小[\s\S]*接觸栗子[\s\S]*把熱傳給栗子/);
     await capture('chestnut-scenario');
   });
 
@@ -233,6 +234,10 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
       await p.setViewportSize({width,height:900});
       for(const key of ['chestnut','coast','coolant']){
         await choose(key);
+        if(key==='chestnut'&&width<=600){
+          await p.waitForFunction(()=>{const image=document.getElementById('chestnut-process');return image?.complete&&image.naturalWidth===1024;});
+          assert.match(await p.locator('#chestnut-process').evaluate(n=>n.currentSrc),/application-chestnut-process-mobile\.png$/);
+        }
         const sizes=await p.locator('#application-content').evaluate(n=>({container:n.getBoundingClientRect().height,active:n.querySelector('.life-view:not([hidden])').getBoundingClientRect().height,hidden:[...n.querySelectorAll('.life-view[hidden]')].map(e=>e.getBoundingClientRect().height)}));
         assert.ok(Math.abs(sizes.container-sizes.active)<1,`${width} ${key}: ${JSON.stringify(sizes)}`);
         assert.deepEqual(sizes.hidden,[0,0]);

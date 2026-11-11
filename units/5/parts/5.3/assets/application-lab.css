@@ -77,20 +77,12 @@
 #application-lab .chestnut-mode button{flex:1;min-width:0;padding:8px 5px}
 #application-lab .chestnut-view-note{text-align:center;color:#687c69;font-size:.875rem;margin:6px 0 0}
 #application-lab .chestnut-contact-retry{align-self:center;margin-top:8px}
-#application-lab .chestnut-explanation{display:flex;flex-direction:column;justify-content:center}
-#application-lab .chestnut-explanation h3{font-size:1.2rem;padding-bottom:10px;border-bottom:2px solid #b4c9a8}
-.chestnut-flow{list-style:none;padding:0;margin:0}
-.chestnut-flow li{display:grid;grid-template-columns:minmax(72px,.78fr) 30px minmax(0,1fr);align-items:center;gap:8px;padding:12px 0}
-.chestnut-flow li+li{border-top:1px solid #dfe8d9}
-.chestnut-step-icon{display:block;width:100%;height:auto;max-height:76px;overflow:visible}
-.chestnut-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e77f34;color:white;font-weight:700}
-.chestnut-flow strong{font-size:1.05rem}
-#application-lab .chestnut-flow p{margin:2px 0 0;color:#536d58}
-#application-lab .chestnut-takeaway{margin:8px 0 0;padding:10px 12px;border-radius:8px;background:#eaf3e3;font-weight:700;color:#315b3b}
+#application-lab .chestnut-explanation{margin:0;padding:0;border:0;border-radius:13px;background:transparent;overflow:hidden;align-self:center}
+#application-lab .chestnut-explanation picture{display:block;width:100%}
+#application-lab .chestnut-explanation img{display:block;width:100%;height:auto}
 .chestnut-label{position:absolute;padding:4px 9px;border-radius:7px;background:#fff9eaf2;color:#315b3b;font-weight:700;box-shadow:0 1px 4px #0003}
 .chestnut-label-wok{left:6%;bottom:9%}.chestnut-label-sand{left:49%;bottom:23%}.chestnut-label-nut{right:9%;top:39%}
-@media(max-width:1100px){#application-lab .chestnut-workbench{grid-template-columns:minmax(0,1fr)}#application-lab .chestnut-visual{max-width:700px;width:100%;margin:0 auto}}
-@media(max-width:600px){.chestnut-flow li{grid-template-columns:minmax(56px,.55fr) 28px minmax(0,1fr);gap:7px;padding:10px 0}.chestnut-number{width:28px;height:28px}}
+@media(max-width:1100px){#application-lab .chestnut-workbench{grid-template-columns:minmax(0,1fr)}#application-lab .chestnut-visual{max-width:700px;width:100%;margin:0 auto}#application-lab .chestnut-explanation{width:min(100%,460px);margin:0 auto}}
 
 /* 情境共用相同圖片框與雙欄比例；以最長內容決定區塊高度。 */
 #application-content{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:start}
