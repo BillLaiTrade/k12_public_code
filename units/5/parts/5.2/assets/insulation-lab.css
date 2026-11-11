@@ -821,3 +821,26 @@
 #insulation-lab[data-comparison=gap] .micro-lens-radiation{stroke-width:1.2}
 #insulation-lab[data-comparison=gap] .insulation-micro-panel .micro-lens-particle{fill:#2083ad;stroke:#f5ffff;stroke-width:.8;transform:none}
 #insulation-lab[data-comparison=gap] .micro-side-warm,#insulation-lab[data-comparison=gap] .micro-side-cool{font-size:10px}
+
+/* 固定畫框內上移瓶身，增加氣體活動區高度。 */
+#insulation-lab[data-comparison=gap][data-focus=a] .insulation-bottle-grid,
+#insulation-lab[data-comparison=gap][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.66)!important}
+#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:96px}
+@media(max-width:899px){
+ #insulation-lab[data-comparison=gap][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=gap][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.78)!important}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:136px}
+}
+@media(max-width:370px){
+ #insulation-lab[data-comparison=gap][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=gap][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.72)!important}
+}
+@media(min-width:561px) and (max-width:899px){
+ #insulation-lab[data-comparison=gap][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=gap][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.55)!important}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:96px}
+}
+@media(max-width:370px){
+ #insulation-lab[data-comparison=gap][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=gap][data-focus=b] .insulation-bottle-grid{transform:translateY(-52px) scale(.72)!important}
+}
