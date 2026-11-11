@@ -1709,6 +1709,8 @@ node --test --test-isolation=none tests/unit-5.4-model.test.mjs tests/unit-5.4.t
 
 公開檢查設定`UNIT54_URL=https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.4/`，`UNIT54_CAPTURE_DIR`指定證據輸出位置。繼承既有HTTPS_PROXY，不停用TLS驗證。本輪是可操作初版，非逐區設計或完整外審已通過。
 
+2026-11-11第六區更新：同一測試另核對桌機實驗與晶體模型左右並排、手機直向堆疊；以觀察時鐘確認模型水合程度與脫水／水合畫面同步，並保存加熱中與無水狀態截圖。
+
 5.4公開測試如遇環境代理CA未被Chromium信任，可指定`UNIT54_PROXY_CA`為環境提供的公開CA檔；僅該測試程序匹配該憑證的SPKI，不修改持久信任庫、不全面忽略TLS錯誤。
 
 ## 5.4 第五區照片與增量讀值配置（2026-11-09）

@@ -163,6 +163,35 @@ let chemProgress=0;
 const chemUnit=x=>Math.max(0,Math.min(1,x));
 const chemEase=x=>{const t=chemUnit(x);return t*t*(3-2*t);};
 const chemMix=(a,b,t)=>a+(b-a)*t;
+const chemHydrationWater=[[170,195],[390,195],[170,275],[390,275],[430,360]];
+const chemWaterProducts=[[535,90],[600,155],[535,230],[600,305],[535,380]];
+function crystalSulfate(x,y,rotate=0){return `<g transform="translate(${x} ${y}) rotate(${rotate})"><path class="chem-bond" d="M0 0L0 -29M0 0L26 0M0 0L0 29M0 0L-26 0"/><circle class="chem-s" r="12"/><circle class="chem-o" cx="0" cy="-29" r="8"/><circle class="chem-o" cx="26" r="8"/><circle class="chem-o" cx="0" cy="29" r="8"/><circle class="chem-o" cx="-26" r="8"/></g>`;}
+function crystalWater(id,x,y){return `<g class="chem-water-particle" id="chem-water-${id}" transform="translate(${x} ${y})"><path class="chem-bond" d="M0 0L-12 -9M0 0L13 -8" stroke-width="3"/><circle class="chem-o" r="9"/><circle class="chem-h" cx="-12" cy="-9" r="5.5"/><circle class="chem-h" cx="13" cy="-8" r="5.5"/></g>`;}
+function copperParticle(x,y){return `<circle class="chem-cu" cx="${x}" cy="${y}" r="20"/>`;}
+function buildChemCrystalModel(){
+ const svg=$('chem-crystal-model');
+ const waters=chemHydrationWater.map((p,i)=>crystalWater(i+1,...p)).join('');
+ const hydrated=`<g id="chem-hydrate-lattice"><path class="chem-lattice-edge" d="M72 72V405M462 72V405"/><path class="chem-bond" d="M280 126V210M280 250V332"/><path class="chem-coordination" d="M280 230L170 195M280 230L390 195M280 230L170 275M280 230L390 275"/><path class="chem-hbond" d="M405 360L305 360M442 349L301 105"/>${crystalSulfate(280,96,0)}${crystalSulfate(280,360,0)}<circle class="chem-copper-halo" cx="280" cy="230" r="50"/>${copperParticle(280,230)}</g>`;
+ const transition=`<g id="chem-transition-lattice" opacity="0"><path class="chem-lattice-edge" d="M82 82V390M452 82V390"/><path class="chem-coordination" d="M280 230L280 143M280 230L280 317M280 230L185 230M280 230L375 230"/>${crystalSulfate(280,115,0)}${crystalSulfate(280,345,0)}${crystalSulfate(150,230,45)}${crystalSulfate(410,230,-45)}<circle class="chem-copper-halo" cx="280" cy="230" r="46"/>${copperParticle(280,230)}</g>`;
+ const copperSites=[[125,145],[315,145],[125,325],[315,325]];
+ const sulfateSites=[[220,145],[410,145],[220,325],[410,325],[125,235],[315,235]];
+ const anhydrousBonds=sulfateSites.map(([sx,sy])=>{
+  const candidates=copperSites.map(([cx,cy])=>({cx,cy,d:Math.hypot(cx-sx,cy-sy)})).filter(p=>p.d<150);
+  return candidates.map(({cx,cy})=>{const dx=cx-sx,dy=cy-sy,len=Math.hypot(dx,dy),ox=sx+dx/len*24,oy=sy+dy/len*20;return `<path class="chem-coordination" d="M${cx} ${cy}L${ox.toFixed(1)} ${oy.toFixed(1)}"/>`;}).join('');
+ }).join('');
+ const anhydrous=`<g id="chem-anhydrous-lattice" opacity="0"><path class="chem-lattice-edge" d="M58 82V390M450 82V390"/>${anhydrousBonds}${sulfateSites.map(([x,y],i)=>crystalSulfate(x,y,i%2?45:-45)).join('')}${copperSites.map(([x,y])=>copperParticle(x,y)).join('')}</g>`;
+ const legend=`<g class="chem-model-captions" font-family="system-ui,sans-serif" font-size="16" font-weight="700" text-anchor="middle"><text x="280" y="437" fill="#517052">晶體重複片段</text><text x="568" y="55" fill="#517052">離開晶體的水</text></g>`;
+ svg.innerHTML=`<defs><linearGradient id="chem-model-wash" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffefa"/><stop offset="1" stop-color="#edf4eb"/></linearGradient><marker id="chem-model-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8c866d"/></marker></defs><rect x="0" y="0" width="700" height="470" rx="12" fill="url(#chem-model-wash)"/><g id="chem-crystal-lattices">${anhydrous}${hydrated}${transition}</g>${waters}<path class="chem-model-arrow" d="M470 215H515" marker-end="url(#chem-model-arrowhead)"/>${legend}`;
+}
+buildChemCrystalModel();
+function renderChemCrystalModel(white){
+ const svg=$('chem-crystal-model'),hydration=1-white;
+ const hydrateOpacity=chemUnit(1-white*3),anhydrousOpacity=chemUnit((white-.67)*3),transitionOpacity=chemUnit(1-Math.abs(white-.5)*3);
+ $('chem-hydrate-lattice').setAttribute('opacity',String(hydrateOpacity));$('chem-transition-lattice').setAttribute('opacity',String(transitionOpacity));$('chem-anhydrous-lattice').setAttribute('opacity',String(anhydrousOpacity));
+ chemHydrationWater.forEach(([sx,sy],i)=>{const [ex,ey]=chemWaterProducts[i],p=chemEase((white-i*.08)/.92),water=$('chem-water-'+(i+1));water.setAttribute('transform',`translate(${chemMix(sx,ex,p).toFixed(2)} ${chemMix(sy,ey,p).toFixed(2)})`);water.setAttribute('opacity','1');});
+ svg.dataset.hydration=hydration.toFixed(3);svg.dataset.dehydration=white.toFixed(3);svg.dataset.hydrateLattice=hydrateOpacity.toFixed(3);svg.dataset.transitionLattice=transitionOpacity.toFixed(3);svg.dataset.anhydrousLattice=anhydrousOpacity.toFixed(3);
+ svg.setAttribute('aria-label',`硫酸銅晶體局部結構示意；五水合結構中的四個配位水和一個晶格水${white>.5?'逐步離開晶體，晶格重排為無水硫酸銅':'隨水合程度增加而重新進入晶體'}。`);
+}
 function renderChem(){
  const lab=$('chem-lab'),playing=animations.has('chem-lab'),t=chemProgress*34;
  const heating=chemEase((t-7)/8),hydration=chemEase((t-25)/6),white=heating*(1-hydration);
@@ -182,18 +211,21 @@ function renderChem(){
  $('chem-condensation').setAttribute('opacity',String(chemEase((t-9)/5)*(1-chemEase((t-22)/3))));
  const radius=white*145;document.querySelectorAll('#chem-mask-spots circle').forEach((c,i)=>c.setAttribute('r',String(radius*chemUnit((white*2.1-i*.10)))));
  $('chem-mask-complete').setAttribute('opacity',String(chemEase((white-.86)/.14)));
+ renderChemCrystalModel(white);
  const heatOut=chemEase((t-25)/1.5)*(1-chemEase((t-31)/2));
  $('chem-arrow-out').setAttribute('opacity',String(heatOut));
  lab.style.setProperty('--chem-out',heatOut);
  const stage=t<5?0:t<18?1:t<25?2:3;
- const title=['加熱前','加熱脫水','冷卻後加水','水合反應'][stage];
- const notes=['藍色含水硫酸銅放在容器中，酒精燈移向下方。','熱傳入樣品，藍色固體逐漸變白；水蒸氣在較冷處凝結，這個反應吸熱。','停止加熱，樣品冷卻後，滴管移到容器上方加入水。','白色無水硫酸銅與水反應，逐漸生成藍色含水硫酸銅，熱傳向周圍，這個反應放熱。'];
- const materials=['藍色含水硫酸銅','藍色固體逐漸變白','白色無水硫酸銅＋水','白色固體逐漸變藍'];
+ const notes=['藍色含水硫酸銅晶體。','加熱時水逐步離開晶體，脫水反應吸熱。','停止加熱，樣品冷卻後加入水。','水進入晶體形成含水硫酸銅，反應放熱。'];
+ let modelTitle='含水硫酸銅',modelFormula='CuSO₄·5H₂O';
+ if(t>=7&&t<18){modelTitle='吸熱脫水';modelFormula='水逐步離開晶體';}
+ else if(t>=18&&t<25){modelTitle='無水硫酸銅＋水';modelFormula='CuSO₄ ＋ 5H₂O';}
+ else if(t>=25&&t<32){modelTitle='放熱水合';modelFormula='水重新進入晶體';}
  lab.dataset.stage=String(stage);lab.dataset.progress=String(chemProgress);lab.dataset.playing=String(playing);
  lab.dataset.white=white.toFixed(3);lab.dataset.burnerX=burnerX.toFixed(1);lab.dataset.pipeX=pipeX.toFixed(1);
- write('chem-stage-title',title);write('chem-material',materials[stage]);write('chem-equation',stage<2?'含水硫酸銅 → 無水硫酸銅＋水':'無水硫酸銅＋水 → 含水硫酸銅');
+ write('chem-stage-title',modelTitle);write('chem-material','晶體局部結構示意，非依比例。');write('chem-equation',modelFormula);
  $('chem-progress-fill').style.width=(chemProgress*100)+'%';$('chem-progress').setAttribute('aria-valuenow',String(Math.round(chemProgress*100)));
- write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${title}`);write('chem-note',notes[stage]);
+ write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${modelTitle}`);write('chem-note',notes[stage]);
  write('chem-play',playing?'暫停觀察':chemProgress>=1?'再次觀察':chemProgress>0?'繼續觀察':'開始觀察');
 }
 $('chem-play').onclick=()=>{if(animations.has('chem-lab')){stop('chem-lab');return;}if(chemProgress>=1)chemProgress=0;const initial=chemProgress;run('chem-lab',34000*(1-initial),p=>{chemProgress=initial+(1-initial)*p;renderChem();},renderChem);renderChem();};
