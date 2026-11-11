@@ -296,7 +296,7 @@
         for (let i = -2; i <= 2; i++) for (let j = -2; j <= 2; j++) for (const [bx,by] of [[0,0],[0,1]]) {
           const x = i * rt3 + j * rt3 / 2 + bx + (layer % 2) * .78;
           const y = j * 1.5 + by;
-          if (Math.abs(x) < 4.8 && Math.abs(y) < 4.1) addAtom(x, y, layer * .92, layer);
+          if (Math.abs(x) < 4.8 && Math.abs(y) < 4.1) addAtom(x, y, layer * 2.8, layer);
         }
         const plane = atoms.slice(before);
         for (let a = 0; a < plane.length; a++) for (let b = a + 1; b < plane.length; b++) {
@@ -345,13 +345,13 @@
     const lineMarkup = orderedBonds.map(([a,b,layer]) => {
       const p = pointMap.get(a.id), q = pointMap.get(b.id), alpha = depth((p.z+q.z)/2);
       const color = kindColor(svg, layer);
-      return `<g opacity="${alpha.toFixed(2)}"><line x1="${p.x}" y1="${p.y+2}" x2="${q.x}" y2="${q.y+2}" stroke="#203b2b" stroke-opacity=".14" stroke-width="10" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${color}" stroke-width="7" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y-1.6}" x2="${q.x}" y2="${q.y-1.6}" stroke="#ffffff" stroke-opacity=".48" stroke-width="1.8" stroke-linecap="round"/></g>`;
+      return `<g opacity="${alpha.toFixed(2)}"><line x1="${p.x}" y1="${p.y+2}" x2="${q.x}" y2="${q.y+2}" stroke="#232728" stroke-opacity=".14" stroke-width="10" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${color}" stroke-width="7" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y-1.6}" x2="${q.x}" y2="${q.y-1.6}" stroke="#ffffff" stroke-opacity=".48" stroke-width="1.8" stroke-linecap="round"/></g>`;
     }).join('');
     const orderedAtoms = [...points].sort((a,b)=>a.z-b.z);
     const atomMarkup = orderedAtoms.map(point => {
       const p = pointMap.get(point.atom.id), alpha = depth(p.z), radius = (kind === 'graphite' ? 6.8 : 7.3) * (.82 + .18 * alpha) * (kind === 'diamond' ? 1.12 : 1);
       const grad = `atom-${svg.dataset.carbonModel}-${point.atom.id}`;
-      return `<g opacity="${alpha.toFixed(2)}"><defs><radialGradient id="${grad}" cx="29%" cy="24%" r="78%"><stop stop-color="#fff"/><stop offset=".3" stop-color="#e1f0e5"/><stop offset=".72" stop-color="#65a47e"/><stop offset="1" stop-color="#155b42"/></radialGradient></defs><circle cx="${p.x+1}" cy="${p.y+2}" r="${radius+1}" fill="#173c2a" opacity=".16"/><circle cx="${p.x}" cy="${p.y}" r="${radius}" fill="url(#${grad})" stroke="#285e45" stroke-width="1.4"/><circle cx="${p.x-radius*.32}" cy="${p.y-radius*.42}" r="${radius*.2}" fill="#fff" opacity=".82"/></g>`;
+      return `<g opacity="${alpha.toFixed(2)}"><defs><radialGradient id="${grad}" cx="29%" cy="24%" r="78%"><stop stop-color="#fff"/><stop offset=".3" stop-color="#d6d8d6"/><stop offset=".72" stop-color="#606667"/><stop offset="1" stop-color="#262b2c"/></radialGradient></defs><circle cx="${p.x+1}" cy="${p.y+2}" r="${radius+1}" fill="#202424" opacity=".16"/><circle cx="${p.x}" cy="${p.y}" r="${radius}" fill="url(#${grad})" stroke="#34393a" stroke-width="1.4"/><circle cx="${p.x-radius*.32}" cy="${p.y-radius*.42}" r="${radius*.2}" fill="#fff" opacity=".82"/></g>`;
     }).join('');
     const titleId = `${kind}-model-title`, descId = `${kind}-model-desc`;
     const title = kind === 'graphite' ? '石墨碳原子層狀結構的立體球棍模型' : '鑽石碳原子四面體連接的立體球棍模型';
@@ -359,12 +359,12 @@
     svg.innerHTML = `<title id="${titleId}">${title}</title><desc id="${descId}">${desc}</desc><defs><linearGradient id="${kind}-back" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".72"/><stop offset="1" stop-color="#eaf0e8" stop-opacity=".2"/></linearGradient></defs><ellipse cx="260" cy="258" rx="150" ry="13" fill="#314936" opacity=".08"/><g>${lineMarkup}${atomMarkup}</g>`;
     svg.setAttribute('aria-labelledby', `${titleId} ${descId}`);
   };
-  const kindColor = (svg, layer) => svg.dataset.carbonModel === 'graphite' ? ['#829f88','#557e64','#32644c'][layer] : '#4d8666';
+  const kindColor = () => '#747a79';
   modelStages.forEach(stage => {
     const svg = stage.querySelector('svg');
     svg.dataset.modelKind = stage.dataset.carbonModel;
     const lattice = makeLattice(stage.dataset.carbonModel);
-    const rotation = { x: stage.dataset.carbonModel === 'graphite' ? -.96 : -.67, y: .38 };
+    const rotation = { x: stage.dataset.carbonModel === 'graphite' ? -1.28 : -.67, y: .38 };
     const render = () => modelMarkup(svg, lattice, rotation);
     render();
     let pointer;
@@ -388,7 +388,7 @@
       else return;
       event.preventDefault(); render();
     });
-    stage.addEventListener('dblclick', () => { rotation.x = stage.dataset.carbonModel === 'graphite' ? -.96 : -.67; rotation.y = .38; render(); });
+    stage.addEventListener('dblclick', () => { rotation.x = stage.dataset.carbonModel === 'graphite' ? -1.28 : -.67; rotation.y = .38; render(); });
   });
 
   // Keep each numbered navigation label in sync with its lesson heading.

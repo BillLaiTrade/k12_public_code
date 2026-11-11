@@ -162,3 +162,21 @@
 #s5 .carbon-structure-card figcaption span,#s5 .carbon-model-note,#s5 .carbon-structure-card p{font-size:1rem}
 #s5 .carbon-model-stage{height:250px;margin:8px 0}
 @media(max-width:600px){#s5 .carbon-grid{gap:8px}#s5 .carbon-sample{padding:7px}#s5 .carbon-sample .carbon-sample-cue{padding:7px 6px}#s5 .carbon-structure-grid{grid-template-columns:1fr}#s5 .carbon-model-stage{height:230px}}
+
+/* 結構線索與性質並列，球棍模型保留拖曳及鍵盤操作。 */
+#s5 .carbon-structure-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px}
+#s5 .carbon-structure-head h3{margin:0}
+#s5 .carbon-structure-head p{margin:0;color:#415c4c;font-size:1rem}
+#s5 .carbon-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;margin:12px 0 14px;font-weight:750;color:#174f39;line-height:1.4}
+#s5 .carbon-flow span{padding:6px 12px;border-radius:9px;background:#e8eee0;text-align:center}
+#s5 .carbon-flow b{font-size:1.2rem}
+#s5 .carbon-structure-card{background:#fffef9;box-shadow:none}
+#s5 .carbon-structure-card figcaption{padding:3px 4px;font-size:1.15rem}
+#s5 .carbon-model-stage{background:radial-gradient(ellipse at 50% 38%,#fff 0%,#f4f4ef 56%,#e9ebe6 100%)}
+#s5 .carbon-neighbors{margin:8px 0 10px;text-align:center;line-height:1.5}
+#s5 .carbon-neighbors strong{font-size:1.2em;color:#15583e}
+#s5 .carbon-reasons{display:grid;gap:7px}
+#s5 .carbon-reasons p{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;margin:0;padding:8px 10px;border-radius:9px;background:#f0f3e9;line-height:1.5}
+#s5 .carbon-reasons strong{padding:3px 9px;border-radius:8px;background:#216847;color:#fff;text-align:center}
+#s5 .carbon-arrow{font-weight:800;color:#216847}
+@media(max-width:600px){#s5 .carbon-structure-head{display:block}#s5 .carbon-structure-head p{margin-top:5px}#s5 .carbon-flow{justify-content:flex-start;font-size:1rem}#s5 .carbon-flow span{padding:5px 8px}#s5 .carbon-reasons p{gap:6px;padding:7px 8px}}

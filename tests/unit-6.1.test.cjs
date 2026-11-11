@@ -541,7 +541,7 @@ test('6.1 element lesson in a real browser', { timeout: 60000 }, async t => {
     assert.match(await page.locator('.carbon-structure-card').nth(0).innerText(), /連接 3 個鄰近碳原子/);
     assert.match(await page.locator('.carbon-structure-card').nth(1).innerText(), /連接 4 個鄰近碳原子/);
     assert.match(await text('.carbon-structure-head'), /原子排列/);
-    assert.match(await text('.carbon-structure .caption'), /不表示原子實際大小或距離比例/);
+    assert.match(await text('.carbon-structure .caption'), /大小與距離並非實際比例/);
     await page.locator('[data-carbon="conductivity"]').click();
     assert.equal(await page.locator('#carbon-comparison').getAttribute('data-view'), 'conductivity');
     assert.match(await text('#graphite-sample-cue'), /可以導電/);
@@ -560,7 +560,8 @@ test('6.1 element lesson in a real browser', { timeout: 60000 }, async t => {
     assert.match(await text('#graphite-sample-cue'), /較軟[\s\S]*莫氏硬度 1–2/);
     assert.match(await text('#diamond-sample-cue'), /非常堅硬[\s\S]*莫氏硬度 10/);
     assert.match(await text('#s5'), /層狀結構|立體網狀結構/);
-    assert.match(await text('.question-mark'), /外觀、硬度、導電與透光/);
+    assert.match(await text('.carbon-structure-card:nth-child(1) .carbon-reasons'), /層與層較易滑動[\s\S]*較軟[\s\S]*可移動的電子[\s\S]*可導電/);
+    assert.match(await text('.carbon-structure-card:nth-child(2) .carbon-reasons'), /向各方向牢固連接[\s\S]*非常堅硬[\s\S]*電子較難自由移動[\s\S]*通常不易導電/);
     await capture('#s5', 'carbon-desktop');
   });
 
