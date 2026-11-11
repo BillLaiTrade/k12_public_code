@@ -1041,3 +1041,11 @@
  #insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:120px}
 }
 #insulation-lab .insulation-curve-tag{font-size:.8rem}
+
+/* 夾層比較聚焦氣體傳熱；其他傳熱途徑由下方對話補充。 */
+#insulation-lab[data-comparison=gap] .insulation-jacket-radiation,
+#insulation-lab[data-comparison=gap] .insulation-motion,
+#insulation-lab[data-comparison=gap] .micro-radiation-base,
+#insulation-lab[data-comparison=gap] .micro-lens-radiation,
+#insulation-lab[data-comparison=gap] .micro-radiation-arrow{display:none!important}
+#insulation-lab[data-comparison=lining] .insulation-ray-back{stroke:#e58d2c;filter:drop-shadow(0 0 1px #fff2c4)}

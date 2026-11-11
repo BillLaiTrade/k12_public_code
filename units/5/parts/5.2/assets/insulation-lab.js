@@ -6,8 +6,8 @@
   const $=id=>document.getElementById(id),play=$('insulation-play'),sources=['a','b'].map(k=>$(`insulation-source-${k}`));
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const comparisons={
-    gap:{title:'夾層剖面示意',a:{label:'空氣夾層',gas:true,lining:false},b:{label:'真空夾層',gas:false,lining:false},note:'空氣分子隨機運動並碰撞傳能；抽氣後，這條氣體傳熱路徑減少。',discovery:'抽去大部分空氣，會減少氣體傳熱；輻射和瓶口的固體傳熱仍存在。'},
-    lining:{title:'兩瓶皆為真空夾層',a:{label:'無亮面層',gas:false,lining:false},b:{label:'有亮面層',gas:false,lining:true},note:'看 B 瓶：熱輻射碰到銀亮層後，有一部分折返，只有較少部分繼續向外；瓶口、支撐仍能傳熱。',discovery:'B 瓶的亮面層反射大部分熱輻射，減少向外的輻射換熱；瓶口與支撐仍會傳熱。'}
+    gap:{title:'夾層剖面示意',a:{label:'空氣夾層',gas:true,lining:false},b:{label:'真空夾層',gas:false,lining:false},note:'空氣分子隨機運動並碰撞傳能；抽氣後，這條氣體傳熱路徑減少。',discovery:'抽去大部分空氣的 B 瓶降溫較慢，氣體傳熱減少了。'},
+    lining:{title:'兩瓶皆為真空夾層',a:{label:'無亮面層',gas:false,lining:false},b:{label:'有亮面層',gas:false,lining:true},note:'看 B 瓶：熱輻射碰到銀亮層後，有一部分折返，只有較少部分繼續向外；瓶口、支撐仍能傳熱。',discovery:'有亮面層的 B 瓶降溫較慢，亮面反射部分熱輻射。'}
   };
   const assets={bench:{src:$('insulation-bench').dataset.src,status:'idle',request:0},matte:{src:'assets/insulation-flask-steel.webp?v=mockup-20261110',status:'idle',request:0},lining:{src:'assets/insulation-flask-lining.webp?v=flask-1',status:'idle',request:0}};
   let comparison='gap',inspectedLayer=null,time=0,playing=false,frame=0,previous=null;
@@ -149,7 +149,7 @@
     root.querySelectorAll('[data-insulation-comparison]').forEach(n=>n.setAttribute('aria-pressed',String(n.dataset.insulationComparison===comparison)));
     ['a','b'].forEach(role=>{
       const c=cfg[role];setText(`insulation-label-${role}`,c.label);setText(`insulation-legend-${role}`,c.label);
-      const layerDescription=comparison==='gap'?(role==='a'?'藍色氣體分子在夾層中移動，橘色輻射波也能通過。':'夾層中氣體極少，橘色輻射波仍能通過。'):'夾層剖面與熱輻射路徑示意。';$(`insulation-bottle-${role}`).setAttribute('aria-label',`${role.toUpperCase()}瓶：${c.label}；${layerDescription}`);
+      const layerDescription=comparison==='gap'?(role==='a'?'藍色氣體分子在夾層中移動並碰撞；此圖聚焦氣體傳熱。':'夾層中氣體極少，氣體傳熱減少；此圖聚焦氣體傳熱。'):'夾層剖面與熱輻射路徑示意。';$(`insulation-bottle-${role}`).setAttribute('aria-label',`${role.toUpperCase()}瓶：${c.label}；${layerDescription}`);
       const source=$(`insulation-source-${role}`),isInspected=inspectedLayer===role;
       source.setAttribute('aria-label',`選取${role.toUpperCase()}瓶的${c.label}並查看局部比較`);source.setAttribute('aria-pressed',String(isInspected));source.setAttribute('aria-expanded',String(isInspected));source.setAttribute('aria-controls',comparison==='gap'?'insulation-mechanism':'insulation-lining-focus');const hint=root.querySelector(`[data-bottle="${role}"] .insulation-inspect-hint`);if(hint)hint.textContent=isInspected?'已選取':'點夾層看局部';
       $(`insulation-motion-${role}`).setAttribute('opacity',started&&status==='ready'?'1':'0');
@@ -178,7 +178,7 @@
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
     root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'沒有亮面層仍會反射部分輻射，其餘可被外壁吸收。':'亮面反射較多熱輻射；其餘可被外壁吸收。';
     
-    setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，熱由暖側傳向冷側。':'氣體極少，氣體傳熱減少；輻射仍可通過。');
+    setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，熱由暖側傳向冷側。':'氣體極少，氣體碰撞與傳熱都減少。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();
     plot();$('insulation-discovery').hidden=time<WINDOW;setText('insulation-discovery-text',cfg.discovery);
