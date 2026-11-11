@@ -24,7 +24,7 @@
   function svgNode(tag,attrs){const n=document.createElementNS(microNS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n;}
   function prepareMicro(panel){
     const svg=panel.querySelector('.micro-simulation'),w=svg.clientWidth,h=svg.clientHeight;if(w<60||h<35)return;
-    const innerW=w-20,innerH=h-29;let item=microModels.get(panel.dataset.micro);
+    const innerW=w-20,innerH=h-35;let item=microModels.get(panel.dataset.micro);
     if(!item){
       const model=GasCollisionModel.create(innerW,innerH,panel.dataset.micro==='a'?18:2,panel.dataset.micro==='a'?'right':'left'),group=svg.querySelector('.micro-simulation-particles');
       const nodes=model.particles.map(()=>{const circle=svgNode('circle',{class:'micro-lens-particle',r:model.radius});group.append(circle);return {circle};});
@@ -33,8 +33,8 @@
     const warmRight=panel.dataset.micro==='a',warmX=warmRight?w-10:10,coolX=warmRight?10:w-10;
     svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
     svg.querySelector('.micro-wall-warm').setAttribute('x',warmRight?w-7:0);svg.querySelector('.micro-wall-cool').setAttribute('x',warmRight?0:w-7);
-    const warmLabel=svg.querySelector('.micro-side-warm'),coolLabel=svg.querySelector('.micro-side-cool');warmLabel.setAttribute('x',warmX);warmLabel.setAttribute('text-anchor',warmRight?'end':'start');coolLabel.setAttribute('x',coolX);coolLabel.setAttribute('text-anchor',warmRight?'start':'end');
-    const y=18,start=warmRight?w-11:10,end=warmRight?10:w-11,direction=warmRight?-1:1,span=Math.abs(end-start);let path=`M${start} ${y}`;for(let x=0;x<span;x+=16){const length=Math.min(16,span-x)*direction;path+=`q${length/4} -4 ${length/2} 0t${length/2} 0`;}
+    const warmLabel=svg.querySelector('.micro-side-warm'),coolLabel=svg.querySelector('.micro-side-cool');warmLabel.setAttribute('x',warmX);warmLabel.setAttribute('y','15');warmLabel.setAttribute('text-anchor',warmRight?'end':'start');coolLabel.setAttribute('x',coolX);coolLabel.setAttribute('y','15');coolLabel.setAttribute('text-anchor',warmRight?'start':'end');
+    const y=24,start=warmRight?w-11:10,end=warmRight?10:w-11,direction=warmRight?-1:1,span=Math.abs(end-start);let path=`M${start} ${y}`;for(let x=0;x<span;x+=16){const length=Math.min(16,span-x)*direction;path+=`q${length/4} -4 ${length/2} 0t${length/2} 0`;}
     svg.querySelector('.micro-radiation-base').setAttribute('d',path);svg.querySelector('.micro-lens-radiation').setAttribute('d',path);svg.querySelector('.micro-radiation-arrow').setAttribute('d',`M${end-direction*6} ${y-4}L${end} ${y} ${end-direction*6} ${y+4}`);
     return item;
   }
@@ -45,8 +45,8 @@
     closeupFrame=0;if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
     const panel=mechanism.querySelector('.insulation-micro-panel:not([hidden])'),item=panel&&prepareMicro(panel);if(!item){closeupFrame=requestAnimationFrame(animateCloseup);return;}
     const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000)*(reduced.matches?.65:1);closeupPrevious=now;closeupTime+=dt;GasCollisionModel.step(item.model,dt);
-    item.model.particles.forEach((p,i)=>{const {circle}=item.nodes[i],x=p.x+10,y=p.y+25;circle.setAttribute('cx',x.toFixed(2));circle.setAttribute('cy',y.toFixed(2));});
-    const flashes=item.svg.querySelector('.micro-simulation-flashes');flashes.replaceChildren(...item.model.flashes.map(f=>svgNode('circle',{class:'micro-impact-flash',cx:(f.x+10).toFixed(1),cy:(f.y+25).toFixed(1),r:6,opacity:(f.life/.28).toFixed(2)})));
+    item.model.particles.forEach((p,i)=>{const {circle}=item.nodes[i],x=p.x+10,y=p.y+31;circle.setAttribute('cx',x.toFixed(2));circle.setAttribute('cy',y.toFixed(2));});
+    const flashes=item.svg.querySelector('.micro-simulation-flashes');flashes.replaceChildren(...item.model.flashes.map(f=>svgNode('circle',{class:'micro-impact-flash',cx:(f.x+10).toFixed(1),cy:(f.y+31).toFixed(1),r:6,opacity:(f.life/.28).toFixed(2)})));
     item.svg.dataset.collisions=String(item.model.collisions);item.svg.dataset.energyExchanged=item.model.energyExchanged.toFixed(2);item.svg.querySelector('.micro-lens-radiation').style.strokeDashoffset=String(-closeupTime*20);
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
@@ -55,26 +55,28 @@
   function createLiningModel(panel){
     const role=panel.dataset.liningZoom,svg=panel.querySelector('svg'),container=svg.querySelector('.lining-wave-packets');container.replaceChildren();
     svg.querySelectorAll('.lining-absorption-effect').forEach(node=>node.remove());
-    const effect=svgNode('g',{class:'lining-absorption-effect',visibility:'hidden','aria-hidden':'true'}),glow=svgNode('ellipse',{class:'lining-absorption-glow',cx:role==='b'?294:6,cy:50,rx:7,ry:13}),tag=svgNode('g',{class:'lining-absorption-tag'}),tagBox=svgNode('rect',{width:68,height:17,rx:8.5}),tagText=svgNode('text',{x:34,y:12,'text-anchor':'middle'});tagText.textContent='被外壁吸收';tag.append(tagBox,tagText);effect.append(glow,tag);svg.append(effect);
-    const slopes=[-.19,.16,-.10,.23,-.24,.08,.20],ys=[50,120,68,143,42,102,153];
-    const packets=slopes.map((slope,i)=>{const node=svgNode('g',{class:'lining-radiation-packet'}),tail=svgNode('path',{d:'M-23 0L-15 0',class:'lining-packet-tail'}),wave=svgNode('path',{d:'M-14 0q3.5 -4.8 7 0t7 0t7 0t7 0'}),arrow=svgNode('path',{d:'M12 -3L17 0L12 3',class:'lining-packet-arrow'});node.append(tail,wave,arrow);container.append(node);const vx=role==='b'?110:-110;return {node,i,x:role==='b'?23+i*36:277-i*36,y:ys[i],vx,vy:Math.abs(vx)*slope,reflected:false,cycle:0};});
-    return {role,svg,packets,effect,glow,tag,absorptionEvent:null,reflections:0,absorptions:0};
+    panel.querySelectorAll('.lining-absorption-label').forEach(node=>node.remove());const label=document.createElement('span');label.className='lining-absorption-label';label.textContent='被外壁吸收';label.hidden=true;label.setAttribute('aria-hidden','true');panel.append(label);
+    const effect=svgNode('g',{class:'lining-absorption-effect',visibility:'hidden','aria-hidden':'true'}),glow=svgNode('ellipse',{class:'lining-absorption-glow',cx:role==='b'?294:6,cy:50,rx:7,ry:13});effect.append(glow);svg.append(effect);
+    const slopes=[-.19,.16,-.10,.23,-.24,.08,.20],ys=[50,120,68,143,42,102,153],safeTop=liningSafeTop(svg,role);
+    const packets=slopes.map((slope,i)=>{const node=svgNode('g',{class:'lining-radiation-packet'}),tail=svgNode('path',{d:'M-23 0L-15 0',class:'lining-packet-tail'}),wave=svgNode('path',{d:'M-14 0q3.5 -4.8 7 0t7 0t7 0t7 0'}),arrow=svgNode('path',{d:'M12 -3L17 0L12 3',class:'lining-packet-arrow'});node.append(tail,wave,arrow);container.append(node);const vx=role==='b'?110:-110,y=safeTop+8+(ys[i]-38)/120*(158-safeTop-8);return {node,i,x:role==='b'?23+i*36:277-i*36,y,vx,vy:Math.abs(vx)*slope,reflected:false,cycle:0};});
+    return {role,svg,packets,effect,glow,label,absorptionEvent:null,reflections:0,absorptions:0};
   }
-  function restartLiningPacket(p,role,packets){p.cycle++;p.x=role==='b'?23:277;const choices=[38,58,78,98,118,138,158],nearby=packets.filter(other=>other!==p&&Math.abs(other.x-p.x)<60);let best=-1;p.y=choices[(p.i+p.cycle)%choices.length];for(let k=0;k<choices.length;k++){const y=choices[(p.i+p.cycle+k)%choices.length],distance=nearby.length?Math.min(...nearby.map(other=>Math.abs(other.y-y))):Infinity;if(distance>best){best=distance;p.y=y;}}p.vx=role==='b'?110:-110;p.vy=110*([-.19,.16,-.10,.23,-.24,.08,.20][(p.i+p.cycle)%7]);p.reflected=false;}
+  function liningSafeTop(svg,role){return Math.min(105,Math.max(38,Math.ceil((role==='b'?40:24)*180/Math.max(1,svg.clientHeight))));}
+  function restartLiningPacket(p,role,packets,safeTop){p.cycle++;p.x=role==='b'?23:277;const choices=Array.from({length:7},(_,i)=>safeTop+8+i*(158-safeTop-8)/6),nearby=packets.filter(other=>other!==p&&Math.abs(other.x-p.x)<60);let best=-1;p.y=choices[(p.i+p.cycle)%choices.length];for(let k=0;k<choices.length;k++){const y=choices[(p.i+p.cycle+k)%choices.length],distance=nearby.length?Math.min(...nearby.map(other=>Math.abs(other.y-y))):Infinity;if(distance>best){best=distance;p.y=y;}}p.vx=role==='b'?110:-110;p.vy=110*([-.19,.16,-.10,.23,-.24,.08,.20][(p.i+p.cycle)%7]);p.reflected=false;}
   function animateLining(now){
     liningFrame=0;if(liningPanel.hidden||document.hidden){liningPrevious=null;return;}
     const panel=liningPanel.querySelector('[data-lining-zoom]:not([hidden])');if(!panel)return;
     const dt=liningPrevious===null?0:Math.min(.05,(now-liningPrevious)/1000)*(reduced.matches?.65:1);liningPrevious=now;
     if(!liningModel||liningModel.role!==panel.dataset.liningZoom)liningModel=createLiningModel(panel);
-    const model=liningModel;
+    const model=liningModel,safeTop=liningSafeTop(model.svg,model.role);
     model.packets.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;
       const atCold=model.role==='b'?p.x>=277:p.x<=23,atWarm=model.role==='b'?p.x<=23:p.x>=277;
-      if(p.y<25||p.y>170)restartLiningPacket(p,model.role,model.packets);
-      else if(!p.reflected&&atCold){const reflected=model.role==='b'?(p.i+p.cycle)%4!==0:(p.i+p.cycle)%4===0;if(reflected){p.x=model.role==='b'?277:23;p.vx=-p.vx;p.reflected=true;model.reflections++;}else{model.absorptions++;if(!model.absorptionEvent)model.absorptionEvent={y:p.y,remaining:1.4};restartLiningPacket(p,model.role,model.packets);}}
-      else if(p.reflected&&atWarm)restartLiningPacket(p,model.role,model.packets);
+      if(p.y<safeTop||p.y>170)restartLiningPacket(p,model.role,model.packets,safeTop);
+      else if(!p.reflected&&atCold){const reflected=model.role==='b'?(p.i+p.cycle)%4!==0:(p.i+p.cycle)%4===0;if(reflected){p.x=model.role==='b'?277:23;p.vx=-p.vx;p.reflected=true;model.reflections++;}else{model.absorptions++;if(!model.absorptionEvent)model.absorptionEvent={y:p.y,remaining:1.4};restartLiningPacket(p,model.role,model.packets,safeTop);}}
+      else if(p.reflected&&atWarm)restartLiningPacket(p,model.role,model.packets,safeTop);
       p.node.setAttribute('transform',`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${(Math.atan2(p.vy,p.vx)*180/Math.PI).toFixed(1)})`);
     });
-    if(model.absorptionEvent){const event=model.absorptionEvent;event.remaining-=dt;model.glow.setAttribute('cy',event.y.toFixed(1));model.tag.setAttribute('transform',`translate(${model.role==='b'?218:14} ${Math.max(25,Math.min(158,event.y-22)).toFixed(1)})`);model.effect.setAttribute('visibility','visible');model.effect.setAttribute('opacity',Math.min(1,Math.max(0,event.remaining/.25)).toFixed(2));if(event.remaining<=0){model.absorptionEvent=null;model.effect.setAttribute('visibility','hidden');}}
+    if(model.absorptionEvent){const event=model.absorptionEvent;event.remaining-=dt;model.glow.setAttribute('cy',event.y.toFixed(1));const minLabelTop=Math.min(85,60*100/Math.max(1,model.svg.clientHeight));model.label.style.top=`${Math.max(minLabelTop,Math.min(94,event.y/180*100)).toFixed(1)}%`;model.label.hidden=false;model.effect.setAttribute('visibility','visible');const opacity=Math.min(1,Math.max(0,event.remaining/.25)).toFixed(2);model.effect.setAttribute('opacity',opacity);model.label.style.opacity=opacity;if(event.remaining<=0){model.absorptionEvent=null;model.effect.setAttribute('visibility','hidden');model.label.hidden=true;}}
     model.svg.dataset.reflections=String(model.reflections);model.svg.dataset.absorptions=String(model.absorptions);
     liningFrame=requestAnimationFrame(animateLining);
   }
@@ -176,7 +178,7 @@
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
     root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'沒有亮面層仍會反射部分輻射，其餘可被外壁吸收。':'亮面反射較多熱輻射；其餘可被外壁吸收。';
     
-    setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
+    setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，熱由暖側傳向冷側。':'氣體極少，氣體傳熱減少；輻射仍可通過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();
     plot();$('insulation-discovery').hidden=time<WINDOW;setText('insulation-discovery-text',cfg.discovery);
