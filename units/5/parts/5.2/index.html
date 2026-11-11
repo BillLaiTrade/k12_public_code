@@ -351,7 +351,9 @@
         <div class="insulation-micro-panels">
           <figure class="insulation-micro-panel" data-micro="a">
             <svg class="micro-simulation" viewBox="0 0 300 80" role="img" aria-label="空氣夾層示意：氣體分子互相碰撞，交換能量。圖中僅顯示氣體傳熱。">
+              <defs><linearGradient id="micro-cold-a"><stop stop-color="#5aaee5" stop-opacity=".55"/><stop offset="1" stop-color="#5aaee5" stop-opacity="0"/></linearGradient><linearGradient id="micro-warm-a"><stop stop-color="#ffa94d" stop-opacity="0"/><stop offset="1" stop-color="#ffa94d" stop-opacity=".55"/></linearGradient></defs>
               <rect class="micro-simulation-bg" width="100%" height="100%" rx="8"/>
+              <rect width="13%" height="100%" fill="url(#micro-cold-a)"/><rect x="87%" width="13%" height="100%" fill="url(#micro-warm-a)"/>
               <rect class="micro-simulation-wall micro-wall-warm" x="0" y="0" width="7" height="100%"/>
               <rect class="micro-simulation-wall micro-wall-cool" x="293" y="0" width="7" height="100%"/>
               <text class="micro-side-warm" x="290" y="11" text-anchor="end">瓶內側・較暖</text><text class="micro-side-cool" x="10" y="11" text-anchor="start">瓶外側・較冷</text>
@@ -362,7 +364,9 @@
           </figure>
           <figure class="insulation-micro-panel" data-micro="b">
             <svg class="micro-simulation" viewBox="0 0 300 80" role="img" aria-label="真空夾層示意：剩餘氣體較少，粒子碰撞與氣體傳熱減少。圖中僅顯示氣體傳熱。">
+              <defs><linearGradient id="micro-warm-b"><stop stop-color="#ffa94d" stop-opacity=".55"/><stop offset="1" stop-color="#ffa94d" stop-opacity="0"/></linearGradient><linearGradient id="micro-cold-b"><stop stop-color="#5aaee5" stop-opacity="0"/><stop offset="1" stop-color="#5aaee5" stop-opacity=".55"/></linearGradient></defs>
               <rect class="micro-simulation-bg" width="100%" height="100%" rx="8"/>
+              <rect width="13%" height="100%" fill="url(#micro-warm-b)"/><rect x="87%" width="13%" height="100%" fill="url(#micro-cold-b)"/>
               <rect class="micro-simulation-wall micro-wall-warm" x="0" y="0" width="7" height="100%"/>
               <rect class="micro-simulation-wall micro-wall-cool" x="293" y="0" width="7" height="100%"/>
               <text class="micro-side-warm" x="10" y="11">瓶內側・較暖</text><text class="micro-side-cool" x="290" y="11" text-anchor="end">瓶外側・較冷</text>
