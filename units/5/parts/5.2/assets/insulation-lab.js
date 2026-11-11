@@ -27,7 +27,7 @@
     const innerW=w-20,innerH=h-29;let item=microModels.get(panel.dataset.micro);
     if(!item){
       const model=GasCollisionModel.create(innerW,innerH,panel.dataset.micro==='a'?18:2,panel.dataset.micro==='a'?'right':'left'),group=svg.querySelector('.micro-simulation-particles');
-      const nodes=model.particles.map(()=>{const circle=svgNode('circle',{class:'micro-lens-particle',r:model.radius}),arrow=svgNode('path',{class:'micro-motion-arrow',opacity:'0'});group.append(circle,arrow);return {circle,arrow};});
+      const nodes=model.particles.map(()=>{const circle=svgNode('circle',{class:'micro-lens-particle',r:model.radius});group.append(circle);return {circle};});
       item={svg,model,nodes};microModels.set(panel.dataset.micro,item);
     }else if(Math.abs(item.model.width-innerW)>.5||Math.abs(item.model.height-innerH)>.5){GasCollisionModel.resize(item.model,innerW,innerH);}
     const warmRight=panel.dataset.micro==='a',warmX=warmRight?w-10:10,coolX=warmRight?10:w-10;
@@ -45,7 +45,7 @@
     closeupFrame=0;if(mechanism.hidden||document.hidden){closeupPrevious=null;return;}
     const panel=mechanism.querySelector('.insulation-micro-panel:not([hidden])'),item=panel&&prepareMicro(panel);if(!item){closeupFrame=requestAnimationFrame(animateCloseup);return;}
     const dt=closeupPrevious===null?0:Math.min(.05,(now-closeupPrevious)/1000)*(reduced.matches?.65:1);closeupPrevious=now;closeupTime+=dt;GasCollisionModel.step(item.model,dt);
-    item.model.particles.forEach((p,i)=>{const {circle,arrow}=item.nodes[i],x=p.x+10,y=p.y+25,speed=Math.hypot(p.vx,p.vy)||1,length=Math.min(17,Math.max(6,speed*.14));circle.setAttribute('cx',x.toFixed(2));circle.setAttribute('cy',y.toFixed(2));circle.setAttribute('data-speed',speed.toFixed(2));const ex=x+p.vx/speed*length,ey=y+p.vy/speed*length;const ux=p.vx/speed,uy=p.vy/speed;arrow.setAttribute('d',`M${x.toFixed(1)} ${y.toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}M${(ex-ux*3-uy*2).toFixed(1)} ${(ey-uy*3+ux*2).toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}L${(ex-ux*3+uy*2).toFixed(1)} ${(ey-uy*3-ux*2).toFixed(1)}`);arrow.setAttribute('opacity',p.highlight>0?'1':'0');});
+    item.model.particles.forEach((p,i)=>{const {circle}=item.nodes[i],x=p.x+10,y=p.y+25;circle.setAttribute('cx',x.toFixed(2));circle.setAttribute('cy',y.toFixed(2));});
     const flashes=item.svg.querySelector('.micro-simulation-flashes');flashes.replaceChildren(...item.model.flashes.map(f=>svgNode('circle',{class:'micro-impact-flash',cx:(f.x+10).toFixed(1),cy:(f.y+25).toFixed(1),r:6,opacity:(f.life/.28).toFixed(2)})));
     item.svg.dataset.collisions=String(item.model.collisions);item.svg.dataset.energyExchanged=item.model.energyExchanged.toFixed(2);item.svg.querySelector('.micro-lens-radiation').style.strokeDashoffset=String(-closeupTime*20);
     closeupFrame=requestAnimationFrame(animateCloseup);
