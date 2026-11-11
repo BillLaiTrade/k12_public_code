@@ -28,6 +28,12 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.equal(await p.locator('[data-chestnut-mode=contact]').getAttribute('aria-pressed'),'true');
     assert.equal(await p.locator('#chestnut-contact-image').evaluate(n=>n.complete&&n.naturalWidth>0),true);
     assert.equal(await p.locator('#chestnut-contact svg [marker-end] path').count(),2);
+    const chestnutAnswer=p.locator('#chestnut-answer');
+    assert.equal(await chestnutAnswer.evaluate(n=>n.open),false);
+    assert.equal(await chestnutAnswer.locator('summary').innerText(),'為什麼炒栗子會用砂子，不用水？');
+    await chestnutAnswer.locator('summary').click();
+    assert.equal(await chestnutAnswer.evaluate(n=>n.open),true);
+    assert.equal(await chestnutAnswer.locator('p').innerText(),'砂粒乾燥、能流動。砂子被鍋加熱後，翻炒時會在栗子間移動，從多處接觸栗子，把熱分散傳過去，適合乾炒。水也能傳熱，但烹調方式會變成水煮。直接炒也可以，加砂子是另一種幫助栗子受熱的做法。');
     await p.locator('[data-chestnut-mode=scene]').click();
     assert.equal(await p.locator('#chestnut-scene').isVisible(),true);
     assert.equal(await p.locator('#chestnut-contact').isVisible(),false);
