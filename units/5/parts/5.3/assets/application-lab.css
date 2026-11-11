@@ -352,16 +352,20 @@
 #application-lab #application-coast .coast-cycle-scene{width:100%;aspect-ratio:16/9;max-height:540px}
 #application-lab #application-coast .coast-cycle-scene>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;aspect-ratio:auto}
 #application-lab #application-coast #coast-night-photo{opacity:0;pointer-events:none}
-#application-lab #application-coast .coast-scene-label{z-index:2}
-#application-lab #application-coast .coast-thermometers{position:absolute;inset:0;z-index:1}
+#application-lab #application-coast .coast-sky{position:absolute;inset:0 0 auto;height:50%;overflow:hidden;clip-path:polygon(0 0,100% 0,100% 60%,90% 70%,80% 78%,70% 86%,60% 94%,50% 100%,0 100%);z-index:1;pointer-events:none}
+#application-lab #application-coast .coast-sun{position:absolute;left:10%;top:130%;width:clamp(28px,5vw,52px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 40% 38%,#fffef0 0 20%,#ffe49a 48%,#ffbf55 73%,#f19a36 100%);box-shadow:0 0 12px 7px #ffeb9b99,0 0 30px 18px #ffd77c55}
+#application-lab #application-coast .coast-scene-label{z-index:3}
+#application-lab #application-coast .coast-thermometers{position:absolute;inset:0;z-index:2}
 #application-lab #application-coast .coast-baseline{position:absolute;left:13%;right:13%;bottom:calc(37% - 2px);height:0;border-top:2px dashed #fff;text-align:center;filter:drop-shadow(0 1px 2px #344a3e)}
 #application-lab #application-coast .coast-baseline span{position:absolute;left:50%;top:-4px;padding:1px 7px;transform:translate(-50%,-100%);border-radius:6px;background:#fffdf1ed;color:#274b36;font-size:.875rem;font-weight:700;white-space:nowrap;filter:none}
 #application-lab #application-coast .coast-thermometer{position:absolute;top:0;bottom:0;width:100px;transform:translateX(-50%);text-align:center}
 #application-lab #application-coast .coast-water{left:27%;color:#329e9c}
 #application-lab #application-coast .coast-sand{left:73%;color:#e68a27}
-#application-lab #application-coast .coast-tube{position:absolute;bottom:37%;left:50%;width:28px;height:44%;transform:translateX(-50%);overflow:hidden;border:3px solid #fff;border-radius:16px 16px 0 0;background:#f8faf3df;box-shadow:0 1px 4px #17372b99}
-#application-lab #application-coast .coast-liquid{position:absolute;left:3px;right:3px;bottom:0;height:0;background:currentColor;border-radius:8px 8px 0 0}
-#application-lab #application-coast .coast-bulb{position:absolute;left:50%;bottom:calc(37% - 17px);width:34px;height:34px;transform:translateX(-50%);border:3px solid white;border-radius:50%;background:currentColor;box-shadow:0 1px 4px #17372b99}
+#application-lab #application-coast .coast-tube{position:absolute;bottom:37%;left:50%;width:34px;height:44%;transform:translateX(-50%);overflow:hidden;border:2px solid #f5fff8;border-radius:18px 18px 3px 3px;background:linear-gradient(90deg,#9cb5adcc,#f7fff9ed 28%,#edf7f0d9 68%,#9ab6aacc);box-shadow:0 2px 5px #17372b99,inset 0 0 0 1px #4b756b88}
+#application-lab #application-coast .coast-tube:after{content:"";position:absolute;top:9px;bottom:8px;right:2px;width:6px;background:repeating-linear-gradient(to bottom,#46665d 0 1px,transparent 1px 11px);opacity:.8;pointer-events:none}
+#application-lab #application-coast .coast-liquid{position:absolute;left:7px;right:9px;bottom:0;height:0;background:currentColor;border-radius:8px 8px 0 0;box-shadow:inset 3px 0 3px #ffffff77,inset -2px 0 3px #183c3455}
+#application-lab #application-coast .coast-bulb{position:absolute;left:50%;bottom:calc(37% - 17px);width:34px;height:34px;transform:translateX(-50%);border:3px solid #f5fff8;border-radius:50%;background:currentColor;box-shadow:0 2px 5px #17372b99,inset -3px -4px 5px #183c3455,inset 3px 3px 5px #ffffff88}
+#application-lab #application-coast .coast-bulb:before{content:"";position:absolute;left:5px;top:5px;width:7px;height:11px;border-radius:50%;background:#ffffff88;transform:rotate(35deg)}
 #application-lab #application-coast .coast-thermometer strong,#application-lab #application-coast .coast-thermometer small{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;border-radius:7px;background:#fffdf1ed;color:#284e35;line-height:1.35}
 #application-lab #application-coast .coast-thermometer strong{bottom:calc(37% - 48px);padding:3px 10px;font-size:1rem}
 #application-lab #application-coast .coast-thermometer small{bottom:calc(37% - 75px);padding:3px 8px;font-size:.875rem;font-weight:700}
@@ -370,6 +374,7 @@
 #application-lab #application-coast .life-actions:has([hidden]){margin:0}
 @media(max-width:600px){
  #application-lab #application-coast .coast-cycle-scene{aspect-ratio:4/3;min-height:230px}
+ #application-lab #application-coast .coast-sky{height:37.4%}
  #application-lab #application-coast .coast-thermometer{width:76px}
  #application-lab #application-coast .coast-thermometer small{font-size:.8rem}
  #application-lab #application-coast .coast-baseline span{font-size:.75rem}

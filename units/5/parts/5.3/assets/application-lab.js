@@ -3,7 +3,7 @@ const get=id=>document.getElementById(id);
 const views={chestnut:get('application-chestnut'),coast:get('application-coast'),coolant:get('application-coolant')};
 const images={chestnut:get('chestnut-photo'),coolant:get('coolant-photo')};
 const coastPhoto=get('coast-photo');
-const coastSources={day:'application-coast-shore-day.webp',night:'application-coast-shore-night.webp'};
+const coastSources={day:'application-coast-shore-day-sunless.webp',night:'application-coast-shore-night.webp'};
 const sources={chestnut:'application-chestnut.webp',coolant:'application-coolant-labeled.webp'};
 const questions={chestnut:'沙子如何幫助糖炒栗子加熱？',coast:'為什麼白天沙灘可能很燙，海水卻沒有那麼容易變熱？',coolant:'為什麼汽車冷卻液裡常含有水？'};
 const assets={chestnut:{phase:'loading',attempt:0},coast:{phase:'loading',attempt:0},coolant:{phase:'loading',attempt:0}};
@@ -79,9 +79,14 @@ function renderCoastCycle(){
     views.coast.querySelector('.coast-scene-label').textContent=day?'白天吸熱':'夜晚放熱';
     get('coast-cycle-status').textContent=day?'☀ 白天吸熱　溫度上升':'☾ 夜晚放熱　溫度下降';
   }
-  const dusk=Math.max(0,Math.min(1,(t-.44)/.12));
+  const dusk=Math.max(0,Math.min(1,(t-.38)/.14));
   const dawn=Math.max(0,Math.min(1,(t-.94)/.06));
   get('coast-night-photo').style.opacity=String(dusk*(1-dawn));
+  const sun=get('coast-sun');
+  const daylight=Math.min(1,t*2);
+  sun.style.left=`${(38+24*daylight).toFixed(2)}%`;
+  sun.style.top=`${(130-100*Math.sin(Math.PI*daylight)).toFixed(2)}%`;
+  sun.style.visibility=day?'visible':'hidden';
   get('coast-water-level').style.height=`${(change*25).toFixed(2)}%`;
   get('coast-sand-level').style.height=`${(change*75).toFixed(2)}%`;
 }
