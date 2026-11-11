@@ -322,7 +322,7 @@
     }
     return { atoms, bonds };
   };
-  const modelMarkup = (svg, lattice, rotation) => {
+  const modelMarkup = (svg, lattice, rotation, selected) => {
     const { atoms, bonds } = lattice;
     const kind = svg.dataset.modelKind;
     const rx = rotation.x, ry = rotation.y;
@@ -345,42 +345,98 @@
     const lineMarkup = orderedBonds.map(([a,b,layer]) => {
       const p = pointMap.get(a.id), q = pointMap.get(b.id), alpha = depth((p.z+q.z)/2);
       const color = kindColor(svg, layer);
-      return `<g opacity="${alpha.toFixed(2)}"><line x1="${p.x}" y1="${p.y+2}" x2="${q.x}" y2="${q.y+2}" stroke="#232728" stroke-opacity=".14" stroke-width="10" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${color}" stroke-width="7" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y-1.6}" x2="${q.x}" y2="${q.y-1.6}" stroke="#ffffff" stroke-opacity=".48" stroke-width="1.8" stroke-linecap="round"/></g>`;
+      return `<g opacity="${alpha.toFixed(2)}"><line x1="${p.x}" y1="${p.y+2}" x2="${q.x}" y2="${q.y+2}" stroke="#232728" stroke-opacity=".14" stroke-width="10" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${color}" data-bond="${a.id}-${b.id}" stroke-width="7" stroke-linecap="round"/><line x1="${p.x}" y1="${p.y-1.6}" x2="${q.x}" y2="${q.y-1.6}" stroke="#ffffff" stroke-opacity=".48" stroke-width="1.8" stroke-linecap="round"/></g>`;
     }).join('');
     const orderedAtoms = [...points].sort((a,b)=>a.z-b.z);
     const atomMarkup = orderedAtoms.map(point => {
       const p = pointMap.get(point.atom.id), alpha = depth(p.z), radius = (kind === 'graphite' ? 6.8 : 7.3) * (.82 + .18 * alpha) * (kind === 'diamond' ? 1.12 : 1);
       const grad = `atom-${svg.dataset.carbonModel}-${point.atom.id}`;
-      return `<g opacity="${alpha.toFixed(2)}"><defs><radialGradient id="${grad}" cx="29%" cy="24%" r="78%"><stop stop-color="#fff"/><stop offset=".3" stop-color="#d6d8d6"/><stop offset=".72" stop-color="#606667"/><stop offset="1" stop-color="#262b2c"/></radialGradient></defs><circle cx="${p.x+1}" cy="${p.y+2}" r="${radius+1}" fill="#202424" opacity=".16"/><circle cx="${p.x}" cy="${p.y}" r="${radius}" fill="url(#${grad})" stroke="#34393a" stroke-width="1.4"/><circle cx="${p.x-radius*.32}" cy="${p.y-radius*.42}" r="${radius*.2}" fill="#fff" opacity=".82"/></g>`;
+      const halo = selected && selected.ids.has(point.atom.id) ? `<circle cx="${p.x}" cy="${p.y}" r="${radius+5}" fill="#f5dd83" stroke="#c5a342" stroke-width="2"/>` : '';
+      return `<g opacity="${selected && selected.ids.has(point.atom.id) ? 1 : alpha.toFixed(2)}">${halo}<defs><radialGradient id="${grad}" cx="29%" cy="24%" r="78%"><stop stop-color="#fff"/><stop offset=".3" stop-color="#d6d8d6"/><stop offset=".72" stop-color="#606667"/><stop offset="1" stop-color="#262b2c"/></radialGradient></defs><circle cx="${p.x+1}" cy="${p.y+2}" r="${radius+1}" fill="#202424" opacity=".16"/><circle cx="${p.x}" cy="${p.y}" r="${radius}" data-atom-id="${point.atom.id}" data-selected="${!!selected && selected.ids.has(point.atom.id)}" fill="url(#${grad})" stroke="#34393a" stroke-width="1.4"/><circle cx="${p.x-radius*.32}" cy="${p.y-radius*.42}" r="${radius*.2}" fill="#fff" opacity=".82"/></g>`;
     }).join('');
+    let selectionFrame = '';
+    if (selected) {
+      const targets = [...selected.ids].map(id => pointMap.get(id));
+      const x = Math.min(...targets.map(p => p.x)) - 17, y = Math.min(...targets.map(p => p.y)) - 17;
+      const w = Math.max(...targets.map(p => p.x)) - x + 17, h = Math.max(...targets.map(p => p.y)) - y + 17;
+      selectionFrame = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#f9e9a5" fill-opacity=".25" stroke="#c5a342" stroke-width="2.5"/>`;
+    }
     const titleId = `${kind}-model-title`, descId = `${kind}-model-desc`;
     const title = kind === 'graphite' ? '石墨碳原子層狀結構的立體球棍模型' : '鑽石碳原子四面體連接的立體球棍模型';
     const desc = kind === 'graphite' ? '三層蜂巢狀碳原子網格以不同深度堆疊。拖曳或使用方向鍵旋轉模型。' : '碳原子在三個方向形成連續的立體網狀結構。拖曳或使用方向鍵旋轉模型。';
-    svg.innerHTML = `<title id="${titleId}">${title}</title><desc id="${descId}">${desc}</desc><defs><linearGradient id="${kind}-back" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".72"/><stop offset="1" stop-color="#eaf0e8" stop-opacity=".2"/></linearGradient></defs><ellipse cx="260" cy="258" rx="150" ry="13" fill="#314936" opacity=".08"/><g>${lineMarkup}${atomMarkup}</g>`;
+    svg.innerHTML = `<title id="${titleId}">${title}</title><desc id="${descId}">${desc}</desc><defs><linearGradient id="${kind}-back" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".72"/><stop offset="1" stop-color="#eaf0e8" stop-opacity=".2"/></linearGradient></defs><ellipse cx="260" cy="258" rx="150" ry="13" fill="#314936" opacity=".08"/><g>${selectionFrame}${lineMarkup}${atomMarkup}</g>`;
     svg.setAttribute('aria-labelledby', `${titleId} ${descId}`);
   };
   const kindColor = () => '#747a79';
+  // The inset is derived from the same graph and 3D coordinates as the main lattice.
+  const findNeighbors = (lattice, kind) => {
+    const wanted = kind === 'graphite' ? 3 : 4;
+    const candidates = lattice.atoms.map(atom => ({ atom, neighbors: lattice.bonds.filter(([a,b]) => a.id === atom.id || b.id === atom.id).map(([a,b]) => a.id === atom.id ? b : a) })).filter(item => item.neighbors.length === wanted && (kind !== 'graphite' || item.atom.layer === 1));
+    candidates.sort((a,b) => {
+      const distance = p => kind === 'graphite' ? Math.hypot(p.x - .78, p.y) : Math.hypot(p.x - 1, p.y - 1, p.z - 1);
+      return distance(a.atom) - distance(b.atom);
+    });
+    const choice = candidates[0];
+    if (!choice) return null;
+    return { center: choice.atom, neighbors: choice.neighbors, ids: new Set([choice.atom.id, ...choice.neighbors.map(a => a.id)]) };
+  };
+  const renderInset = (svg, selection, kind) => {
+    const c = selection.center;
+    const project = atom => {
+      const x = atom.x - c.x, y = atom.y - c.y, z = atom.z - c.z;
+      if (kind === 'graphite') return {x: 120 + x * 62, y: 90 - y * 62, z: 0};
+      const rx = .2, ry = .15;
+      const y1 = y * Math.cos(rx) - z * Math.sin(rx), z1 = y * Math.sin(rx) + z * Math.cos(rx);
+      return {x: 120 + (x * Math.cos(ry) + z1 * Math.sin(ry)) * 220, y: 90 - y1 * 220, z: -x * Math.sin(ry) + z1 * Math.cos(ry)};
+    };
+    const center = project(c);
+    const bonds = selection.neighbors.map(atom => { const p = project(atom); return `<line x1="${center.x}" y1="${center.y}" x2="${p.x}" y2="${p.y}" stroke="#7d807c" stroke-width="7" stroke-linecap="round" ${kind === 'diamond' && p.z < 0 ? 'stroke-dasharray="8 6"' : ''} data-inset-bond="${c.id}-${atom.id}" data-depth="${p.z < 0 ? 'back' : 'front'}"/>`; }).join('');
+    const atoms = [c, ...selection.neighbors].map((atom,index) => { const p = project(atom); return `<circle cx="${p.x}" cy="${p.y}" r="${index ? (kind === 'diamond' && p.z < 0 ? 10 : 13) : 14}" fill="#4a4e4e" stroke="${index ? '#777b78' : '#b78d2c'}" stroke-width="${index ? 2 : 4}" data-inset-atom="${atom.id}" data-center="${index === 0}"/>`; }).join('');
+    svg.dataset.centerId = c.id;
+    svg.innerHTML = `<g>${bonds}${atoms}</g>`;
+  };
   modelStages.forEach(stage => {
     const svg = stage.querySelector('svg');
     svg.dataset.modelKind = stage.dataset.carbonModel;
     const lattice = makeLattice(stage.dataset.carbonModel);
     const rotation = { x: stage.dataset.carbonModel === 'graphite' ? -1.28 : -.67, y: .38 };
-    const render = () => modelMarkup(svg, lattice, rotation);
+    const selection = findNeighbors(lattice, stage.dataset.carbonModel);
+    const panel = document.getElementById(`${stage.dataset.carbonModel}-neighbors`);
+    const button = document.querySelector(`[data-neighbors-toggle="${stage.dataset.carbonModel}"]`);
+    let expanded = false;
+    const render = () => modelMarkup(svg, lattice, rotation, expanded ? selection : null);
+    const setExpanded = value => {
+      if (!selection) return;
+      expanded = value;
+      panel.hidden = !expanded;
+      panel.parentElement.classList.toggle('is-expanded', expanded);
+      button.setAttribute('aria-expanded', String(expanded));
+      stage.setAttribute('aria-expanded', String(expanded));
+      button.textContent = expanded ? '收起相連原子' : '查看相連原子';
+      if (expanded) renderInset(panel.querySelector('svg'), selection, stage.dataset.carbonModel);
+      render();
+    };
+    button.addEventListener('click', () => setExpanded(!expanded));
     render();
-    let pointer;
-    stage.addEventListener('pointerdown', event => { pointer = { x: event.clientX, y: event.clientY }; stage.setPointerCapture(event.pointerId); });
+    let pointer = null, moved = false;
+    stage.addEventListener('pointerdown', event => { pointer = { x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY }; moved = false; stage.setPointerCapture(event.pointerId); });
     stage.addEventListener('pointermove', event => {
       if (!pointer) return;
-      rotation.y += (event.clientX-pointer.x)*.012;
-      rotation.x = Math.max(-1.45, Math.min(1.45, rotation.x+(event.clientY-pointer.y)*.01));
-      pointer = { x: event.clientX, y: event.clientY };
-      render();
+      if (Math.hypot(event.clientX - pointer.startX, event.clientY - pointer.startY) > 5) moved = true;
+      if (moved) {
+        rotation.y += (event.clientX-pointer.x)*.012;
+        rotation.x = Math.max(-1.45, Math.min(1.45, rotation.x+(event.clientY-pointer.y)*.01));
+        render();
+      }
+      pointer.x = event.clientX; pointer.y = event.clientY;
     });
     stage.addEventListener('pointerup', () => { pointer = null; });
-    stage.addEventListener('pointercancel', () => { pointer = null; });
+    stage.addEventListener('pointercancel', () => { pointer = null; moved = true; });
+    stage.addEventListener('click', () => { if (!moved) setExpanded(!expanded); });
     stage.tabIndex = 0;
     stage.addEventListener('keydown', event => {
       const step = .12;
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setExpanded(!expanded); return; }
       if (event.key === 'ArrowLeft') rotation.y -= step;
       else if (event.key === 'ArrowRight') rotation.y += step;
       else if (event.key === 'ArrowUp') rotation.x = Math.min(1.45, rotation.x + step);

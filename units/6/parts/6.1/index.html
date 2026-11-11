@@ -22,7 +22,7 @@
   <meta name="theme-color" content="#f4f5ed">
   <title>我們身邊的東西，都是由什麼組成的？｜6.1 元素的探索</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="assets/elements.css?v=e771e4426661">
+  <link rel="stylesheet" href="assets/elements.css?v=06c344307c94">
   <link rel="stylesheet" href="assets/booklet.css?v=4d06926e270e">
   <link rel="stylesheet" href="assets/classical-comparison.css?v=3039aadb7280">
   <link rel="stylesheet" href="assets/material-desk.css?v=021c3aec807a">
@@ -30,7 +30,7 @@
   <script src="assets/material-desk.js?v=2ee68d305a7a" defer></script>
   <link rel="stylesheet" href="assets/classical-inquiry.css?v=0b290a54e654">
   <script src="assets/classical-inquiry.js?v=c34fac247b43" defer></script>
-  <script src="assets/elements.js?v=9139ee10d705" defer></script>
+  <script src="assets/elements.js?v=154fc1fb0768" defer></script>
   <script src="assets/booklet.js?v=c321e5a7d41d" defer></script>
 <link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
 <body>
@@ -208,14 +208,18 @@
         </section>
         <p class="caption">圖片為生成式示意圖，非實物照片；導電測試與用途場景用來呈現典型比較，不表示原子排列。</p>
         <section class="carbon-structure" aria-labelledby="carbon-structure-title">
-          <header class="carbon-structure-head"><h3 id="carbon-structure-title">同樣是碳，為什麼性質不同？</h3><p>拖曳原子排列模型或按方向鍵旋轉。</p></header>
+          <header class="carbon-structure-head"><h3 id="carbon-structure-title">同樣是碳，為什麼性質不同？</h3><p>點選原子排列模型查看相連原子；拖曳或按方向鍵旋轉。</p></header>
           <div class="carbon-flow" aria-label="碳原子相同，連接與排列不同，性質不同"><span>碳原子相同</span><b aria-hidden="true">→</b><span>連接與排列不同</span><b aria-hidden="true">→</b><span>性質不同</span></div>
           <div class="carbon-structure-grid">
             <figure class="carbon-structure-card">
               <figcaption><strong>石墨｜層狀結構</strong></figcaption>
-              <div class="carbon-model-stage" data-carbon-model="graphite" aria-label="可旋轉的石墨原子排列模型">
+              <div class="carbon-model-visual">
+              <div class="carbon-model-stage" data-carbon-model="graphite" role="button" aria-expanded="false" aria-controls="graphite-neighbors" aria-label="石墨原子排列模型；點選查看相連原子，拖曳或按方向鍵旋轉">
                 <svg viewBox="0 0 520 300" role="img" aria-labelledby="graphite-model-title graphite-model-desc"><title id="graphite-model-title">石墨碳原子層狀結構的立體球棍模型</title><desc id="graphite-model-desc">三層蜂巢狀碳原子網格以不同深度堆疊。拖曳或使用方向鍵旋轉模型。</desc></svg>
               </div>
+                <div class="carbon-inset" id="graphite-neighbors" hidden><p>中心 1 個 ＋ 鄰近 3 個</p><svg viewBox="0 0 240 180" role="img" aria-label="石墨：中心碳原子與 3 個直接相連的鄰近碳原子放大示意"></svg><strong>共 4 個碳原子</strong></div>
+              </div>
+              <button type="button" class="carbon-neighbors-toggle" data-neighbors-toggle="graphite" aria-controls="graphite-neighbors" aria-expanded="false">查看相連原子</button>
               <p class="carbon-neighbors">每個碳原子連接 <strong>3</strong> 個鄰近碳原子</p>
               <div class="carbon-reasons" aria-label="石墨的結構與性質">
                 <p><span>層與層較易滑動</span><span class="carbon-arrow" aria-hidden="true">→</span><strong>較軟</strong></p>
@@ -224,9 +228,13 @@
             </figure>
             <figure class="carbon-structure-card">
               <figcaption><strong>鑽石｜立體網狀結構</strong></figcaption>
-              <div class="carbon-model-stage" data-carbon-model="diamond" aria-label="可旋轉的鑽石原子排列模型">
+              <div class="carbon-model-visual">
+              <div class="carbon-model-stage" data-carbon-model="diamond" role="button" aria-expanded="false" aria-controls="diamond-neighbors" aria-label="鑽石原子排列模型；點選查看相連原子，拖曳或按方向鍵旋轉">
                 <svg viewBox="0 0 520 300" role="img" aria-labelledby="diamond-model-title diamond-model-desc"><title id="diamond-model-title">鑽石碳原子四面體連接的立體球棍模型</title><desc id="diamond-model-desc">碳原子在三個方向形成連續的立體網狀結構。拖曳或使用方向鍵旋轉模型。</desc></svg>
               </div>
+                <div class="carbon-inset" id="diamond-neighbors" hidden><p>中心 1 個 ＋ 鄰近 4 個</p><svg viewBox="0 0 240 180" role="img" aria-label="鑽石：中心碳原子與 4 個直接相連的鄰近碳原子放大示意"></svg><span class="carbon-depth-note">虛線向內・實線向外</span><strong>共 5 個碳原子</strong></div>
+              </div>
+              <button type="button" class="carbon-neighbors-toggle" data-neighbors-toggle="diamond" aria-controls="diamond-neighbors" aria-expanded="false">查看相連原子</button>
               <p class="carbon-neighbors">每個碳原子連接 <strong>4</strong> 個鄰近碳原子</p>
               <div class="carbon-reasons" aria-label="鑽石的結構與性質">
                 <p><span>向各方向牢固連接</span><span class="carbon-arrow" aria-hidden="true">→</span><strong>非常堅硬</strong></p>

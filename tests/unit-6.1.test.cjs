@@ -538,6 +538,35 @@ test('6.1 element lesson in a real browser', { timeout: 60000 }, async t => {
     await model.focus();
     await page.keyboard.press('ArrowRight');
     assert.notEqual(await model.locator('svg circle').first().getAttribute('cx'), atomBefore);
+    for (const [kind, neighbors] of [['graphite', 3], ['diamond', 4]]) {
+      const stage = page.locator(`[data-carbon-model="${kind}"]`);
+      const panel = page.locator(`#${kind}-neighbors`);
+      await stage.click({ position: { x: 20, y: 20 } });
+      assert.equal(await panel.isVisible(), true);
+      const data = await page.evaluate(kind => {
+        const stage = document.querySelector(`[data-carbon-model="${kind}"]`);
+        const inset = document.querySelector(`#${kind}-neighbors svg`);
+        const center = inset.dataset.centerId;
+        const atoms = [...inset.querySelectorAll('[data-inset-atom]')].map(el => ({ id: el.dataset.insetAtom, x: +el.getAttribute('cx'), y: +el.getAttribute('cy') }));
+        const bonds = [...stage.querySelectorAll('[data-bond]')].map(el => el.dataset.bond.split('-'));
+        const selected = [...stage.querySelectorAll('[data-atom-id][data-selected="true"]')].map(el => el.dataset.atomId);
+        const minDistance = Math.min(...atoms.flatMap((a, i) => atoms.slice(i + 1).map(b => Math.hypot(a.x-b.x, a.y-b.y))));
+        return { center, atoms, selected, insetBondCount: inset.querySelectorAll('[data-inset-bond]').length, minDistance,
+          directlyConnected: atoms.filter(a => a.id !== center).every(a => bonds.some(pair => pair.includes(center) && pair.includes(a.id))) };
+      }, kind);
+      assert.equal(data.atoms.length, neighbors + 1);
+      assert.equal(data.selected.length, neighbors + 1);
+      assert.equal(data.insetBondCount, neighbors);
+      assert.equal(data.directlyConnected, true);
+      assert.ok(data.minDistance > 25, 'enlarged atoms must not overlap');
+      assert.deepEqual(data.selected.sort(), data.atoms.map(a => a.id).sort());
+      await stage.focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await panel.isHidden(), true);
+      await page.locator(`[data-neighbors-toggle="${kind}"]`).click();
+      assert.equal(await panel.isVisible(), true);
+      await page.locator(`[data-neighbors-toggle="${kind}"]`).click();
+    }
     assert.match(await page.locator('.carbon-structure-card').nth(0).innerText(), /連接 3 個鄰近碳原子/);
     assert.match(await page.locator('.carbon-structure-card').nth(1).innerText(), /連接 4 個鄰近碳原子/);
     assert.match(await text('.carbon-structure-head'), /原子排列/);
