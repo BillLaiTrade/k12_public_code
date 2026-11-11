@@ -57,10 +57,10 @@
     svg.querySelectorAll('.lining-absorption-effect').forEach(node=>node.remove());
     const effect=svgNode('g',{class:'lining-absorption-effect',visibility:'hidden','aria-hidden':'true'}),glow=svgNode('ellipse',{class:'lining-absorption-glow',cx:role==='b'?294:6,cy:50,rx:7,ry:13}),tag=svgNode('g',{class:'lining-absorption-tag'}),tagBox=svgNode('rect',{width:68,height:17,rx:8.5}),tagText=svgNode('text',{x:34,y:12,'text-anchor':'middle'});tagText.textContent='被外壁吸收';tag.append(tagBox,tagText);effect.append(glow,tag);svg.append(effect);
     const slopes=[-.19,.16,-.10,.23,-.24,.08,.20],ys=[50,120,68,143,42,102,153];
-    const packets=slopes.map((slope,i)=>{const node=svgNode('g',{class:'lining-radiation-packet'}),wave=svgNode('path',{d:'M-10 0q2.5 -3.8 5 0t5 0t5 0t5 0'}),arrow=svgNode('path',{d:'M8 -2.5L12 0L8 2.5',class:'lining-packet-arrow'});node.append(wave,arrow);container.append(node);const vx=role==='b'?110:-110;return {node,i,x:role==='b'?20+i*37:280-i*37,y:ys[i],vx,vy:Math.abs(vx)*slope,reflected:false,cycle:0};});
+    const packets=slopes.map((slope,i)=>{const node=svgNode('g',{class:'lining-radiation-packet'}),tail=svgNode('path',{d:'M-23 0L-15 0',class:'lining-packet-tail'}),wave=svgNode('path',{d:'M-14 0q3.5 -4.8 7 0t7 0t7 0t7 0'}),arrow=svgNode('path',{d:'M12 -3L17 0L12 3',class:'lining-packet-arrow'});node.append(tail,wave,arrow);container.append(node);const vx=role==='b'?110:-110;return {node,i,x:role==='b'?23+i*36:277-i*36,y:ys[i],vx,vy:Math.abs(vx)*slope,reflected:false,cycle:0};});
     return {role,svg,packets,effect,glow,tag,absorptionEvent:null,reflections:0,absorptions:0};
   }
-  function restartLiningPacket(p,role){p.cycle++;p.x=role==='b'?12:288;p.y=38+((p.i*29+p.cycle*37)%112);p.vx=role==='b'?110:-110;p.vy=110*([-.19,.16,-.10,.23,-.24,.08,.20][(p.i+p.cycle)%7]);p.reflected=false;}
+  function restartLiningPacket(p,role,packets){p.cycle++;p.x=role==='b'?23:277;const choices=[38,58,78,98,118,138,158],nearby=packets.filter(other=>other!==p&&Math.abs(other.x-p.x)<60);let best=-1;p.y=choices[(p.i+p.cycle)%choices.length];for(let k=0;k<choices.length;k++){const y=choices[(p.i+p.cycle+k)%choices.length],distance=nearby.length?Math.min(...nearby.map(other=>Math.abs(other.y-y))):Infinity;if(distance>best){best=distance;p.y=y;}}p.vx=role==='b'?110:-110;p.vy=110*([-.19,.16,-.10,.23,-.24,.08,.20][(p.i+p.cycle)%7]);p.reflected=false;}
   function animateLining(now){
     liningFrame=0;if(liningPanel.hidden||document.hidden){liningPrevious=null;return;}
     const panel=liningPanel.querySelector('[data-lining-zoom]:not([hidden])');if(!panel)return;
@@ -68,10 +68,10 @@
     if(!liningModel||liningModel.role!==panel.dataset.liningZoom)liningModel=createLiningModel(panel);
     const model=liningModel;
     model.packets.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;
-      const atCold=model.role==='b'?p.x>=288:p.x<=12,atWarm=model.role==='b'?p.x<=12:p.x>=288;
-      if(p.y<25||p.y>170)restartLiningPacket(p,model.role);
-      else if(!p.reflected&&atCold){const reflected=model.role==='b'?(p.i+p.cycle)%4!==0:(p.i+p.cycle)%4===0;if(reflected){p.x=model.role==='b'?288:12;p.vx=-p.vx;p.reflected=true;model.reflections++;}else{model.absorptions++;if(!model.absorptionEvent)model.absorptionEvent={y:p.y,remaining:1.4};restartLiningPacket(p,model.role);}}
-      else if(p.reflected&&atWarm)restartLiningPacket(p,model.role);
+      const atCold=model.role==='b'?p.x>=277:p.x<=23,atWarm=model.role==='b'?p.x<=23:p.x>=277;
+      if(p.y<25||p.y>170)restartLiningPacket(p,model.role,model.packets);
+      else if(!p.reflected&&atCold){const reflected=model.role==='b'?(p.i+p.cycle)%4!==0:(p.i+p.cycle)%4===0;if(reflected){p.x=model.role==='b'?277:23;p.vx=-p.vx;p.reflected=true;model.reflections++;}else{model.absorptions++;if(!model.absorptionEvent)model.absorptionEvent={y:p.y,remaining:1.4};restartLiningPacket(p,model.role,model.packets);}}
+      else if(p.reflected&&atWarm)restartLiningPacket(p,model.role,model.packets);
       p.node.setAttribute('transform',`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${(Math.atan2(p.vy,p.vx)*180/Math.PI).toFixed(1)})`);
     });
     if(model.absorptionEvent){const event=model.absorptionEvent;event.remaining-=dt;model.glow.setAttribute('cy',event.y.toFixed(1));model.tag.setAttribute('transform',`translate(${model.role==='b'?218:14} ${Math.max(25,Math.min(158,event.y-22)).toFixed(1)})`);model.effect.setAttribute('visibility','visible');model.effect.setAttribute('opacity',Math.min(1,Math.max(0,event.remaining/.25)).toFixed(2));if(event.remaining<=0){model.absorptionEvent=null;model.effect.setAttribute('visibility','hidden');}}

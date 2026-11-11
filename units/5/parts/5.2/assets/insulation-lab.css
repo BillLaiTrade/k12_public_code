@@ -954,3 +954,8 @@
 #insulation-lab[data-comparison=lining] .lining-absorption-glow{fill:#ffce59;opacity:.85;filter:drop-shadow(0 0 4px #f39b25)}
 #insulation-lab[data-comparison=lining] .lining-absorption-tag rect{fill:#fff8dd;stroke:#d69a36;stroke-width:.8}
 #insulation-lab[data-comparison=lining] .lining-absorption-tag text{fill:#805014;font-size:8px;font-weight:700}
+
+/* 放大短波段、明確指向，並保留柔和短尾跡。 */
+#insulation-lab[data-comparison=lining] .lining-radiation-packet path{stroke:#e46f09;stroke-width:2;filter:drop-shadow(0 0 2px #ffae42)}
+#insulation-lab[data-comparison=lining] .lining-radiation-packet .lining-packet-arrow{stroke:#c65700;stroke-width:1.8}
+#insulation-lab[data-comparison=lining] .lining-radiation-packet .lining-packet-tail{stroke:#ef8a27;stroke-width:2;opacity:.3;filter:blur(1px)}
