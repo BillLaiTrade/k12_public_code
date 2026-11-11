@@ -587,23 +587,23 @@
 .chem-experiment-pane .chem-pane-title{background:linear-gradient(115deg,#075ca3,#1772b8)}
 .chem-model-pane .chem-pane-title{background:linear-gradient(115deg,#5436a7,#7149bc)}
 .chem-live-scene{border-radius:10px}
-.chem-crystal-model{display:block;width:100%;height:auto;aspect-ratio:900/580;border:1px solid #d8dfd1;border-radius:10px;background:linear-gradient(145deg,#fffefa,#f1f5ed)}
-.chem-crystal-model .chem-model-phase-title{fill:#315f3d;font-size:34px;font-weight:750}
-.chem-crystal-model .chem-model-equation{fill:#344c39;font-size:36px;font-weight:700}
+.chem-crystal-model{display:block;width:100%;height:auto;aspect-ratio:760/580;border:1px solid #d8dfd1;border-radius:10px;background:linear-gradient(145deg,#fffefa,#f1f5ed)}
+.chem-crystal-model .chem-model-phase-title{fill:#315f3d;font-size:30px;font-weight:750}
+.chem-crystal-model .chem-model-equation{fill:#52644f;font-size:28px;font-weight:650}
 .chem-crystal-model .chem-model-small{fill:#657661;font-size:26px;font-weight:650}
-.chem-crystal-model .chem-bond{stroke:#74877e;stroke-width:4;stroke-linecap:round}
-.chem-crystal-model .chem-coordination{stroke:#73a9c0;stroke-width:4;stroke-linecap:round}
-.chem-crystal-model .chem-hbond{stroke:#85a9c3;stroke-width:2.5;stroke-dasharray:3 5;stroke-linecap:round}
+.chem-crystal-model .chem-water-bond{stroke:#8faaa8;stroke-width:3;stroke-linecap:round}.chem-crystal-model .chem-sulfate-bond{stroke:#ab8b2d;stroke-width:4;stroke-linejoin:round}.chem-crystal-model .chem-tetra-face{fill:#e6be4c;fill-opacity:.2;stroke:#d5ac39;stroke-width:2}.chem-crystal-model .chem-neighbor-haze{fill:none;stroke:#aebda9;stroke-width:2;stroke-dasharray:4 7;opacity:.35}.chem-crystal-model .chem-shell-depth{fill:none;stroke:#8ab1bf;stroke-width:3;stroke-dasharray:4 5;opacity:.5}
+.chem-crystal-model .chem-coordination{stroke:#73a9c0;stroke-width:4;stroke-linecap:round}.chem-crystal-model .chem-axial-bond{stroke:#648ca1;stroke-width:5}
+.chem-crystal-model .chem-hbond{stroke:#85a9c3;stroke-width:2.5;stroke-dasharray:3 5;stroke-linecap:round}.chem-crystal-model .chem-hbond-target{fill:#e94b3f;stroke:#fff4ed;stroke-width:2}
 .chem-crystal-model .chem-water-motion{fill:none;stroke:#72aac8;stroke-width:3;stroke-dasharray:5 7;opacity:.65}
 .chem-crystal-model .chem-cu{fill:url(#chem-cu-shine);stroke:#eff9ff;stroke-width:4}
 .chem-crystal-model .chem-s{fill:url(#chem-s-shine);stroke:#fff9df;stroke-width:2}
 .chem-crystal-model .chem-o{fill:url(#chem-o-shine);stroke:#fff4ed;stroke-width:2}
-.chem-crystal-model .chem-h{fill:#fff;stroke:#8eaaa8;stroke-width:1.7}
+.chem-crystal-model .chem-h{fill:url(#chem-h-shine);stroke:#8eaaa8;stroke-width:1.7}
 .chem-crystal-model .chem-copper-halo{fill:#96d4ed;opacity:.15;stroke:#8ac6dd;stroke-width:2}
 .chem-crystal-model .chem-water-product{filter:drop-shadow(0 2px 2px #4563)}
 .chem-model-state{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 1px 5px;color:#274f37;line-height:1.3}
 .chem-model-state strong{font-size:1rem}.chem-model-state span{color:#6b573b;font-size:.92rem;font-weight:700;text-align:right}
-.chem-model-legend{display:flex;justify-content:center;gap:18px;margin:6px 0 2px;color:#4a5a4a;font-size:.82rem}
+.chem-model-legend{display:flex;justify-content:center;gap:14px;margin:6px 0 2px;color:#4a5a4a;font-size:.82rem}
 .chem-model-legend span{display:inline-flex;align-items:center;gap:5px}.chem-model-legend i{display:inline-block;width:11px;height:11px;border-radius:50%}
 .chem-model-legend .key-cu{background:#1678bd}.chem-model-legend .key-sulfate{background:#e2af25}.chem-model-legend .key-water{background:#d64b40;box-shadow:5px 1px 0 -2px #fff,5px 1px 0 -1px #849a98}
 .chem-model-note{margin:4px 0 0;color:#748071;font-size:.75rem;text-align:center}
