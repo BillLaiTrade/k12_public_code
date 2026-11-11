@@ -26,13 +26,16 @@
     const svg=panel.querySelector('.micro-simulation'),w=svg.clientWidth,h=svg.clientHeight;if(w<60||h<35)return;
     const innerW=w-20,innerH=h-29;let item=microModels.get(panel.dataset.micro);
     if(!item){
-      const model=GasCollisionModel.create(innerW,innerH,panel.dataset.micro==='a'?18:2),group=svg.querySelector('.micro-simulation-particles');
+      const model=GasCollisionModel.create(innerW,innerH,panel.dataset.micro==='a'?18:2,panel.dataset.micro==='a'?'right':'left'),group=svg.querySelector('.micro-simulation-particles');
       const nodes=model.particles.map(()=>{const circle=svgNode('circle',{class:'micro-lens-particle',r:model.radius}),arrow=svgNode('path',{class:'micro-motion-arrow',opacity:'0'});group.append(circle,arrow);return {circle,arrow};});
       item={svg,model,nodes};microModels.set(panel.dataset.micro,item);
     }else if(Math.abs(item.model.width-innerW)>.5||Math.abs(item.model.height-innerH)>.5){GasCollisionModel.resize(item.model,innerW,innerH);}
-    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.querySelector('.micro-wall-cool').setAttribute('x',w-7);svg.querySelector('.micro-side-cool').setAttribute('x',w-10);
-    const y=18,start=10,end=w-11,span=end-start;let path=`M${start} ${y}`;for(let x=0;x<span;x+=16){const length=Math.min(16,span-x);path+=`q${length/4} -4 ${length/2} 0t${length/2} 0`;}
-    svg.querySelector('.micro-radiation-base').setAttribute('d',path);svg.querySelector('.micro-lens-radiation').setAttribute('d',path);svg.querySelector('.micro-radiation-arrow').setAttribute('d',`M${end-6} ${y-4}L${end} ${y} ${end-6} ${y+4}`);
+    const warmRight=panel.dataset.micro==='a',warmX=warmRight?w-10:10,coolX=warmRight?10:w-10;
+    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+    svg.querySelector('.micro-wall-warm').setAttribute('x',warmRight?w-7:0);svg.querySelector('.micro-wall-cool').setAttribute('x',warmRight?0:w-7);
+    const warmLabel=svg.querySelector('.micro-side-warm'),coolLabel=svg.querySelector('.micro-side-cool');warmLabel.setAttribute('x',warmX);warmLabel.setAttribute('text-anchor',warmRight?'end':'start');coolLabel.setAttribute('x',coolX);coolLabel.setAttribute('text-anchor',warmRight?'start':'end');
+    const y=18,start=warmRight?w-11:10,end=warmRight?10:w-11,direction=warmRight?-1:1,span=Math.abs(end-start);let path=`M${start} ${y}`;for(let x=0;x<span;x+=16){const length=Math.min(16,span-x)*direction;path+=`q${length/4} -4 ${length/2} 0t${length/2} 0`;}
+    svg.querySelector('.micro-radiation-base').setAttribute('d',path);svg.querySelector('.micro-lens-radiation').setAttribute('d',path);svg.querySelector('.micro-radiation-arrow').setAttribute('d',`M${end-direction*6} ${y-4}L${end} ${y} ${end-direction*6} ${y+4}`);
     return item;
   }
   const microResize=new ResizeObserver(entries=>entries.forEach(({target})=>{const panel=target.closest('.insulation-micro-panel');if(panel&&!panel.hidden)prepareMicro(panel);}));

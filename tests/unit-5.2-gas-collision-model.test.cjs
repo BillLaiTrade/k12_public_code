@@ -21,3 +21,7 @@ test('oblique collisions conserve vector momentum and kinetic energy',()=>{
  const a={x:12,y:14,vx:18,vy:6},b={x:17,y:16,vx:-4,vy:-1};const px=a.vx+b.vx,py=a.vy+b.vy,e=a.vx**2+a.vy**2+b.vx**2+b.vy**2;
  const event=model.collide(a,b,3);assert.ok(event);near(a.vx+b.vx,px);near(a.vy+b.vy,py);near(a.vx**2+a.vy**2+b.vx**2+b.vy**2,e);assert.ok(Math.abs(event.deltaA)>1);
 });
+test('right-hand warm side reverses the boundary energy exchange',()=>{
+ const warm={width:100,height:40,warmSide:'right',radius:3,particles:[{x:97,y:20,vx:20,vy:0,highlight:0}],flashes:[],collisions:0,energyExchanged:0};model.step(warm,.01);assert.ok(warm.particles[0].vx<0&&Math.abs(warm.particles[0].vx)>20);
+ const cool={width:100,height:40,warmSide:'right',radius:3,particles:[{x:3,y:20,vx:-80,vy:0,highlight:0}],flashes:[],collisions:0,energyExchanged:0};model.step(cool,.01);assert.ok(cool.particles[0].vx>0&&cool.particles[0].vx<80);
+});
