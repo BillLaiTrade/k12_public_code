@@ -543,6 +543,9 @@ test('6.1 element lesson in a real browser', { timeout: 60000 }, async t => {
       const panel = page.locator(`#${kind}-neighbors`);
       await stage.click({ position: { x: 20, y: 20 } });
       assert.equal(await panel.isVisible(), true);
+      const connector = page.locator(`[data-connector="${kind}"]`);
+      assert.equal(await connector.isVisible(), true);
+      await page.waitForFunction(kind => document.querySelector(`[data-connector="${kind}"] line`).hasAttribute('x1'), kind);
       const data = await page.evaluate(kind => {
         const stage = document.querySelector(`[data-carbon-model="${kind}"]`);
         const inset = document.querySelector(`#${kind}-neighbors svg`);
@@ -551,13 +554,22 @@ test('6.1 element lesson in a real browser', { timeout: 60000 }, async t => {
         const bonds = [...stage.querySelectorAll('[data-bond]')].map(el => el.dataset.bond.split('-'));
         const selected = [...stage.querySelectorAll('[data-atom-id][data-selected="true"]')].map(el => el.dataset.atomId);
         const minDistance = Math.min(...atoms.flatMap((a, i) => atoms.slice(i + 1).map(b => Math.hypot(a.x-b.x, a.y-b.y))));
-        return { center, atoms, selected, insetBondCount: inset.querySelectorAll('[data-inset-bond]').length, minDistance,
+        const modelBounds = stage.getBoundingClientRect();
+        const atomBounds = [...stage.querySelectorAll('[data-atom-id]')].map(el => el.getBoundingClientRect());
+        const allAtomsVisible = atomBounds.every(r => r.left >= modelBounds.left - 1 && r.right <= modelBounds.right + 1 && r.top >= modelBounds.top - 1 && r.bottom <= modelBounds.bottom + 1);
+        const visual = stage.closest('.carbon-model-visual').getBoundingClientRect();
+        const source = stage.querySelector(`[data-atom-id="${center}"]`).getBoundingClientRect();
+        const line = document.querySelector(`[data-connector="${kind}"] line`);
+        const connectorAligned = Math.abs(+line.getAttribute('x1') - (source.left + source.width / 2 - visual.left)) < 2 && Math.abs(+line.getAttribute('y1') - (source.top + source.height / 2 - visual.top)) < 2;
+        return { center, atoms, selected, insetBondCount: inset.querySelectorAll('[data-inset-bond]').length, minDistance, allAtomsVisible, connectorAligned,
           directlyConnected: atoms.filter(a => a.id !== center).every(a => bonds.some(pair => pair.includes(center) && pair.includes(a.id))) };
       }, kind);
       assert.equal(data.atoms.length, neighbors + 1);
       assert.equal(data.selected.length, neighbors + 1);
       assert.equal(data.insetBondCount, neighbors);
       assert.equal(data.directlyConnected, true);
+      assert.equal(data.allAtomsVisible, true);
+      assert.equal(data.connectorAligned, true);
       assert.ok(data.minDistance > 25, 'enlarged atoms must not overlap');
       assert.deepEqual(data.selected.sort(), data.atoms.map(a => a.id).sort());
       await stage.focus();

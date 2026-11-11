@@ -340,6 +340,12 @@
     const scale = Math.min(440 / (maxX - minX || 1), 220 / (maxY - minY || 1));
     const pointMap = new Map();
     for (const p of points) pointMap.set(p.atom.id, { x: 260 + (p.x - centerX) * scale, y: 150 - (p.y - centerY) * scale, z: p.z, layer: p.atom.layer });
+    if (selected) {
+      const mapped = [...pointMap.values()];
+      const left = Math.min(...mapped.map(p => p.x)) - 22, top = Math.min(...mapped.map(p => p.y)) - 22;
+      const width = Math.max(...mapped.map(p => p.x)) - left + 22, height = Math.max(...mapped.map(p => p.y)) - top + 22;
+      svg.setAttribute('viewBox', `${left} ${top} ${width} ${height}`);
+    } else svg.setAttribute('viewBox', '0 0 520 300');
     const depth = z => .56 + .44 * ((z - Math.min(...points.map(p=>p.z))) / (Math.max(...points.map(p=>p.z)) - Math.min(...points.map(p=>p.z)) || 1));
     const orderedBonds = [...bonds].sort((a,b) => ((pointMap.get(a[0].id).z+pointMap.get(a[1].id).z) - (pointMap.get(b[0].id).z+pointMap.get(b[1].id).z)));
     const lineMarkup = orderedBonds.map(([a,b,layer]) => {
@@ -384,16 +390,22 @@
     const c = selection.center;
     const project = atom => {
       const x = atom.x - c.x, y = atom.y - c.y, z = atom.z - c.z;
-      if (kind === 'graphite') return {x: 120 + x * 62, y: 90 - y * 62, z: 0};
-      const rx = .2, ry = .15;
+      if (kind === 'graphite') return {x: 120 - x * 72, y: 90 + y * 72, z: 0};
+      // Fixed 3D viewpoint chosen to show all four tetrahedral neighbors clearly.
+      const rx = -.85, ry = -1.65;
       const y1 = y * Math.cos(rx) - z * Math.sin(rx), z1 = y * Math.sin(rx) + z * Math.cos(rx);
-      return {x: 120 + (x * Math.cos(ry) + z1 * Math.sin(ry)) * 220, y: 90 - y1 * 220, z: -x * Math.sin(ry) + z1 * Math.cos(ry)};
+      return {x: 120 + (x * Math.cos(ry) + z1 * Math.sin(ry)) * 180, y: 90 - y1 * 180, z: -x * Math.sin(ry) + z1 * Math.cos(ry)};
     };
     const center = project(c);
-    const bonds = selection.neighbors.map(atom => { const p = project(atom); return `<line x1="${center.x}" y1="${center.y}" x2="${p.x}" y2="${p.y}" stroke="#7d807c" stroke-width="7" stroke-linecap="round" ${kind === 'diamond' && p.z < 0 ? 'stroke-dasharray="8 6"' : ''} data-inset-bond="${c.id}-${atom.id}" data-depth="${p.z < 0 ? 'back' : 'front'}"/>`; }).join('');
-    const atoms = [c, ...selection.neighbors].map((atom,index) => { const p = project(atom); return `<circle cx="${p.x}" cy="${p.y}" r="${index ? (kind === 'diamond' && p.z < 0 ? 10 : 13) : 14}" fill="#4a4e4e" stroke="${index ? '#777b78' : '#b78d2c'}" stroke-width="${index ? 2 : 4}" data-inset-atom="${atom.id}" data-center="${index === 0}"/>`; }).join('');
+    const bonds = selection.neighbors.map(atom => { const p = project(atom); return `<g><line x1="${center.x}" y1="${center.y}" x2="${p.x}" y2="${p.y}" stroke="#626863" stroke-width="12" stroke-linecap="round" data-inset-bond="${c.id}-${atom.id}" data-depth="${p.z < 0 ? 'back' : 'front'}"/><line x1="${center.x}" y1="${center.y-1.5}" x2="${p.x}" y2="${p.y-1.5}" stroke="#d9dcd8" stroke-opacity=".6" stroke-width="4" stroke-linecap="round"/></g>`; }).join('');
+    const sorted = [c, ...selection.neighbors].map((atom,index) => ({atom,index,p:project(atom)})).sort((a,b)=>a.p.z-b.p.z);
+    const atoms = sorted.map(({atom,index,p}) => {
+      const radius = index === 0 ? 17 : kind === 'diamond' && p.z < 0 ? 14 : 16;
+      const halo = index === 0 ? `<circle cx="${p.x}" cy="${p.y}" r="${radius+7}" fill="#f4dfa0" fill-opacity=".7"/>` : '';
+      return `${halo}<circle cx="${p.x}" cy="${p.y}" r="${radius}" fill="url(#inset-sphere-${kind})" stroke="#575d59" stroke-width="1" data-inset-atom="${atom.id}" data-center="${index === 0}"/>`;
+    }).join('');
     svg.dataset.centerId = c.id;
-    svg.innerHTML = `<g>${bonds}${atoms}</g>`;
+    svg.innerHTML = `<defs><radialGradient id="inset-sphere-${kind}" cx="30%" cy="24%" r="75%"><stop stop-color="#f4f5f1"/><stop offset=".3" stop-color="#aeb3af"/><stop offset=".7" stop-color="#666c68"/><stop offset="1" stop-color="#353a37"/></radialGradient></defs><g>${bonds}${atoms}</g>`;
   };
   modelStages.forEach(stage => {
     const svg = stage.querySelector('svg');
@@ -403,12 +415,28 @@
     const selection = findNeighbors(lattice, stage.dataset.carbonModel);
     const panel = document.getElementById(`${stage.dataset.carbonModel}-neighbors`);
     const button = document.querySelector(`[data-neighbors-toggle="${stage.dataset.carbonModel}"]`);
+    const visual = stage.closest('.carbon-model-visual');
+    const connector = visual.querySelector('.carbon-connector');
+    const drawConnector = () => {
+      if (!expanded || !selection) return;
+      const atom = svg.querySelector(`[data-atom-id="${selection.center.id}"]`);
+      if (!atom) return;
+      const base = visual.getBoundingClientRect(), point = atom.getBoundingClientRect(), dest = panel.getBoundingClientRect();
+      const x1 = point.left + point.width / 2 - base.left, y1 = point.top + point.height / 2 - base.top;
+      const stacked = dest.top >= stage.getBoundingClientRect().bottom - 1;
+      const x2 = stacked ? Math.max(dest.left + 12, Math.min(point.left + point.width / 2, dest.right - 12)) - base.left : dest.left - base.left;
+      const y2 = stacked ? dest.top - base.top : Math.max(dest.top + 32, Math.min(point.top + point.height / 2, dest.bottom - 32)) - base.top;
+      const line = connector.querySelector('line');
+      for (const [key, value] of Object.entries({x1,y1,x2,y2})) line.setAttribute(key, value);
+    };
     let expanded = false;
-    const render = () => modelMarkup(svg, lattice, rotation, expanded ? selection : null);
+    const render = () => { modelMarkup(svg, lattice, rotation, expanded ? selection : null); if (expanded) requestAnimationFrame(drawConnector); };
+    new ResizeObserver(() => { if (expanded) requestAnimationFrame(drawConnector); }).observe(visual);
     const setExpanded = value => {
       if (!selection) return;
       expanded = value;
       panel.hidden = !expanded;
+      connector.toggleAttribute('hidden', !expanded);
       panel.parentElement.classList.toggle('is-expanded', expanded);
       button.setAttribute('aria-expanded', String(expanded));
       stage.setAttribute('aria-expanded', String(expanded));
