@@ -41,7 +41,7 @@
   <script type="module" src="assets/mass-curve-lab.js?v=cases-1"></script>
   <link rel="stylesheet" href="assets/material-dual-lab.css?v=dialogue-bridge-1">
   <script type="module" src="assets/material-dual-lab.js?v=select-row-1"></script>
-  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-gap-label-13">
+  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-clarity-14">
   <script type="module" src="assets/application-lab.js?v=coolant-device-art-10"></script>
   <link rel="stylesheet" href="assets/unknown-quiz.css?v=real-materials-visual-1">
   <script type="module" src="assets/unknown-quiz.js?v=real-materials-visual-1"></script>
@@ -309,12 +309,12 @@
                             <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#087e43" stroke="#fff" stroke-width=".7"/></marker>
                             <marker id="heat-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e48316"/></marker>
                           </defs>
-                          <rect id="coolant-engine-panel" x="32" y="79" width="186" height="100" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
-                          <rect id="coolant-radiator-panel" x="373" y="79" width="164" height="100" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
                           <path id="coolant-circuit-path" d="M180 120V73Q180 47 208 47H382Q410 47 410 73V185Q410 211 382 211H208Q180 211 180 185V120" fill="none" stroke="#276c6a" stroke-width="40" stroke-linejoin="round"/>
                           <path id="coolant-liquid-track" d="M180 120V73Q180 47 208 47H382Q410 47 410 73V185Q410 211 382 211H208Q180 211 180 185V120" fill="none" stroke="url(#coolant-fluid-temperature)" stroke-width="32" stroke-linejoin="round"/>
                           <g id="coolant-flow-packets" aria-hidden="true"></g>
                           <path d="M180 120V73Q180 47 208 47H382Q410 47 410 73V185Q410 211 382 211H208Q180 211 180 185V120" transform="translate(0 -3)" fill="none" stroke="#eaffff" stroke-opacity=".65" stroke-width="4" stroke-linejoin="round"/>
+                          <rect id="coolant-engine-panel" x="32" y="79" width="186" height="100" rx="15" fill="#f4f8eb" fill-opacity=".16" stroke="#38785c" stroke-width="2"/>
+                          <rect id="coolant-radiator-panel" x="373" y="79" width="164" height="100" rx="15" fill="#f4f8eb" fill-opacity=".16" stroke="#38785c" stroke-width="2"/>
                           <g fill="none" stroke="#087e43" stroke-width="6" marker-end="url(#flow-arrow)"><path d="M270 47H305"/><path d="M320 211H285"/></g>
                           <ellipse cx="100" cy="127" rx="56" ry="22" fill="url(#engine-warmth)"/>
                           <g class="coolant-engine-art" stroke="#8d5e3d" stroke-linecap="round" stroke-linejoin="round">
@@ -346,25 +346,27 @@
                       <button class="secondary coolant-retry" type="button" data-life-retry hidden>重新載入場景</button>
                       <section class="coolant-compare" aria-labelledby="coolant-compare-title">
                         <h3 id="coolant-compare-title">為什麼選用比熱較大的冷卻液？</h3>
-                        <div class="coolant-chart-axis-labels" aria-hidden="true"><span>溫度 ↑</span><span>時間 →</span></div>
+                        <div class="coolant-chart-axis-labels" aria-hidden="true"><span>溫度 ↑</span></div>
                         <div class="coolant-chart-plot"><svg class="coolant-temp-chart" viewBox="0 0 1000 420" role="img" aria-labelledby="coolant-chart-title coolant-chart-description">
                           <title id="coolant-chart-title">引擎與兩種液體的溫度變化比較</title>
-                          <desc id="coolant-chart-description">溫度對時間的定性示意。引擎溫度維持較高。比熱較小的液體升溫較快，很快接近引擎溫度；比熱較大的液體升溫較慢，較久維持溫差。圖中引擎線與比熱較大液體線之間的距離代表溫差。</desc>
+                          <desc id="coolant-chart-description">簡化示意：等質量、相同初溫的液體，在相同傳熱條件下與溫度固定的引擎接觸，不含散熱循環。比熱較小的液體升溫較快，很快接近引擎溫度；比熱較大的液體升溫較慢，較久維持溫差。圖中引擎線與比熱較大液體線之間的距離代表溫差。</desc>
                           <defs>
                             <marker id="coolant-chart-axis-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#315b3b"/></marker>
-                            <marker id="coolant-chart-gap-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#328c68"/></marker>
+                            <marker id="coolant-chart-gap-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#328c68"/></marker>
                           </defs>
                           <path class="coolant-chart-axis" d="M92 365V54M92 365H958" marker-start="none" marker-end="url(#coolant-chart-axis-arrow)"/>
                           <path class="coolant-chart-engine" d="M100 86H930"/>
-                          <path class="coolant-chart-low-cp" d="M100 350C132 215 184 123 315 101C470 78 660 85 930 85"/>
+                          <path class="coolant-chart-low-cp" d="M100 350C132 215 184 123 315 101C470 90 660 87 930 87"/>
                           <path class="coolant-chart-high-cp" d="M100 350C148 292 232 261 344 237C506 202 695 184 930 171"/>
-                          <path class="coolant-chart-gap" d="M800 92V175" marker-start="url(#coolant-chart-gap-arrow)" marker-end="url(#coolant-chart-gap-arrow)"/>
+                          <path class="coolant-chart-gap" d="M800 86V179" marker-start="url(#coolant-chart-gap-arrow)" marker-end="url(#coolant-chart-gap-arrow)"/>
                         </svg><span class="coolant-chart-gap-label" aria-hidden="true">溫差</span></div>
+                        <div class="coolant-chart-time" aria-hidden="true">時間 →</div>
                         <div class="coolant-chart-legend" role="group" aria-label="曲線圖圖例">
                           <span><i class="coolant-chart-key-engine" aria-hidden="true"></i><strong>引擎溫度</strong></span>
                           <span><i class="coolant-chart-key-low" aria-hidden="true"></i><strong>比熱較小</strong></span>
                           <span><i class="coolant-chart-key-high" aria-hidden="true"></i><strong>比熱較大</strong></span>
                         </div>
+                        <p class="coolant-chart-condition">簡化示意：等質量、相同初溫，與溫度固定的引擎在相同傳熱條件下接觸；不含散熱循環。</p>
                       </section>
                     </div>
                   </div>

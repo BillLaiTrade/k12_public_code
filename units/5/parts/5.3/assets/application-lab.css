@@ -310,7 +310,7 @@
 #application-lab #application-coolant .coolant-key p{font-size:1rem;font-weight:700;line-height:1.45}
 #application-lab #application-coolant .life-coolant-model{display:grid;align-content:start;gap:10px;min-width:0;height:auto;padding:0;border:0;background:transparent}
 #application-lab #application-coolant .coolant-loop-card,#application-lab #application-coolant .coolant-compare{min-width:0;margin:0;padding:10px 12px;border:1px solid #cbdcc8;border-radius:14px;background:#fffefa}
-#application-lab #application-coolant .coolant-loop-card{display:grid;align-content:start;gap:6px}
+#application-lab #application-coolant .coolant-loop-card{display:grid;align-content:start;gap:8px}
 #application-lab #application-coolant .coolant-labels span{font-size:1rem;line-height:1.3}
 #application-lab #application-coolant .coolant-loop-diagram{display:block;width:100%;height:auto;max-width:580px;margin:0 auto;overflow:visible}
 #application-lab #application-coolant .coolant-mobile-flow{display:none}
@@ -322,15 +322,17 @@
 #application-lab #application-coolant .coolant-temp-chart{width:100%;height:auto;margin:0}
 #application-lab #application-coolant .coolant-chart-axis{stroke-width:4}
 #application-lab #application-coolant .coolant-chart-engine,#application-lab #application-coolant .coolant-chart-low-cp,#application-lab #application-coolant .coolant-chart-high-cp{stroke-width:5}
-#application-lab #application-coolant .coolant-chart-gap{stroke-width:3}
+#application-lab #application-coolant .coolant-chart-gap{stroke-width:5}
 #application-lab #application-coolant .coolant-chart-plot{position:relative}
-#application-lab #application-coolant .coolant-chart-gap-label{position:absolute;left:82%;top:26%;color:#315b3b;font-size:1rem;font-weight:700;line-height:1.2;white-space:nowrap}
+#application-lab #application-coolant .coolant-chart-gap-label{position:absolute;left:82%;top:26%;padding:0 2px;border-radius:3px;background:#fffefa;color:#315b3b;font-size:1rem;font-weight:700;line-height:1.2;white-space:nowrap}
+#application-lab #application-coolant .coolant-chart-time{margin:-8px 4px 4px;text-align:right;color:#315b3b;font-size:1rem;font-weight:700;line-height:1.2}
 #application-lab #application-coolant .coolant-chart-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:6px;margin:2px 0 0;font-size:1rem;line-height:1.35}
 #application-lab #application-coolant .coolant-chart-legend>span{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:start;gap:5px}
 #application-lab #application-coolant .coolant-chart-legend>span>span{display:grid;gap:2px}
 #application-lab #application-coolant .coolant-chart-legend i{width:18px;height:3px;margin-top:9px}
 #application-lab #application-coolant .coolant-chart-legend strong{font-size:1rem;line-height:1.35}
 #application-lab #application-coolant .coolant-chart-legend small{font-size:1rem;line-height:1.35}
+#application-lab #application-coolant .coolant-chart-condition{margin:8px 2px 0;color:#526c58;font-size:.875rem;line-height:1.5}
 #application-lab #application-coolant>.life-note{margin:10px 0 0;padding:8px 12px;border-radius:10px;background:#e6efdf;text-align:center;font-size:.9rem;line-height:1.45}
 @media(max-width:760px){
   #application-lab #application-coolant .coolant-workbench{grid-template-columns:minmax(0,1fr);gap:12px}
