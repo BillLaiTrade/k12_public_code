@@ -257,6 +257,37 @@
 
 #application-lab .coolant-flow-explanation{margin:4px 2px;color:#526c58;font-size:.95rem;line-height:1.55}
 
+/* 以溫度—時間曲線說明溫差縮小時，熱傳會變慢。 */
+#application-lab #application-coolant .coolant-compare{padding:12px 16px 14px}
+#application-lab #application-coolant .coolant-compare h3{margin:0 auto 8px}
+#application-lab .coolant-chart-axis-labels{display:flex;justify-content:space-between;align-items:center;margin:0 4px;color:#315b3b;font-weight:700;font-size:1rem}
+#application-lab .coolant-temp-chart{display:block;width:100%;max-width:none;height:auto;margin:0;overflow:visible}
+#application-lab .coolant-chart-axis{fill:none;stroke:#315b3b;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+#application-lab .coolant-chart-engine{fill:none;stroke:#eb7414;stroke-width:10;stroke-linecap:round}
+#application-lab .coolant-chart-low-cp{fill:none;stroke:#edaa28;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+#application-lab .coolant-chart-high-cp{fill:none;stroke:#36aa94;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+#application-lab .coolant-chart-gap{fill:none;stroke:#328c68;stroke-width:6;stroke-linecap:round}
+#application-lab .coolant-chart-legend{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px 20px;margin:4px 0 10px;color:#315b3b;font-size:1rem;line-height:1.4}
+#application-lab .coolant-chart-legend span{display:inline-flex;align-items:center;gap:7px}
+#application-lab .coolant-chart-legend i{display:inline-block;width:25px;height:5px;border-radius:8px}
+#application-lab .coolant-chart-key-engine{background:#eb7414}
+#application-lab .coolant-chart-key-high{background:#36aa94}
+#application-lab .coolant-chart-key-low{background:#edaa28}
+#application-lab .coolant-gap-callouts{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 12px}
+#application-lab .coolant-gap-callouts span{padding:7px 14px;border-radius:10px;background:#e8f2e1;color:#315b3b;font-size:1rem;font-weight:700;line-height:1.4}
+#application-lab .coolant-gap-callouts span+span{background:#fff0db;color:#95500e}
+#application-lab #application-coolant .coolant-key{margin:10px 0 0;padding:10px 14px;border-left:4px solid #e78213;border-radius:0 8px 8px 0;background:#fff5e7}
+#application-lab #application-coolant .coolant-key p{margin:0;color:#244b35;font-size:1.05rem;font-weight:750;line-height:1.5}
+@media(max-width:600px){
+  #application-lab #application-coolant .coolant-compare{padding:10px 8px}
+  #application-lab .coolant-chart-axis-labels{margin:0 2px}
+  #application-lab .coolant-chart-legend{display:grid;justify-content:start;gap:5px;margin:4px 2px 10px}
+  #application-lab .coolant-gap-callouts{gap:6px}
+  #application-lab .coolant-gap-callouts span{padding:6px 9px}
+  #application-lab #application-coolant .coolant-key{padding:9px 11px}
+  #application-lab #application-coolant .coolant-key p{font-size:1rem}
+}
+
 /* 熱傳標籤獨立排在圖上方，避免遮住液流和設備。 */
 #application-lab .coolant-loop-card{padding:12px;gap:8px}
 #application-lab .coolant-labels{position:static;display:flex;align-items:start;justify-content:space-between;gap:8px}
