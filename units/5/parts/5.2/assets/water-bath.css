@@ -70,3 +70,7 @@
 
 .bath-cup-action{position:absolute;left:10px;bottom:8px;z-index:3;min-height:44px;padding:7px 12px;border:1px solid #8fa68a;border-radius:12px;background:#fffdf1f2;color:#365a40;font:600 .82rem/1.5 system-ui;cursor:pointer;touch-action:manipulation;box-shadow:0 2px 6px #344c2c15}
 .bath-cup-action:disabled{opacity:.5;cursor:wait}
+
+#unit-quiz.bath-quiz .quiz-head .bath-quiz-intro{margin:5px 0 0;color:#566b56;font-size:.9rem;line-height:1.55}
+.bath-help summary{cursor:pointer;color:#315f40;font-weight:700;padding:8px 0}
+.bath-help details p{margin-left:0}
