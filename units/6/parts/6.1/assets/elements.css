@@ -114,11 +114,13 @@
 .symbol-choice-sample[data-specimen="Hg"],.symbol-sample[data-specimen="Hg"]{background-position:100% 100%}
 @media(max-width:760px){.symbol-sample{width:min(52%,176px)}}
 @media(max-width:420px){.symbol-choice-sample{width:37px;height:37px}.symbol-sample{width:min(52%,164px)}}
-/* Keep the unit assessment route label and gold marker consistent with current booklet format. */
-.route a.quiz-nav{margin-top:8px;padding-top:14px;color:#795b20;font-weight:400}
-.route .quiz-nav b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#f5e9c9;color:#795b20}
-.route a.quiz-nav[aria-current="step"]{border-left-color:#c09139;background:#f8f0dd;color:#795b20;font-weight:750;box-shadow:none}
-@media(max-width:760px){.route a.quiz-nav{margin:0;padding:9px 11px;border:1px solid var(--line)}.route a.quiz-nav[aria-current="step"]{border-color:#c09139}}
+/* Give the unit assessment a distinct, compact gold route card. */
+.route a.quiz-nav{display:flex;align-items:center;gap:14px;margin-top:8px;padding:12px 14px;min-height:56px;border:0;border-left:3px solid #c58d2d;border-radius:0 11px 11px 0;background:#f8f1e4;color:#795b20;font-weight:500;line-height:1.4;text-decoration:none}
+.route a.quiz-nav:hover{background:#f5ecd9}
+.route .quiz-nav b{display:grid;place-items:center;flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#f1e5c3;color:#795b20;font-size:.76rem}
+.route a.quiz-nav[aria-current="step"]{border-left-color:#c58d2d;background:#f8f1e4;color:#795b20;font-weight:750;box-shadow:none}
+@media(max-width:760px){.route a.quiz-nav{flex:0 0 100%;margin:8px 0 0;padding:12px 14px;border:0;border-left:3px solid #c58d2d;border-radius:0 11px 11px 0;white-space:normal}.route a.quiz-nav[aria-current="step"]{border-left-color:#c58d2d}}
+@media(max-width:420px){.route a.quiz-nav{grid-column:1/-1}}
 /* Carbon structure models connect visible differences to atomic arrangement. */
 .carbon-structure{margin:20px 0 0;padding:18px;border:1px solid #cfdbcf;border-radius:16px;background:#f4f7ef}
 .carbon-structure-head h3{margin:0 0 4px;color:var(--green);font-size:1.18rem}
