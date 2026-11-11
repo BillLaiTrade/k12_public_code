@@ -76,17 +76,19 @@
 #application-lab .chestnut-zoom-link{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
 #application-lab .chestnut-zoom-link path{fill:none;stroke:#fffaf0;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 3px #342b1dcc)}
 #application-lab .chestnut-zoom-link circle{fill:#fffaf0;stroke:#315b3b;stroke-width:4;filter:drop-shadow(0 1px 3px #342b1dcc)}
-#application-lab .chestnut-zoom{position:absolute;right:3%;bottom:3%;z-index:2;width:57%;height:44%;overflow:hidden;border:3px solid #fffaf0;border-radius:14px;background:#2b2018;box-shadow:0 2px 10px #1e1914aa}
+#application-lab .chestnut-zoom{position:absolute;right:2.5%;bottom:2.5%;z-index:2;width:58%;height:49%;overflow:hidden;border:3px solid #fffaf0;border-radius:16px;background:#2b2018;box-shadow:0 2px 10px #1e1914aa}
 #application-lab .chestnut-zoom>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
-#application-lab .chestnut-zoom-title,#application-lab .chestnut-zoom-label{position:absolute;z-index:2;padding:3px 7px;border:1px solid #d6ddc9;border-radius:6px;background:#fff9eaf2;color:#315b3b;font-weight:700;line-height:1.25;white-space:nowrap;box-shadow:0 1px 4px #0004}
-#application-lab .chestnut-zoom-title{top:6px;left:7px;font-size:.75rem}
-#application-lab .chestnut-zoom-label{right:5px;font-size:.75rem}
+#application-lab .chestnut-zoom-title,#application-lab .chestnut-zoom-label{position:absolute;z-index:2;padding:4px 8px;border:1px solid #d6ddc9;border-radius:7px;background:#fff9eaf2;color:#315b3b;font-weight:700;line-height:1.25;white-space:nowrap;box-shadow:0 1px 4px #0004}
+#application-lab .chestnut-zoom-title{top:8px;left:9px;font-size:.9rem}
+#application-lab .chestnut-zoom-label{right:7px;font-size:.9rem}
 #application-lab .chestnut-zoom-label-nut{top:10%}
 #application-lab .chestnut-zoom-label-sand{top:47%}
 #application-lab .chestnut-zoom-label-pan{bottom:6%}
 #application-lab .chestnut-heat-arrows{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
-#application-lab .chestnut-heat-arrows path{fill:none;stroke:#f28a18;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 1px 2px #fff7e8)}
-#application-lab .chestnut-view-note{margin:7px 0 0;padding:6px 9px;border-left:3px solid #d9822b;border-radius:0 7px 7px 0;background:#fff5e7;color:#624b32;font-size:.875rem;font-weight:650}
+#application-lab .chestnut-heat-arrows path{fill:none;stroke:#f28a18;stroke-width:2.8;stroke-linecap:round;filter:drop-shadow(0 1px 2px #fff7e8)}
+#application-lab .chestnut-heat-flow{display:flex;align-items:center;justify-content:center;gap:clamp(10px,3vw,28px);width:100%;margin:12px auto 0;padding:9px 16px;border-radius:999px;background:#e7f0dc;color:#285638;font-size:1.15rem;font-weight:750}
+#application-lab .chestnut-flow-arrow{color:#ed821d;font-size:1.5rem;line-height:1}
+#application-lab .chestnut-view-note{margin:6px auto 0;text-align:center;color:#536b52;font-size:1rem;line-height:1.55}
 #application-lab .chestnut-explanation{margin:0;padding:0;border:0;border-radius:13px;background:transparent;overflow:hidden;align-self:center}
 #application-lab .chestnut-explanation picture{display:block;width:100%}
 #application-lab .chestnut-explanation img{display:block;width:100%;height:auto}
@@ -99,12 +101,17 @@
 #application-lab .life-workbench{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:stretch}
 #application-lab .life-workbench .life-photo{width:100%;max-width:none;aspect-ratio:1;align-self:start}
 #application-lab .life-workbench .life-photo>img{display:block;width:100%;height:100%;aspect-ratio:1;object-fit:contain}
+#application-lab .life-workbench.chestnut-workbench{grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
+#application-lab .chestnut-visual{width:100%;max-width:none}
+#application-lab .chestnut-visual .chestnut-photo{aspect-ratio:1.13}
+#application-lab .chestnut-visual .chestnut-photo>img{aspect-ratio:1.13;object-fit:cover}
+#application-lab .chestnut-explanation{width:min(100%,520px);margin:0 auto}
 #application-lab .coast-video{position:absolute;left:0;top:12.5%;width:100%;height:75%;aspect-ratio:4/3;object-fit:contain}
 #application-lab .life-photo>.coast-arrows{top:12.5%;height:75%}
 #application-lab .life-workbench .chestnut-photo>img{object-fit:cover}
 #application-lab .life-coast-model,#application-lab .life-coolant-model{height:100%}
 #application-lab .coast-observation{margin:0 0 12px}
-@media(max-width:1100px){#application-lab .life-workbench{grid-template-columns:minmax(0,1fr)}#application-lab .life-workbench .life-photo{max-width:700px;margin:0 auto}}
+@media(max-width:1100px){#application-lab .life-workbench{grid-template-columns:minmax(0,1fr)}#application-lab .life-workbench .life-photo{max-width:700px;margin:0 auto}#application-lab .life-workbench.chestnut-workbench{grid-template-columns:minmax(0,1fr)}}
 /* 隱藏情境的箭頭不可覆蓋目前畫面。 */
 #application-content>.life-view[hidden] *{visibility:hidden!important}
 #application-lab #body-photo{object-fit:cover;object-position:left center}

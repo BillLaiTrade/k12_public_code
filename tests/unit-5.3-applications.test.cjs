@@ -29,7 +29,7 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.equal(await p.locator('[data-chestnut-mode]').count(),0);
     assert.equal(await p.locator('#chestnut-zoom-image').evaluate(n=>n.complete&&n.naturalWidth===1448&&n.naturalHeight===1086),true);
     assert.match(await p.locator('.chestnut-zoom').getAttribute('aria-label'),/鍋面把熱傳給流動砂粒.*砂粒接觸栗子/);
-    assert.equal(await p.locator('.chestnut-heat-arrows>path').count(),1);
+    assert.equal(await p.locator('.chestnut-heat-arrows>path').count(),3,'熱傳箭頭要分成三段，讓熱由鍋面經砂粒傳向栗子');
     assert.deepEqual(await p.locator('.chestnut-zoom-label').allTextContents(),['栗子','流動砂粒','鍋面']);
     const chestnutAnswer=p.locator('#chestnut-answer');
     assert.equal(await chestnutAnswer.evaluate(n=>n.open),false);
@@ -37,10 +37,13 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await chestnutAnswer.locator('summary').click();
     assert.equal(await chestnutAnswer.evaluate(n=>n.open),true);
     assert.equal(await chestnutAnswer.locator('p').innerText(),'砂粒乾燥、能流動。砂子被鍋加熱後，翻炒時會在栗子間移動，從多處接觸栗子，把熱分散傳過去，適合乾炒。水也能傳熱，但烹調方式會變成水煮。直接炒也可以，加砂子是另一種幫助栗子受熱的做法。');
-    assert.equal(await p.locator('.chestnut-view-note').innerText(),'熱傳方向：鍋面 → 砂粒 → 栗子');
+    assert.equal(await p.locator('.chestnut-heat-flow').textContent(),'鍋面→砂粒→栗子');
+    assert.equal(await p.locator('.chestnut-view-note').innerText(),'翻炒時，砂子在栗子間流動，從多處接觸栗子，幫助受熱更均勻。');
     const process=p.locator('#chestnut-process');
     assert.equal(await process.evaluate(n=>n.complete&&n.naturalWidth===1157&&n.naturalHeight===1360),true);
     assert.match(await process.getAttribute('alt'),/沙子從鍋子吸熱[\s\S]*比熱較小[\s\S]*接觸栗子[\s\S]*把熱傳給栗子/);
+    const layout=await p.evaluate(()=>{const photo=document.querySelector('#chestnut-scene').getBoundingClientRect(),steps=document.querySelector('.chestnut-explanation').getBoundingClientRect();return{photo:{width:photo.width,bottom:photo.bottom},steps:{width:steps.width,top:steps.top}}});
+    assert.ok(layout.photo.width>layout.steps.width&&layout.steps.top>=layout.photo.bottom,`主照片應先以完整寬度呈現，步驟圖在下方：${JSON.stringify(layout)}`);
     await capture('chestnut-scenario');
   });
 
