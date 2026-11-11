@@ -93,7 +93,7 @@
       const active=inspectedLayer===role;
       for(const selector of ['[data-guide]','[data-target]','[data-joint]'])guides.querySelector(`${selector}[${selector==='[data-guide]'?'data-guide':selector==='[data-target]'?'data-target':'data-joint'}=\"${role}\"]`).toggleAttribute('hidden',!active);
       if(!active)continue;
-      const bottle=$(`insulation-bottle-${role}`),point=bottle.createSVGPoint();point.x=comparison==='gap'&&role==='b'?301:139;point.y=440;
+      const bottle=$(`insulation-bottle-${role}`),point=bottle.createSVGPoint();point.x=role==='b'?301:139;point.y=440;
       const screen=point.matrixTransform(bottle.getScreenCTM()),x=screen.x-bounds.left,y=screen.y-bounds.top;
       const panel=(comparison==='gap'?mechanism:liningPanel).getBoundingClientRect(),anchorX=(role==='a'?panel.left+12:panel.right-12)-bounds.left,anchorY=panel.top+18-bounds.top;
       const edge=role==='a'?4:bounds.width-4;
@@ -155,8 +155,8 @@
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus||panel.dataset.liningZoom!==inspectedLayer);
     updateLining();
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
-    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射由較暖內壁穿越真空，傳向較冷外壁。':'熱輻射抵達外壁亮面，部分反射回較暖內側。';
-    root.querySelector('.insulation-lining-key span:last-child').hidden=inspectedLayer!=='b';
+    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'橘色箭頭表示紅外線，從較暖內壁穿越真空到達外壁。':'橘色箭頭表示紅外線：到達亮面後，部分反射回內壁。';
+    
     setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();

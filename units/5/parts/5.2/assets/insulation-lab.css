@@ -939,3 +939,9 @@
 #insulation-lab[data-comparison=lining] .lining-flow{fill:none;stroke-dasharray:12 20;stroke-linecap:round;stroke-width:3;pointer-events:none}
 #insulation-lab[data-comparison=lining] .lining-flow-out{stroke:#bc5700;filter:drop-shadow(0 0 1px #fff0b4)}
 #insulation-lab[data-comparison=lining] .lining-flow-back{stroke:#fff;stroke-width:3.3;filter:drop-shadow(0 0 1px #827d65)}
+#insulation-lab[data-comparison=lining] .lining-label-vacuum{fill:#506f68;font-size:9px;font-weight:700}
+#insulation-lab[data-comparison=lining] .lining-label-reflector{fill:#4e615b;font-size:9px;font-weight:700}
+/* 箭頭是紅外線傳遞方向；反射前後仍是同一種輻射。 */
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{stroke:#df8624;stroke-width:1.2;filter:none}
+#insulation-lab[data-comparison=lining] .lining-flow-back{stroke:#bc5700;stroke-width:3;filter:drop-shadow(0 0 1px #fff0b4)}
+#insulation-lab[data-comparison=lining] .lining-label-direction{fill:#945113;font-size:9px;font-weight:700}
