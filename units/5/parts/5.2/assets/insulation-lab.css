@@ -862,3 +862,34 @@
 #insulation-lab[data-comparison=lining] .insulation-lining-zoom svg{height:120px;max-height:none}
 #insulation-lab[data-comparison=lining] .insulation-lining-explanation{grid-column:1;text-align:left;padding:4px 2px;border:0;font-size:.8rem;line-height:1.4;font-weight:700}
 @media(max-width:560px){#insulation-lab[data-comparison=lining] .insulation-lining-zoom svg{height:95px}}
+
+/* 反射層展開時沿用夾層的瓶身與局部卡片比例。 */
+#insulation-lab[data-comparison=lining][data-focus=a] .insulation-bottle-grid,
+#insulation-lab[data-comparison=lining][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.66)!important}
+#insulation-lab[data-comparison=lining][data-focus=a] .insulation-route-key,
+#insulation-lab[data-comparison=lining][data-focus=b] .insulation-route-key{display:none}
+#insulation-lab[data-comparison=lining] .insulation-lining-focus-card{background:#fff8eaf2;border-color:#fffaf0;box-shadow:0 4px 18px #503b2026}
+#insulation-lab[data-comparison=lining] .insulation-mechanism-heading{justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:4px 8px;margin-bottom:2px}
+#insulation-lab[data-comparison=lining] .insulation-mechanism-heading b{padding:3px 10px;border-radius:999px;background:#315f40;color:#fffdf2;font-size:.8rem}
+#insulation-lab[data-comparison=lining] .insulation-lining-key{display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap;padding:2px 2px 0;border-top:1px solid #d3dac7;font-size:.66rem;color:#31543b}
+#insulation-lab[data-comparison=lining] .insulation-lining-key .wave{color:#dd8a27;font-size:1.2rem}
+#insulation-lab[data-comparison=lining] .insulation-lining-key .back-arrow{color:#899b73;font-size:1.2rem}
+#insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:80px;max-height:none}
+@media(min-width:900px){#insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:164px}}
+@media(max-width:899px){
+ #insulation-lab[data-comparison=lining][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=lining][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.78)!important}
+ #insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:120px}
+}
+@media(min-width:561px) and (max-width:899px){
+ #insulation-lab[data-comparison=lining][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=lining][data-focus=b] .insulation-bottle-grid{transform:translateY(-46px) scale(.55)!important}
+ #insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:80px}
+}
+@media(max-width:370px){
+ #insulation-lab[data-comparison=lining][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison=lining][data-focus=b] .insulation-bottle-grid{transform:translateY(-52px) scale(.72)!important}
+}
+#insulation-lab[data-comparison=lining] .insulation-lining-focus-card .insulation-mechanism-heading{margin-bottom:2px}
+#insulation-lab[data-comparison=lining] .insulation-lining-explanation{padding:1px 2px}
+#insulation-lab[data-comparison=lining] .insulation-lining-key{align-items:center;line-height:1}
