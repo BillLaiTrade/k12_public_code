@@ -146,7 +146,7 @@ function renderCoastCycle(){
     mode=nextMode;views.coast.dataset.mode=mode;
     if(current==='coast')get('application-question').textContent=coastQuestion();
     views.coast.querySelector('.coast-scene-label').textContent=day?'白天吸熱':'夜晚放熱';
-    get('coast-cycle-status').textContent=day?'☀ 白天吸熱　溫度上升':'☾ 夜晚放熱　溫度下降';
+    get('coast-cycle-status').textContent=day?'☀ 白天吸熱・溫度上升':'☾ 夜晚放熱・溫度下降';
   }
   // 以太陽高度連續調整天光，週期接合處的亮度也保持一致。
   const altitude=Math.sin(2*Math.PI*t);

@@ -366,8 +366,11 @@
 #application-lab #application-coast .coast-thermometer small{bottom:calc(37% - 75px);padding:3px 8px;font-size:.875rem;font-weight:700}
 #application-lab #application-coast .coast-cycle-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px 12px;margin:10px 0 0;padding:9px 12px;border-radius:9px;background:#e8eee0;color:#315b3b;font-size:1rem;font-weight:700}
 #application-lab #application-coast .coast-cycle-footer span+span{font-weight:400;font-size:.875rem}
+#application-lab #application-coast .coast-model-details{margin:10px 0 0;border:1px solid #d5e2d0;border-radius:9px;background:#fffefa;color:#526953}
+#application-lab #application-coast .coast-model-details summary{padding:9px 12px;color:#315b3b;font-size:.9rem;font-weight:650;cursor:pointer}
+#application-lab #application-coast .coast-model-copy{padding:0 12px 8px}
+#application-lab #application-coast .coast-model-copy p{margin:4px 0;font-size:.875rem;line-height:1.55}
 #application-lab #application-coast .life-actions:has([hidden]){margin:0}
-#application-lab #application-coast .coast-sky-note{margin-top:4px}
 @media(max-width:600px){
  #application-lab #application-coast .coast-cycle-scene{aspect-ratio:4/3;min-height:230px}
  #application-lab #application-coast .coast-sky{height:37.4%}

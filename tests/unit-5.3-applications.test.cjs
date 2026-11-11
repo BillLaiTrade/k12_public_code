@@ -66,7 +66,18 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     const highSun=await sunPosition();
     assert.ok(highSun.left>sunrise.left&&highSun.top<sunrise.top,'太陽應在白天向右升起');
     assert.ok(highSun.alt>60&&highSun.alt<67,'北緯23.5°春分附近的正午太陽高度應接近66.5°');
-    assert.match(await p.locator('.coast-sky-note').innerText(),/北緯23\.5°.*近滿月.*示意/);
+    assert.equal(await p.locator('#coast-cycle-status').innerText(),'☀ 白天吸熱・溫度上升');
+    assert.equal(await p.locator('.coast-cycle-footer span+span').innerText(),'日夜自動循環');
+    assert.equal(await p.locator('.life-coast-conclusion').innerText(),'水的比熱較大，因此吸收或放出相同熱量時，溫度變化比砂土小。');
+    const modelDetails=p.locator('.coast-model-details');
+    assert.equal(await modelDetails.evaluate(e=>e.open),false);
+    assert.equal(await modelDetails.locator('summary').innerText(),'模型條件與限制');
+    await modelDetails.locator('summary').click();
+    assert.match(await modelDetails.innerText(),/質量相同.*初溫均為 20°C.*相同熱量/);
+    assert.match(await modelDetails.innerText(),/日照、海水混合、蒸發與風/);
+    assert.match(await modelDetails.innerText(),/日月路徑、方位與大小為動畫示意/);
+    await modelDetails.locator('summary').click();
+    assert.equal(await modelDetails.evaluate(e=>e.open),false);
     assert.ok(dawnShade>0.1&&(await nightOpacity())<dawnShade,'黎明應逐漸變亮至白天');
     assert.ok(rising[1]>rising[0]&&rising[0]>0,JSON.stringify(rising));
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
@@ -230,7 +241,7 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     await page.route('**/application-coast-shore-night.webp*',r=>r.abort());await page.locator('button[data-application="coast"]').click();await page.waitForFunction(()=>document.getElementById('application-coast').dataset.phase==='error');
     await page.unroute('**/application-coast-shore-night.webp*');await page.locator('#application-coast [data-life-retry]').click();await ready(page,'coast');
     assert.match(await page.locator('#coast-night-photo').getAttribute('src'),/shore-night/);
-    assert.match(await page.locator('#application-coast .life-note').first().textContent(),/夜晚接續白天/);await page.close();
+    assert.match(await page.locator('#application-coast .coast-model-details').textContent(),/質量相同.*初溫均為 20°C.*相同熱量/);await page.close();
   });
 
   await t.test('切換情境時高度跟隨目前內容，隱藏情境不保留空間',async()=>{
