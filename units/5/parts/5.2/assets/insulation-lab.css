@@ -849,6 +849,7 @@
  #insulation-lab[data-comparison] .insulation-scene{align-self:stretch;flex:1;min-height:0}
  #insulation-lab[data-comparison]:not([data-focus=a]):not([data-focus=b]) .insulation-scene{justify-content:space-between}
  #insulation-lab[data-comparison]:not([data-focus=a]):not([data-focus=b]) .insulation-bottle-grid{margin-block:auto}
+ #insulation-lab[data-comparison]:not([data-focus=a]):not([data-focus=b]) .insulation-bottle-canvas{transform:scale(1.15)!important;transform-origin:center center}
  #insulation-lab[data-comparison] .insulation-chart-block{align-self:stretch;grid-template-rows:auto minmax(220px,1fr) auto;margin-bottom:0;min-height:0}
  #insulation-lab[data-comparison] .insulation-chart-block .insulation-plot{height:100%;min-height:220px}
  #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:180px}
