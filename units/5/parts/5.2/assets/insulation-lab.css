@@ -843,6 +843,13 @@
  #insulation-lab[data-comparison=gap][data-focus=b] .insulation-bottle-grid{transform:translateY(-52px) scale(.72)!important}
 }
 
-/* Give the side-by-side comparison a little more vertical room on desktop. */
-@media(min-width:900px){#insulation-lab[data-comparison] .insulation-main{min-height:500px}}
-@media(min-width:900px){#insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:150px}}
+/* Use the taller desktop frame for the actual chart and particle animation. */
+@media(min-width:900px){
+ #insulation-lab[data-comparison] .insulation-main{min-height:500px}
+ #insulation-lab[data-comparison] .insulation-scene{align-self:stretch;flex:1;min-height:0}
+ #insulation-lab[data-comparison]:not([data-focus=a]):not([data-focus=b]) .insulation-scene{justify-content:space-between}
+ #insulation-lab[data-comparison]:not([data-focus=a]):not([data-focus=b]) .insulation-bottle-grid{margin-block:auto}
+ #insulation-lab[data-comparison] .insulation-chart-block{align-self:stretch;grid-template-rows:auto minmax(220px,1fr) auto;margin-bottom:0;min-height:0}
+ #insulation-lab[data-comparison] .insulation-chart-block .insulation-plot{height:100%;min-height:220px}
+ #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:180px}
+}
