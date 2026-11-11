@@ -41,7 +41,7 @@
   <script type="module" src="assets/mass-curve-lab.js?v=cases-1"></script>
   <link rel="stylesheet" href="assets/material-dual-lab.css?v=dialogue-bridge-1">
   <script type="module" src="assets/material-dual-lab.js?v=select-row-1"></script>
-  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-temp-gap-11">
+  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-approved-layout-12">
   <script type="module" src="assets/application-lab.js?v=coolant-device-art-10"></script>
   <link rel="stylesheet" href="assets/unknown-quiz.css?v=real-materials-visual-1">
   <script type="module" src="assets/unknown-quiz.js?v=real-materials-visual-1"></script>
@@ -293,7 +293,7 @@
                 <section class="life-view" id="application-coolant" aria-labelledby="coolant-heading" data-phase="loading" hidden>
                   <h3 id="coolant-heading" class="life-condition">冷卻液如何帶走引擎的熱？</h3>
                   <div class="life-workbench coolant-workbench">
-                    <div><figure class="life-photo"><img id="coolant-photo" src="assets/application-coolant-labeled.webp" width="1254" height="1254" alt="AI 生成的引擎室示意：標示後方引擎、前方散熱器和管路內的冷卻液，箭頭示意熱從散熱器傳給空氣。管路位置為示意。"><p class="life-loading" data-life-loading role="status">正在準備汽車冷卻場景…</p></figure><p class="coolant-photo-caption">圖中管路位置為示意，冷卻液位於管路內。</p></div>
+                    <div class="coolant-photo-column"><figure class="life-photo"><img id="coolant-photo" src="assets/application-coolant-labeled.webp" width="1254" height="1254" alt="AI 生成的引擎室示意：標示後方引擎、前方散熱器和管路內的冷卻液，箭頭示意熱從散熱器傳給空氣。管路位置為示意。"><p class="life-loading" data-life-loading role="status">正在準備汽車冷卻場景…</p></figure><p class="coolant-photo-caption">圖中管路位置為示意，冷卻液位於管路內。</p><div class="coolant-key"><p>比熱較大，升溫較慢、溫差維持較久，才能持續吸收引擎的熱。</p></div></div>
                     <div class="life-coolant-model">
                       <div class="coolant-loop-card">
                         <div class="coolant-labels"><span>引擎的熱傳<br>給冷卻液</span><span>熱傳給空氣</span></div>
@@ -341,37 +341,34 @@
                         </svg>
                         <p class="coolant-mobile-flow">冷卻液：引擎 → 散熱器 → 引擎</p>
                         <p class="coolant-legend"><span><b aria-hidden="true">➜</b> 冷卻液流向</span><span><b aria-hidden="true">➜</b> 熱量傳遞</span></p>
-                        <p class="coolant-flow-explanation">冷卻液流經引擎時吸收熱量、溫度上升；在散熱器內把熱傳給空氣後，溫度下降並回流。</p>
-                        <div class="coolant-flow-controls"><p class="coolant-temperature-key"><span class="coolant-swatch-cool">藍色：較冷</span><span class="coolant-swatch-warm">黃色：較暖</span><span>（顏色與速度為示意）</span></p></div>
+                        <div class="coolant-flow-controls"><p class="coolant-temperature-key"><span class="coolant-swatch-cool">藍色：較冷</span><span class="coolant-swatch-warm">黃色：較暖</span><span>（顏色為示意）</span></p></div>
                       </div>
                       <button class="secondary coolant-retry" type="button" data-life-retry hidden>重新載入場景</button>
+                      <section class="coolant-compare" aria-labelledby="coolant-compare-title">
+                        <h3 id="coolant-compare-title">為什麼選用比熱較大的冷卻液？</h3>
+                        <div class="coolant-chart-axis-labels" aria-hidden="true"><span>溫度 ↑</span><span>時間 →</span></div>
+                        <svg class="coolant-temp-chart" viewBox="0 0 1000 420" role="img" aria-labelledby="coolant-chart-title coolant-chart-description">
+                          <title id="coolant-chart-title">引擎與兩種液體的溫度變化比較</title>
+                          <desc id="coolant-chart-description">溫度對時間的定性示意。引擎溫度維持較高。比熱較小的液體升溫較快，很快接近引擎溫度；比熱較大的液體升溫較慢，較久維持溫差。圖中引擎線與比熱較大液體線之間的距離代表溫差。</desc>
+                          <defs>
+                            <marker id="coolant-chart-axis-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#315b3b"/></marker>
+                            <marker id="coolant-chart-gap-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#328c68"/></marker>
+                          </defs>
+                          <path class="coolant-chart-axis" d="M92 365V54M92 365H958" marker-start="none" marker-end="url(#coolant-chart-axis-arrow)"/>
+                          <path class="coolant-chart-engine" d="M100 86H930"/>
+                          <path class="coolant-chart-low-cp" d="M100 350C132 215 184 123 315 101C470 78 660 85 930 85"/>
+                          <path class="coolant-chart-high-cp" d="M100 350C148 292 232 261 344 237C506 202 695 184 930 171"/>
+                          <path class="coolant-chart-gap" d="M866 91V166" marker-start="url(#coolant-chart-gap-arrow)" marker-end="url(#coolant-chart-gap-arrow)"/>
+                        </svg>
+                        <div class="coolant-chart-legend" role="group" aria-label="曲線圖圖例">
+                          <span><i class="coolant-chart-key-engine" aria-hidden="true"></i><span><strong>引擎溫度</strong><small>高溫參考線</small></span></span>
+                          <span><i class="coolant-chart-key-low" aria-hidden="true"></i><span><strong>比熱較小</strong><small>溫差快縮小</small></span></span>
+                          <span><i class="coolant-chart-key-high" aria-hidden="true"></i><span><strong>比熱較大</strong><small>溫差維持久</small></span></span>
+                        </div>
+                      </section>
                     </div>
                   </div>
-                  <section class="coolant-compare" aria-labelledby="coolant-compare-title">
-                    <h3 id="coolant-compare-title">為什麼比熱大，能持續帶走引擎的熱？</h3>
-                    <div class="coolant-chart-axis-labels" aria-hidden="true"><span>溫度 ↑</span><span>時間 →</span></div>
-                    <svg class="coolant-temp-chart" viewBox="0 0 1000 420" role="img" aria-labelledby="coolant-chart-title coolant-chart-description">
-                      <title id="coolant-chart-title">引擎與兩種液體的溫度變化比較</title>
-                      <desc id="coolant-chart-description">溫度對時間的定性示意。引擎溫度維持較高。比熱較小的液體升溫較快，很快接近引擎溫度；比熱較大的液體升溫較慢，較久維持溫差。圖中引擎線與比熱較大液體線之間的距離代表溫差。</desc>
-                      <defs>
-                        <marker id="coolant-chart-axis-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#315b3b"/></marker>
-                        <marker id="coolant-chart-gap-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#328c68"/></marker>
-                      </defs>
-                      <path class="coolant-chart-axis" d="M92 365V54M92 365H958" marker-start="none" marker-end="url(#coolant-chart-axis-arrow)"/>
-                      <path class="coolant-chart-engine" d="M100 86H930"/>
-                      <path class="coolant-chart-low-cp" d="M100 350C132 215 184 123 315 101C470 78 660 85 930 85"/>
-                      <path class="coolant-chart-high-cp" d="M100 350C148 292 232 261 344 237C506 202 695 184 930 171"/>
-                      <path class="coolant-chart-gap" d="M866 91V166" marker-start="url(#coolant-chart-gap-arrow)" marker-end="url(#coolant-chart-gap-arrow)"/>
-                    </svg>
-                    <div class="coolant-chart-legend" role="group" aria-label="曲線圖圖例">
-                      <span><i class="coolant-chart-key-engine" aria-hidden="true"></i>引擎</span>
-                      <span><i class="coolant-chart-key-high" aria-hidden="true"></i>比熱較大：溫差維持較久</span>
-                      <span><i class="coolant-chart-key-low" aria-hidden="true"></i>比熱較小：溫差很快縮小</span>
-                    </div>
-                    <div class="coolant-gap-callouts"><span>溫差大 → 持續吸熱</span><span>溫差縮小 → 熱傳變慢</span></div>
-                  </section>
-                  <div class="coolant-key"><p>升溫慢、溫差維持久，才能持續吸熱帶走引擎的熱。</p></div>
-                  <p class="life-note">場景為 AI 生成，循環為示意。冷卻液通常是水與防凍液的混合液，實際效果也受循環與散熱條件影響。</p>
+                  <p class="life-note">場景為 AI 生成，循環與顏色為示意。冷卻液通常是水與防凍液的混合液，實際效果也受循環與散熱條件影響。</p>
                 </section>
               </div>
             </div>

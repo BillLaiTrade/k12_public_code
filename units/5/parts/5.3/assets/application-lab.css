@@ -299,3 +299,47 @@
 #application-lab .coolant-legend{gap:4px 18px}
 #application-lab .coolant-legend b{font-size:1.15em;line-height:1;color:#087e43}
 #application-lab .coolant-legend span:last-child b{color:#d97809}
+
+/* 汽車冷卻液：左側保留實際引擎室照片，右側依序呈現循環與比熱比較。 */
+#application-lab #application-coolant .coolant-workbench{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:14px;align-items:stretch}
+#application-lab #application-coolant .coolant-photo-column{display:flex;min-width:0;flex-direction:column;align-items:stretch}
+#application-lab #application-coolant .coolant-photo-column .life-photo{width:100%;height:auto;aspect-ratio:1;margin:0}
+#application-lab #application-coolant .coolant-photo-column .life-photo>img{width:100%;height:100%;object-fit:contain}
+#application-lab #application-coolant .coolant-photo-caption{margin:7px 2px 0;color:#526c58;font-size:1rem;line-height:1.45}
+#application-lab #application-coolant .coolant-key{margin:10px 0 0;padding:10px 12px;border-left:3px solid #e78213;background:#fff5e7}
+#application-lab #application-coolant .coolant-key p{font-size:1rem;font-weight:700;line-height:1.45}
+#application-lab #application-coolant .life-coolant-model{display:grid;align-content:start;gap:10px;min-width:0;height:auto;padding:0;border:0;background:transparent}
+#application-lab #application-coolant .coolant-loop-card,#application-lab #application-coolant .coolant-compare{min-width:0;margin:0;padding:10px 12px;border:1px solid #cbdcc8;border-radius:14px;background:#fffefa}
+#application-lab #application-coolant .coolant-loop-card{display:grid;align-content:start;gap:6px}
+#application-lab #application-coolant .coolant-labels span{font-size:1rem;line-height:1.3}
+#application-lab #application-coolant .coolant-loop-diagram{display:block;width:100%;height:auto;max-width:580px;margin:0 auto;overflow:visible}
+#application-lab #application-coolant .coolant-mobile-flow{display:none}
+#application-lab #application-coolant .coolant-legend{justify-content:center;gap:4px 14px;margin:0;font-size:1rem;line-height:1.35}
+#application-lab #application-coolant .coolant-flow-controls{justify-content:center;margin:0}
+#application-lab #application-coolant .coolant-temperature-key{justify-content:center;font-size:1rem}
+#application-lab #application-coolant .coolant-compare h3{width:auto;max-width:none;margin:0 0 4px;padding:5px 8px;border-radius:10px;background:#e8eee0;text-align:center;font-size:1.2rem;line-height:1.35}
+#application-lab #application-coolant .coolant-chart-axis-labels{margin:0 4px;font-size:1rem;line-height:1.35}
+#application-lab #application-coolant .coolant-temp-chart{width:100%;height:auto;margin:0}
+#application-lab #application-coolant .coolant-chart-axis{stroke-width:4}
+#application-lab #application-coolant .coolant-chart-engine,#application-lab #application-coolant .coolant-chart-low-cp,#application-lab #application-coolant .coolant-chart-high-cp{stroke-width:5}
+#application-lab #application-coolant .coolant-chart-gap{stroke-width:3}
+#application-lab #application-coolant .coolant-chart-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:6px;margin:2px 0 0;font-size:1rem;line-height:1.35}
+#application-lab #application-coolant .coolant-chart-legend>span{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:start;gap:5px}
+#application-lab #application-coolant .coolant-chart-legend>span>span{display:grid;gap:2px}
+#application-lab #application-coolant .coolant-chart-legend i{width:18px;height:3px;margin-top:9px}
+#application-lab #application-coolant .coolant-chart-legend strong{font-size:1rem;line-height:1.35}
+#application-lab #application-coolant .coolant-chart-legend small{font-size:1rem;line-height:1.35}
+#application-lab #application-coolant>.life-note{margin:10px 0 0;padding:8px 12px;border-radius:10px;background:#e6efdf;text-align:center;font-size:.9rem;line-height:1.45}
+@media(max-width:760px){
+  #application-lab #application-coolant .coolant-workbench{grid-template-columns:minmax(0,1fr);gap:12px}
+  #application-lab #application-coolant .coolant-photo-column{max-width:520px;width:100%;margin:0 auto}
+  #application-lab #application-coolant .coolant-photo-column .life-photo{aspect-ratio:1}
+  #application-lab #application-coolant .life-coolant-model{gap:10px}
+  #application-lab #application-coolant .coolant-loop-card,#application-lab #application-coolant .coolant-compare{padding:10px}
+  #application-lab #application-coolant .coolant-chart-legend{gap:6px}
+}
+@media(max-width:430px){
+  #application-lab #application-coolant .coolant-chart-legend{grid-template-columns:1fr;gap:4px}
+  #application-lab #application-coolant .coolant-chart-legend>span{grid-template-columns:22px minmax(0,1fr)}
+  #application-lab #application-coolant .coolant-labels span{font-size:.95rem}
+}

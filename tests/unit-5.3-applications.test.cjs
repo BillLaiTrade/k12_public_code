@@ -68,11 +68,13 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.equal(await p.locator('[data-coolant-stage]').count(),0);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/由引擎流向散熱器，再流回引擎/);
     assert.match(await p.locator('#coolant-loop-desc').textContent(),/引擎內吸熱由藍轉黃/);
-    assert.equal((await p.locator('#coolant-compare-title').textContent()).trim(),'為什麼比熱大，能持續帶走引擎的熱？');
+    assert.equal((await p.locator('#coolant-compare-title').textContent()).trim(),'為什麼選用比熱較大的冷卻液？');
     assert.match(await p.locator('#coolant-chart-description').textContent(),/比熱較小的液體升溫較快.*比熱較大的液體升溫較慢.*代表溫差/);
-    assert.match(await p.locator('.coolant-chart-legend').innerText(),/引擎[\s\S]*比熱較大：溫差維持較久[\s\S]*比熱較小：溫差很快縮小/);
-    assert.match(await p.locator('.coolant-gap-callouts').innerText(),/溫差大 → 持續吸熱[\s\S]*溫差縮小 → 熱傳變慢/);
-    assert.match(await p.locator('.coolant-key').textContent(),/升溫慢、溫差維持久，才能持續吸熱帶走引擎的熱/);
+    assert.deepEqual(await p.locator('.coolant-chart-legend strong').allTextContents(),['引擎溫度','比熱較小','比熱較大']);
+    assert.deepEqual(await p.locator('.coolant-chart-legend small').allTextContents(),['高溫參考線','溫差快縮小','溫差維持久']);
+    assert.match(await p.locator('.coolant-key').textContent(),/比熱較大，升溫較慢、溫差維持較久，才能持續吸收引擎的熱/);
+    assert.equal(await p.locator('.coolant-photo-column .coolant-key').count(),1);
+    assert.equal(await p.locator('.life-coolant-model > .coolant-compare').count(),1);
     const curveRelation=await p.locator('.coolant-temp-chart').evaluate(svg=>{
       const point=(selector,ratio)=>{const path=svg.querySelector(selector),length=path.getTotalLength(),value=path.getPointAtLength(length*ratio);return{x:value.x,y:value.y}};
       const engine=point('.coolant-chart-engine',.9).y;
@@ -201,7 +203,7 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
       await p.setViewportSize({width,height});
       for(const key of ['chestnut','coast','coolant']){
         await choose(key);
-        const data=await p.locator('#application-'+key).evaluate(n=>({overflow:document.documentElement.scrollWidth>innerWidth,clipped:[...n.querySelectorAll('.life-temperatures strong,.life-energy strong,.life-bar-row strong')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.textContent),fonts:[...n.querySelectorAll('h3,.life-reading,.coolant-key p,.coolant-chart-axis-labels,.coolant-chart-legend span,.coolant-gap-callouts span')].map(e=>parseFloat(getComputedStyle(e).fontSize)),hotspots:[...n.querySelectorAll('[data-coolant-stage]')].map(e=>{const r=e.getBoundingClientRect(),b=e.closest('.life-coolant-model').getBoundingClientRect();return{w:r.width,h:r.height,inside:r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom};}),topDifference:(()=>{const columns=n.querySelectorAll('.life-workbench>div');return columns.length===2?Math.abs(columns[0].getBoundingClientRect().top-columns[1].getBoundingClientRect().top):0;})(),heightDifference:(()=>{const photo=n.querySelector('.life-photo'),panel=n.querySelector('.life-coolant-model');return photo&&panel?Math.abs(photo.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})(),coastHeightDifference:(()=>{const columns=n.querySelector('.coast-workbench'),left=columns?.children[0],panel=columns?.children[1];return left&&panel?Math.abs(left.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})()}));
+      const data=await p.locator('#application-'+key).evaluate(n=>({overflow:document.documentElement.scrollWidth>innerWidth,clipped:[...n.querySelectorAll('.life-temperatures strong,.life-energy strong,.life-bar-row strong')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.textContent),fonts:[...n.querySelectorAll('h3,.life-reading,.coolant-key p,.coolant-chart-axis-labels,.coolant-chart-legend strong,.coolant-chart-legend small')].map(e=>parseFloat(getComputedStyle(e).fontSize)),hotspots:[...n.querySelectorAll('[data-coolant-stage]')].map(e=>{const r=e.getBoundingClientRect(),b=e.closest('.life-coolant-model').getBoundingClientRect();return{w:r.width,h:r.height,inside:r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom};}),topDifference:(()=>{const columns=n.querySelectorAll('.life-workbench>div');return columns.length===2?Math.abs(columns[0].getBoundingClientRect().top-columns[1].getBoundingClientRect().top):0;})(),heightDifference:(()=>{const photo=n.querySelector('.life-photo'),panel=n.querySelector('.life-coolant-model');return photo&&panel?Math.abs(photo.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})(),coastHeightDifference:(()=>{const columns=n.querySelector('.coast-workbench'),left=columns?.children[0],panel=columns?.children[1];return left&&panel?Math.abs(left.getBoundingClientRect().height-panel.getBoundingClientRect().height):0;})()}));
         layouts.push({width,height,key,...data});assert.equal(data.overflow,false,`${width} ${key} page overflow`);assert.deepEqual(data.clipped,[],`${width} ${key} clipped`);assert.ok(data.fonts.every(s=>s>=16));if(width>=1280&&key!=='body')assert.ok(data.topDifference<1,`${width} ${key} columns misaligned`);if(width>=1280&&key==='coast')assert.ok(data.coastHeightDifference<2,`${width} coast columns unbalanced: ${data.coastHeightDifference}`);
         data.hotspots.forEach(h=>{assert.ok(h.w>=44&&h.h>=44);assert.equal(h.inside,true,`${width} hotspot cropped`);});
         if(width===320)await capture(key+'-320');
