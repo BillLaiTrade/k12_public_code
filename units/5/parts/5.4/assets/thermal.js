@@ -159,14 +159,16 @@ function renderThermo(){
 function setThermo(value){thermoTemp=Math.max(5,Math.min(80,Math.round(Number(value)*10)/10));renderThermo();}
 $('thermo-range').addEventListener('input',e=>setThermo(e.target.value));
 $('thermo-minus').onclick=()=>setThermo(thermoTemp-1);$('thermo-plus').onclick=()=>setThermo(thermoTemp+1);
-let chemProgress=0,chem3d=null;
+let chemProgress=0,chem3d=null,chemOperation='heat',chemPaused=false,chemSettling=false;
+const initialChemScene=()=>({white:0,cover:0,burner:0,flame:0,pipe:0,condensation:0,drop:0,out:0,release:0,arrival:0});
+let chemScene=initialChemScene();
 const chemUnit=x=>Math.max(0,Math.min(1,x));
 const chemEase=x=>{const t=chemUnit(x);return t*t*(3-2*t);};
 const chemMix=(a,b,t)=>a+(b-a)*t;
 // One enlarged local coordination environment: four coordinated waters, two axial sulfate oxygens, and one interstitial lattice water.
 const chemHydrationWater=[[356,276],[544,276],[371,370],[529,370],[535,140]];
 // Exit/entry points lie beyond the microscopic viewport. Incoming particles are distinct.
-const chemVaporWater=[[-130,80],[-130,270],[1030,80],[1030,270],[1030,400]];
+const chemVaporWater=[[80,80],[80,270],[820,80],[820,270],[820,400]];
 const waterAngles=[-12,12,-28,28,35],waterScales=[1.05,1.05,1,1,1];
 function crystalSulfate(x,y,rotate=0,opacity=1){return `<g class="chem-sulfate-unit" transform="translate(${x} ${y}) rotate(${rotate})" opacity="${opacity}"><path class="chem-tetra-face" d="M0 0L-55 -42L0 -64Z M0 0L55 -42L0 -64Z M0 0L0 48L-55 -42Z M0 0L0 48L55 -42Z"/><path class="chem-sulfate-bond" d="M0 0L0 -64M0 0L55 -42M0 0L0 48M0 0L-55 -42"/><circle class="chem-s" r="17"/><circle class="chem-o" cx="0" cy="-64" r="11"/><circle class="chem-o chem-axial-o" cx="55" cy="-42" r="11"/><circle class="chem-o" cy="48" r="11"/><circle class="chem-o" cx="-55" cy="-42" r="11"/></g>`;}
 function crystalWater(id,x,y,rotation=0,scale=1){return `<g class="chem-water-particle" id="chem-water-${id}" transform="translate(${x} ${y}) rotate(${rotation}) scale(${scale})"><path class="chem-water-bond" d="M0 0L-18 -17M0 0L18 -17"/><circle class="chem-o" r="14"/><circle class="chem-h" cx="-18" cy="-17" r="8"/><circle class="chem-h" cx="18" cy="-17" r="8"/></g>`;}
@@ -185,11 +187,11 @@ import('./chem-crystal-3d.mjs?v=20261112').then(({createCrystalScene})=>{try{che
 function renderChemCrystalModel(white,heating,rehydration){
  const svg=$('chem-crystal-model'),hydration=1-white,phase=white<.18?'hydrate':white<.82?'transition':'anhydrous',p=chemEase(white);
  $('chem-sulfate-upper').setAttribute('transform',`translate(0 ${(40*p).toFixed(2)})`);$('chem-sulfate-lower').setAttribute('transform',`translate(0 ${(-40*p).toFixed(2)})`);$('chem-axial-bonds').setAttribute('d',`M450 266L450 ${(198+40*p).toFixed(2)}M450 338L450 ${(397-40*p).toFixed(2)}`);$('chem-hydrate-shell').setAttribute('opacity',String(1-chemEase(p/.2)));
- const returning=chemProgress*34>=25;
- $('chem-model-phase-title').textContent=phase==='hydrate'?'含水硫酸銅晶體':phase==='transition'?(returning?'新加入的水進入晶體':'結晶水逐漸離開'):'無水硫酸銅晶體';
+ const returning=chemOperation==='water'&&chemScene.arrival>0;const waitingForWater=chemOperation==='water'&&chemScene.arrival<=0&&chemScene.release>=1;
+ $('chem-model-phase-title').textContent=phase==='hydrate'?'含水硫酸銅晶體':phase==='transition'?(returning?'新加入的水進入晶體':waitingForWater?'等待加水':'結晶水逐漸離開'):'無水硫酸銅晶體';
  document.querySelector('.chem-neighbor-haze').style.opacity=String(.35*(1-p));
  const labelOpacity=1-chemEase(p/.08);document.querySelector('.chem-callouts').setAttribute('opacity',String(labelOpacity));$('chem-3d-hbond').setAttribute('opacity',String(labelOpacity));
- $('chem-model-equation').textContent=phase==='hydrate'?'晶體中的粒子':phase==='transition'?(returning?'新加入的水分子進入晶體':'結晶水逐漸離開晶體'):'無水硫酸銅晶體';
+ $('chem-model-equation').textContent=phase==='hydrate'?'晶體中的粒子':phase==='transition'?(returning?'新加入的水分子進入晶體':waitingForWater?'等待加水':'結晶水逐漸離開晶體'):'無水硫酸銅晶體';
  const released=chemEase(heating),entered=chemEase(rehydration);
  $('chem-outgoing-waters').setAttribute('opacity',rehydration>0||heating>=1?'0':'1');$('chem-incoming-waters').setAttribute('opacity',rehydration>0?'1':'0');
  chemHydrationWater.forEach(([sx,sy],i)=>{const [vx,vy]=chemVaporWater[i],pose=(x,y)=>`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${waterAngles[i]}) scale(${waterScales[i]})`;
@@ -199,48 +201,63 @@ function renderChemCrystalModel(white,heating,rehydration){
  if(chem3d)chem3d.update(white,heating,rehydration);
  svg.dataset.heating=heating.toFixed(3);svg.dataset.rehydration=rehydration.toFixed(3);
  svg.dataset.hydration=hydration.toFixed(3);svg.dataset.dehydration=white.toFixed(3);svg.dataset.latticeShift=(40*p).toFixed(2);svg.dataset.activePhase=phase;
- svg.setAttribute('aria-label',`含水硫酸銅局部立體結構示意：中央銅離子周圍連接水分子與硫酸根離子；受熱脫水時水分子逐漸離開視野；加水時新加入的水分子進入晶體。${phase==='hydrate'?'目前為含水晶體。':phase==='transition'?(returning?'目前水分子正在進入晶體。':'目前水分子正在離開晶體。'):'目前為無水晶體，脫出的水分子已離開視野。'}`);
+ svg.setAttribute('aria-label',`含水硫酸銅局部立體結構示意：中央銅離子周圍連接水分子與硫酸根離子；受熱脫水時水分子逐漸離開視野；加水時新加入的水分子進入晶體。${phase==='hydrate'?'目前為含水晶體。':phase==='transition'?(returning?'目前水分子正在進入晶體。':waitingForWater?'目前等待加水。':'目前水分子正在離開晶體。'):'目前為無水晶體，脫出的水分子已離開視野。'}`);
 }
 function renderChem(){
- const lab=$('chem-lab'),playing=animations.has('chem-lab'),t=chemProgress*34;
- const heating=chemEase((t-7)/8),hydration=chemEase((t-25)/6),white=heating*(1-hydration);
- const entering=chemEase((t-2)/3),leaving=chemEase((t-16)/2);
- const burnerX=chemMix(1450,500,entering)+950*leaving;
- const pipetteIn=chemEase((t-19)/3),pipetteOut=chemEase((t-31)/2);
- const coverLift=chemEase((t-19)/2);
- const pipeX=chemMix(1450,633,pipetteIn)+817*pipetteOut,pipeY=chemMix(-80,110,pipetteIn)-190*pipetteOut;
- const flame=t>=5&&t<16?Math.min(1,(t-5)*2,(16-t)*2):0;
- const flicker=Math.sin(t*13)*7+Math.sin(t*21)*4;
+ const lab=$('chem-lab'),playing=animations.has('chem-lab'),white=chemScene.white,coverLift=chemScene.cover;
+ const heating=chemScene.release,hydration=chemScene.arrival;
+ const burnerX=chemMix(1450,500,chemScene.burner),pipeX=chemMix(1450,633,chemScene.pipe),pipeY=chemMix(-80,110,chemScene.pipe);
+ const flicker=Math.sin(chemProgress*180)*7+Math.sin(chemProgress*260)*4;
  $('chem-burner').setAttribute('transform',`translate(${burnerX} 665)`);
  $('chem-open-scene').setAttribute('opacity','1');$('chem-covered-scene').setAttribute('opacity',String(1-chemEase(coverLift/.025)));$('chem-moving-cover').setAttribute('opacity',String(chemEase(coverLift/.025)*(1-chemEase((coverLift-.8)/.2))));$('chem-moving-cover').setAttribute('transform',`translate(0 ${-900*coverLift})`);$('chem-moving-rim').setAttribute('opacity',$('chem-moving-cover').getAttribute('opacity'));$('chem-moving-rim').setAttribute('transform',`translate(0 ${-900*coverLift})`);
- const pipeTilt=2*chemEase((t-21.5)/1.5)-2*chemEase((t-24)/1.5);
+ const pipeTilt=chemOperation==='water'?2*chemEase((chemProgress-.31)/.05)*(1-chemEase((chemProgress-.49)/.05)):0;
  $('chem-pipette-object').setAttribute('transform',`translate(${pipeX} ${pipeY}) translate(87 271) rotate(${pipeTilt}) translate(-87 -271)`);
- $('chem-flame').setAttribute('opacity',String(flame));
- $('chem-flame').setAttribute('d',`M192 18 Q${160-flicker} -32 218 ${-60-flicker} Q${276+flicker} -32 240 18 Z`);
- const falling=t>=23&&t<24.4,fall=chemUnit((t-23)/1.4);
- $('chem-droplet').setAttribute('opacity',falling?'1':'0');$('chem-droplet').setAttribute('cy',String(385+fall*125));
- $('chem-condensation').setAttribute('opacity',String(chemEase((t-9)/5)*(1-coverLift)));$('chem-condensation').setAttribute('transform',`translate(0 ${-900*coverLift})`);
- const radius=white*145;document.querySelectorAll('#chem-mask-spots circle').forEach((c,i)=>c.setAttribute('r',String(radius*chemUnit((white*2.1-i*.10)))));
- $('chem-mask-complete').setAttribute('opacity',String(chemEase((white-.86)/.14)));
- renderChemCrystalModel(white,heating,hydration);
- const heatOut=chemEase((t-25)/1.5)*(1-chemEase((t-31)/2));
- $('chem-arrow-out').setAttribute('opacity',String(heatOut));
- lab.style.setProperty('--chem-out',heatOut);
- const stage=t<5?0:t<18?1:t<25?2:3;
- const notes=['藍色含水硫酸銅晶體。','加熱時水逐步離開晶體，脫水反應吸熱。','停止加熱，樣品冷卻後加入水。','水進入晶體形成含水硫酸銅，反應放熱。'];
- let modelTitle='含水硫酸銅',modelFormula='晶體中的粒子';
- if(t>=7&&t<18){modelTitle='吸熱脫水';modelFormula='水逐步離開晶體';}
- else if(t>=18&&t<25){modelTitle='無水硫酸銅＋水';modelFormula='脫水後生成無水硫酸銅與水';}
- else if(t>=25&&t<32){modelTitle='放熱水合';modelFormula='水重新進入晶體';}
- lab.dataset.stage=String(stage);lab.dataset.progress=String(chemProgress);lab.dataset.playing=String(playing);
- lab.dataset.white=white.toFixed(3);lab.dataset.burnerX=burnerX.toFixed(1);lab.dataset.pipeX=pipeX.toFixed(1);
- write('chem-stage-title',modelTitle);write('chem-material','晶體局部示意；排列與移動路徑已簡化。');write('chem-equation',modelFormula);
- $('chem-progress-fill').style.width=(chemProgress*100)+'%';$('chem-progress').setAttribute('aria-valuenow',String(Math.round(chemProgress*100)));
- write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${modelTitle}`);write('chem-note',notes[stage]);
- write('chem-play',playing?'暫停觀察':chemProgress>=1?'再次觀察':chemProgress>0?'繼續觀察':'開始觀察');
+ $('chem-flame').setAttribute('opacity',String(chemScene.flame));$('chem-flame').setAttribute('d',`M192 18 Q${160-flicker} -32 218 ${-60-flicker} Q${276+flicker} -32 240 18 Z`);
+ $('chem-droplet').setAttribute('opacity',chemScene.drop>0&&chemScene.drop<1?'1':'0');$('chem-droplet').setAttribute('cy',String(385+chemScene.drop*125));
+ $('chem-condensation').setAttribute('opacity',String(chemScene.condensation*(1-coverLift)));$('chem-condensation').setAttribute('transform',`translate(0 ${-900*coverLift})`);
+ const radius=white*145;document.querySelectorAll('#chem-mask-spots circle').forEach((c,i)=>c.setAttribute('r',String(radius*chemUnit(white*2.1-i*.10))));$('chem-mask-complete').setAttribute('opacity',String(chemEase((white-.86)/.14)));
+ renderChemCrystalModel(white,heating,hydration);$('chem-arrow-out').setAttribute('opacity',String(chemScene.out));lab.style.setProperty('--chem-out',chemScene.out);
+ const state=white<=.001?'hydrate':white>=.999?'anhydrous':'transition';
+ const stage=state==='anhydrous'?2:state==='hydrate'?0:chemOperation==='heat'?1:3;
+ Object.assign(lab.dataset,{stage:String(stage),progress:String(chemProgress),playing:String(playing),operation:chemOperation,state,white:white.toFixed(3),burnerX:burnerX.toFixed(1),pipeX:pipeX.toFixed(1)});
+ write('chem-stage-title',state==='hydrate'?'含水硫酸銅':state==='anhydrous'?'無水硫酸銅':'物質正在轉變');
+ write('chem-material','晶體局部示意；排列與移動路徑已簡化。');write('chem-equation',state==='hydrate'?'含水硫酸銅':state==='anhydrous'?'無水硫酸銅':'晶體結構正在改變');
+ write('chem-state-label',state==='hydrate'?'目前物質：藍色含水硫酸銅':state==='anhydrous'?'目前物質：白色無水硫酸銅':'物質正在轉變');
+ const note=playing?(chemSettling?'停止目前操作，樣品狀態沒有改變。':chemOperation==='heat'?(chemProgress<.30?'準備加熱，觀察晶體中的水分子。':'加熱中：結晶水離開，藍色固體逐漸變白。'):chemProgress<.25?'停止加熱並等待樣品冷卻，移開玻璃罩。':chemProgress<.46?'準備加入水，觀察固體的變化。':'加水中：水進入晶體，白色固體逐漸變藍。'):chemPaused?'觀察已暫停；選擇加熱或加水繼續。':state==='hydrate'?'選擇加熱，觀察樣品與晶體中的水分子。':state==='anhydrous'?'樣品已變成白色無水硫酸銅；選擇加水繼續觀察。':'選擇加熱或加水，繼續觀察樣品。';
+ write('chem-note',note);$('chem-heat').dataset.active=String(playing&&chemOperation==='heat'&&!chemSettling);$('chem-water').dataset.active=String(playing&&chemOperation==='water'&&!chemSettling);
 }
-$('chem-play').onclick=()=>{if(animations.has('chem-lab')){stop('chem-lab');return;}if(chemProgress>=1)chemProgress=0;const initial=chemProgress;run('chem-lab',34000*(1-initial),p=>{chemProgress=initial+(1-initial)*p;renderChem();},renderChem);renderChem();};
-$('chem-reset').onclick=()=>{stop('chem-lab');chemProgress=0;renderChem();};
+function chooseChem(operation){
+ const running=animations.has('chem-lab');
+ if(running&&chemOperation===operation)return;
+ if(running)stop('chem-lab');
+ const target=operation==='heat'?1:0;
+ const noChange=operation==='heat'?'在本示意中，樣品已是無水硫酸銅，繼續加熱不會再產生這個變化。':'在本示意中，樣品已是含水硫酸銅，加水不會再產生這個變化。';
+ if(Math.abs(chemScene.white-target)<.001){
+  if(!running){write('chem-note',noChange);return;}
+  // If an opposite action was interrupted before any reaction, put away its apparatus without applying a new reaction.
+  const start={...chemScene},coverTarget=start.cover<.5?0:1;chemOperation=operation;chemProgress=0;chemPaused=false;chemSettling=true;
+  run('chem-lab',1200,p=>{const q=chemEase(p);chemProgress=p;chemScene.cover=chemMix(start.cover,coverTarget,q);chemScene.burner=chemMix(start.burner,0,q);chemScene.flame=chemMix(start.flame,0,q);chemScene.pipe=chemMix(start.pipe,0,q);chemScene.condensation=chemMix(start.condensation,coverTarget?0:start.condensation,q);chemScene.drop=0;chemScene.out=chemMix(start.out,0,q);renderChem();},completed=>{chemPaused=!completed;chemSettling=false;if(completed){chemScene.cover=coverTarget;chemScene.burner=0;chemScene.flame=0;chemScene.pipe=0;chemScene.drop=0;chemScene.out=0;}renderChem();if(completed)write('chem-note',noChange);});
+  renderChem();return;
+ }
+ if(operation==='heat'&&chemOperation==='water'&&chemScene.arrival>0){chemScene.release=1-chemScene.arrival;chemScene.arrival=0;}
+ const start={...chemScene};chemOperation=operation;chemPaused=false;chemProgress=0;
+ run('chem-lab',operation==='heat'?9000:8000,p=>{
+  chemProgress=p;
+  if(operation==='heat'){
+   const prepare=chemEase(p/.18),arrival=chemEase((p-.08)/.17),leave=chemEase((p-.83)/.17),reaction=chemEase((p-.30)/.45);
+   chemScene.cover=chemMix(start.cover,0,prepare);chemScene.pipe=chemMix(start.pipe,0,prepare);chemScene.burner=chemMix(start.burner,1,arrival)*(1-leave);
+   chemScene.flame=chemMix(start.flame,1,chemEase((p-.22)/.08))*(1-chemEase((p-.8)/.1));chemScene.white=chemMix(start.white,1,reaction);chemScene.release=chemMix(start.release,1,reaction);chemScene.arrival=0;chemScene.condensation=chemMix(start.condensation,1,reaction);chemScene.drop=0;chemScene.out=0;
+  }else{
+   const open=chemEase(p/.23),pipeIn=chemEase((p-.12)/.22),pipeOut=chemEase((p-.83)/.17),reaction=chemEase((p-.46)/.32);
+   chemScene.cover=chemMix(start.cover,1,open);chemScene.condensation=chemMix(start.condensation,0,open);chemScene.burner=chemMix(start.burner,0,chemEase(p/.1));chemScene.flame=chemMix(start.flame,0,chemEase(p/.07));
+   chemScene.pipe=chemMix(start.pipe,1,pipeIn)*(1-pipeOut);chemScene.drop=p>=.35&&p<.47?chemUnit((p-.35)/.12):0;chemScene.white=chemMix(start.white,0,reaction);chemScene.release=start.arrival>0?1:chemMix(start.release,1,chemEase(p/.38));chemScene.arrival=chemMix(start.arrival,1,reaction);chemScene.out=chemEase((p-.48)/.08)*(1-chemEase((p-.83)/.17));
+  }
+  renderChem();
+ },completed=>{chemPaused=!completed;if(completed){chemScene.white=target;chemScene.burner=0;chemScene.flame=0;chemScene.pipe=0;chemScene.drop=0;chemScene.out=0;chemScene.cover=operation==='heat'?0:1;chemScene.condensation=operation==='heat'?1:0;chemScene.release=1;chemScene.arrival=operation==='water'?1:0;}renderChem();});
+ renderChem();
+}
+$('chem-heat').onclick=()=>chooseChem('heat');$('chem-water').onclick=()=>chooseChem('water');
+$('chem-reset').onclick=()=>{stop('chem-lab');chemScene=initialChemScene();chemOperation='heat';chemProgress=0;chemPaused=false;chemSettling=false;renderChem();};
 // One end-of-lesson assessment; answers persist between observation points.
 let quizIndex=0,answers=Array(QUIZ.length).fill(null);
 function clearQuizResult(){$('quiz-feedback').hidden=true;$('quiz-result').hidden=true;}

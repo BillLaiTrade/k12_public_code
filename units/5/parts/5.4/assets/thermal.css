@@ -633,3 +633,17 @@
 
 #chem-3d-hbond{display:none;fill:none;stroke:#555;stroke-width:2.4;stroke-dasharray:6 6}.has-crystal-3d #chem-3d-hbond{display:block}
 @media(max-width:380px){.chem-model-legend{gap:5px;padding:6px 4px;font-size:.72rem}.chem-model-legend span{gap:3px;white-space:nowrap}.chem-model-legend i,.chem-model-legend .key-cu,.chem-model-legend .key-sulfate,.chem-model-legend .key-water{width:22px;height:22px}}
+/* The learner chooses an operation; the sample keeps its current state. */
+.chem-observation-controls{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 16px;margin:0 0 14px}
+.chem-control-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;color:#285b39}
+.chem-control-heading strong{font-size:1rem}.chem-control-heading span{font-size:.88rem;color:#536755}
+.chem-controls button{min-height:42px;min-width:78px;font-size:.96rem}
+.chem-controls .chem-heat-button{background:#a94d1b;border-color:#a94d1b;color:#fff}
+.chem-controls .chem-water-button{background:#176c93;border-color:#176c93;color:#fff}
+.chem-controls button:disabled{opacity:.55;cursor:wait}
+#chem-note{flex-basis:100%;font-size:.9rem}
+@media(max-width:760px){.chem-observation-controls{display:flex}.chem-control-heading{width:100%}.chem-controls{width:100%}.chem-controls button:first-child{flex:1}.chem-controls #chem-reset{flex:.75}}
+
+.chem-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.chem-controls button{min-width:0;width:100%}
+
+.chem-controls button[data-active="true"]{outline:3px solid #e0a96c;outline-offset:2px}
