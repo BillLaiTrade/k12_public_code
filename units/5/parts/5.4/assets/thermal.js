@@ -159,35 +159,47 @@ function renderThermo(){
 function setThermo(value){thermoTemp=Math.max(5,Math.min(80,Math.round(Number(value)*10)/10));renderThermo();}
 $('thermo-range').addEventListener('input',e=>setThermo(e.target.value));
 $('thermo-minus').onclick=()=>setThermo(thermoTemp-1);$('thermo-plus').onclick=()=>setThermo(thermoTemp+1);
-let chemProgress=0;
+let chemProgress=0,chem3d=null;
 const chemUnit=x=>Math.max(0,Math.min(1,x));
 const chemEase=x=>{const t=chemUnit(x);return t*t*(3-2*t);};
 const chemMix=(a,b,t)=>a+(b-a)*t;
 // One enlarged local coordination environment: four coordinated waters, two axial sulfate oxygens, and one interstitial lattice water.
 const chemHydrationWater=[[356,276],[544,276],[371,370],[529,370],[535,140]];
-const chemVaporWater=[[218,108],[356,82],[536,88],[681,108],[720,176]];
+// Exit/entry points lie beyond the microscopic viewport. Incoming particles are distinct.
+const chemVaporWater=[[-130,80],[-130,270],[1030,80],[1030,270],[1030,400]];
 const waterAngles=[-12,12,-28,28,35],waterScales=[1.05,1.05,1,1,1];
 function crystalSulfate(x,y,rotate=0,opacity=1){return `<g class="chem-sulfate-unit" transform="translate(${x} ${y}) rotate(${rotate})" opacity="${opacity}"><path class="chem-tetra-face" d="M0 0L-55 -42L0 -64Z M0 0L55 -42L0 -64Z M0 0L0 48L-55 -42Z M0 0L0 48L55 -42Z"/><path class="chem-sulfate-bond" d="M0 0L0 -64M0 0L55 -42M0 0L0 48M0 0L-55 -42"/><circle class="chem-s" r="17"/><circle class="chem-o" cx="0" cy="-64" r="11"/><circle class="chem-o chem-axial-o" cx="55" cy="-42" r="11"/><circle class="chem-o" cy="48" r="11"/><circle class="chem-o" cx="-55" cy="-42" r="11"/></g>`;}
 function crystalWater(id,x,y,rotation=0,scale=1){return `<g class="chem-water-particle" id="chem-water-${id}" transform="translate(${x} ${y}) rotate(${rotation}) scale(${scale})"><path class="chem-water-bond" d="M0 0L-18 -17M0 0L18 -17"/><circle class="chem-o" r="14"/><circle class="chem-h" cx="-18" cy="-17" r="8"/><circle class="chem-h" cx="18" cy="-17" r="8"/></g>`;}
 function copperParticle(x,y){return `<circle class="chem-cu" cx="${x}" cy="${y}" r="39"/>`;}
 function buildChemCrystalModel(){
  const svg=$('chem-crystal-model');
- const sulfatePair=crystalSulfate(450,151,0,.84)+crystalSulfate(450,461,0,.88);
+ const sulfatePair=`<g id="chem-sulfate-upper">${crystalSulfate(450,151,0,.84)}</g><g id="chem-sulfate-lower">${crystalSulfate(450,461,0,.88)}</g>`;
  const neighbors=`<g class="chem-neighbor-haze">${crystalSulfate(126,244,12,.25)}${crystalSulfate(774,337,-18,.25)}<path d="M148 244L249 276M650 330L752 337"/></g>`;
- const shell=`<g id="chem-hydrate-shell"><path class="chem-coordination chem-axial-bond" d="M450 266L450 198M450 338L450 397"/><path class="chem-coordination" d="M423 284L356 276M477 284L544 276M430 321L371 370M470 321L529 370"/><path class="chem-hbond" d="M535 140L505 109"/></g>`;
+ const shell=`<path id="chem-axial-bonds" class="chem-coordination chem-axial-bond" d="M450 266L450 198M450 338L450 397"/><g id="chem-hydrate-shell"><path class="chem-coordination" d="M423 284L356 276M477 284L544 276M430 321L371 370M470 321L529 370"/><path class="chem-hbond" d="M535 140L505 109"/></g>`;
  const waters=chemHydrationWater.map(([x,y],i)=>crystalWater(i+1,x,y,waterAngles[i],waterScales[i])).join('');
- svg.innerHTML=`<defs><linearGradient id="chem-model-wash" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffefa"/><stop offset="1" stop-color="#edf4eb"/></linearGradient><radialGradient id="chem-cu-shine" cx="28%" cy="22%"><stop stop-color="#d5f2ff"/><stop offset=".28" stop-color="#4db9ed"/><stop offset=".68" stop-color="#1678bd"/><stop offset="1" stop-color="#074e87"/></radialGradient><radialGradient id="chem-s-shine" cx="28%" cy="24%"><stop stop-color="#fff19a"/><stop offset=".6" stop-color="#efba28"/><stop offset="1" stop-color="#c68a0d"/></radialGradient><radialGradient id="chem-o-shine" cx="30%" cy="25%"><stop stop-color="#ffd0c1"/><stop offset=".5" stop-color="#e94b3f"/><stop offset="1" stop-color="#a9272a"/></radialGradient><radialGradient id="chem-h-shine" cx="30%" cy="25%"><stop stop-color="#fff"/><stop offset="1" stop-color="#c8d7d8"/></radialGradient><filter id="chem-model-shadow" x="-.5" y="-.5" width="2" height="2"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#385b49" flood-opacity=".14"/></filter></defs><rect x="0" y="0" width="900" height="580" rx="12" fill="url(#chem-model-wash)"/><text id="chem-model-phase-title" x="450" y="35" text-anchor="middle" class="chem-model-phase-title">含水硫酸銅晶體</text><g id="chem-local-structure" transform="translate(450 302) scale(1.14) translate(-450 -302)"><g id="chem-model-single-lattice">${neighbors}<g id="chem-hydrate-lattice">${sulfatePair}${shell}${copperParticle(450,302)}</g><g id="chem-anhydrous-lattice" opacity="0">${sulfatePair}${copperParticle(450,302)}</g></g>${waters}</g><g class="chem-callouts"><g><path d="M278 126H300L442 130"/><text x="100" y="133">硫酸根離子</text></g><g id="chem-water-label"><path d="M183 274H247L340 273"/><text x="100" y="281">水分子</text><path d="M674 111H655L550 117"/><text x="680" y="102">晶格中的</text><text x="680" y="134">水分子</text></g><g><path d="M673 314H610L491 302"/><text x="680" y="321">銅離子</text></g></g><text id="chem-model-equation" x="450" y="563" text-anchor="middle" class="chem-model-equation">局部結構示意</text>`;
+ const incoming=chemVaporWater.map(([x,y],i)=>crystalWater(i+1,x,y,waterAngles[i],waterScales[i]).replace('id="chem-water-', 'id="chem-incoming-water-')).join('');
+ svg.innerHTML=`<defs><linearGradient id="chem-model-wash" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffdfa"/><stop offset="1" stop-color="#f7f0e6"/></linearGradient><radialGradient id="chem-cu-shine" cx="28%" cy="22%"><stop stop-color="#d5f2ff"/><stop offset=".28" stop-color="#4db9ed"/><stop offset=".68" stop-color="#1678bd"/><stop offset="1" stop-color="#074e87"/></radialGradient><radialGradient id="chem-s-shine" cx="28%" cy="24%"><stop stop-color="#fff19a"/><stop offset=".6" stop-color="#efba28"/><stop offset="1" stop-color="#c68a0d"/></radialGradient><radialGradient id="chem-o-shine" cx="30%" cy="25%"><stop stop-color="#ffd0c1"/><stop offset=".5" stop-color="#e94b3f"/><stop offset="1" stop-color="#a9272a"/></radialGradient><radialGradient id="chem-h-shine" cx="30%" cy="25%"><stop stop-color="#fff"/><stop offset="1" stop-color="#c8d7d8"/></radialGradient><filter id="chem-model-shadow" x="-.5" y="-.5" width="2" height="2"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#385b49" flood-opacity=".14"/></filter></defs><rect x="0" y="-90" width="900" height="760" rx="12" fill="url(#chem-model-wash)"/><text id="chem-model-phase-title" x="450" y="-48" text-anchor="middle" class="chem-model-phase-title">含水硫酸銅晶體</text><g id="chem-local-structure" transform="translate(450 302) scale(1.425) translate(-450 -302)"><g id="chem-model-single-lattice">${neighbors}<g id="chem-hydrate-lattice">${sulfatePair}${shell}${copperParticle(450,302)}</g></g><g id="chem-outgoing-waters">${waters}</g><g id="chem-incoming-waters" opacity="0">${incoming}</g></g><path id="chem-3d-hbond" d="M528 27L571 71"/><g class="chem-callouts"><g><path d="M278 82H300L442 87"/><text x="100" y="89">硫酸根離子</text></g><g id="chem-water-label"><path d="M220 260H250L312 265"/><text x="100" y="267">水分子</text><path d="M674 65H655L571 71"/><text x="680" y="56">晶格中的</text><text x="680" y="88">水分子</text></g><g><path d="M673 314H610L491 302"/><text x="680" y="321">銅離子</text></g></g><text id="chem-model-equation" x="450" y="563" text-anchor="middle" class="chem-model-equation">局部結構示意</text>`;
 }
 buildChemCrystalModel();
-function renderChemCrystalModel(white){
+import('./chem-crystal-3d.mjs?v=20261112').then(({createCrystalScene})=>{try{chem3d=createCrystalScene(document.querySelector('.chem-model-stage'),chemHydrationWater,chemVaporWater);chem3d.update(Number($('chem-crystal-model').dataset.dehydration)||0,Number($('chem-crystal-model').dataset.heating)||0,Number($('chem-crystal-model').dataset.rehydration)||0);}catch(error){console.warn('晶體立體模型無法載入，使用平面示意',error);}}).catch(()=>{});
+function renderChemCrystalModel(white,heating,rehydration){
  const svg=$('chem-crystal-model'),hydration=1-white,phase=white<.18?'hydrate':white<.82?'transition':'anhydrous',p=chemEase(white);
- $('chem-hydrate-lattice').setAttribute('opacity',String(1-p));$('chem-anhydrous-lattice').setAttribute('opacity',String(p));
- $('chem-model-phase-title').textContent=phase==='hydrate'?'含水硫酸銅晶體':phase==='transition'?'結晶水逐漸離開':'無水硫酸銅・水蒸氣';
- $('chem-water-label').setAttribute('opacity',String(1-p));
- $('chem-model-equation').textContent=phase==='hydrate'?'晶體中的粒子':phase==='transition'?'水分子逐漸離開晶體':'無水晶體・水蒸氣';
- chemHydrationWater.forEach(([sx,sy],i)=>{const [vx,vy]=chemVaporWater[i],water=$('chem-water-'+(i+1));water.setAttribute('transform',`translate(${chemMix(sx,vx,p).toFixed(2)} ${chemMix(sy,vy,p).toFixed(2)}) rotate(${waterAngles[i]}) scale(${waterScales[i]})`);});
- svg.dataset.hydration=hydration.toFixed(3);svg.dataset.dehydration=white.toFixed(3);svg.dataset.hydrateLattice=(1-white).toFixed(3);svg.dataset.transitionLattice=chemEase(white*2)*(1-chemEase((white-.5)*2));svg.dataset.anhydrousLattice=white.toFixed(3);svg.dataset.activePhase=phase;
- svg.setAttribute('aria-label',`含水硫酸銅局部立體結構示意：中央銅離子周圍連接水分子與硫酸根離子；受熱脫水時水分子逐漸離開，加水時返回。${phase==='hydrate'?'目前為含水晶體。':phase==='transition'?'目前水分子正在離開晶體。':'目前為無水晶體，水分子在周圍。'}`);
+ $('chem-sulfate-upper').setAttribute('transform',`translate(0 ${(40*p).toFixed(2)})`);$('chem-sulfate-lower').setAttribute('transform',`translate(0 ${(-40*p).toFixed(2)})`);$('chem-axial-bonds').setAttribute('d',`M450 266L450 ${(198+40*p).toFixed(2)}M450 338L450 ${(397-40*p).toFixed(2)}`);$('chem-hydrate-shell').setAttribute('opacity',String(1-chemEase(p/.2)));
+ const returning=chemProgress*34>=25;
+ $('chem-model-phase-title').textContent=phase==='hydrate'?'含水硫酸銅晶體':phase==='transition'?(returning?'新加入的水進入晶體':'結晶水逐漸離開'):'無水硫酸銅晶體';
+ document.querySelector('.chem-neighbor-haze').style.opacity=String(.35*(1-p));
+ const labelOpacity=1-chemEase(p/.08);document.querySelector('.chem-callouts').setAttribute('opacity',String(labelOpacity));$('chem-3d-hbond').setAttribute('opacity',String(labelOpacity));
+ $('chem-model-equation').textContent=phase==='hydrate'?'晶體中的粒子':phase==='transition'?(returning?'新加入的水分子進入晶體':'結晶水逐漸離開晶體'):'無水硫酸銅晶體';
+ const released=chemEase(heating),entered=chemEase(rehydration);
+ $('chem-outgoing-waters').setAttribute('opacity',rehydration>0||heating>=1?'0':'1');$('chem-incoming-waters').setAttribute('opacity',rehydration>0?'1':'0');
+ chemHydrationWater.forEach(([sx,sy],i)=>{const [vx,vy]=chemVaporWater[i],pose=(x,y)=>`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${waterAngles[i]}) scale(${waterScales[i]})`;
+  $('chem-water-'+(i+1)).setAttribute('transform',pose(chemMix(sx,vx,released),chemMix(sy,vy,released)));
+  $('chem-incoming-water-'+(i+1)).setAttribute('transform',pose(chemMix(vx,sx,entered),chemMix(vy,sy,entered)));
+ });
+ if(chem3d)chem3d.update(white,heating,rehydration);
+ svg.dataset.heating=heating.toFixed(3);svg.dataset.rehydration=rehydration.toFixed(3);
+ svg.dataset.hydration=hydration.toFixed(3);svg.dataset.dehydration=white.toFixed(3);svg.dataset.latticeShift=(40*p).toFixed(2);svg.dataset.activePhase=phase;
+ svg.setAttribute('aria-label',`含水硫酸銅局部立體結構示意：中央銅離子周圍連接水分子與硫酸根離子；受熱脫水時水分子逐漸離開視野；加水時新加入的水分子進入晶體。${phase==='hydrate'?'目前為含水晶體。':phase==='transition'?(returning?'目前水分子正在進入晶體。':'目前水分子正在離開晶體。'):'目前為無水晶體，脫出的水分子已離開視野。'}`);
 }
 function renderChem(){
  const lab=$('chem-lab'),playing=animations.has('chem-lab'),t=chemProgress*34;
@@ -200,17 +212,17 @@ function renderChem(){
  const flame=t>=5&&t<16?Math.min(1,(t-5)*2,(16-t)*2):0;
  const flicker=Math.sin(t*13)*7+Math.sin(t*21)*4;
  $('chem-burner').setAttribute('transform',`translate(${burnerX} 665)`);
- $('chem-open-scene').setAttribute('opacity',String(coverLift));$('chem-covered-scene').setAttribute('opacity',String(1-coverLift));
+ $('chem-open-scene').setAttribute('opacity','1');$('chem-covered-scene').setAttribute('opacity',String(1-chemEase(coverLift/.025)));$('chem-moving-cover').setAttribute('opacity',String(chemEase(coverLift/.025)*(1-chemEase((coverLift-.8)/.2))));$('chem-moving-cover').setAttribute('transform',`translate(0 ${-900*coverLift})`);$('chem-moving-rim').setAttribute('opacity',$('chem-moving-cover').getAttribute('opacity'));$('chem-moving-rim').setAttribute('transform',`translate(0 ${-900*coverLift})`);
  const pipeTilt=2*chemEase((t-21.5)/1.5)-2*chemEase((t-24)/1.5);
  $('chem-pipette-object').setAttribute('transform',`translate(${pipeX} ${pipeY}) translate(87 271) rotate(${pipeTilt}) translate(-87 -271)`);
  $('chem-flame').setAttribute('opacity',String(flame));
- $('chem-flame').setAttribute('d',`M192 18 Q${160-flicker} -72 218 ${-165-flicker} Q${276+flicker} -75 240 18 Z`);
+ $('chem-flame').setAttribute('d',`M192 18 Q${160-flicker} -32 218 ${-60-flicker} Q${276+flicker} -32 240 18 Z`);
  const falling=t>=23&&t<24.4,fall=chemUnit((t-23)/1.4);
  $('chem-droplet').setAttribute('opacity',falling?'1':'0');$('chem-droplet').setAttribute('cy',String(385+fall*125));
- $('chem-condensation').setAttribute('opacity',String(chemEase((t-9)/5)*(1-chemEase((t-22)/3))));
+ $('chem-condensation').setAttribute('opacity',String(chemEase((t-9)/5)*(1-coverLift)));$('chem-condensation').setAttribute('transform',`translate(0 ${-900*coverLift})`);
  const radius=white*145;document.querySelectorAll('#chem-mask-spots circle').forEach((c,i)=>c.setAttribute('r',String(radius*chemUnit((white*2.1-i*.10)))));
  $('chem-mask-complete').setAttribute('opacity',String(chemEase((white-.86)/.14)));
- renderChemCrystalModel(white);
+ renderChemCrystalModel(white,heating,hydration);
  const heatOut=chemEase((t-25)/1.5)*(1-chemEase((t-31)/2));
  $('chem-arrow-out').setAttribute('opacity',String(heatOut));
  lab.style.setProperty('--chem-out',heatOut);
@@ -222,7 +234,7 @@ function renderChem(){
  else if(t>=25&&t<32){modelTitle='放熱水合';modelFormula='水重新進入晶體';}
  lab.dataset.stage=String(stage);lab.dataset.progress=String(chemProgress);lab.dataset.playing=String(playing);
  lab.dataset.white=white.toFixed(3);lab.dataset.burnerX=burnerX.toFixed(1);lab.dataset.pipeX=pipeX.toFixed(1);
- write('chem-stage-title',modelTitle);write('chem-material','晶體局部結構示意，非依比例。');write('chem-equation',modelFormula);
+ write('chem-stage-title',modelTitle);write('chem-material','晶體局部示意；排列與移動路徑已簡化。');write('chem-equation',modelFormula);
  $('chem-progress-fill').style.width=(chemProgress*100)+'%';$('chem-progress').setAttribute('aria-valuenow',String(Math.round(chemProgress*100)));
  write('chem-progress-label',chemProgress>=1?'觀察完成・脫水與水合':`觀察階段 ${stage+1}／4・${modelTitle}`);write('chem-note',notes[stage]);
  write('chem-play',playing?'暫停觀察':chemProgress>=1?'再次觀察':chemProgress>0?'繼續觀察':'開始觀察');

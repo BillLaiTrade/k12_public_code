@@ -587,7 +587,7 @@
 .chem-experiment-pane .chem-pane-title{background:linear-gradient(115deg,#075ca3,#1772b8)}
 .chem-model-pane .chem-pane-title{background:linear-gradient(115deg,#5436a7,#7149bc)}
 .chem-live-scene{border-radius:10px}
-.chem-crystal-model{display:block;width:100%;height:auto;aspect-ratio:900/580;border:1px solid #d8dfd1;border-radius:10px;background:linear-gradient(145deg,#fffefa,#f1f5ed)}
+.chem-crystal-model{display:block;width:100%;height:auto;aspect-ratio:900/760;border:1px solid #d8dfd1;border-radius:10px;background:linear-gradient(145deg,#fffefa,#f1f5ed)}
 .chem-crystal-model .chem-model-phase-title{fill:#315f3d;font-size:30px;font-weight:750}
 .chem-crystal-model .chem-model-equation{fill:#52644f;font-size:28px;font-weight:650}
 .chem-crystal-model .chem-model-small{fill:#657661;font-size:26px;font-weight:650}
@@ -611,14 +611,14 @@
 @media(prefers-reduced-motion:reduce){.chem-crystal-model *{scroll-behavior:auto}}
 
 /* Labels and material rendering follow the approved local-structure illustration. */
-.chem-crystal-model .chem-callouts{font-weight:750;font-size:30px;fill:#1e3023;paint-order:stroke;stroke:#fbfcf5;stroke-width:5;stroke-linejoin:round}
+.chem-crystal-model .chem-callouts{font-weight:750;font-size:36px;fill:#1e3023;paint-order:stroke;stroke:#fbfcf5;stroke-width:5;stroke-linejoin:round}
 .chem-crystal-model .chem-callouts path{fill:none;stroke:#263a2d;stroke-width:2.4;paint-order:normal}
 .chem-crystal-model .chem-coordination{stroke:#a86179;stroke-width:10;filter:drop-shadow(1px 2px 2px #48647566)}
 .chem-crystal-model .chem-tetra-face{fill:#e8b829;fill-opacity:.48;stroke:#c99c1e;stroke-width:3}
 .chem-crystal-model .chem-sulfate-bond{stroke:#d0a02a;stroke-width:7}
 .chem-crystal-model .chem-water-bond{stroke:#c9d6d5;stroke-width:7}
 .chem-crystal-model .chem-cu,.chem-crystal-model .chem-o,.chem-crystal-model .chem-s,.chem-crystal-model .chem-h{filter:drop-shadow(1px 3px 2px #334a4b55)}
-.chem-model-legend{padding:8px;border:1px solid #b7c9ac;border-radius:10px;background:#fffef9;font-size:.88rem;font-weight:700;gap:16px}
+.chem-model-legend{padding:8px;border:1px solid #b7c9ac;border-radius:10px;background:#fffef9;font-size:1rem;font-weight:700;gap:16px}
 .chem-model-legend i{width:19px;height:19px;box-shadow:inset -3px -4px 5px #0003,inset 3px 3px 4px #fff9}
 .chem-model-legend .key-sulfate{border-radius:3px;transform:rotate(45deg)}
 .chem-model-legend .key-water{box-shadow:7px 4px 0 -3px #fff,7px 4px 0 -2px #849a98,inset -3px -4px 5px #0003}
@@ -627,3 +627,9 @@
 .chem-crystal-model .chem-model-equation{display:none}
 .chem-model-legend i,.chem-model-legend .key-cu,.chem-model-legend .key-sulfate,.chem-model-legend .key-water{width:34px;height:34px;flex:none;background:transparent;box-shadow:none;transform:none;border-radius:0}
 .chem-model-legend i svg{display:block;width:100%;height:100%;overflow:visible}
+
+.chem-model-stage{position:relative}.chem-model-canvas{display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.has-crystal-3d #chem-hydrate-lattice,.has-crystal-3d #chem-anhydrous-lattice,.has-crystal-3d .chem-water-particle{visibility:hidden}
+
+#chem-3d-hbond{display:none;fill:none;stroke:#555;stroke-width:2.4;stroke-dasharray:6 6}.has-crystal-3d #chem-3d-hbond{display:block}
+@media(max-width:380px){.chem-model-legend{gap:5px;padding:6px 4px;font-size:.72rem}.chem-model-legend span{gap:3px;white-space:nowrap}.chem-model-legend i,.chem-model-legend .key-cu,.chem-model-legend .key-sulfate,.chem-model-legend .key-water{width:22px;height:22px}}
