@@ -71,8 +71,8 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.equal((await p.locator('#coolant-compare-title').textContent()).trim(),'為什麼選用比熱較大的冷卻液？');
     assert.match(await p.locator('#coolant-chart-description').textContent(),/比熱較小的液體升溫較快.*比熱較大的液體升溫較慢.*代表溫差/);
     assert.deepEqual(await p.locator('.coolant-chart-legend strong').allTextContents(),['引擎溫度','比熱較小','比熱較大']);
-    assert.deepEqual(await p.locator('.coolant-chart-legend small').allTextContents(),['高溫參考線','溫差快縮小','溫差維持久']);
-    assert.match(await p.locator('.coolant-key').textContent(),/比熱較大，升溫較慢、溫差維持較久，才能持續吸收引擎的熱/);
+    assert.equal((await p.locator('.coolant-chart-gap-label').textContent()).trim(),'溫差');
+    assert.match(await p.locator('.coolant-key').textContent(),/比熱較大，升溫較慢，能較久保持與引擎的溫差，有助持續吸熱/);
     assert.equal(await p.locator('.coolant-photo-column .coolant-key').count(),1);
     assert.equal(await p.locator('.life-coolant-model > .coolant-compare').count(),1);
     const curveRelation=await p.locator('.coolant-temp-chart').evaluate(svg=>{
