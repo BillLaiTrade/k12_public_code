@@ -916,3 +916,15 @@
  #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave,
  #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{animation:none}
 }
+
+/* 冷暖壁與多條輻射路徑，沿用夾層放大的畫框。 */
+#insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:96px;max-height:none}
+@media(min-width:900px){#insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:180px}}
+@media(max-width:560px){#insulation-lab[data-comparison=lining][data-focus] .insulation-lining-zoom svg{height:136px}}
+#insulation-lab[data-comparison=lining] .lining-label-cold,#insulation-lab[data-comparison=lining] .lining-label-warm{font-size:10px;font-weight:700}
+#insulation-lab[data-comparison=lining] .lining-label-cold{fill:#356f87}#insulation-lab[data-comparison=lining] .lining-label-warm{fill:#a65a20}
+#insulation-lab[data-comparison=lining] .lining-compare-reflector{stroke:#fffdfa;stroke-width:2;filter:drop-shadow(0 0 1px #536d62)}
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave{stroke:#df8624;stroke-width:1.2;stroke-dasharray:none;animation:none;opacity:1}
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{stroke:#fffbea;stroke-width:1.7;stroke-dasharray:none;animation:none;opacity:.85;filter:drop-shadow(0 0 1px #8c7852)}
+#insulation-lab .lining-pulse-out circle{fill:#fff0ad;stroke:none;filter:drop-shadow(0 0 2px #e88616)}
+#insulation-lab .lining-pulse-back circle{fill:#fff;stroke:none;filter:drop-shadow(0 0 2px #8c7852)}

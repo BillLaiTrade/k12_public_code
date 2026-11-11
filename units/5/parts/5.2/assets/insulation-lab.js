@@ -57,9 +57,7 @@
     const panel=liningPanel.querySelector('[data-lining-zoom]:not([hidden])');if(!panel)return;
     const dt=liningPrevious===null?0:Math.min(.05,(now-liningPrevious)/1000)*(reduced.matches?.65:1);liningPrevious=now;liningTime+=dt;
     const role=panel.dataset.liningZoom,phase=role==='a'?(liningTime%2)/2:(liningTime%3)/3;
-    const place=(kind,progress,visible)=>{const group=panel.querySelector('.lining-pulse-'+kind);if(!group)return;const path=panel.querySelector(kind==='out'?'.lining-compare-wave':'.lining-compare-return');const point=path.getPointAtLength(path.getTotalLength()*progress),circle=group.querySelector('circle');circle.setAttribute('cx',point.x.toFixed(2));circle.setAttribute('cy',point.y.toFixed(2));group.setAttribute('opacity',visible?'1':'0');};
-    place('out',role==='a'?phase:Math.min(1,phase*2),role==='a'||phase<.5);
-    if(role==='b')place('back',Math.max(0,(phase-.5)*2),phase>=.5);
+    panel.querySelectorAll('.lining-pulse').forEach(group=>{const back=group.classList.contains('lining-pulse-back'),path=panel.querySelector(`path[data-ray="${group.dataset.ray}"]`);if(!path)return;const progress=back?Math.max(0,(phase-.5)*2):(role==='a'?phase:Math.min(1,phase*2));const pos=(progress+Number(group.dataset.offset||0))%1,point=path.getPointAtLength(path.getTotalLength()*pos),circle=group.querySelector('circle');circle.setAttribute('cx',point.x.toFixed(2));circle.setAttribute('cy',point.y.toFixed(2));group.setAttribute('opacity',role==='a'||(back?phase>=.5:phase<.5)?'1':'0');});
     liningFrame=requestAnimationFrame(animateLining);
   }
   function updateLining(){
@@ -158,7 +156,8 @@
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus||panel.dataset.liningZoom!==inspectedLayer);
     updateLining();
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
-    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射穿越真空夾層，到達較冷的外壁。':'亮面層反射部分輻射，減少輻射換熱。';
+    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射由較暖內壁穿越真空，傳向較冷外壁。':'熱輻射抵達外壁亮面，部分反射回較暖內側。';
+    root.querySelector('.insulation-lining-key span:last-child').hidden=inspectedLayer!=='b';
     setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();
