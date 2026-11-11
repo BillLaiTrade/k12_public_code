@@ -854,3 +854,11 @@
  #insulation-lab[data-comparison] .insulation-chart-block .insulation-plot{height:100%;min-height:220px}
  #insulation-lab[data-comparison=gap][data-focus] .insulation-micro-panel:not([hidden]) svg{height:180px}
 }
+
+/* 反射層一次放大所選瓶身，與夾層的操作一致。 */
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom[hidden]{display:none!important}
+#insulation-lab[data-comparison=lining] .insulation-lining-panels{grid-template-columns:minmax(0,1fr);gap:4px}
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom figcaption{display:none}
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom svg{height:120px;max-height:none}
+#insulation-lab[data-comparison=lining] .insulation-lining-explanation{grid-column:1;text-align:left;padding:4px 2px;border:0;font-size:.8rem;line-height:1.4;font-weight:700}
+@media(max-width:560px){#insulation-lab[data-comparison=lining] .insulation-lining-zoom svg{height:95px}}

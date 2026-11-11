@@ -76,14 +76,14 @@
     guides.toggleAttribute('hidden',!visible);if(!visible)return;
     const scene=root.querySelector('.insulation-scene'),bounds=scene.getBoundingClientRect();guides.setAttribute('viewBox',`0 0 ${bounds.width} ${bounds.height}`);
     for(const role of ['a','b']){
-      const active=comparison!=='gap'||inspectedLayer===role;
+      const active=inspectedLayer===role;
       for(const selector of ['[data-guide]','[data-target]','[data-joint]'])guides.querySelector(`${selector}[${selector==='[data-guide]'?'data-guide':selector==='[data-target]'?'data-target':'data-joint'}=\"${role}\"]`).toggleAttribute('hidden',!active);
       if(!active)continue;
       const bottle=$(`insulation-bottle-${role}`),point=bottle.createSVGPoint();point.x=comparison==='gap'&&role==='b'?301:139;point.y=440;
       const screen=point.matrixTransform(bottle.getScreenCTM()),x=screen.x-bounds.left,y=screen.y-bounds.top;
-      const panel=root.querySelector(comparison==='gap'?'#insulation-mechanism':`.insulation-lining-zoom[data-lining-zoom="${role}"]`).getBoundingClientRect(),anchorX=(comparison==='gap'?(role==='a'?panel.left+12:panel.right-12):panel.left+panel.width/2)-bounds.left,anchorY=(comparison==='gap'?panel.top+18:panel.top)-bounds.top;
+      const panel=(comparison==='gap'?mechanism:liningPanel).getBoundingClientRect(),anchorX=(role==='a'?panel.left+12:panel.right-12)-bounds.left,anchorY=panel.top+18-bounds.top;
       const edge=role==='a'?4:bounds.width-4;
-      const d=comparison==='gap'?`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+20).toFixed(1)} ${edge.toFixed(1)} ${(y+20).toFixed(1)} ${edge.toFixed(1)} ${(y+48).toFixed(1)} L${edge.toFixed(1)} ${(anchorY-12).toFixed(1)} Q${edge.toFixed(1)} ${anchorY.toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`:`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+38).toFixed(1)} ${anchorX.toFixed(1)} ${(anchorY-38).toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`;
+      const d=`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+20).toFixed(1)} ${edge.toFixed(1)} ${(y+20).toFixed(1)} ${edge.toFixed(1)} ${(y+48).toFixed(1)} L${edge.toFixed(1)} ${(anchorY-12).toFixed(1)} Q${edge.toFixed(1)} ${anchorY.toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`;
       guides.querySelector(`[data-guide="${role}"]`).setAttribute('d',d);
       guides.querySelector(`[data-target="${role}"]`).setAttribute('cx',x.toFixed(1));guides.querySelector(`[data-target="${role}"]`).setAttribute('cy',y.toFixed(1));
       guides.querySelector(`[data-joint="${role}"]`).setAttribute('cx',anchorX.toFixed(1));guides.querySelector(`[data-joint="${role}"]`).setAttribute('cy',anchorY.toFixed(1));
@@ -106,7 +106,7 @@
     root.setAttribute('aria-busy',String(status==='loading'));play.disabled=status!=='ready';sources.forEach(n=>n.disabled=status!=='ready');play.setAttribute('aria-pressed',String(playing));
     $('insulation-plot-prompt').hidden=started;
     setText('insulation-play',playing?'暫停觀察':time>0?'繼續觀察':'開始觀察');
-    const liningNote=inspectedLayer?'已展開 A、B 反射層比較；亮面層減少輻射換熱，瓶口與支撐仍會傳熱。':started?cfg.note:'兩瓶都是真空夾層，只差有沒有亮面層。點瓶身看熱輻射路徑，再按「開始觀察」比較降溫曲線。';
+    const liningNote=inspectedLayer?`已展開 ${inspectedLayer.toUpperCase()} 瓶的反射層剖面；亮面層減少輻射換熱，瓶口與支撐仍會傳熱。`:started?cfg.note:'兩瓶都是真空夾層，只差有沒有亮面層。點瓶身看熱輻射路徑，再按「開始觀察」比較降溫曲線。';
     const gapLayerNote=inspectedLayer==='a'?'A 空氣夾層：分子碰撞會傳遞能量，輻射也能穿過。按「開始觀察」比較降溫曲線。':'B 真空夾層：氣體分子很少，氣體傳熱減少；輻射仍能穿過。按「開始觀察」比較降溫曲線。';
     const note=comparison==='lining'?liningNote:inspectedLayer?gapLayerNote:started?cfg.note:'點選 A 或 B 瓶身夾層查看局部比較，按「開始觀察」對照降溫曲線。';
     setText('insulation-scene-heading',cfg.title);setText('insulation-note',note);setText('insulation-takeaway',comparison==='gap'?'抽去大部分空氣，減少氣體傳熱；輻射與瓶口傳熱仍存在。':'瓶口與支撐仍會傳熱，水溫逐漸接近室溫。');
@@ -138,8 +138,9 @@
     $('insulation-gas-motion').toggleAttribute('hidden',!cfg.a.gas);
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
     mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;if(selected)prepareMicro(panel);});updateCloseup();
-    liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus);
-    setText('insulation-lining-focus-title','反射層局部比較');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
+    liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus||panel.dataset.liningZoom!==inspectedLayer);
+    setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
+    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射穿越真空夾層，到達較冷的外壁。':'亮面層反射部分輻射，減少輻射換熱。';
     setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
     moveMolecules();
