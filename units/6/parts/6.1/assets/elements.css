@@ -198,3 +198,10 @@
 #s5 .carbon-connector line{stroke:#d2ad4d;stroke-width:2}
 #s5 .carbon-model-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 #s5 .carbon-model-stage svg{min-width:0;min-height:0}
+
+#s5 .carbon-inset svg{cursor:grab;touch-action:none}
+#s5 .carbon-inset svg:active{cursor:grabbing}
+#s5 .carbon-inset svg:focus-visible{outline:3px solid #579273;outline-offset:2px;border-radius:8px}
+#s5 .carbon-structure-card .carbon-click-hint{margin:5px 2px 0;color:#50665a;font-size:1rem;line-height:1.45}
+
+#s5 .carbon-inset svg:focus:not(:focus-visible){outline:none}

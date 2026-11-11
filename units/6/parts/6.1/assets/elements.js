@@ -386,15 +386,15 @@
     if (!choice) return null;
     return { center: choice.atom, neighbors: choice.neighbors, ids: new Set([choice.atom.id, ...choice.neighbors.map(a => a.id)]) };
   };
-  const renderInset = (svg, selection, kind) => {
+  const renderInset = (svg, selection, kind, rotation) => {
     const c = selection.center;
     const project = atom => {
-      const x = atom.x - c.x, y = atom.y - c.y, z = atom.z - c.z;
-      if (kind === 'graphite') return {x: 120 - x * 72, y: 90 + y * 72, z: 0};
-      // Fixed 3D viewpoint chosen to show all four tetrahedral neighbors clearly.
-      const rx = -.85, ry = -1.65;
+      const sign = kind === 'graphite' ? -1 : 1;
+      const x = (atom.x - c.x) * sign, y = (atom.y - c.y) * sign, z = atom.z - c.z;
+      const rx = rotation.x, ry = rotation.y;
       const y1 = y * Math.cos(rx) - z * Math.sin(rx), z1 = y * Math.sin(rx) + z * Math.cos(rx);
-      return {x: 120 + (x * Math.cos(ry) + z1 * Math.sin(ry)) * 180, y: 90 - y1 * 180, z: -x * Math.sin(ry) + z1 * Math.cos(ry)};
+      const scale = kind === 'graphite' ? 72 : 165;
+      return {x: 120 + (x * Math.cos(ry) + z1 * Math.sin(ry)) * scale, y: 90 - y1 * scale, z: -x * Math.sin(ry) + z1 * Math.cos(ry)};
     };
     const center = project(c);
     const bonds = selection.neighbors.map(atom => { const p = project(atom); return `<g><line x1="${center.x}" y1="${center.y}" x2="${p.x}" y2="${p.y}" stroke="#626863" stroke-width="12" stroke-linecap="round" data-inset-bond="${c.id}-${atom.id}" data-depth="${p.z < 0 ? 'back' : 'front'}"/><line x1="${center.x}" y1="${center.y-1.5}" x2="${p.x}" y2="${p.y-1.5}" stroke="#d9dcd8" stroke-opacity=".6" stroke-width="4" stroke-linecap="round"/></g>`; }).join('');
@@ -414,7 +414,8 @@
     const rotation = { x: stage.dataset.carbonModel === 'graphite' ? -1.28 : -.67, y: .38 };
     const selection = findNeighbors(lattice, stage.dataset.carbonModel);
     const panel = document.getElementById(`${stage.dataset.carbonModel}-neighbors`);
-    const button = document.querySelector(`[data-neighbors-toggle="${stage.dataset.carbonModel}"]`);
+    const insetSvg = panel.querySelector('svg');
+    const insetRotation = stage.dataset.carbonModel === 'graphite' ? { x: 0, y: 0 } : { x: -.85, y: -1.65 };
     const visual = stage.closest('.carbon-model-visual');
     const connector = visual.querySelector('.carbon-connector');
     const drawConnector = () => {
@@ -438,16 +439,37 @@
       panel.hidden = !expanded;
       connector.toggleAttribute('hidden', !expanded);
       panel.parentElement.classList.toggle('is-expanded', expanded);
-      button.setAttribute('aria-expanded', String(expanded));
       stage.setAttribute('aria-expanded', String(expanded));
-      button.textContent = expanded ? '收起相連原子' : '查看相連原子';
-      if (expanded) renderInset(panel.querySelector('svg'), selection, stage.dataset.carbonModel);
+      if (expanded) renderInset(insetSvg, selection, stage.dataset.carbonModel, insetRotation);
       render();
     };
-    button.addEventListener('click', () => setExpanded(!expanded));
+    let insetPointer = null;
+    insetSvg.addEventListener('pointerdown', event => {
+      insetPointer = { x: event.clientX, y: event.clientY };
+      insetSvg.setPointerCapture(event.pointerId);
+    });
+    insetSvg.addEventListener('pointermove', event => {
+      if (!insetPointer) return;
+      insetRotation.y += (event.clientX - insetPointer.x) * .012;
+      insetRotation.x += (event.clientY - insetPointer.y) * .01;
+      insetPointer = { x: event.clientX, y: event.clientY };
+      renderInset(insetSvg, selection, stage.dataset.carbonModel, insetRotation);
+    });
+    insetSvg.addEventListener('pointerup', () => { insetPointer = null; });
+    insetSvg.addEventListener('pointercancel', () => { insetPointer = null; });
+    insetSvg.addEventListener('keydown', event => {
+      const step = .12;
+      if (event.key === 'ArrowLeft') insetRotation.y -= step;
+      else if (event.key === 'ArrowRight') insetRotation.y += step;
+      else if (event.key === 'ArrowUp') insetRotation.x += step;
+      else if (event.key === 'ArrowDown') insetRotation.x -= step;
+      else return;
+      event.preventDefault();
+      renderInset(insetSvg, selection, stage.dataset.carbonModel, insetRotation);
+    });
     render();
-    let pointer = null, moved = false;
-    stage.addEventListener('pointerdown', event => { pointer = { x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY }; moved = false; stage.setPointerCapture(event.pointerId); });
+    let pointer = null, moved = false, skipTouchClick = false;
+    stage.addEventListener('pointerdown', event => { skipTouchClick = false; pointer = { x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY }; moved = false; stage.setPointerCapture(event.pointerId); });
     stage.addEventListener('pointermove', event => {
       if (!pointer) return;
       if (Math.hypot(event.clientX - pointer.startX, event.clientY - pointer.startY) > 5) moved = true;
@@ -458,9 +480,12 @@
       }
       pointer.x = event.clientX; pointer.y = event.clientY;
     });
-    stage.addEventListener('pointerup', () => { pointer = null; });
+    stage.addEventListener('pointerup', event => {
+      if (pointer && event.pointerType === 'touch' && !moved) { skipTouchClick = true; setExpanded(!expanded); }
+      pointer = null;
+    });
     stage.addEventListener('pointercancel', () => { pointer = null; moved = true; });
-    stage.addEventListener('click', () => { if (!moved) setExpanded(!expanded); });
+    stage.addEventListener('click', () => { if (skipTouchClick) { skipTouchClick = false; return; } if (!moved) setExpanded(!expanded); });
     stage.tabIndex = 0;
     stage.addEventListener('keydown', event => {
       const step = .12;
