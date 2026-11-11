@@ -581,9 +581,11 @@
 .chem-live-label-out{right:13%;top:27%;opacity:var(--chem-out,0)}
 
 /* Section 06 pairs the continuous experiment with its live crystal model. */
-.chem-workspace{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;align-items:stretch}
+.chem-workspace{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}
 .chem-pane{min-width:0;padding:12px;border:1px solid #bfd0b5;border-radius:14px;background:#fffdf8}
-.chem-pane-title{margin:0 0 9px;color:#285b39;font-size:1.05rem;line-height:1.25}
+.chem-pane-title{margin:-12px -12px 10px;padding:10px 12px;border-radius:13px 13px 5px 5px;color:white;font-size:clamp(1.35rem,2vw,1.7rem);line-height:1.25;text-align:center;letter-spacing:.04em}
+.chem-experiment-pane .chem-pane-title{background:linear-gradient(115deg,#075ca3,#1772b8)}
+.chem-model-pane .chem-pane-title{background:linear-gradient(115deg,#5436a7,#7149bc)}
 .chem-live-scene{border-radius:10px}
 .chem-crystal-model{display:block;width:100%;height:auto;aspect-ratio:900/580;border:1px solid #d8dfd1;border-radius:10px;background:linear-gradient(145deg,#fffefa,#f1f5ed)}
 .chem-crystal-model .chem-stage-card>rect{fill:#fffefa;stroke:#d7dfd1;stroke-width:2}
