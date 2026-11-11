@@ -67,7 +67,7 @@ function selectApplication(key){
 // 一個完整循環先升溫再降溫；夜晚從白天結束時接續，不重設溫度。
 let coastFrame=0,coastLastTime=null,coastElapsed=0;
 let coastInView=!('IntersectionObserver' in window);
-const coastCycleDuration=30000;
+const coastCycleDuration=10000;
 function renderCoastCycle(){
   const t=(coastElapsed%coastCycleDuration)/coastCycleDuration;
   const change=(1-Math.cos(2*Math.PI*t))/2;
@@ -81,24 +81,33 @@ function renderCoastCycle(){
   }
   // 以太陽高度連續調整天光，週期接合處的亮度也保持一致。
   const altitude=Math.sin(2*Math.PI*t);
-  const lightProgress=Math.max(0,Math.min(1,(altitude+.35)));
+  const lightProgress=Math.max(0,Math.min(1,(altitude+.4)/1.3));
   const daylightMix=lightProgress*lightProgress*(3-2*lightProgress);
   get('coast-night-photo').style.opacity=(1-daylightMix).toFixed(3);
   get('coast-twilight').style.opacity=(Math.max(0,1-Math.abs(altitude)/.55)*.7).toFixed(3);
+  const darknessProgress=Math.max(0,Math.min(1,(-altitude-.05)/.55));
+  get('coast-night-dark').style.opacity=(darknessProgress*darknessProgress*(3-2*darknessProgress)).toFixed(3);
   const sun=get('coast-sun');
   const daylight=Math.min(1,t*2);
   const travel=Math.max(0,Math.min(1,(daylight-.16)/.68));
   const easedTravel=travel*travel*(3-2*travel);
-  sun.style.left=`${(12+43*easedTravel).toFixed(2)}%`;
+  sun.style.left=`${(12+76*easedTravel).toFixed(2)}%`;
   sun.style.top=`${(125-110*Math.sin(Math.PI*daylight)).toFixed(2)}%`;
   sun.style.visibility=day?'visible':'hidden';
+  const moon=get('coast-moon');
+  const night=Math.max(0,(t-.5)*2);
+  const moonTravel=Math.max(0,Math.min(1,(night-.16)/.68));
+  const easedMoonTravel=moonTravel*moonTravel*(3-2*moonTravel);
+  moon.style.left=`${(12+76*easedMoonTravel).toFixed(2)}%`;
+  moon.style.top=`${(125-100*Math.sin(Math.PI*night)).toFixed(2)}%`;
+  moon.style.visibility=day?'hidden':'visible';
   get('coast-water-level').style.height=`${(change*25).toFixed(2)}%`;
   get('coast-sand-level').style.height=`${(change*75).toFixed(2)}%`;
 }
 function coastTick(now){
   coastFrame=0;
   if(current!=='coast'||!coastInView||document.hidden||assets.coast.phase!=='ready'){coastLastTime=null;return;}
-  if(coastLastTime!==null)coastElapsed=(coastElapsed+Math.min(now-coastLastTime,100))%coastCycleDuration;
+  if(coastLastTime!==null)coastElapsed=(coastElapsed+Math.max(0,now-coastLastTime))%coastCycleDuration;
   coastLastTime=now;renderCoastCycle();coastFrame=requestAnimationFrame(coastTick);
 }
 function syncCoastCycle(){
