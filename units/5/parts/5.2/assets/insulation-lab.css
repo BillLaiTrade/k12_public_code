@@ -949,3 +949,8 @@
 /* 短波段沿直線傳遞；到亮面後改變方向作為反射示意。 */
 #insulation-lab[data-comparison=lining] .lining-radiation-packet path{fill:none;stroke:#e67810;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #ffd487)}
 #insulation-lab[data-comparison=lining] .lining-radiation-packet .lining-packet-arrow{stroke-width:1.4}
+
+/* 被吸收時在外壁的接觸處短暫顯示提示。 */
+#insulation-lab[data-comparison=lining] .lining-absorption-glow{fill:#ffce59;opacity:.85;filter:drop-shadow(0 0 4px #f39b25)}
+#insulation-lab[data-comparison=lining] .lining-absorption-tag rect{fill:#fff8dd;stroke:#d69a36;stroke-width:.8}
+#insulation-lab[data-comparison=lining] .lining-absorption-tag text{fill:#805014;font-size:8px;font-weight:700}
