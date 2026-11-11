@@ -647,3 +647,6 @@
 .chem-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.chem-controls button{min-width:0;width:100%}
 
 .chem-controls button[data-active="true"]{outline:3px solid #e0a96c;outline-offset:2px}
+
+/* Match the selected unit-quiz entry to the approved warm-gold navigation sample. */
+@media(min-width:761px){.route .route-inner a.quiz-nav[aria-current=step]{min-height:56px;grid-template-columns:32px minmax(0,1fr);align-items:center;padding:10px 11px;border:0;border-left:3px solid #b48a3c;border-radius:0 10px 10px 0;background:#f8f1e4;color:#795b20;font-size:1rem;font-weight:700;box-shadow:none}.route .route-inner a.quiz-nav[aria-current=step] b{width:28px;height:28px;background:#f0e2be;color:#805c17}}
