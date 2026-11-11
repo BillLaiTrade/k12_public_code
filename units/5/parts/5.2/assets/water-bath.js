@@ -131,7 +131,7 @@ if(root){
   function bindDrag(node,kind){
     node.addEventListener('pointerdown',event=>{
       if(!ready()||event.button!==0||drag)return;
-      const p=stagePoint(event);drag={node,kind,pointer:event.pointerId,sx:event.clientX,sy:event.clientY,px:p.x,py:p.y,originalX:state.x,originalBottom:state.bottom,cupX:state.cupX,cupY:state.cupY,moved:false};
+      const p=stagePoint(event);drag={node,kind,pointer:event.pointerId,sx:event.clientX,sy:event.clientY,px:p.x,py:p.y,lastX:p.x,lastY:p.y,originalX:state.x,originalBottom:state.bottom,cupX:state.cupX,cupY:state.cupY,moved:false};
       node.setPointerCapture(event.pointerId);
     });
     node.addEventListener('pointermove',event=>{
@@ -139,7 +139,22 @@ if(root){
       const p=stagePoint(event),distance=Math.hypot(event.clientX-drag.sx,event.clientY-drag.sy);
       if(!drag.moved&&distance<5)return;drag.moved=true;clearResult();
       if(kind==='bottle'){
-        positionBottle(state,drag.originalX+p.x-drag.px,drag.originalBottom+p.y-drag.py);bottle.dataset.dragging='true';render();
+        // The bottle can cross the lid only at the opening. Below it, keep
+        // the bottle inside the opening or outside the bowl's side walls.
+        const lid=330,leftWall=127,rightWall=973,openingLeft=528,openingRight=572;
+        let x=state.x+p.x-drag.lastX,bottom=state.bottom+p.y-drag.lastY;
+        drag.lastX=p.x;drag.lastY=p.y;
+        if(state.bottom>lid){
+          if(state.x<openingLeft)x=Math.min(x,leftWall);
+          else if(state.x>openingRight)x=Math.max(x,rightWall);
+          else x=Math.max(openingLeft,Math.min(openingRight,x));
+        }else if(bottom>lid){
+          const crossingX=state.x+(x-state.x)*(lid-state.bottom)/(bottom-state.bottom);
+          if(crossingX>leftWall&&crossingX<rightWall&&(crossingX<openingLeft||crossingX>openingRight))bottom=lid;
+          else if(crossingX>=openingLeft&&crossingX<=openingRight)x=Math.max(openingLeft,Math.min(openingRight,x));
+          else x=crossingX<=leftWall?Math.min(x,leftWall):Math.max(x,rightWall);
+        }
+        positionBottle(state,x,bottom);bottle.dataset.dragging='true';render();
       }else if(kind==='cup'){
         state.cupX=Math.max(75,Math.min(1020,drag.cupX+p.x-drag.px));state.cupY=Math.max(290,Math.min(595,drag.cupY+p.y-drag.py));render();
       }else{
