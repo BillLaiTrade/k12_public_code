@@ -111,9 +111,8 @@ const coolantPacketElements=Array.from({length:12},(_,index)=>{
 });
 const clamp01=n=>Math.max(0,Math.min(1,n));
 function coolantWarmth(point){
-  if(point.y<100)return clamp01((point.x-145)/95);
-  if(point.y>150)return clamp01((point.x-330)/95);
-  return point.x<300?0:1;
+  // 顏色變化僅出現在設備的上下邊界之間；管路出口保持相應冷暖色。
+  return clamp01((179-point.y)/100);
 }
 function coolantColor(warmth){
   return `rgb(${[[18,255],[132,165],[192,20]].map(([cool,warm])=>Math.round(cool+(warm-cool)*warmth)).join(',')})`;

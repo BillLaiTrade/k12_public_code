@@ -41,8 +41,8 @@
   <script type="module" src="assets/mass-curve-lab.js?v=cases-1"></script>
   <link rel="stylesheet" href="assets/material-dual-lab.css?v=dialogue-bridge-1">
   <script type="module" src="assets/material-dual-lab.js?v=select-row-1"></script>
-  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-coherent-8">
-  <script type="module" src="assets/application-lab.js?v=coolant-coherent-8"></script>
+  <link rel="stylesheet" href="assets/application-lab.css?v=coolant-device-9">
+  <script type="module" src="assets/application-lab.js?v=coolant-device-9"></script>
   <link rel="stylesheet" href="assets/unknown-quiz.css?v=real-materials-visual-1">
   <script type="module" src="assets/unknown-quiz.js?v=real-materials-visual-1"></script>
 <link rel="stylesheet" href="../../../../shared-assets/quiz-header-standard.css?v=20261109-quiz-header-standard"></head>
@@ -299,33 +299,30 @@
                         <div class="coolant-labels"><span>引擎的熱傳<br>給冷卻液</span><span>熱傳給空氣</span></div>
                         <svg class="coolant-loop-diagram" viewBox="15 23 585 212" role="img" aria-labelledby="coolant-loop-title coolant-loop-desc">
                           <title id="coolant-loop-title">冷卻液循環與熱量傳遞</title>
-                          <desc id="coolant-loop-desc">冷卻液在封閉管路中由引擎流向散熱器，再流回引擎。引擎的熱傳給冷卻液，散熱器再將熱傳給空氣。暖黃色表示吸熱後較暖，藍色表示散熱後較冷，顏色僅為相對溫度示意。綠色箭頭表示冷卻液流動，橘色箭頭表示熱量傳遞。</desc>
+                          <desc id="coolant-loop-desc">冷卻液在封閉管路中由引擎流向散熱器，再流回引擎。冷卻液在引擎內吸熱由藍轉黃，經散熱器時放熱由黃轉藍，再流回引擎。散熱器將熱傳給空氣。暖黃色表示吸熱後較暖，藍色表示散熱後較冷，顏色僅為相對溫度示意。綠色箭頭表示冷卻液流動，橘色箭頭表示熱量傳遞。</desc>
                           <defs id="coolant-fluid-defs">
-                            <linearGradient id="coolant-warming" gradientUnits="userSpaceOnUse" x1="145" y1="0" x2="240" y2="0"><stop offset="0" stop-color="#1284c0"/><stop offset="1" stop-color="#ffa514"/></linearGradient>
-                            <linearGradient id="coolant-cooling" gradientUnits="userSpaceOnUse" x1="330" y1="0" x2="425" y2="0"><stop offset="0" stop-color="#1284c0"/><stop offset="1" stop-color="#ffa514"/></linearGradient>
+                            <linearGradient id="coolant-fluid-temperature" gradientUnits="userSpaceOnUse" x1="0" y1="179" x2="0" y2="79"><stop offset="0" stop-color="#1284c0"/><stop offset="1" stop-color="#ffa514"/></linearGradient>
                             <radialGradient id="engine-warmth"><stop stop-color="#ff8d20" stop-opacity=".85"/><stop offset="1" stop-color="#ffbe5a" stop-opacity="0"/></radialGradient>
-                            <linearGradient id="coolant-hot" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd886"/><stop offset="1" stop-color="#f08b13"/></linearGradient>
                             <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#087e43" stroke="#fff" stroke-width=".7"/></marker>
                             <marker id="heat-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e48316"/></marker>
                           </defs>
-                          <path id="coolant-circuit-path" d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" fill="none" stroke="#276c6a" stroke-width="40" stroke-linejoin="round"/>
-                          <path id="coolant-liquid-warming" d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211" fill="none" stroke="url(#coolant-warming)" stroke-width="32" stroke-linejoin="round"/>
-                          <path id="coolant-liquid-cooling" d="M427 211H153Q125 211 125 185V120" fill="none" stroke="url(#coolant-cooling)" stroke-width="32" stroke-linejoin="round"/>
+                          <rect id="coolant-engine-panel" x="32" y="79" width="186" height="100" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
+                          <rect id="coolant-radiator-panel" x="373" y="79" width="164" height="100" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
+                          <path id="coolant-circuit-path" d="M180 120V73Q180 47 208 47H382Q410 47 410 73V185Q410 211 382 211H208Q180 211 180 185V120" fill="none" stroke="#276c6a" stroke-width="40" stroke-linejoin="round"/>
+                          <path id="coolant-liquid-track" d="M180 120V73Q180 47 208 47H382Q410 47 410 73V185Q410 211 382 211H208Q180 211 180 185V120" fill="none" stroke="url(#coolant-fluid-temperature)" stroke-width="32" stroke-linejoin="round"/>
                           <g id="coolant-flow-packets" aria-hidden="true"></g>
-                          <path d="M125 120V73Q125 47 153 47H427Q455 47 455 73V185Q455 211 427 211H153Q125 211 125 185V120" transform="translate(0 -3)" fill="none" stroke="#eaffff" stroke-opacity=".65" stroke-width="4" stroke-linejoin="round"/>
-                          <g fill="none" stroke="#087e43" stroke-width="6" marker-end="url(#flow-arrow)"><path d="M285 47H325"/><path d="M295 211H255"/></g>
-                          <rect x="32" y="79" width="186" height="100" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
-                          <ellipse cx="125" cy="127" rx="56" ry="22" fill="url(#engine-warmth)"/><g class="coolant-engine-art" fill="none" stroke="#a96737" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(125 111) scale(1.22) translate(-125 -120)"><path d="M80 113h12l7-10h39l8 9h10v25H84v-8h-7v-13zM101 103v-8h11v8m8 0v-8h11v8M99 112v13m12-13v13m12-13v13m12-13v13"/></g>
-                          <text class="coolant-engine-name" x="125" y="164" text-anchor="middle" fill="#254e35" font-size="26" font-weight="700">引擎</text>
-                          <rect x="373" y="79" width="164" height="100" rx="15" fill="#f4f8eb" stroke="#38785c" stroke-width="2"/>
-                          <g class="coolant-radiator-art" fill="none" stroke="#38785c" stroke-width="4" transform="translate(0 -7)"><path d="M410 104h90v9h-90zM410 136h90v9h-90zM416 113v23m12-23v23m12-23v23m12-23v23m12-23v23m12-23v23m12-23v23"/></g>
-                          <text class="coolant-radiator-name" x="455" y="168" text-anchor="middle" fill="#254e35" font-size="25" font-weight="700">散熱器</text>
-                          <path d="M183 118 Q204 100 190 65" fill="none" stroke="#fff8e7" stroke-width="13"/><path d="M183 118 Q204 100 190 65" fill="none" stroke="#e48316" stroke-width="8" stroke-linecap="round" marker-end="url(#heat-arrow)"/>
+                          <path d="M180 120V73Q180 47 208 47H382Q410 47 410 73V185Q410 211 382 211H208Q180 211 180 185V120" transform="translate(0 -3)" fill="none" stroke="#eaffff" stroke-opacity=".65" stroke-width="4" stroke-linejoin="round"/>
+                          <g fill="none" stroke="#087e43" stroke-width="6" marker-end="url(#flow-arrow)"><path d="M270 47H305"/><path d="M320 211H285"/></g>
+                          <ellipse cx="100" cy="127" rx="56" ry="22" fill="url(#engine-warmth)"/><g class="coolant-engine-art" fill="none" stroke="#a96737" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(100 111) scale(1.22) translate(-125 -120)"><path d="M80 113h12l7-10h39l8 9h10v25H84v-8h-7v-13zM101 103v-8h11v8m8 0v-8h11v8M99 112v13m12-13v13m12-13v13m12-13v13"/></g>
+                          <text class="coolant-engine-name" x="100" y="164" text-anchor="middle" fill="#254e35" font-size="26" font-weight="700">引擎</text>
+                          <g class="coolant-radiator-art" fill="none" stroke="#38785c" stroke-width="4" transform="translate(0 -7)"><path d="M440 104h65v9h-65zM440 136h65v9h-65zM445 113v23m10-23v23m10-23v23m10-23v23m10-23v23m10-23v23"/></g>
+                          <text class="coolant-radiator-name" x="472" y="168" text-anchor="middle" fill="#254e35" font-size="25" font-weight="700">散熱器</text>
+                          <path d="M143 112H161" fill="none" stroke="#fff8e7" stroke-width="13"/><path d="M143 112H161" fill="none" stroke="#e48316" stroke-width="8" stroke-linecap="round" marker-end="url(#heat-arrow)"/>
                           <g fill="none" stroke="#e48316" stroke-width="5" marker-end="url(#heat-arrow)"><path d="M541 103c12 9 20 -9 40 -4"/><path d="M541 127c12 9 20 -9 40 -4"/><path d="M541 151c12 9 20 -9 40 -4"/></g>
                         </svg>
                         <p class="coolant-mobile-flow">冷卻液：引擎 → 散熱器 → 引擎</p>
                         <p class="coolant-legend"><span><b aria-hidden="true">➜</b> 冷卻液流向</span><span><b aria-hidden="true">➜</b> 熱量傳遞</span></p>
-                        <p class="coolant-flow-explanation">冷卻液流經引擎吸熱，再到散熱器放熱，降溫後回流。</p>
+                        <p class="coolant-flow-explanation">冷卻液在引擎內吸熱、由藍轉黃；在散熱器內放熱、由黃轉藍後回流。</p>
                         <div class="coolant-flow-controls"><p class="coolant-temperature-key"><span class="coolant-swatch-cool">藍色：較冷</span><span class="coolant-swatch-warm">黃色：較暖</span><span>（顏色與速度為示意）</span></p></div>
                       </div>
                       <button class="secondary coolant-retry" type="button" data-life-retry hidden>重新載入場景</button>
