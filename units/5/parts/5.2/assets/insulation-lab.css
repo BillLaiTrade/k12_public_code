@@ -934,3 +934,8 @@
  #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
  #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-11px) scale(.66)!important}
 }
+
+/* 以沿波線移動的多個粗亮段顯示傳熱方向。 */
+#insulation-lab[data-comparison=lining] .lining-flow{fill:none;stroke-dasharray:12 20;stroke-linecap:round;stroke-width:3;pointer-events:none}
+#insulation-lab[data-comparison=lining] .lining-flow-out{stroke:#bc5700;filter:drop-shadow(0 0 1px #fff0b4)}
+#insulation-lab[data-comparison=lining] .lining-flow-back{stroke:#fff;stroke-width:3.3;filter:drop-shadow(0 0 1px #827d65)}

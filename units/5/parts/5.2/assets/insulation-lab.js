@@ -56,8 +56,7 @@
     liningFrame=0;if(liningPanel.hidden||document.hidden){liningPrevious=null;return;}
     const panel=liningPanel.querySelector('[data-lining-zoom]:not([hidden])');if(!panel)return;
     const dt=liningPrevious===null?0:Math.min(.05,(now-liningPrevious)/1000)*(reduced.matches?.65:1);liningPrevious=now;liningTime+=dt;
-    const role=panel.dataset.liningZoom,phase=role==='a'?(liningTime%2)/2:(liningTime%3)/3;
-    panel.querySelectorAll('.lining-pulse').forEach(group=>{const back=group.classList.contains('lining-pulse-back'),path=panel.querySelector(`path[data-ray="${group.dataset.ray}"]`);if(!path)return;const progress=back?Math.max(0,(phase-.5)*2):(role==='a'?phase:Math.min(1,phase*2));const pos=(progress+Number(group.dataset.offset||0))%1,point=path.getPointAtLength(path.getTotalLength()*pos),circle=group.querySelector('circle');circle.setAttribute('cx',point.x.toFixed(2));circle.setAttribute('cy',point.y.toFixed(2));group.setAttribute('opacity',role==='a'||(back?phase>=.5:phase<.5)?'1':'0');});
+    panel.querySelectorAll('.lining-flow').forEach(path=>{path.style.strokeDashoffset=(-liningTime*55).toFixed(2);});
     liningFrame=requestAnimationFrame(animateLining);
   }
   function updateLining(){
