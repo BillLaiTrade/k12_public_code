@@ -1,4 +1,4 @@
-import {ROOM,GOAL,SPEED,createBath,advanceBath,geometry,positionBottle,useCup} from './water-bath-model.mjs?v=cozy-6';
+import {ROOM,GOAL,SPEED,createBath,advanceBath,geometry,positionBottle,useCup} from './water-bath-model.mjs?v=continuous-drag-1';
 
 const root=document.getElementById('water-bath');
 if(root){

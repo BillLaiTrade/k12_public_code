@@ -14,7 +14,7 @@ export function geometry(s){
 export function positionBottle(s,x,bottom){
   if(!Number.isFinite(x)||!Number.isFinite(bottom))return;
   s.bottom=clamp(bottom,250,600);
-  s.x=s.bottom>380?(x>340&&x<760?550:x<=340?90:1010):clamp(x,90,1010);
+  s.x=clamp(x,90,1010);
 }
 function surfaceLoss(t,area){return 10*area*(t-ROOM)+.9*SIGMA*area*((t+273.15)**4-(ROOM+273.15)**4);}
 function insulatedSide(t){
