@@ -49,16 +49,20 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.ok(baseline.bulbs.every(y=>Math.abs(y-baseline.y)<2),`初溫線與液柱起點應對齊：${JSON.stringify(baseline)}`);
     const levels=async()=>p.evaluate(()=>['water','sand'].map(name=>parseFloat(document.getElementById('coast-'+name+'-level').style.height)));
     const sunPosition=async()=>p.locator('#coast-sun').evaluate(e=>({left:parseFloat(e.style.left),top:parseFloat(e.style.top),visibility:getComputedStyle(e).visibility}));
+    const nightOpacity=async()=>parseFloat(await p.locator('#coast-night-photo').evaluate(e=>e.style.opacity));
     const sunrise=await sunPosition();
+    const dawnShade=await nightOpacity();await capture('coast-dawn');
     await p.clock.runFor(6000);const rising=await levels();
     const highSun=await sunPosition();
     assert.ok(highSun.left>sunrise.left&&highSun.top<sunrise.top,'太陽應在白天向右升起');
+    assert.ok(dawnShade>0.1&&(await nightOpacity())<dawnShade,'黎明應逐漸變亮至白天');
     assert.ok(rising[1]>rising[0]&&rising[0]>0,JSON.stringify(rising));
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
     await capture('coast-day');
     await p.clock.runFor(5000);await capture('coast-sunset-horizon');
     await p.clock.runFor(2000);const sunset=await sunPosition();
     assert.ok(sunset.left>highSun.left&&sunset.top>highSun.top&&sunset.visibility==='visible','太陽應向右落向地平線');
+    assert.ok((await nightOpacity())>0.1&&(await nightOpacity())<0.9,'日落時應呈現過渡天色');
     await capture('coast-sunset');
     await p.clock.runFor(1500);const peak=await levels();
     await p.clock.runFor(500);const nightStart=await levels();
@@ -67,10 +71,12 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.ok(nightStart[1]>rising[1]&&Math.abs(peak[1]-nightStart[1])<5,'夜晚應接續白天溫度');
     await p.clock.runFor(6000);const falling=await levels();
     assert.ok(falling[1]<nightStart[1]&&falling[0]<nightStart[0]&&falling[1]>falling[0],JSON.stringify(falling));
+    assert.ok((await nightOpacity())>.95,'夜間應變暗');
     await capture('coast-night');
     await p.clock.runFor(9000);
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
     assert.ok((await levels())[1]<5,'循環結尾返回共同初溫');
+    assert.ok(Math.abs((await nightOpacity())-dawnShade)<.15,'循環接合處的天色應連續');
   });
 
   await t.test('冷卻液循環方向、熱傳與溫差比較曲線',async()=>{

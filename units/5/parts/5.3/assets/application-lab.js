@@ -79,13 +79,18 @@ function renderCoastCycle(){
     views.coast.querySelector('.coast-scene-label').textContent=day?'白天吸熱':'夜晚放熱';
     get('coast-cycle-status').textContent=day?'☀ 白天吸熱　溫度上升':'☾ 夜晚放熱　溫度下降';
   }
-  const dusk=Math.max(0,Math.min(1,(t-.38)/.14));
-  const dawn=Math.max(0,Math.min(1,(t-.94)/.06));
-  get('coast-night-photo').style.opacity=String(dusk*(1-dawn));
+  // 以太陽高度連續調整天光，週期接合處的亮度也保持一致。
+  const altitude=Math.sin(2*Math.PI*t);
+  const lightProgress=Math.max(0,Math.min(1,(altitude+.35)));
+  const daylightMix=lightProgress*lightProgress*(3-2*lightProgress);
+  get('coast-night-photo').style.opacity=(1-daylightMix).toFixed(3);
+  get('coast-twilight').style.opacity=(Math.max(0,1-Math.abs(altitude)/.55)*.7).toFixed(3);
   const sun=get('coast-sun');
   const daylight=Math.min(1,t*2);
-  sun.style.left=`${(38+24*daylight).toFixed(2)}%`;
-  sun.style.top=`${(130-100*Math.sin(Math.PI*daylight)).toFixed(2)}%`;
+  const travel=Math.max(0,Math.min(1,(daylight-.16)/.68));
+  const easedTravel=travel*travel*(3-2*travel);
+  sun.style.left=`${(12+43*easedTravel).toFixed(2)}%`;
+  sun.style.top=`${(125-110*Math.sin(Math.PI*daylight)).toFixed(2)}%`;
   sun.style.visibility=day?'visible':'hidden';
   get('coast-water-level').style.height=`${(change*25).toFixed(2)}%`;
   get('coast-sand-level').style.height=`${(change*75).toFixed(2)}%`;
