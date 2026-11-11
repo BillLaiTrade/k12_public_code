@@ -893,3 +893,17 @@
 #insulation-lab[data-comparison=lining] .insulation-lining-focus-card .insulation-mechanism-heading{margin-bottom:2px}
 #insulation-lab[data-comparison=lining] .insulation-lining-explanation{padding:1px 2px}
 #insulation-lab[data-comparison=lining] .insulation-lining-key{align-items:center;line-height:1}
+
+/* 局部放大後持續播放：入射波先抵達外壁，再示意亮面反射。 */
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave,
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{stroke-dasharray:24 76;animation-duration:3.2s;animation-timing-function:linear;animation-iteration-count:infinite}
+#insulation-lab[data-comparison=lining] [data-lining-zoom=a]:not([hidden]) .lining-compare-wave{animation-name:lining-radiation-travel;animation-duration:2.2s}
+#insulation-lab[data-comparison=lining] [data-lining-zoom=b]:not([hidden]) .lining-compare-wave{animation-name:lining-radiation-incident}
+#insulation-lab[data-comparison=lining] [data-lining-zoom=b]:not([hidden]) .lining-compare-return{animation-name:lining-radiation-reflected}
+@keyframes lining-radiation-travel{from{stroke-dashoffset:0}to{stroke-dashoffset:-100}}
+@keyframes lining-radiation-incident{0%{opacity:1;stroke-dashoffset:0}46%{opacity:1;stroke-dashoffset:-100}47%,100%{opacity:0;stroke-dashoffset:-100}}
+@keyframes lining-radiation-reflected{0%,47%{opacity:0;stroke-dashoffset:0}48%{opacity:1;stroke-dashoffset:0}95%{opacity:1;stroke-dashoffset:-100}96%,100%{opacity:0;stroke-dashoffset:-100}}
+@media(prefers-reduced-motion:reduce){
+ #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave,
+ #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{animation:none;stroke-dasharray:7 4;opacity:1}
+}
