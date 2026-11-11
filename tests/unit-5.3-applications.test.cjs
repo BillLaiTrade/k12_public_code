@@ -56,10 +56,13 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.ok(baseline.bulbs.every(y=>Math.abs(y-baseline.y)<2),`初溫線與液柱起點應對齊：${JSON.stringify(baseline)}`);
     const levels=async()=>p.evaluate(()=>['water','sand'].map(name=>parseFloat(document.getElementById('coast-'+name+'-level').style.height)));
     const sunPosition=async()=>p.locator('#coast-sun').evaluate(e=>({left:+e.dataset.x,top:+e.dataset.y,alt:+e.dataset.altitude,visibility:getComputedStyle(e).visibility}));
+    const sunPixel=async()=>p.locator('#coast-sun').evaluate(e=>{const r=e.getBoundingClientRect(),p=e.parentElement.getBoundingClientRect();return{x:r.left+r.width/2-p.left,y:r.top+r.height/2-p.top};});
+    const sampleSunDistances=async(count,stepMs)=>{const points=[await sunPixel()];for(let i=0;i<count;i++){await p.clock.runFor(stepMs);points.push(await sunPixel());}return points.slice(1).map((point,i)=>Math.hypot(point.x-points[i].x,point.y-points[i].y));};
+    const assertUniformSpeed=(distances,part)=>{const min=Math.min(...distances),max=Math.max(...distances);assert.ok(min>0&&max/min<1.08,`${part}太陽應以近似等速移動：${distances.map(d=>d.toFixed(2))}`);};
     const nightOpacity=async()=>parseFloat(await p.locator('#coast-night-photo').evaluate(e=>e.style.opacity));
     const sunrise=await sunPosition();
     const dawnShade=await nightOpacity();await capture('coast-dawn');
-    await p.clock.runFor(2000);const rising=await levels();
+    assertUniformSpeed(await sampleSunDistances(4,500),'日出至正午');const rising=await levels();
     const highSun=await sunPosition();
     assert.ok(highSun.left>sunrise.left&&highSun.top<sunrise.top,'太陽應在白天向右升起');
     assert.ok(highSun.alt>60&&highSun.alt<67,'北緯23.5°春分附近的正午太陽高度應接近66.5°');
@@ -68,8 +71,8 @@ test('第六區：糖炒栗子、海邊觀察與汽車冷卻液',{timeout:240000
     assert.ok(rising[1]>rising[0]&&rising[0]>0,JSON.stringify(rising));
     assert.equal(await p.locator('#application-coast').getAttribute('data-mode'),'day');
     await capture('coast-day');
-    await p.clock.runFor(1667);await capture('coast-sunset-horizon');
-    await p.clock.runFor(667);const sunset=await sunPosition();
+    assertUniformSpeed(await sampleSunDistances(4,500),'正午至日落');await capture('coast-sunset-horizon');
+    await p.clock.runFor(334);const sunset=await sunPosition();
     assert.ok(sunset.left>highSun.left&&sunset.top>highSun.top&&sunset.visibility==='visible','太陽應向右落向地平線');
     assert.ok(sunset.left>80,'太陽應落向畫面右側');
     assert.ok((await nightOpacity())>0.1&&(await nightOpacity())<0.9,'日落時應呈現過渡天色');

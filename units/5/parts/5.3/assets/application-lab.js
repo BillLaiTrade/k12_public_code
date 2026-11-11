@@ -76,12 +76,7 @@ const coastLatitude=23.5*Math.PI/180;
 const coastMaxAltitude=Math.PI/2-coastLatitude;
 const coastSky=views.coast.querySelector('.coast-sky');
 let coastSkyWidth=0,coastSkyHeight=0;
-function measureCoastSky(){
-  const rect=coastSky.getBoundingClientRect();
-  coastSkyWidth=rect.width;coastSkyHeight=rect.height;
-}
-if('ResizeObserver' in window)new ResizeObserver(measureCoastSky).observe(coastSky);
-else window.addEventListener('resize',measureCoastSky,{passive:true});
+let coastArcTables=[];
 function coastHorizonAt(x){
   const points=[[0,100],[50,100],[60,94],[70,86],[80,78],[90,70],[100,60]];
   for(let i=1;i<points.length;i++){
@@ -90,8 +85,7 @@ function coastHorizonAt(x){
   }
   return points[points.length-1][1];
 }
-function renderCoastBody(element,phase){
-  // 天體在地平線下也繼續移動，由地景遮住，不在切換時憑空顯示。
+function coastOrbitPosition(phase){
   const hourAngle=(phase-.5)*Math.PI;
   const altitude=Math.asin(Math.cos(coastLatitude)*Math.cos(hourAngle));
   let azimuth=Math.atan2(-Math.sin(hourAngle),-Math.sin(coastLatitude)*Math.cos(hourAngle));
@@ -99,11 +93,46 @@ function renderCoastBody(element,phase){
   const x=12+76*(azimuth-Math.PI/2)/Math.PI;
   // 方位角與高度角映射至面南的示意全景，局部地平線配合圖片地景。
   const y=coastHorizonAt(x)-76*altitude/coastMaxAltitude;
+  return{x,y,altitude,azimuth};
+}
+function buildCoastArcTable(segment,width,height){
+  const steps=720,points=[];let length=0,previous=null;
+  for(let i=0;i<=steps;i++){
+    const progress=i/steps,position=coastOrbitPosition(segment+progress);
+    if(previous){
+      const dx=(position.x-previous.x)*width/100,dy=(position.y-previous.y)*height/100;
+      // 面南視野之外的方位角接縫在地平線下，略過全景左右邊界的投影跳接。
+      if(Math.abs(position.x-previous.x)<50)length+=Math.hypot(dx,dy);
+    }
+    points.push({progress,length});previous=position;
+  }
+  return{points,length};
+}
+function measureCoastSky(){
+  const rect=coastSky.getBoundingClientRect();
+  if(Math.abs(rect.width-coastSkyWidth)<.1&&Math.abs(rect.height-coastSkyHeight)<.1)return;
+  coastSkyWidth=rect.width;coastSkyHeight=rect.height;
+  coastArcTables=coastSkyWidth&&coastSkyHeight?[0,1].map(segment=>buildCoastArcTable(segment,coastSkyWidth,coastSkyHeight)):[];
+}
+if('ResizeObserver' in window)new ResizeObserver(measureCoastSky).observe(coastSky);
+else window.addEventListener('resize',measureCoastSky,{passive:true});
+function coastArcPhase(cycleTime){
+  const time=((cycleTime%1)+1)%1,segment=time<.5?0:1;
+  const progress=time<.5?time*2:(time-.5)*2,table=coastArcTables[segment];
+  if(!table||!table.length)return segment+progress;
+  const target=progress*table.length;let low=0,high=table.points.length-1;
+  while(low+1<high){const middle=(low+high)>>1;if(table.points[middle].length<target)low=middle;else high=middle;}
+  const before=table.points[low],after=table.points[high],span=after.length-before.length;
+  const fraction=span?(target-before.length)/span:0;
+  return segment+before.progress+(after.progress-before.progress)*fraction;
+}
+function renderCoastBody(element,cycleTime){
+  // 依畫面投影弧長前進，讓可見弧段每秒移動相同距離；地景遮住地平線下的路徑。
   if(!coastSkyWidth||!coastSkyHeight)measureCoastSky();
+  const {x,y,altitude,azimuth}=coastOrbitPosition(coastArcPhase(cycleTime));
   element.style.setProperty('--coast-x',`${coastSkyWidth*x/100}px`);
   element.style.setProperty('--coast-y',`${coastSkyHeight*y/100}px`);
-  element.dataset.x=x.toFixed(2);
-  element.dataset.y=y.toFixed(2);
+  element.dataset.x=x.toFixed(2);element.dataset.y=y.toFixed(2);
   element.dataset.altitude=(altitude*180/Math.PI).toFixed(2);
   element.dataset.azimuth=(azimuth*180/Math.PI).toFixed(2);
   element.style.visibility='visible';
@@ -127,8 +156,8 @@ function renderCoastCycle(){
   get('coast-twilight').style.opacity=(Math.max(0,1-Math.abs(altitude)/.55)*.7).toFixed(3);
   const darknessProgress=Math.max(0,Math.min(1,(-altitude-.05)/.55));
   get('coast-night-dark').style.opacity=(darknessProgress*darknessProgress*(3-2*darknessProgress)).toFixed(3);
-  renderCoastBody(get('coast-sun'),2*t);
-  renderCoastBody(get('coast-moon'),2*t+1);
+  renderCoastBody(get('coast-sun'),t);
+  renderCoastBody(get('coast-moon'),t+.5);
   get('coast-water-level').style.height=`${(change*25).toFixed(2)}%`;
   get('coast-sand-level').style.height=`${(change*75).toFixed(2)}%`;
 }
