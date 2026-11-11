@@ -907,3 +907,13 @@
  #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave,
  #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{animation:none;stroke-dasharray:7 4;opacity:1}
 }
+/* 發光的移動光點清楚呈現入射及反射的方向。 */
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave,
+#insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{stroke-dasharray:7 4;opacity:1;animation:lining-compare-flow .8s linear infinite}
+#insulation-lab .lining-pulse-out circle{fill:#ffb83e;stroke:#fff5ce;stroke-width:2;filter:drop-shadow(0 0 3px #d97706)}
+#insulation-lab .lining-pulse-back circle{fill:#fffbea;stroke:#8b8568;stroke-width:2;filter:drop-shadow(0 0 3px #fff)}
+@media(prefers-reduced-motion:reduce){
+ #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-wave,
+ #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{animation:none}
+ #insulation-lab .lining-pulse{display:none}
+}

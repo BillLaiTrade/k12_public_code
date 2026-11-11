@@ -99,6 +99,7 @@
       const tag=$(`insulation-tag-${role}`);tag.style.top=(y/280*100).toFixed(3)+'%';tag.hidden=p<1;
     });
   }
+  let activeLiningAnimation=null;
   function render(){
     const cfg=comparisons[comparison],status=assetState(),started=playing||time>0;
     root.dataset.comparison=comparison;root.dataset.assets=status;root.dataset.playing=String(playing);root.dataset.started=String(started);root.dataset.elapsed=time.toFixed(3);root.dataset.stage=!started?'ready':time<WINDOW?'comparing':'observed';
@@ -139,6 +140,8 @@
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
     mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;if(selected)prepareMicro(panel);});updateCloseup();
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus||panel.dataset.liningZoom!==inspectedLayer);
+    const nextLiningAnimation=liningFocus?inspectedLayer:null;
+    if(nextLiningAnimation!==activeLiningAnimation){activeLiningAnimation=nextLiningAnimation;if(nextLiningAnimation){const svg=liningPanel.querySelector(`[data-lining-zoom="${nextLiningAnimation}"] svg`);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(activeLiningAnimation===nextLiningAnimation&&svg&&typeof svg.setCurrentTime==='function')svg.setCurrentTime(0);}));}}
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
     root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射穿越真空夾層，到達較冷的外壁。':'亮面層反射部分輻射，減少輻射換熱。';
     setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
