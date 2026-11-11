@@ -74,6 +74,14 @@ const coastCycleDuration=10000;
 // https://science.nasa.gov/moon/moon-phases/
 const coastLatitude=23.5*Math.PI/180;
 const coastMaxAltitude=Math.PI/2-coastLatitude;
+const coastSky=views.coast.querySelector('.coast-sky');
+let coastSkyWidth=0,coastSkyHeight=0;
+function measureCoastSky(){
+  const rect=coastSky.getBoundingClientRect();
+  coastSkyWidth=rect.width;coastSkyHeight=rect.height;
+}
+if('ResizeObserver' in window)new ResizeObserver(measureCoastSky).observe(coastSky);
+else window.addEventListener('resize',measureCoastSky,{passive:true});
 function coastHorizonAt(x){
   const points=[[0,100],[50,100],[60,94],[70,86],[80,78],[90,70],[100,60]];
   for(let i=1;i<points.length;i++){
@@ -91,8 +99,11 @@ function renderCoastBody(element,phase){
   const x=12+76*(azimuth-Math.PI/2)/Math.PI;
   // 方位角與高度角映射至面南的示意全景，局部地平線配合圖片地景。
   const y=coastHorizonAt(x)-76*altitude/coastMaxAltitude;
-  element.style.left=`${x.toFixed(2)}%`;
-  element.style.top=`${y.toFixed(2)}%`;
+  if(!coastSkyWidth||!coastSkyHeight)measureCoastSky();
+  element.style.setProperty('--coast-x',`${coastSkyWidth*x/100}px`);
+  element.style.setProperty('--coast-y',`${coastSkyHeight*y/100}px`);
+  element.dataset.x=x.toFixed(2);
+  element.dataset.y=y.toFixed(2);
   element.dataset.altitude=(altitude*180/Math.PI).toFixed(2);
   element.dataset.azimuth=(azimuth*180/Math.PI).toFixed(2);
   element.style.visibility='visible';
