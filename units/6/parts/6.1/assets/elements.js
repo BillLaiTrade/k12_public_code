@@ -238,8 +238,8 @@
       diamond: '外觀｜純淨時透明\n硬度｜非常堅硬（莫氏 10）',
       graphiteImage: 'assets/carbon-appearance-graphite.webp?v=9df9e75bf586',
       diamondImage: 'assets/carbon-appearance-diamond.webp?v=81d8e83a0bd7',
-      graphiteAlt: '生成式石墨外觀示意：完整深灰片層樣品與石墨痕跡',
-      diamondAlt: '生成式鑽石外觀示意：完整透明晶體與細緻光澤',
+      graphiteAlt: '生成式石墨樣品外觀示意：深灰片層樣品與石墨痕跡',
+      diamondAlt: '生成式鑽石樣品外觀示意：透明晶體與細緻光澤',
       graphiteCue: '較軟・莫氏硬度 1–2',
       diamondCue: '非常堅硬・莫氏硬度 10',
       takeaway: '同為碳元素，樣品外觀與硬度仍可差很多。'
@@ -263,7 +263,7 @@
       graphiteAlt: '生成式石墨用途示意：石墨樣品、鉛筆芯與電極',
       diamondAlt: '生成式鑽石用途示意：鑽石樣品、切割研磨輪與珠寶',
       graphiteCue: '鉛筆芯、電極',
-      diamondCue: '切割、研磨工具',
+      diamondCue: '切割工具、珠寶',
       takeaway: '用途取決於樣品展現的性質；一般鉛筆芯含石墨與黏土，並非純石墨。'
     }
   };
@@ -276,12 +276,8 @@
     $('#graphite-sample-image').alt = view.graphiteAlt;
     $('#diamond-sample-image').src = view.diamondImage;
     $('#diamond-sample-image').alt = view.diamondAlt;
-    $$('.carbon-sample-cue-kind').forEach(label => { label.textContent = ({ appearance: '外觀與硬度', conductivity: '導電性', uses: '用途' })[key]; });
     $('#graphite-sample-cue').textContent = view.graphiteCue;
     $('#diamond-sample-cue').textContent = view.diamondCue;
-    $('#carbon-comparison-title').textContent = ({ appearance: '外觀與硬度', conductivity: '導電性', uses: '用途' })[key];
-    $('#graphite-comparison').textContent = view.graphite;
-    $('#diamond-comparison').textContent = view.diamond;
     $('#carbon-comparison-takeaway').textContent = view.takeaway;
   }
   $$('[data-carbon]').forEach(button => button.addEventListener('click', () => selectCarbon(button.dataset.carbon)));
@@ -338,10 +334,12 @@
       return { x: x2, y: y1, z: z2 };
     };
     const points = atoms.map(atom => ({ atom, ...project(atom) }));
-    const maxX = Math.max(...points.map(p => Math.abs(p.x))), maxY = Math.max(...points.map(p => Math.abs(p.y)));
-    const scale = Math.min(218 / maxX, 111 / maxY) * (kind === 'diamond' ? 1.7 : 1);
+    const minX = Math.min(...points.map(p => p.x)), maxX = Math.max(...points.map(p => p.x));
+    const minY = Math.min(...points.map(p => p.y)), maxY = Math.max(...points.map(p => p.y));
+    const centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
+    const scale = Math.min(440 / (maxX - minX || 1), 220 / (maxY - minY || 1));
     const pointMap = new Map();
-    for (const p of points) pointMap.set(p.atom.id, { x: 260 + p.x * scale, y: 150 - p.y * scale, z: p.z, layer: p.atom.layer });
+    for (const p of points) pointMap.set(p.atom.id, { x: 260 + (p.x - centerX) * scale, y: 150 - (p.y - centerY) * scale, z: p.z, layer: p.atom.layer });
     const depth = z => .56 + .44 * ((z - Math.min(...points.map(p=>p.z))) / (Math.max(...points.map(p=>p.z)) - Math.min(...points.map(p=>p.z)) || 1));
     const orderedBonds = [...bonds].sort((a,b) => ((pointMap.get(a[0].id).z+pointMap.get(a[1].id).z) - (pointMap.get(b[0].id).z+pointMap.get(b[1].id).z)));
     const lineMarkup = orderedBonds.map(([a,b,layer]) => {
