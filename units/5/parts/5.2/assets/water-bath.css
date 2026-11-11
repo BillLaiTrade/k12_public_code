@@ -1,8 +1,8 @@
 /* Scoped to the approved compact hands-on quiz. */
 #unit-quiz.bath-quiz{overflow:hidden}
-#unit-quiz.bath-quiz .quiz-head{gap:12px;align-items:center;padding:18px 20px;background:#fffdf5}
-#unit-quiz.bath-quiz .quiz-mark{width:36px;height:36px;flex-basis:36px;border-radius:12px;font-size:1.15rem}
-#unit-quiz.bath-quiz .quiz-head .quiz-kicker{font-size:.75rem;margin:0 0 3px;color:#86652c;line-height:1.4}
+#unit-quiz.bath-quiz .quiz-head{gap:12px;align-items:center;padding:18px 20px;background:#f8f1e4!important;border-left:3px solid #b48a3c!important;border-radius:14px!important}
+#unit-quiz.bath-quiz .quiz-mark{width:30px;height:30px;flex-basis:30px;border-radius:50%;font-size:.95rem;background:#f0e2be!important;color:#805c17!important}
+#unit-quiz.bath-quiz .quiz-head .quiz-kicker{font-size:.95rem;font-weight:700;margin:0 0 3px;color:#805c17;line-height:1.4}
 #unit-quiz.bath-quiz .quiz-head h2{font-size:clamp(1.25rem,2vw,1.8rem);line-height:1.35;color:#244732}
 .bath-help-button{touch-action:manipulation;flex:0 0 44px;width:44px;height:44px;border:1px solid #78937a;border-radius:50%;background:#fffdf2;color:#375c41;font:700 1.2rem/1 system-ui;cursor:pointer}
 #water-bath{background:#fffdf5;color:#31563e;container-type:normal}
@@ -61,7 +61,7 @@
 @media(max-width:1200px){.bath-bottom{flex-wrap:wrap}.bath-tools{flex:1}.bath-controls{margin-left:auto}.bath-reading{font-size:clamp(1.2rem,3vw,2rem)}}
 @media(max-width:760px){.bath-reading{font-size:clamp(1.15rem,4.8vw,2.2rem)}.bath-meter{width:27%}.bath-bottom{padding:12px}.bath-record{margin-inline:12px}.bath-hint{font-size:.86rem}.bath-result{margin-inline:12px}}
 @media(max-width:520px){
-  #unit-quiz.bath-quiz .quiz-head{padding:15px 12px;gap:9px}#unit-quiz.bath-quiz .quiz-mark{display:none}#unit-quiz.bath-quiz .quiz-head h2{font-size:1.2rem}
+  #unit-quiz.bath-quiz .quiz-head{padding:15px 12px;gap:9px}#unit-quiz.bath-quiz .quiz-mark{display:grid;width:27px;height:27px;flex-basis:27px}#unit-quiz.bath-quiz .quiz-head h2{font-size:1.2rem}
   .bath-scene{padding-top:122px;aspect-ratio:auto}.bath-meters{padding:6px 4% 0}.bath-meter{width:32%;max-width:140px}.bath-meter>b{font-size:.76rem;bottom:-12px;padding:1px 13px}.bath-reading{font-size:clamp(1.1rem,5.4vw,1.6rem)}.bath-room{top:22px;font-size:.76rem;padding:4px 7px}
   #bath-stage{margin-top:-10px}.bath-bottom{gap:11px}.bath-tools{justify-content:space-between;padding:4px;gap:0;width:100%}.bath-tools-title{font-size:.78rem;padding-inline:3px;margin-right:0}.bath-tools button{min-width:47px;padding:4px 2px;font-size:.72rem}.bath-tools button img{width:42px;height:39px}
   .bath-controls{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px}#water-bath .bath-controls button{touch-action:manipulation;padding:10px 5px;font-size:.81rem;min-width:0;width:100%}.bath-hint{padding:8px 12px;font-size:.82rem}.bath-chart-wrap{height:185px}
