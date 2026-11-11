@@ -51,6 +51,23 @@
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
   function updateCloseup(){if(!mechanism.hidden&&!document.hidden&&!closeupFrame){closeupPrevious=null;closeupFrame=requestAnimationFrame(animateCloseup);}else if(mechanism.hidden&&closeupFrame){cancelAnimationFrame(closeupFrame);closeupFrame=0;closeupPrevious=null;}}
+  let liningFrame=0,liningPrevious=null,liningTime=0,activeLiningAnimation=null;
+  function animateLining(now){
+    liningFrame=0;if(liningPanel.hidden||document.hidden){liningPrevious=null;return;}
+    const panel=liningPanel.querySelector('[data-lining-zoom]:not([hidden])');if(!panel)return;
+    const dt=liningPrevious===null?0:Math.min(.05,(now-liningPrevious)/1000)*(reduced.matches?.65:1);liningPrevious=now;liningTime+=dt;
+    const role=panel.dataset.liningZoom,phase=role==='a'?(liningTime%2)/2:(liningTime%3)/3;
+    const place=(kind,progress,visible)=>{const group=panel.querySelector('.lining-pulse-'+kind);if(!group)return;const path=panel.querySelector(kind==='out'?'.lining-compare-wave':'.lining-compare-return');const point=path.getPointAtLength(path.getTotalLength()*progress),circle=group.querySelector('circle');circle.setAttribute('cx',point.x.toFixed(2));circle.setAttribute('cy',point.y.toFixed(2));group.setAttribute('opacity',visible?'1':'0');};
+    place('out',role==='a'?phase:Math.min(1,phase*2),role==='a'||phase<.5);
+    if(role==='b')place('back',Math.max(0,(phase-.5)*2),phase>=.5);
+    liningFrame=requestAnimationFrame(animateLining);
+  }
+  function updateLining(){
+    const selected=!liningPanel.hidden?inspectedLayer:null;
+    if(selected!==activeLiningAnimation){activeLiningAnimation=selected;liningTime=0;liningPrevious=null;}
+    if(selected&&!document.hidden&&!liningFrame)liningFrame=requestAnimationFrame(animateLining);
+    else if((!selected||document.hidden)&&liningFrame){cancelAnimationFrame(liningFrame);liningFrame=0;liningPrevious=null;}
+  }
   const WINDOW=14/3,moleculeGroups=[...root.querySelectorAll('.micro-particles')].map((group,index)=>({group,index}));
   const energyPulses=['a','b'].flatMap(role=>{const motion=$(`insulation-motion-${role}`),solid=[...motion.querySelectorAll('.insulation-solid-motion .insulation-heat-line')],radiation=$(`insulation-radiation-${role}`).querySelector('.insulation-heat-line');return [...motion.querySelectorAll('.insulation-energy-pulses [data-route]')].map(group=>{const route=group.dataset.route==='radiation'?radiation:solid[group.dataset.route==='neck'?0:1];return{group,path:route,length:route.getTotalLength(),phase:Number(group.dataset.phase||0)};});});
   const reflectionPulses=['in','back'].map(name=>({name,path:$('insulation-reflection-demo').querySelector('.insulation-ray-'+name)}));
@@ -99,7 +116,6 @@
       const tag=$(`insulation-tag-${role}`);tag.style.top=(y/280*100).toFixed(3)+'%';tag.hidden=p<1;
     });
   }
-  let activeLiningAnimation=null;
   function render(){
     const cfg=comparisons[comparison],status=assetState(),started=playing||time>0;
     root.dataset.comparison=comparison;root.dataset.assets=status;root.dataset.playing=String(playing);root.dataset.started=String(started);root.dataset.elapsed=time.toFixed(3);root.dataset.stage=!started?'ready':time<WINDOW?'comparing':'observed';
@@ -140,8 +156,7 @@
     const liningFocus=comparison==='lining'&&inspectedLayer!==null&&status==='ready',gapFocus=comparison==='gap'&&inspectedLayer!==null&&status==='ready';
     mechanism.hidden=!gapFocus;root.querySelectorAll('.insulation-micro-panel').forEach(panel=>{const selected=gapFocus&&panel.dataset.micro===inspectedLayer;panel.hidden=!selected;if(selected)prepareMicro(panel);});updateCloseup();
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus||panel.dataset.liningZoom!==inspectedLayer);
-    const nextLiningAnimation=liningFocus?inspectedLayer:null;
-    if(nextLiningAnimation!==activeLiningAnimation){activeLiningAnimation=nextLiningAnimation;if(nextLiningAnimation){const svg=liningPanel.querySelector(`[data-lining-zoom="${nextLiningAnimation}"] svg`);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(activeLiningAnimation===nextLiningAnimation&&svg&&typeof svg.setCurrentTime==='function')svg.setCurrentTime(0);}));}}
+    updateLining();
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
     root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射穿越真空夾層，到達較冷的外壁。':'亮面層反射部分輻射，減少輻射換熱。';
     setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
@@ -162,6 +177,6 @@
   play.addEventListener('click',()=>{if(playing)stop();else start();});sources.forEach((n,index)=>n.addEventListener('click',()=>{if(assetState()!=='ready')return;const selected=['a','b'][index];inspectedLayer=inspectedLayer===selected?null:selected;render();}));$('insulation-reset').addEventListener('click',reset);
   root.querySelectorAll('[data-insulation-comparison]').forEach(n=>n.addEventListener('click',()=>{if(n.dataset.insulationComparison===comparison)return;stop();comparison=n.dataset.insulationComparison;inspectedLayer=null;time=0;root.querySelector('details').open=false;render();loadAssets();}));
   document.addEventListener('pointerdown',event=>{if(inspectedLayer===null)return;const target=event.target;if(!(target instanceof Element)||target.closest('.insulation-bottle-hit, #insulation-mechanism, #insulation-lining-focus, .insulation-control-row, .insulation-tabs'))return;inspectedLayer=null;render();});
-  $('insulation-retry').addEventListener('click',()=>loadAssets(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();updateCloseup();});addEventListener('pagehide',stop);
+  $('insulation-retry').addEventListener('click',()=>loadAssets(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();updateCloseup();updateLining();});addEventListener('pagehide',stop);
   render();loadAssets();
 })();
