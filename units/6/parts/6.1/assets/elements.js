@@ -236,6 +236,10 @@
     appearance: {
       graphite: '外觀｜深灰至黑色\n硬度｜較軟（莫氏約 1–2）',
       diamond: '外觀｜純淨時透明\n硬度｜非常堅硬（莫氏 10）',
+      graphiteImage: 'assets/graphite-sample.webp?v=224f38d66116',
+      diamondImage: 'assets/diamond-sample.webp?v=d989efa4aee5',
+      graphiteAlt: '深灰色、片層狀石墨樣品的擬真外觀示意，不表示原子排列',
+      diamondAlt: '透明、帶有天然晶面的鑽石樣品擬真外觀示意，不表示原子排列',
       graphiteCue: '較軟・莫氏硬度 1–2',
       diamondCue: '非常堅硬・莫氏硬度 10',
       takeaway: '同為碳元素，樣品外觀與硬度仍可差很多。'
@@ -243,6 +247,10 @@
     conductivity: {
       graphite: '導電｜可以導電\n結構線索｜有可移動的電子',
       diamond: '導電｜通常不易導電\n結構線索｜電子被牢固束縛',
+      graphiteImage: 'assets/graphite-conductivity.svg?v=86be7b28d638',
+      diamondImage: 'assets/diamond-conductivity.svg?v=5685afe769d2',
+      graphiteAlt: '石墨樣品的導電測試示意：樣品接入完整電路，燈泡亮起',
+      diamondAlt: '鑽石樣品的導電測試示意：樣品接入電路，燈泡未亮',
       graphiteCue: '可以導電',
       diamondCue: '通常不易導電',
       takeaway: '石墨和鑽石都是碳，但導電表現不同；不能把石墨的性質套用到所有碳樣品。'
@@ -250,6 +258,10 @@
     uses: {
       graphite: '用途｜鉛筆芯、電極\n關聯｜柔軟易磨耗、可以導電',
       diamond: '用途｜切割、研磨工具；珠寶\n關聯｜硬度高、外觀透亮',
+      graphiteImage: 'assets/graphite-uses.svg?v=68d7fa99eb1d',
+      diamondImage: 'assets/diamond-uses.svg?v=b6ebc09c6ea5',
+      graphiteAlt: '石墨樣品及鉛筆芯、導電電極用途示意',
+      diamondAlt: '鑽石樣品及切割研磨工具、珠寶用途示意',
       graphiteCue: '鉛筆芯、電極',
       diamondCue: '切割、研磨工具',
       takeaway: '用途取決於樣品展現的性質；一般鉛筆芯含石墨與黏土，並非純石墨。'
@@ -260,6 +272,10 @@
     const view = carbon[key];
     $('#carbon-comparison').dataset.view = key;
     $$('.carbon-sample').forEach(sample => { sample.dataset.view = key; });
+    $('#graphite-sample-image').src = view.graphiteImage;
+    $('#graphite-sample-image').alt = view.graphiteAlt;
+    $('#diamond-sample-image').src = view.diamondImage;
+    $('#diamond-sample-image').alt = view.diamondAlt;
     $$('.carbon-sample-cue-kind').forEach(label => { label.textContent = ({ appearance: '外觀與硬度', conductivity: '導電性', uses: '用途' })[key]; });
     $('#graphite-sample-cue').textContent = view.graphiteCue;
     $('#diamond-sample-cue').textContent = view.diamondCue;
