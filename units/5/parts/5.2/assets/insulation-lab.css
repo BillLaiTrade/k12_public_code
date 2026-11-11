@@ -928,3 +928,9 @@
 #insulation-lab[data-comparison=lining] .insulation-lining-zoom:not([hidden]) .lining-compare-return{stroke:#fffbea;stroke-width:1.7;stroke-dasharray:none;animation:none;opacity:.85;filter:drop-shadow(0 0 1px #8c7852)}
 #insulation-lab .lining-pulse-out circle{fill:#fff0ad;stroke:none;filter:drop-shadow(0 0 2px #e88616)}
 #insulation-lab .lining-pulse-back circle{fill:#fff;stroke:none;filter:drop-shadow(0 0 2px #8c7852)}
+
+/* 展開時拉近瓶身與剖面卡，兩個模式保持相同位置。 */
+@media(min-width:900px){
+ #insulation-lab[data-comparison][data-focus=a] .insulation-bottle-grid,
+ #insulation-lab[data-comparison][data-focus=b] .insulation-bottle-grid{transform:translateY(-26px) scale(.66)!important}
+}
