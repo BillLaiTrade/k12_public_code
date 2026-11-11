@@ -72,16 +72,24 @@
 #application-lab .chestnut-visual{display:flex;flex-direction:column;min-width:0}
 #application-lab .chestnut-visual .life-photo{width:100%;aspect-ratio:1;max-width:none}
 #application-lab .chestnut-visual .life-photo>img{display:block;width:100%;height:100%;aspect-ratio:1;object-fit:cover}
-#application-lab .chestnut-contact>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-#application-lab .chestnut-mode{margin-top:10px}
-#application-lab .chestnut-mode button{flex:1;min-width:0;padding:8px 5px}
-#application-lab .chestnut-view-note{text-align:center;color:#687c69;font-size:.875rem;margin:6px 0 0}
-#application-lab .chestnut-contact-retry{align-self:center;margin-top:8px}
+#application-lab .chestnut-photo-annotated{isolation:isolate}
+#application-lab .chestnut-zoom-link{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
+#application-lab .chestnut-zoom-link path{fill:none;stroke:#fffaf0;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 3px #342b1dcc)}
+#application-lab .chestnut-zoom-link circle{fill:#fffaf0;stroke:#315b3b;stroke-width:4;filter:drop-shadow(0 1px 3px #342b1dcc)}
+#application-lab .chestnut-zoom{position:absolute;right:3%;bottom:3%;z-index:2;width:57%;height:44%;overflow:hidden;border:3px solid #fffaf0;border-radius:14px;background:#2b2018;box-shadow:0 2px 10px #1e1914aa}
+#application-lab .chestnut-zoom>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+#application-lab .chestnut-zoom-title,#application-lab .chestnut-zoom-label{position:absolute;z-index:2;padding:3px 7px;border:1px solid #d6ddc9;border-radius:6px;background:#fff9eaf2;color:#315b3b;font-weight:700;line-height:1.25;white-space:nowrap;box-shadow:0 1px 4px #0004}
+#application-lab .chestnut-zoom-title{top:6px;left:7px;font-size:.75rem}
+#application-lab .chestnut-zoom-label{right:5px;font-size:.75rem}
+#application-lab .chestnut-zoom-label-nut{top:10%}
+#application-lab .chestnut-zoom-label-sand{top:47%}
+#application-lab .chestnut-zoom-label-pan{bottom:6%}
+#application-lab .chestnut-heat-arrows{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
+#application-lab .chestnut-heat-arrows path{fill:none;stroke:#f28a18;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 1px 2px #fff7e8)}
+#application-lab .chestnut-view-note{margin:7px 0 0;padding:6px 9px;border-left:3px solid #d9822b;border-radius:0 7px 7px 0;background:#fff5e7;color:#624b32;font-size:.875rem;font-weight:650}
 #application-lab .chestnut-explanation{margin:0;padding:0;border:0;border-radius:13px;background:transparent;overflow:hidden;align-self:center}
 #application-lab .chestnut-explanation picture{display:block;width:100%}
 #application-lab .chestnut-explanation img{display:block;width:100%;height:auto}
-.chestnut-label{position:absolute;padding:4px 9px;border-radius:7px;background:#fff9eaf2;color:#315b3b;font-weight:700;box-shadow:0 1px 4px #0003}
-.chestnut-label-wok{left:6%;bottom:9%}.chestnut-label-sand{left:49%;bottom:23%}.chestnut-label-nut{right:9%;top:39%}
 @media(max-width:1100px){#application-lab .chestnut-workbench{grid-template-columns:minmax(0,1fr)}#application-lab .chestnut-visual{max-width:700px;width:100%;margin:0 auto}#application-lab .chestnut-explanation{width:min(100%,460px);margin:0 auto}}
 
 /* 情境共用相同圖片框與雙欄比例；以最長內容決定區塊高度。 */
@@ -94,7 +102,6 @@
 #application-lab .coast-video{position:absolute;left:0;top:12.5%;width:100%;height:75%;aspect-ratio:4/3;object-fit:contain}
 #application-lab .life-photo>.coast-arrows{top:12.5%;height:75%}
 #application-lab .life-workbench .chestnut-photo>img{object-fit:cover}
-#application-lab .chestnut-contact>svg{left:0;width:100%;height:100%}
 #application-lab .life-coast-model,#application-lab .life-coolant-model{height:100%}
 #application-lab .coast-observation{margin:0 0 12px}
 @media(max-width:1100px){#application-lab .life-workbench{grid-template-columns:minmax(0,1fr)}#application-lab .life-workbench .life-photo{max-width:700px;margin:0 auto}}

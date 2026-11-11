@@ -10,22 +10,7 @@ const assets={chestnut:{phase:'loading',attempt:0},coast:{phase:'loading',attemp
 let current='chestnut',mode='day';
 const coastQuestion=()=>mode==='day'?questions.coast:'為什麼夜晚沙灘可能明顯降溫，海水的溫度變化卻較小？';
 
-const contactImage=get('chestnut-contact-image'),contactLoading=get('chestnut-contact-loading'),contactRetry=get('chestnut-contact-retry');
-let contactAttempt=0,contactReady=false;
-async function loadContact(retry=false){
-  const attempt=++contactAttempt;
-  contactLoading.hidden=false;contactLoading.textContent='正在準備接觸處放大圖…';contactRetry.hidden=true;
-  if(retry)contactImage.src=new URL(`application-chestnut-contact.png?retry=${attempt}`,import.meta.url).href;
-  try{await contactImage.decode();if(attempt!==contactAttempt)return;contactReady=true;contactLoading.hidden=true;}
-  catch{if(attempt!==contactAttempt)return;contactReady=false;contactLoading.textContent='放大圖未能載入，請重新載入。';contactRetry.hidden=get('chestnut-contact').hidden;}
-}
-function selectChestnutMode(next){
-  if(!['scene','contact'].includes(next))return;
-  get('chestnut-scene').hidden=next!=='scene';get('chestnut-contact').hidden=next!=='contact';
-  root.querySelectorAll('[data-chestnut-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.chestnutMode===next)));
-  get('chestnut-view-note').textContent=next==='contact'?'接觸處示意，砂粒已放大':'炒栗子場景示意';
-  contactRetry.hidden=next!=='contact'||contactReady;
-}
+const chestnutZoomImage=get('chestnut-zoom-image');
 
 function renderAsset(key){
   const asset=assets[key],view=views[key],message=view.querySelector('[data-life-loading]');
@@ -38,14 +23,18 @@ function renderAsset(key){
 async function loadAsset(key,retry=false){
   const asset=assets[key],attempt=++asset.attempt;
   asset.phase='loading';renderAsset(key);
-  if(retry&&key!=='coast')images[key].src=new URL(`${sources[key]}?retry=${attempt}`,import.meta.url).href;
+  if(retry&&key!=='coast'){
+    images[key].src=new URL(`${sources[key]}?retry=${attempt}`,import.meta.url).href;
+    if(key==='chestnut')chestnutZoomImage.src=new URL(`application-chestnut-detail.webp?retry=${attempt}`,import.meta.url).href;
+  }
   try{
     if(key==='coast'){
       await Promise.all(Object.values(coastSources).map(src=>{const image=new Image();image.src=new URL(`${src}${retry?`?retry=${attempt}`:''}`,import.meta.url).href;return image.decode();}));
       if(attempt!==asset.attempt)return;
       coastPhoto.src=new URL(coastSources.day,import.meta.url).href;
       get('coast-night-photo').src=new URL(coastSources.night,import.meta.url).href;
-    }else await images[key].decode();
+    }else if(key==='chestnut')await Promise.all([images[key].decode(),chestnutZoomImage.decode()]);
+    else await images[key].decode();
     if(attempt!==asset.attempt)return;
     asset.phase='ready';renderAsset(key);if(key==='coast')syncCoastCycle();
   }catch{
@@ -232,9 +221,6 @@ document.addEventListener('visibilitychange',syncCoolantFlow);
 renderCoolantFlow();
 
 root.querySelectorAll('.life-tabs [data-application]').forEach(b=>b.addEventListener('click',()=>selectApplication(b.dataset.application)));
-root.querySelectorAll('[data-chestnut-mode]').forEach(b=>b.addEventListener('click',()=>selectChestnutMode(b.dataset.chestnutMode)));
-contactRetry.addEventListener('click',()=>loadContact(true));
 Object.entries(views).forEach(([key,view])=>view.querySelector('[data-life-retry]').addEventListener('click',()=>loadAsset(key,true)));
 
 loadAsset('chestnut');
-loadContact();
