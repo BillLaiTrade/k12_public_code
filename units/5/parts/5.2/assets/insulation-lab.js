@@ -51,17 +51,33 @@
     closeupFrame=requestAnimationFrame(animateCloseup);
   }
   function updateCloseup(){if(!mechanism.hidden&&!document.hidden&&!closeupFrame){closeupPrevious=null;closeupFrame=requestAnimationFrame(animateCloseup);}else if(mechanism.hidden&&closeupFrame){cancelAnimationFrame(closeupFrame);closeupFrame=0;closeupPrevious=null;}}
-  let liningFrame=0,liningPrevious=null,liningTime=0,activeLiningAnimation=null;
+  let liningFrame=0,liningPrevious=null,activeLiningAnimation=null,liningModel=null;
+  function createLiningModel(panel){
+    const role=panel.dataset.liningZoom,svg=panel.querySelector('svg'),container=svg.querySelector('.lining-wave-packets');container.replaceChildren();
+    const slopes=[-.19,.16,-.10,.23,-.24,.08,.20],ys=[50,120,68,143,42,102,153];
+    const packets=slopes.map((slope,i)=>{const node=svgNode('g',{class:'lining-radiation-packet'}),wave=svgNode('path',{d:'M-10 0q2.5 -3.8 5 0t5 0t5 0t5 0'}),arrow=svgNode('path',{d:'M8 -2.5L12 0L8 2.5',class:'lining-packet-arrow'});node.append(wave,arrow);container.append(node);const vx=role==='b'?110:-110;return {node,i,x:role==='b'?20+i*37:280-i*37,y:ys[i],vx,vy:Math.abs(vx)*slope,reflected:false,cycle:0};});
+    return {role,svg,packets,reflections:0,absorptions:0};
+  }
+  function restartLiningPacket(p,role){p.cycle++;p.x=role==='b'?12:288;p.y=38+((p.i*29+p.cycle*37)%112);p.vx=role==='b'?110:-110;p.vy=110*([-.19,.16,-.10,.23,-.24,.08,.20][(p.i+p.cycle)%7]);p.reflected=false;}
   function animateLining(now){
     liningFrame=0;if(liningPanel.hidden||document.hidden){liningPrevious=null;return;}
     const panel=liningPanel.querySelector('[data-lining-zoom]:not([hidden])');if(!panel)return;
-    const dt=liningPrevious===null?0:Math.min(.05,(now-liningPrevious)/1000)*(reduced.matches?.65:1);liningPrevious=now;liningTime+=dt;
-    panel.querySelectorAll('.lining-flow').forEach(path=>{path.style.strokeDashoffset=(-liningTime*55).toFixed(2);});
+    const dt=liningPrevious===null?0:Math.min(.05,(now-liningPrevious)/1000)*(reduced.matches?.65:1);liningPrevious=now;
+    if(!liningModel||liningModel.role!==panel.dataset.liningZoom)liningModel=createLiningModel(panel);
+    const model=liningModel;
+    model.packets.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;
+      const atCold=model.role==='b'?p.x>=288:p.x<=12,atWarm=model.role==='b'?p.x<=12:p.x>=288;
+      if(p.y<25||p.y>170)restartLiningPacket(p,model.role);
+      else if(!p.reflected&&atCold){const reflected=model.role==='b'?(p.i+p.cycle)%4!==0:(p.i+p.cycle)%4===0;if(reflected){p.x=model.role==='b'?288:12;p.vx=-p.vx;p.reflected=true;model.reflections++;}else{model.absorptions++;restartLiningPacket(p,model.role);}}
+      else if(p.reflected&&atWarm)restartLiningPacket(p,model.role);
+      p.node.setAttribute('transform',`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${(Math.atan2(p.vy,p.vx)*180/Math.PI).toFixed(1)})`);
+    });
+    model.svg.dataset.reflections=String(model.reflections);model.svg.dataset.absorptions=String(model.absorptions);
     liningFrame=requestAnimationFrame(animateLining);
   }
   function updateLining(){
     const selected=!liningPanel.hidden?inspectedLayer:null;
-    if(selected!==activeLiningAnimation){activeLiningAnimation=selected;liningTime=0;liningPrevious=null;}
+    if(selected!==activeLiningAnimation){activeLiningAnimation=selected;liningModel=null;liningPrevious=null;}
     if(selected&&!document.hidden&&!liningFrame)liningFrame=requestAnimationFrame(animateLining);
     else if((!selected||document.hidden)&&liningFrame){cancelAnimationFrame(liningFrame);liningFrame=0;liningPrevious=null;}
   }
@@ -155,7 +171,7 @@
     liningPanel.hidden=!liningFocus;liningPanel.querySelectorAll('[data-lining-zoom]').forEach(panel=>panel.hidden=!liningFocus||panel.dataset.liningZoom!==inspectedLayer);
     updateLining();
     setText('insulation-lining-focus-title',inspectedLayer==='a'?'A 無亮面層放大':'B 有亮面層放大');setText('insulation-mechanism-title',inspectedLayer==='a'?'A 空氣夾層放大':inspectedLayer==='b'?'B 真空夾層放大':'夾層局部比較');
-    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'橘色箭頭表示紅外線，從較暖內壁穿越真空到達外壁。':'橘色箭頭表示紅外線：到達亮面後，部分反射回內壁。';
+    root.querySelector('.insulation-lining-explanation').textContent=inspectedLayer==='a'?'熱輻射穿越真空到達外壁；部分反射，其餘可被吸收。':'亮面反射部分熱輻射；其他能量可被外壁吸收。';
     
     setText('insulation-micro-explanation',inspectedLayer==='a'?'分子碰撞交換能量，整體由較暖側傳向較冷側。':'真空夾層氣體極少，氣體傳熱減少；輻射仍能穿過。');
     const routeKey=root.querySelector('.insulation-route-key'),liningMode=comparison==='lining';routeKey.querySelectorAll('[data-route-key]').forEach(node=>node.hidden=liningMode);routeKey.querySelectorAll('.insulation-reflection-key').forEach(node=>node.hidden=!liningMode);routeKey.hidden=false;alignCalloutGuides();
