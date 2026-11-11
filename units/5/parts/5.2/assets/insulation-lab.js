@@ -76,10 +76,11 @@
       const active=comparison!=='gap'||inspectedLayer===role;
       for(const selector of ['[data-guide]','[data-target]','[data-joint]'])guides.querySelector(`${selector}[${selector==='[data-guide]'?'data-guide':selector==='[data-target]'?'data-target':'data-joint'}=\"${role}\"]`).toggleAttribute('hidden',!active);
       if(!active)continue;
-      const bottle=$(`insulation-bottle-${role}`),point=bottle.createSVGPoint();point.x=139;point.y=440;
+      const bottle=$(`insulation-bottle-${role}`),point=bottle.createSVGPoint();point.x=comparison==='gap'&&role==='b'?301:139;point.y=440;
       const screen=point.matrixTransform(bottle.getScreenCTM()),x=screen.x-bounds.left,y=screen.y-bounds.top;
-      const panel=root.querySelector(comparison==='gap'?'#insulation-mechanism':`.insulation-lining-zoom[data-lining-zoom="${role}"]`).getBoundingClientRect(),anchorX=(comparison==='gap'?panel.left+12:panel.left+panel.width/2)-bounds.left,anchorY=(comparison==='gap'?panel.top+18:panel.top)-bounds.top;
-      const d=comparison==='gap'?`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+20).toFixed(1)} 4 ${(y+20).toFixed(1)} 4 ${(y+48).toFixed(1)} L4 ${(anchorY-12).toFixed(1)} Q4 ${anchorY.toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`:`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+38).toFixed(1)} ${anchorX.toFixed(1)} ${(anchorY-38).toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`;
+      const panel=root.querySelector(comparison==='gap'?'#insulation-mechanism':`.insulation-lining-zoom[data-lining-zoom="${role}"]`).getBoundingClientRect(),anchorX=(comparison==='gap'?(role==='a'?panel.left+12:panel.right-12):panel.left+panel.width/2)-bounds.left,anchorY=(comparison==='gap'?panel.top+18:panel.top)-bounds.top;
+      const edge=role==='a'?4:bounds.width-4;
+      const d=comparison==='gap'?`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+20).toFixed(1)} ${edge.toFixed(1)} ${(y+20).toFixed(1)} ${edge.toFixed(1)} ${(y+48).toFixed(1)} L${edge.toFixed(1)} ${(anchorY-12).toFixed(1)} Q${edge.toFixed(1)} ${anchorY.toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`:`M${x.toFixed(1)} ${y.toFixed(1)} C${x.toFixed(1)} ${(y+38).toFixed(1)} ${anchorX.toFixed(1)} ${(anchorY-38).toFixed(1)} ${anchorX.toFixed(1)} ${anchorY.toFixed(1)}`;
       guides.querySelector(`[data-guide="${role}"]`).setAttribute('d',d);
       guides.querySelector(`[data-target="${role}"]`).setAttribute('cx',x.toFixed(1));guides.querySelector(`[data-target="${role}"]`).setAttribute('cy',y.toFixed(1));
       guides.querySelector(`[data-joint="${role}"]`).setAttribute('cx',anchorX.toFixed(1));guides.querySelector(`[data-joint="${role}"]`).setAttribute('cy',anchorY.toFixed(1));
