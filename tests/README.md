@@ -1,3 +1,11 @@
+# 公開網站檢查指南與測試紀錄
+
+## 目前執行入口（2026-11-12 核對）
+
+在 `k12_public_code` 根目錄執行本文件的測試指令。公開檢查的站台根網址為 `https://billlaitrade.github.io/k12_public_code/`；各測試的網址參數依其說明設定，單頁網址也須使用此正式站台下的對應路徑。Private `k12-learning-demos` 僅供指定單元留存，不作為網站修改或公開檢查來源。
+
+下方日期段落保留各輪測試的範圍與演變；其中指令的工作目錄及公開網址已依目前三庫分工對齊。歷史通過紀錄不等於目前版本已重驗，執行前仍須核對本輪受影響功能與現行測試內容。
+
 ## 4.3 各組獨立發射計時（2026-11-06）
 
 `unit-4.3-individual-timers.test.mjs`驗錯開起點、抵達封頂、單組重播與手動／自動暫停隔離。`unit-4.3-individual-lanes.test.cjs`驗兩區六光源的滑鼠及鍵盤操作、單組計時／重播、與共同模式互換、第二區獨立播放不中斷及同步5秒停格、暫停時間排除、返回不捲頁／不解除手動暫停、四桌面尺寸操作區與標籤錯開、素材失敗與重試。INDIVIDUAL_CAPTURE_DIR保存截圖與計時JSON，沿用LESSON_BASE_URL及LESSON_USE_PROXY。
@@ -51,7 +59,7 @@ node --test --test-isolation=none --test-concurrency=1 tests/unit-4.3-layer-spee
 CHROMIUM_PATH=/usr/bin/chromium node --test --test-concurrency=1 tests/unit-1.2-mirror.test.cjs tests/unit-1.2-periscope.test.cjs tests/unit-1.2-curved-mirrors.test.cjs tests/unit-1.2-reversible.test.cjs tests/unit-4.2-completion.test.cjs
 ```
 
-五套均支援`LESSON_BASE_URL`（站台根網址，例如`https://billlaitrade.github.io/k12-learning-demos/`）及`LESSON_USE_PROXY=1`（使用既有HTTPS_PROXY）；未指定根網址時自行啟動本機伺服器。`MIRROR_CAPTURE_DIR`、`PERISCOPE_CAPTURE_DIR`及`COMPLETION_CAPTURE_DIR`可分開保存公開／本機證據。潛望鏡既有截圖仍使用`/tmp/periscope-review/`，取消計時JSON使用指定的PERISCOPE_CAPTURE_DIR。
+五套均支援`LESSON_BASE_URL`（正式站台根網址為`https://billlaitrade.github.io/k12_public_code/`）及`LESSON_USE_PROXY=1`（使用既有HTTPS_PROXY）；未指定根網址時自行啟動本機伺服器。`MIRROR_CAPTURE_DIR`、`PERISCOPE_CAPTURE_DIR`及`COMPLETION_CAPTURE_DIR`可分開保存公開／本機證據。潛望鏡既有截圖仍使用`/tmp/periscope-review/`，取消計時JSON使用指定的PERISCOPE_CAPTURE_DIR。
 
 第三區保留光路、投影、圖像像素與淨空斷言，更新為現行文案、既有路線、直接拖熊及4.1網址，不恢復已刪除的控制。潛望鏡取消檢查在pointerdown／keydown前後同一事件記錄狀態、時間與殘留光線，避免長拖曳後才讀取瞬間cooldown；另保留真實滑鼠／鍵盤與同步早期取消、期限恢復檢查。
 
@@ -423,7 +431,7 @@ CHROMIUM_PATH=/usr/bin/chromium node --test tests/unit-6.1.test.cjs
 
 需要 Node.js、Python 3、Playwright 及 Chromium。雲端環境已提供這些工具，不需修改套件清單。
 
-在 `k12-learning-demos` 根目錄執行：
+在 `k12_public_code` 根目錄執行：
 
 ```sh
 CHROMIUM_PATH=/usr/bin/chromium node --test tests/unit-5.1.test.cjs
@@ -1707,7 +1715,7 @@ CHROMIUM_PATH=/usr/bin/chromium node --test --test-concurrency=1 tests/unit-5.2-
 node --test --test-isolation=none tests/unit-5.4-model.test.mjs tests/unit-5.4.test.cjs
 ```
 
-公開檢查設定`UNIT54_URL=https://billlaitrade.github.io/k12-learning-demos/units/5/parts/5.4/`，`UNIT54_CAPTURE_DIR`指定證據輸出位置。繼承既有HTTPS_PROXY，不停用TLS驗證。本輪是可操作初版，非逐區設計或完整外審已通過。
+公開檢查設定`UNIT54_URL=https://billlaitrade.github.io/k12_public_code/units/5/parts/5.4/`，`UNIT54_CAPTURE_DIR`指定證據輸出位置。繼承既有HTTPS_PROXY，不停用TLS驗證。本輪是可操作初版，非逐區設計或完整外審已通過。
 
 2026-11-11第六區更新：同一測試另核對桌機實驗與晶體模型左右並排、手機直向堆疊；以觀察時鐘確認模型水合程度與脫水／水合畫面同步，並保存加熱中與無水狀態截圖。
 
